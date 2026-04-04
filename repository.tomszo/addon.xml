@@ -1,11 +1,12 @@
-﻿<?xml version="1.0" encoding="UTF-8"?>
-<addon id="repository.tomszo" name="TomSzo Repository" version="1.0.1" provider-name="TomSzo">
+<?xml version="1.0" encoding="UTF-8"?>
+<addon id="repository.tomszo" name="TomSzo Repository" version="1.0.2" provider-name="TomSzo">
     <requires>
         <import addon="xbmc.addon" version="12.0.0"/>
     </requires>
     <extension point="xbmc.addon.repository" name="TomSzo Repository">
         <dir>
             <info compressed="false">https://tomszo.github.io/addons.xml</info>
+            <checksum>https://tomszo.github.io/addons.xml.md5</checksum>
             <datadir zip="true">https://tomszo.github.io/</datadir>
         </dir>
     </extension>
