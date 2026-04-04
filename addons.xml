@@ -121,7 +121,7 @@
 	</extension>
 	<extension point="xbmc.addon.metadata">
 		<summary lang="en">MovieShark Repository</summary>
-		<description lang="en">Az MSREPO MagyarorszĂ„â€šĂ‹â€ˇg legnagyobb KODI-hoz fejlesztett magyar nyelvĂ„Ä…Ă‚Â± kiegĂ„â€šĂ‚Â©szĂ„â€šĂ‚Â­tĂ„Ä…Ă˘â‚¬Âinek tĂ„â€šĂ‹â€ˇrolĂ„â€šÄąâ€šhelye. Itt megtalĂ„â€šĂ‹â€ˇlod a legismertebb mĂ„â€šĂ‚Â©dia tartalmait mĂ„â€šĂ‹â€ˇs hasznos kiegĂ„â€šĂ‚Â©szĂ„â€šĂ‚Â­tĂ„Ä…Ă˘â‚¬Âkkel egyetemben. A repository semmilyen illegĂ„â€šĂ‹â€ˇlis anyagot nem tartalmaz, az informĂ„â€šĂ‹â€ˇciĂ„â€šÄąâ€šk nem egyediek Ä‚ËĂ˘â€šÂ¬Ă˘â‚¬Ĺ› bĂ„â€šĂ‹â€ˇrki Ă„â€šĂ‹â€ˇltal szabadon hozzĂ„â€šĂ‹â€ˇfĂ„â€šĂ‚Â©rhetĂ„Ä…Ă˘â‚¬Âk az interneten. A legtĂ„â€šĂ‚Â¶bb kiegĂ„â€šĂ‚Â©szĂ„â€šĂ‚Â­tĂ„Ä…Ă˘â‚¬ÂnĂ„â€šĂ‚Â©l maga a jogtulajdonos tette lehetĂ„Ä…Ă˘â‚¬ÂvĂ„â€šĂ‚Â© a tartalmak ingyenes megtekintĂ„â€šĂ‚Â©sĂ„â€šĂ‚Â©t. A telepĂ„â€šĂ‚Â­tĂ„â€šĂ‚Â©sĂ„â€šĂ„Ëťket senkinek nem ajĂ„â€šĂ‹â€ˇnljuk, csupĂ„â€šĂ‹â€ˇn kisĂ„â€šĂ‚Â©rleti jelleggel kĂ„â€šĂ‚Â©szĂ„â€šĂ„Ëťltek. A hasznĂ„â€šĂ‹â€ˇlatukbĂ„â€šÄąâ€šl eredĂ„Ä…Ă˘â‚¬Â kĂ„â€šĂ‚Â¶vetkezmĂ„â€šĂ‚Â©nyekĂ„â€šĂ‚Â©rt a felelĂ„Ä…Ă˘â‚¬ÂssĂ„â€šĂ‚Â©g a felhasznĂ„â€šĂ‹â€ˇlĂ„â€šÄąâ€št terheli. </description>
+		<description lang="en">Az MSREPO MagyarorszÄ‚â€žĂ˘â‚¬ĹˇÄ‚â€ąĂ˘â‚¬Ë‡g legnagyobb KODI-hoz fejlesztett magyar nyelvÄ‚â€žĂ„â€¦Ä‚â€šĂ‚Â± kiegÄ‚â€žĂ˘â‚¬ĹˇÄ‚â€šĂ‚Â©szÄ‚â€žĂ˘â‚¬ĹˇÄ‚â€šĂ‚Â­tÄ‚â€žĂ„â€¦Ä‚ËĂ˘â€šÂ¬Ă‚Âinek tÄ‚â€žĂ˘â‚¬ĹˇÄ‚â€ąĂ˘â‚¬Ë‡rolÄ‚â€žĂ˘â‚¬ĹˇĂ„Ä…Ă˘â‚¬Ĺˇhelye. Itt megtalÄ‚â€žĂ˘â‚¬ĹˇÄ‚â€ąĂ˘â‚¬Ë‡lod a legismertebb mÄ‚â€žĂ˘â‚¬ĹˇÄ‚â€šĂ‚Â©dia tartalmait mÄ‚â€žĂ˘â‚¬ĹˇÄ‚â€ąĂ˘â‚¬Ë‡s hasznos kiegÄ‚â€žĂ˘â‚¬ĹˇÄ‚â€šĂ‚Â©szÄ‚â€žĂ˘â‚¬ĹˇÄ‚â€šĂ‚Â­tÄ‚â€žĂ„â€¦Ä‚ËĂ˘â€šÂ¬Ă‚Âkkel egyetemben. A repository semmilyen illegÄ‚â€žĂ˘â‚¬ĹˇÄ‚â€ąĂ˘â‚¬Ë‡lis anyagot nem tartalmaz, az informÄ‚â€žĂ˘â‚¬ĹˇÄ‚â€ąĂ˘â‚¬Ë‡ciÄ‚â€žĂ˘â‚¬ĹˇĂ„Ä…Ă˘â‚¬Ĺˇk nem egyediek Ă„â€šĂ‹ÂÄ‚ËĂ˘â‚¬ĹˇĂ‚Â¬Ä‚ËĂ˘â€šÂ¬Äąâ€ş bÄ‚â€žĂ˘â‚¬ĹˇÄ‚â€ąĂ˘â‚¬Ë‡rki Ä‚â€žĂ˘â‚¬ĹˇÄ‚â€ąĂ˘â‚¬Ë‡ltal szabadon hozzÄ‚â€žĂ˘â‚¬ĹˇÄ‚â€ąĂ˘â‚¬Ë‡fÄ‚â€žĂ˘â‚¬ĹˇÄ‚â€šĂ‚Â©rhetÄ‚â€žĂ„â€¦Ä‚ËĂ˘â€šÂ¬Ă‚Âk az interneten. A legtÄ‚â€žĂ˘â‚¬ĹˇÄ‚â€šĂ‚Â¶bb kiegÄ‚â€žĂ˘â‚¬ĹˇÄ‚â€šĂ‚Â©szÄ‚â€žĂ˘â‚¬ĹˇÄ‚â€šĂ‚Â­tÄ‚â€žĂ„â€¦Ä‚ËĂ˘â€šÂ¬Ă‚ÂnÄ‚â€žĂ˘â‚¬ĹˇÄ‚â€šĂ‚Â©l maga a jogtulajdonos tette lehetÄ‚â€žĂ„â€¦Ä‚ËĂ˘â€šÂ¬Ă‚ÂvÄ‚â€žĂ˘â‚¬ĹˇÄ‚â€šĂ‚Â© a tartalmak ingyenes megtekintÄ‚â€žĂ˘â‚¬ĹˇÄ‚â€šĂ‚Â©sÄ‚â€žĂ˘â‚¬ĹˇÄ‚â€šĂ‚Â©t. A telepÄ‚â€žĂ˘â‚¬ĹˇÄ‚â€šĂ‚Â­tÄ‚â€žĂ˘â‚¬ĹˇÄ‚â€šĂ‚Â©sÄ‚â€žĂ˘â‚¬ĹˇÄ‚â€žĂ‹ĹĄket senkinek nem ajÄ‚â€žĂ˘â‚¬ĹˇÄ‚â€ąĂ˘â‚¬Ë‡nljuk, csupÄ‚â€žĂ˘â‚¬ĹˇÄ‚â€ąĂ˘â‚¬Ë‡n kisÄ‚â€žĂ˘â‚¬ĹˇÄ‚â€šĂ‚Â©rleti jelleggel kÄ‚â€žĂ˘â‚¬ĹˇÄ‚â€šĂ‚Â©szÄ‚â€žĂ˘â‚¬ĹˇÄ‚â€žĂ‹ĹĄltek. A hasznÄ‚â€žĂ˘â‚¬ĹˇÄ‚â€ąĂ˘â‚¬Ë‡latukbÄ‚â€žĂ˘â‚¬ĹˇĂ„Ä…Ă˘â‚¬Ĺˇl eredÄ‚â€žĂ„â€¦Ä‚ËĂ˘â€šÂ¬Ă‚Â kÄ‚â€žĂ˘â‚¬ĹˇÄ‚â€šĂ‚Â¶vetkezmÄ‚â€žĂ˘â‚¬ĹˇÄ‚â€šĂ‚Â©nyekÄ‚â€žĂ˘â‚¬ĹˇÄ‚â€šĂ‚Â©rt a felelÄ‚â€žĂ„â€¦Ä‚ËĂ˘â€šÂ¬Ă‚ÂssÄ‚â€žĂ˘â‚¬ĹˇÄ‚â€šĂ‚Â©g a felhasznÄ‚â€žĂ˘â‚¬ĹˇÄ‚â€ąĂ˘â‚¬Ë‡lÄ‚â€žĂ˘â‚¬ĹˇĂ„Ä…Ă˘â‚¬Ĺˇt terheli. </description>
 		<platform>all</platform>
 	</extension>
 </addon>
@@ -154,8 +154,8 @@
 	<extension point="xbmc.addon.metadata">
 		<summary lang="en">Movie genres icons Pack for Estuary MOD V2</summary>
 		<description lang="en">Movie genres icons Pack.</description>
-		<summary lang="fr">Pack d'icĂ„â€šĂ‚Â´nes de genres vidĂ„â€šĂ‚Â©os pour Estuary MOD V2</summary>
-		<description lang="fr">Pack d'icĂ„â€šĂ‚Â´nes de genres vidĂ„â€šĂ‚Â©os.</description>
+		<summary lang="fr">Pack d'icÄ‚â€žĂ˘â‚¬ĹˇÄ‚â€šĂ‚Â´nes de genres vidÄ‚â€žĂ˘â‚¬ĹˇÄ‚â€šĂ‚Â©os pour Estuary MOD V2</summary>
+		<description lang="fr">Pack d'icÄ‚â€žĂ˘â‚¬ĹˇÄ‚â€šĂ‚Â´nes de genres vidÄ‚â€žĂ˘â‚¬ĹˇÄ‚â€šĂ‚Â©os.</description>
 		<platform>all</platform>
 		<source>https://github.com/Guilouz/resource.images.moviegenreicons.estuarymod</source>
 		<assets>
@@ -165,7 +165,7 @@
 			<screenshot>resources_/screenshot-02.jpg</screenshot>
 			<screenshot>resources_/screenshot-03.jpg</screenshot>
 		</assets>
-		<news>[B]1.0.4[/B][CR]Ä‚ËĂ˘â€šÂ¬Ă‹Â Fix accented characters[CR][CR][B]1.0.3[/B][CR]Ä‚ËĂ˘â€šÂ¬Ă‹Â Fix accented characters[CR][CR][B]1.0.2[/B][CR]Ä‚ËĂ˘â€šÂ¬Ă‹Â Remove Textures.xbt[CR][CR][B]1.0.1[/B][CR]Ä‚ËĂ˘â€šÂ¬Ă‹Â Add Spanish genres[CR][CR][B]1.0.0[/B][CR]Ä‚ËĂ˘â€šÂ¬Ă‹Â Initial release[CR][CR]</news>
+		<news>[B]1.0.4[/B][CR]Ă„â€šĂ‹ÂÄ‚ËĂ˘â‚¬ĹˇĂ‚Â¬Ä‚â€ąĂ‚Â Fix accented characters[CR][CR][B]1.0.3[/B][CR]Ă„â€šĂ‹ÂÄ‚ËĂ˘â‚¬ĹˇĂ‚Â¬Ä‚â€ąĂ‚Â Fix accented characters[CR][CR][B]1.0.2[/B][CR]Ă„â€šĂ‹ÂÄ‚ËĂ˘â‚¬ĹˇĂ‚Â¬Ä‚â€ąĂ‚Â Remove Textures.xbt[CR][CR][B]1.0.1[/B][CR]Ă„â€šĂ‹ÂÄ‚ËĂ˘â‚¬ĹˇĂ‚Â¬Ä‚â€ąĂ‚Â Add Spanish genres[CR][CR][B]1.0.0[/B][CR]Ă„â€šĂ‹ÂÄ‚ËĂ˘â‚¬ĹˇĂ‚Â¬Ä‚â€ąĂ‚Â Initial release[CR][CR]</news>
 	</extension>
 </addon>
 
