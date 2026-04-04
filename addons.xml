@@ -119,7 +119,7 @@
 	</extension>
 	<extension point="xbmc.addon.metadata">
 		<summary lang="en">MovieShark Repository</summary>
-		<description lang="en">Az MSREPO MagyarorszĂˇg legnagyobb KODI-hoz fejlesztett magyar nyelvĹ± kiegĂ©szĂ­tĹ‘inek tĂˇrolĂłhelye. Itt megtalĂˇlod a legismertebb mĂ©dia tartalmait mĂˇs hasznos kiegĂ©szĂ­tĹ‘kkel egyetemben. A repository semmilyen illegĂˇlis anyagot nem tartalmaz, az informĂˇciĂłk nem egyediek â€“ bĂˇrki Ăˇltal szabadon hozzĂˇfĂ©rhetĹ‘k az interneten. A legtĂ¶bb kiegĂ©szĂ­tĹ‘nĂ©l maga a jogtulajdonos tette lehetĹ‘vĂ© a tartalmak ingyenes megtekintĂ©sĂ©t. A telepĂ­tĂ©sĂĽket senkinek nem ajĂˇnljuk, csupĂˇn kisĂ©rleti jelleggel kĂ©szĂĽltek. A hasznĂˇlatukbĂłl eredĹ‘ kĂ¶vetkezmĂ©nyekĂ©rt a felelĹ‘ssĂ©g a felhasznĂˇlĂłt terheli. </description>
+		<description lang="en">Az MSREPO MagyarorszÄ‚Ë‡g legnagyobb KODI-hoz fejlesztett magyar nyelvÄąÂ± kiegÄ‚Â©szÄ‚Â­tÄąâ€inek tÄ‚Ë‡rolÄ‚Ĺ‚helye. Itt megtalÄ‚Ë‡lod a legismertebb mÄ‚Â©dia tartalmait mÄ‚Ë‡s hasznos kiegÄ‚Â©szÄ‚Â­tÄąâ€kkel egyetemben. A repository semmilyen illegÄ‚Ë‡lis anyagot nem tartalmaz, az informÄ‚Ë‡ciÄ‚Ĺ‚k nem egyediek Ă˘â‚¬â€ś bÄ‚Ë‡rki Ä‚Ë‡ltal szabadon hozzÄ‚Ë‡fÄ‚Â©rhetÄąâ€k az interneten. A legtÄ‚Â¶bb kiegÄ‚Â©szÄ‚Â­tÄąâ€nÄ‚Â©l maga a jogtulajdonos tette lehetÄąâ€vÄ‚Â© a tartalmak ingyenes megtekintÄ‚Â©sÄ‚Â©t. A telepÄ‚Â­tÄ‚Â©sÄ‚Ä˝ket senkinek nem ajÄ‚Ë‡nljuk, csupÄ‚Ë‡n kisÄ‚Â©rleti jelleggel kÄ‚Â©szÄ‚Ä˝ltek. A hasznÄ‚Ë‡latukbÄ‚Ĺ‚l eredÄąâ€ kÄ‚Â¶vetkezmÄ‚Â©nyekÄ‚Â©rt a felelÄąâ€ssÄ‚Â©g a felhasznÄ‚Ë‡lÄ‚Ĺ‚t terheli. </description>
 		<platform>all</platform>
 	</extension>
 </addon>
@@ -152,8 +152,8 @@
 	<extension point="xbmc.addon.metadata">
 		<summary lang="en">Movie genres icons Pack for Estuary MOD V2</summary>
 		<description lang="en">Movie genres icons Pack.</description>
-		<summary lang="fr">Pack d'icĂ´nes de genres vidĂ©os pour Estuary MOD V2</summary>
-		<description lang="fr">Pack d'icĂ´nes de genres vidĂ©os.</description>
+		<summary lang="fr">Pack d'icÄ‚Â´nes de genres vidÄ‚Â©os pour Estuary MOD V2</summary>
+		<description lang="fr">Pack d'icÄ‚Â´nes de genres vidÄ‚Â©os.</description>
 		<platform>all</platform>
 		<source>https://github.com/Guilouz/resource.images.moviegenreicons.estuarymod</source>
 		<assets>
@@ -163,7 +163,7 @@
 			<screenshot>resources_/screenshot-02.jpg</screenshot>
 			<screenshot>resources_/screenshot-03.jpg</screenshot>
 		</assets>
-		<news>[B]1.0.4[/B][CR]â€˘ Fix accented characters[CR][CR][B]1.0.3[/B][CR]â€˘ Fix accented characters[CR][CR][B]1.0.2[/B][CR]â€˘ Remove Textures.xbt[CR][CR][B]1.0.1[/B][CR]â€˘ Add Spanish genres[CR][CR][B]1.0.0[/B][CR]â€˘ Initial release[CR][CR]</news>
+		<news>[B]1.0.4[/B][CR]Ă˘â‚¬Ë Fix accented characters[CR][CR][B]1.0.3[/B][CR]Ă˘â‚¬Ë Fix accented characters[CR][CR][B]1.0.2[/B][CR]Ă˘â‚¬Ë Remove Textures.xbt[CR][CR][B]1.0.1[/B][CR]Ă˘â‚¬Ë Add Spanish genres[CR][CR][B]1.0.0[/B][CR]Ă˘â‚¬Ë Initial release[CR][CR]</news>
 	</extension>
 </addon>
 
@@ -286,6 +286,76 @@
         <news>
 For a complete view of changes visit https://github.com/b-jesch/skin.estuary.modv2/tree/Omega
         </news>
+	</extension>
+</addon>
+
+
+<addon id="repository.addons4kodi" name="Addons4Kodi Repository" version="2.1" provider-name="A4K">
+	<extension point="xbmc.addon.repository" name="Addons4Kodi Repository">
+        <dir minversion="18.0">
+            <info compressed="false">https://raw.githubusercontent.com/a4k-openproject/repository.addons4kodi/master/zips/addons.xml</info>
+            <checksum>https://raw.githubusercontent.com/a4k-openproject/repository.addons4kodi/master/zips/addons.xml.md5</checksum>
+            <datadir zip="true">https://raw.githubusercontent.com/a4k-openproject/repository.addons4kodi/master/zips/</datadir>
+        </dir>
+        <dir minversion="18.0" maxversion="18.9.9">
+            <info compressed="false">https://raw.githubusercontent.com/a4k-openproject/repository.openscrapers/master/zips/addons.xml</info>
+            <checksum>https://raw.githubusercontent.com/a4k-openproject/repository.openscrapers/master/zips/addons.xml.md5</checksum>
+            <datadir zip="true">https://raw.githubusercontent.com/a4k-openproject/repository.openscrapers/master/zips/</datadir>
+        </dir>
+        <dir minversion="18.0" maxversion="18.9.9">
+            <info compressed="false">https://raw.githubusercontent.com/a4k-openproject/repository.openwizard/master/leia/zips/addons.xml</info>
+            <checksum>https://raw.githubusercontent.com/a4k-openproject/repository.openwizard/master/leia/zips/addons.xml.md5</checksum>
+            <datadir zip="true">https://raw.githubusercontent.com/a4k-openproject/repository.openwizard/master/leia/zips/</datadir>
+        </dir>
+        <dir minversion="19.0">
+            <info compressed="false">https://raw.githubusercontent.com/a4k-openproject/repository.openwizard/master/matrix/zips/addons.xml</info>
+            <checksum>https://raw.githubusercontent.com/a4k-openproject/repository.openwizard/master/matrix/zips/addons.xml.md5</checksum>
+            <datadir zip="true">https://raw.githubusercontent.com/a4k-openproject/repository.openwizard/master/matrix/zips/</datadir>
+        </dir>
+        <dir minversion="18.0">
+            <info>https://raw.githubusercontent.com/newt-sc/a4kStreaming/master/packages/addons.xml</info>
+            <checksum>https://raw.githubusercontent.com/newt-sc/a4kStreaming/master/packages/addons.xml.crc</checksum>
+            <datadir>https://github.com/newt-sc/a4kStreaming/archive</datadir>
+            <artdir>https://github.com/newt-sc/a4kStreaming/releases/download/v0.1.0</artdir>
+        </dir>
+        <dir minversion="18.0">
+            <info>https://raw.githubusercontent.com/newt-sc/a4kSubtitles/master/packages/addons.xml</info>
+            <checksum>https://raw.githubusercontent.com/newt-sc/a4kSubtitles/master/packages/addons.xml.crc</checksum>
+            <datadir>https://github.com/newt-sc/a4kSubtitles/archive</datadir>
+            <artdir>https://github.com/a4k-openproject/a4kSubtitles/releases/download/v0.0.13</artdir>
+        </dir>
+	</extension>
+	<extension point="xbmc.addon.metadata">
+		<summary>Addons4Kodi Repository</summary>
+		<description>The official repo of /r/Addons4Kodi!.</description>
+		<disclaimer></disclaimer>
+		<platform>all</platform>
+	</extension>
+</addon>
+
+<addon
+	id="service.autosub"
+	name="AutoSub"
+	version="1.0.1"
+	provider-name="fnord12 - based on Language Preference Manager"
+	>
+	<requires>
+		<import addon="xbmc.python" version="3.0.0"/>
+	</requires>
+	<extension point="xbmc.service" library="default.py" start="login"/>
+	<extension point="xbmc.python.script" library="default.py">
+		<provides>executable</provides>
+	</extension>
+	<extension point="xbmc.addon.metadata">
+		<summary lang="en">Auto Subtitle Enabler</summary>
+		<description lang="en">Sets subtitle track according to your language preferences</description>
+		<disclaimer lang="en">A prescriptive rework of Language Preference Manager</disclaimer>
+		<platform>all</platform>
+		<assets>
+			<icon>resources/icon.png</icon>
+			<fanart>resources/fanart.jpg</fanart>
+			<screenshot>resources/screenshot-01.jpg</screenshot>
+		</assets>
 	</extension>
 </addon>
 
