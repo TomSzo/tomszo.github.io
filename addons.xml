@@ -20,16 +20,18 @@
     <requires>
         <import addon="xbmc.addon" version="12.0.0"/>
     </requires>
-	<extension name="bingie repository" point="xbmc.addon.repository">
-		<info compressed="false">https://raw.githubusercontent.com/cartmandos/repository.bingie/master/addons.xml</info>
-		<checksum>https://raw.githubusercontent.com/cartmandos/repository.bingie/master/addons.xml.md5</checksum>
-		<datadir zip="true">https://raw.githubusercontent.com/cartmandos/repository.bingie/master/</datadir>
-	</extension>
-	<extension point="xbmc.addon.metadata">
-		<summary lang="en">Home of Titan BINGIE</summary>
-		<description lang="en">BINGIE repository</description>
-		<platform>all</platform>
-	</extension>
+    <extension point="xbmc.addon.repository" name="BINGIE Repository">
+        <dir>
+            <info compressed="false">https://raw.githubusercontent.com/cartmandos/repository.bingie/master/addons.xml</info>
+            <checksum>https://raw.githubusercontent.com/cartmandos/repository.bingie/master/addons.xml.md5</checksum>
+            <datadir zip="true">https://raw.githubusercontent.com/cartmandos/repository.bingie/master/</datadir>
+        </dir>
+    </extension>
+    <extension point="xbmc.addon.metadata">
+        <summary lang="en">Home of Titan BINGIE</summary>
+        <description lang="en">BINGIE repository</description>
+        <platform>all</platform>
+    </extension>
 </addon>
 
 <addon id="repository.elementumorg" name="ElementumOrg repository" provider-name="elementumorg" version="0.0.7">
@@ -119,7 +121,7 @@
 	</extension>
 	<extension point="xbmc.addon.metadata">
 		<summary lang="en">MovieShark Repository</summary>
-		<description lang="en">Az MSREPO MagyarorszÄ‚Ë‡g legnagyobb KODI-hoz fejlesztett magyar nyelvÄąÂ± kiegÄ‚Â©szÄ‚Â­tÄąâ€inek tÄ‚Ë‡rolÄ‚Ĺ‚helye. Itt megtalÄ‚Ë‡lod a legismertebb mÄ‚Â©dia tartalmait mÄ‚Ë‡s hasznos kiegÄ‚Â©szÄ‚Â­tÄąâ€kkel egyetemben. A repository semmilyen illegÄ‚Ë‡lis anyagot nem tartalmaz, az informÄ‚Ë‡ciÄ‚Ĺ‚k nem egyediek Ă˘â‚¬â€ś bÄ‚Ë‡rki Ä‚Ë‡ltal szabadon hozzÄ‚Ë‡fÄ‚Â©rhetÄąâ€k az interneten. A legtÄ‚Â¶bb kiegÄ‚Â©szÄ‚Â­tÄąâ€nÄ‚Â©l maga a jogtulajdonos tette lehetÄąâ€vÄ‚Â© a tartalmak ingyenes megtekintÄ‚Â©sÄ‚Â©t. A telepÄ‚Â­tÄ‚Â©sÄ‚Ä˝ket senkinek nem ajÄ‚Ë‡nljuk, csupÄ‚Ë‡n kisÄ‚Â©rleti jelleggel kÄ‚Â©szÄ‚Ä˝ltek. A hasznÄ‚Ë‡latukbÄ‚Ĺ‚l eredÄąâ€ kÄ‚Â¶vetkezmÄ‚Â©nyekÄ‚Â©rt a felelÄąâ€ssÄ‚Â©g a felhasznÄ‚Ë‡lÄ‚Ĺ‚t terheli. </description>
+		<description lang="en">Az MSREPO MagyarorszĂ„â€šĂ‹â€ˇg legnagyobb KODI-hoz fejlesztett magyar nyelvĂ„Ä…Ă‚Â± kiegĂ„â€šĂ‚Â©szĂ„â€šĂ‚Â­tĂ„Ä…Ă˘â‚¬Âinek tĂ„â€šĂ‹â€ˇrolĂ„â€šÄąâ€šhelye. Itt megtalĂ„â€šĂ‹â€ˇlod a legismertebb mĂ„â€šĂ‚Â©dia tartalmait mĂ„â€šĂ‹â€ˇs hasznos kiegĂ„â€šĂ‚Â©szĂ„â€šĂ‚Â­tĂ„Ä…Ă˘â‚¬Âkkel egyetemben. A repository semmilyen illegĂ„â€šĂ‹â€ˇlis anyagot nem tartalmaz, az informĂ„â€šĂ‹â€ˇciĂ„â€šÄąâ€šk nem egyediek Ä‚ËĂ˘â€šÂ¬Ă˘â‚¬Ĺ› bĂ„â€šĂ‹â€ˇrki Ă„â€šĂ‹â€ˇltal szabadon hozzĂ„â€šĂ‹â€ˇfĂ„â€šĂ‚Â©rhetĂ„Ä…Ă˘â‚¬Âk az interneten. A legtĂ„â€šĂ‚Â¶bb kiegĂ„â€šĂ‚Â©szĂ„â€šĂ‚Â­tĂ„Ä…Ă˘â‚¬ÂnĂ„â€šĂ‚Â©l maga a jogtulajdonos tette lehetĂ„Ä…Ă˘â‚¬ÂvĂ„â€šĂ‚Â© a tartalmak ingyenes megtekintĂ„â€šĂ‚Â©sĂ„â€šĂ‚Â©t. A telepĂ„â€šĂ‚Â­tĂ„â€šĂ‚Â©sĂ„â€šĂ„Ëťket senkinek nem ajĂ„â€šĂ‹â€ˇnljuk, csupĂ„â€šĂ‹â€ˇn kisĂ„â€šĂ‚Â©rleti jelleggel kĂ„â€šĂ‚Â©szĂ„â€šĂ„Ëťltek. A hasznĂ„â€šĂ‹â€ˇlatukbĂ„â€šÄąâ€šl eredĂ„Ä…Ă˘â‚¬Â kĂ„â€šĂ‚Â¶vetkezmĂ„â€šĂ‚Â©nyekĂ„â€šĂ‚Â©rt a felelĂ„Ä…Ă˘â‚¬ÂssĂ„â€šĂ‚Â©g a felhasznĂ„â€šĂ‹â€ˇlĂ„â€šÄąâ€št terheli. </description>
 		<platform>all</platform>
 	</extension>
 </addon>
@@ -152,8 +154,8 @@
 	<extension point="xbmc.addon.metadata">
 		<summary lang="en">Movie genres icons Pack for Estuary MOD V2</summary>
 		<description lang="en">Movie genres icons Pack.</description>
-		<summary lang="fr">Pack d'icÄ‚Â´nes de genres vidÄ‚Â©os pour Estuary MOD V2</summary>
-		<description lang="fr">Pack d'icÄ‚Â´nes de genres vidÄ‚Â©os.</description>
+		<summary lang="fr">Pack d'icĂ„â€šĂ‚Â´nes de genres vidĂ„â€šĂ‚Â©os pour Estuary MOD V2</summary>
+		<description lang="fr">Pack d'icĂ„â€šĂ‚Â´nes de genres vidĂ„â€šĂ‚Â©os.</description>
 		<platform>all</platform>
 		<source>https://github.com/Guilouz/resource.images.moviegenreicons.estuarymod</source>
 		<assets>
@@ -163,7 +165,7 @@
 			<screenshot>resources_/screenshot-02.jpg</screenshot>
 			<screenshot>resources_/screenshot-03.jpg</screenshot>
 		</assets>
-		<news>[B]1.0.4[/B][CR]Ă˘â‚¬Ë Fix accented characters[CR][CR][B]1.0.3[/B][CR]Ă˘â‚¬Ë Fix accented characters[CR][CR][B]1.0.2[/B][CR]Ă˘â‚¬Ë Remove Textures.xbt[CR][CR][B]1.0.1[/B][CR]Ă˘â‚¬Ë Add Spanish genres[CR][CR][B]1.0.0[/B][CR]Ă˘â‚¬Ë Initial release[CR][CR]</news>
+		<news>[B]1.0.4[/B][CR]Ä‚ËĂ˘â€šÂ¬Ă‹Â Fix accented characters[CR][CR][B]1.0.3[/B][CR]Ä‚ËĂ˘â€šÂ¬Ă‹Â Fix accented characters[CR][CR][B]1.0.2[/B][CR]Ä‚ËĂ˘â€šÂ¬Ă‹Â Remove Textures.xbt[CR][CR][B]1.0.1[/B][CR]Ä‚ËĂ˘â€šÂ¬Ă‹Â Add Spanish genres[CR][CR][B]1.0.0[/B][CR]Ä‚ËĂ˘â€šÂ¬Ă‹Â Initial release[CR][CR]</news>
 	</extension>
 </addon>
 
