@@ -1,6 +1,52 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <addons>
-    
+
+<addon id="repository.tomszo" name="TomSzo Repository" version="1.0.2" provider-name="TomSzo">
+    <requires>
+        <import addon="xbmc.addon" version="12.0.0"/>
+    </requires>
+    <extension point="xbmc.addon.repository" name="TomSzo Repository">
+        <dir>
+            <info compressed="false">https://tomszo.github.io/addons.xml</info>
+            <checksum>https://tomszo.github.io/addons.xml.md5</checksum>
+            <datadir zip="true">https://tomszo.github.io/</datadir>
+        </dir>
+    </extension>
+    <extension point="xbmc.addon.metadata">
+        <summary lang="en">TomSzo Kodi Repository</summary>
+        <summary lang="hu">TomSzo Kodi Tároló</summary>
+        <description lang="en">A personal Kodi repository by TomSzo. Contains carefully selected third-party repositories, skins and useful modules. Included: Bingie, ElementumOrg, jurialmunkey, MovieShark, Addons4Kodi, service.autosub, Estuary MOD V2. WARNING: BETA repository. Use at your own risk.</description>
+        <description lang="hu">TomSzo személyes Kodi tárolója. Tartalmazza: Bingie, ElementumOrg, jurialmunkey, MovieShark, Addons4Kodi, service.autosub, Estuary MOD V2. FIGYELEM: BÉTA tároló. Csak saját felelősségre!</description>
+        <news>
+v1.0.2 (2026-04-05) - BÉTA
+- Fix: repository.bingie frissítve Kodi 22 kompatibilis verzióra
+- Fix: service.autosub zip fájlnév javítva
+- Fix: addons.xml BOM encoding hiba javítva
+- Új: StreamShark privát URL-re költözött
+- Új: Auto addon frissítés bekapcsolva
+- Új: Magyar nyelv támogatás
+
+v1.0.1 (2026-04-05) - BÉTA
+- Hozzáadva: repository.addons4kodi
+- Hozzáadva: service.autosub
+- Hozzáadva: skin.estuary.modv2
+- Hozzáadva: script.module.pvr.artwork
+- Hozzáadva: script.module.animated_artwork
+- Hozzáadva: resource.images.moviegenreicons.estuarymod
+
+v1.0.0 (2026-04-04) - BÉTA
+- Kezdeti kiadás
+- Hozzáadva: repository.bingie
+- Hozzáadva: repository.elementumorg
+- Hozzáadva: repository.jurialmunkey
+- Hozzáadva: repository.movieshark
+- Hozzáadva: repository.streamshark
+        </news>
+        <platform>all</platform>
+        <license>GNU GENERAL PUBLIC LICENSE Version 3</license>
+        <source>https://github.com/TomSzo/tomszo.github.io</source>
+    </extension>
+</addon>
 
 <addon id="repository.bingie" name="Bingie Repository" provider-name="matke" version="1.0.0">
     <extension point="xbmc.addon.repository" name="Bingie Repository">
