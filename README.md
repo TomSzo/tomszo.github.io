@@ -17,8 +17,6 @@ Saját Kodi addon gyűjtemény – több repository, módosított skin és haszn
 - **resource.images.moviegenreicons.estuarymod** – Műfaj ikonok az Estuary-hoz
 - **service.autosub** – Automatikus felirat kezelő
 
-> ⚠️ A **StreamShark** repo hozzáférése korlátozott — az URL privát csatornán érhető el.
-
 ---
 
 ### 🚀 Telepítés Kodi-ban
