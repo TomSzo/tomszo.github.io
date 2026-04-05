@@ -11,8 +11,71 @@
         </dir>
     </extension>
     <extension point="xbmc.addon.metadata">
-        <summary>TomSzo Repository</summary>
-        <description>TomSzo Kodi Repository</description>
+        <summary lang="en">TomSzo Kodi Repository</summary>
+        <summary lang="hu">TomSzo Kodi Tároló</summary>
+        <description lang="en">
+            A personal Kodi repository by TomSzo. Contains carefully selected third-party repositories, skins and useful modules.
+
+            Included repositories:
+            - Bingie Repository (Netflix-style skin)
+            - ElementumOrg (Elementum torrent player)
+            - jurialmunkey (TMDB Helper and skins)
+            - MovieShark (Hungarian content)
+            - Addons4Kodi collection
+            - service.autosub (Auto subtitle handler)
+            - Estuary MOD V2 skin
+
+            Note: StreamShark is available via private URL only.
+
+            WARNING: This is a BETA repository. Use at your own risk.
+        </description>
+        <description lang="hu">
+            TomSzo személyes Kodi tárolója. Gondosan válogatott harmadik féltől származó tárolókat, skineket és hasznos modulokat tartalmaz.
+
+            Tartalmazza:
+            - Bingie Repository (Netflix-stílusú skin)
+            - ElementumOrg (Elementum torrent lejátszó)
+            - jurialmunkey (TMDB Helper és skinek)
+            - MovieShark (Magyar tartalmak)
+            - Addons4Kodi gyűjtemény
+            - service.autosub (Automatikus felirat kezelő)
+            - Estuary MOD V2 skin
+
+            Megjegyzés: A StreamShark csak privát URL-en érhető el.
+
+            FIGYELEM: Ez egy BÉTA tároló. Csak saját felelősségre használd!
+        </description>
+        <news>
+v1.0.2 (2026-04-05) - BÉTA
+- Fix: repository.bingie frissítve matke-84 verzióra (Kodi 22 kompatibilis)
+- Fix: service.autosub zip fájlnév javítva
+- Fix: addons.xml BOM encoding hiba javítva
+- Fix: addons4kodi schema javítva
+- Új: StreamShark privát URL-re költözött
+- Új: Auto addon frissítés bekapcsolva
+- Új: Magyar nyelv támogatás
+
+v1.0.1 (2026-04-05) - BÉTA
+- Fix: repository.tomszo addon.xml frissítve helyes URL-ekre
+- Hozzáadva: repository.addons4kodi
+- Hozzáadva: service.autosub
+- Hozzáadva: skin.estuary.modv2
+- Hozzáadva: script.module.pvr.artwork
+- Hozzáadva: script.module.animated_artwork
+- Hozzáadva: resource.images.moviegenreicons.estuarymod
+
+v1.0.0 (2026-04-04) - BÉTA
+- Kezdeti kiadás
+- Hozzáadva: repository.bingie
+- Hozzáadva: repository.elementumorg
+- Hozzáadva: repository.jurialmunkey
+- Hozzáadva: repository.movieshark
+- Hozzáadva: repository.streamshark
+        </news>
         <platform>all</platform>
+        <license>GNU GENERAL PUBLIC LICENSE Version 3</license>
+        <source>https://github.com/TomSzo/tomszo.github.io</source>
+        <assets>
+        </assets>
     </extension>
 </addon>
