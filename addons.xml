@@ -22,7 +22,6 @@ v1.0.2 (2026-04-05) - BÉTA
 - Fix: repository.bingie frissítve Kodi 22 kompatibilis verzióra
 - Fix: service.autosub zip fájlnév javítva
 - Fix: addons.xml BOM encoding hiba javítva
-- Új: StreamShark privát URL-re költözött
 - Új: Auto addon frissítés bekapcsolva
 - Új: Magyar nyelv támogatás
 
@@ -40,7 +39,6 @@ v1.0.0 (2026-04-04) - BÉTA
 - Hozzáadva: repository.elementumorg
 - Hozzáadva: repository.jurialmunkey
 - Hozzáadva: repository.movieshark
-- Hozzáadva: repository.streamshark
         </news>
         <platform>all</platform>
         <license>GNU GENERAL PUBLIC LICENSE Version 3</license>
@@ -119,20 +117,6 @@ v1.0.0 (2026-04-04) - BÉTA
     </extension>
     <extension point="xbmc.addon.metadata">
         <summary lang="en">MovieShark Repository</summary>
-        <platform>all</platform>
-    </extension>
-</addon>
-
-<addon id="repository.streamshark" version="1.0.0" name="StreamShark repository" provider-name="SSrepo">
-    <extension point="xbmc.addon.repository" name="StreamShark repository">
-        <dir>
-            <info compressed="false">https://repo.mvshrk.xyz/streamshark_c4e9617e2dff65c7f4fc1df1f560e2a2/addons.xml</info>
-            <checksum>https://repo.mvshrk.xyz/streamshark_c4e9617e2dff65c7f4fc1df1f560e2a2/addons.xml.md5</checksum>
-            <datadir zip="true">https://repo.mvshrk.xyz/streamshark_c4e9617e2dff65c7f4fc1df1f560e2a2/</datadir>
-        </dir>
-    </extension>
-    <extension point="xbmc.addon.metadata">
-        <summary lang="en">StreamShark Repository</summary>
         <platform>all</platform>
     </extension>
 </addon>

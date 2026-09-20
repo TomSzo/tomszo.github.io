@@ -14,7 +14,6 @@ Saját Kodi addon gyűjtemény – több repository, módosított skin és haszn
 - **skin.estuary.modv2** – Módosított Estuary skin (Kodi 21 Omega támogatással)
 - **script.module.animated_artwork** – Animált artwork támogatás
 - **script.module.pvr.artwork** – PVR artwork modul
-- **resource.images.moviegenreicons.estuarymod** – Műfaj ikonok az Estuary-hoz
 - **service.autosub** – Automatikus felirat kezelő
 
 ---
