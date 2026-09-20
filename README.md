@@ -10,7 +10,11 @@ Saját Kodi addon gyűjtemény – több repository, módosított skin és haszn
   - repository.jurialmunkey *(TMDB Helper és skinek)*
   - repository.movieshark *(Magyar tartalmak)*
   - repository.addons4kodi *(Addons4Kodi gyűjtemény)*
+  - repository.dontpanic *(pannal repo)*
+  - repository.signde *(skin repo)*
 - **service.autosub** – Automatikus felirat kezelő
+- **plugin.video.nCore_TV** – nCore TV videó addon
+- **skin.avdvplus.estuary** – avdvplus.Estuary skin
 
 ---
 
@@ -24,7 +28,7 @@ Saját Kodi addon gyűjtemény – több repository, módosított skin és haszn
 
 **2. lépés — Repository telepítése:**
 - **Kiegészítők** → **Telepítés ZIP fájlból** → `TomSzo Repo`
-- Válaszd: `repository.tomszo-1.0.3.zip`
+- Válaszd: `repository.tomszo-1.0.4.zip`
 - Várj 5-10 másodpercet
 
 **3. lépés — Addonok telepítése:**

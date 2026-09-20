@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <addons>
 
-<addon id="repository.tomszo" name="TomSzo Repository" version="1.0.3" provider-name="TomSzo">
+<addon id="repository.tomszo" name="TomSzo Repository" version="1.0.4" provider-name="TomSzo">
     <requires>
         <import addon="xbmc.addon" version="12.0.0"/>
     </requires>
@@ -15,9 +15,15 @@
     <extension point="xbmc.addon.metadata">
         <summary lang="en">TomSzo Kodi Repository</summary>
         <summary lang="hu">TomSzo Kodi Tároló</summary>
-        <description lang="en">A personal Kodi repository by TomSzo. Contains carefully selected third-party repositories and useful modules. Included: ElementumOrg, jurialmunkey, MovieShark, Addons4Kodi, service.autosub. WARNING: BETA repository. Use at your own risk.</description>
-        <description lang="hu">TomSzo személyes Kodi tárolója. Tartalmazza: ElementumOrg, jurialmunkey, MovieShark, Addons4Kodi, service.autosub. FIGYELEM: BÉTA tároló. Csak saját felelősségre!</description>
+        <description lang="en">A personal Kodi repository by TomSzo. Contains carefully selected third-party repositories and useful addons. Included: ElementumOrg, jurialmunkey, MovieShark, Addons4Kodi, Don't Panic, signde, service.autosub, nCore TV, avdvplus.Estuary. WARNING: BETA repository. Use at your own risk.</description>
+        <description lang="hu">TomSzo személyes Kodi tárolója. Tartalmazza: ElementumOrg, jurialmunkey, MovieShark, Addons4Kodi, Don't Panic, signde, service.autosub, nCore TV (videó), avdvplus.Estuary (skin). FIGYELEM: BÉTA tároló. Csak saját felelősségre!</description>
         <news>
+v1.0.4 (2026-09-20) - BÉTA
+- Hozzáadva: repository.dontpanic (0.2.10)
+- Hozzáadva: repository.signde (1.2)
+- Hozzáadva: plugin.video.nCore_TV (1.2.0) - videó addon
+- Hozzáadva: skin.avdvplus.estuary (4.0.4) - skin
+
 v1.0.3 (2026-09-20) - BÉTA
 - Frissítve: repository.jurialmunkey 3.4 -> 3.5
 - Eltávolítva: repository.bingie
@@ -140,6 +146,121 @@ v1.0.0 (2026-04-04) - BÉTA
         <summary lang="en">Auto Subtitle Enabler</summary>
         <description lang="en">Sets subtitle track according to your language preferences</description>
         <platform>all</platform>
+    </extension>
+</addon>
+
+<addon id="repository.dontpanic" name="Don't Panic" version="0.2.10" provider-name="pannal">
+    <extension point="xbmc.addon.repository" name="Don't Panic Kodi Repo">
+        <dir minversion="18.0.0" maxversion="18.9.9">
+            <info compressed="false">https://raw.githubusercontent.com/pannal/dontpanickodi/master/leia/zips/addons.xml</info>
+            <checksum>https://raw.githubusercontent.com/pannal/dontpanickodi/master/leia/zips/addons.xml.md5</checksum>
+            <datadir zip="true">https://raw.githubusercontent.com/pannal/dontpanickodi/master/leia/zips/</datadir>
+        </dir>
+        <dir minversion="19.0.0" maxversion="19.9.9">
+            <info compressed="false">https://raw.githubusercontent.com/pannal/dontpanickodi/master/matrix/zips/addons.xml</info>
+            <checksum>https://raw.githubusercontent.com/pannal/dontpanickodi/master/matrix/zips/addons.xml.md5</checksum>
+            <datadir zip="true">https://raw.githubusercontent.com/pannal/dontpanickodi/master/matrix/zips/</datadir>
+        </dir>
+        <dir minversion="20.0.0" maxversion="20.9.9">
+            <info compressed="false">https://raw.githubusercontent.com/pannal/dontpanickodi/master/nexus/zips/addons.xml</info>
+            <checksum>https://raw.githubusercontent.com/pannal/dontpanickodi/master/nexus/zips/addons.xml.md5</checksum>
+            <datadir zip="true">https://raw.githubusercontent.com/pannal/dontpanickodi/master/nexus/zips/</datadir>
+        </dir>
+        <dir minversion="20.90.0">
+            <info compressed="false">https://raw.githubusercontent.com/pannal/dontpanickodi/master/omega/zips/addons.xml</info>
+            <checksum>https://raw.githubusercontent.com/pannal/dontpanickodi/master/omega/zips/addons.xml.md5</checksum>
+            <datadir zip="true">https://raw.githubusercontent.com/pannal/dontpanickodi/master/omega/zips/</datadir>
+        </dir>
+    </extension>
+    <extension point="xbmc.addon.metadata">
+        <summary>dontpanic</summary>
+        <description>Randomly reasonably stable hacked/improved/altered addons</description>
+        <disclaimer></disclaimer>
+        <platform>all</platform>
+        <assets>
+            <icon>icon.png</icon>
+            <fanart>fanart.jpg</fanart>
+        </assets>
+    </extension>
+</addon>
+
+<addon id="repository.signde" name="signde repository" version="1.2" provider-name="signde">
+    <extension point="xbmc.addon.repository" name="signde repository">
+        <dir minversion="21.0.0" maxversion="21.99.99">
+            <info compressed="false">https://signde.github.io/repository.signde/addons/zips/addons.xml</info>
+            <checksum>https://signde.github.io/repository.signde/addons/zips/addons.xml.md5</checksum>
+            <datadir zip="true">https://signde.github.io/repository.signde/addons/zips/</datadir>
+        </dir>
+    </extension>
+    <extension point="xbmc.addon.metadata">
+        <summary>signde repository</summary>
+        <description>Repository of skins for cpm/avdvplus/p3i based CoreELEC builds formerly maintained by jamal2362.</description>
+        <disclaimer></disclaimer>
+        <platform>all</platform>
+        <assets>
+            <icon>resources/icon.png</icon>
+        </assets>
+    </extension>
+</addon>
+
+<addon id="plugin.video.nCore_TV" name="nCore TV" version="1.2.0" provider-name="heg (fork: TomSzo)">
+    <requires>
+        <import addon="script.module.beautifulsoup4" version="4.6.2"/>
+        <import addon="script.module.requests" version="2.22.0"/>
+        <import addon="xbmc.python" version="3.0.0"/>
+        <import addon="script.module.pyxbmct"/>
+    </requires>
+    <extension point="xbmc.python.pluginsource" library="default.py">
+        <provides>video</provides>
+    </extension>
+    <extension point="xbmc.addon.metadata">
+        <summary lang="en">nCore TV</summary>
+        <description lang="en">Különböző tartalmak lejátszása az https://ncore.pro/ oldalról! Nem hivatalos, módosított fork (eredeti szerző: heg).</description>
+        <language>hu</language>
+        <platform>all</platform>
+        <news>
+1.2.0 (fork: TomSzo, 2026-09-20)
+- TMDb Helper player (Auto Play + Source Select), REMUX-keresés
+- Widget mód, Widgetek menü
+- Helyi funkciók: lokális követés, évadpakk-menü, gyors mód ki/be
+- Jelentős sebesség-optimalizálás (indítás, listák, DB)
+- Részletek: CHANGELOG.md
+        </news>
+        <assets>
+            <icon>icon.png</icon>
+            <screenshot>resources/screenshots/screenshot-1.jpg</screenshot>
+            <screenshot>resources/screenshots/screenshot-2.jpg</screenshot>
+            <screenshot>resources/screenshots/screenshot-3.jpg</screenshot>
+        </assets>
+    </extension>
+</addon>
+
+<addon id="skin.avdvplus.estuary" version="4.0.4" name="avdvplus.Estuary" provider-name="phil65, Ichabod Fletchman">
+    <requires>
+        <import addon="xbmc.gui" version="5.17.0"/>
+    </requires>
+    <extension point="xbmc.gui.skin" debugging="false">
+        <res width="1920" height="1440" aspect="4:3" default="false" folder="xml" />
+        <res width="1920" height="1280" aspect="3:2" default="false" folder="xml" />
+        <res width="1920" height="1200" aspect="16:10" default="false" folder="xml" />
+        <res width="2040" height="1080" aspect="17:9" default="false" folder="xml" />
+        <res width="1920" height="1080" aspect="16:9" default="true" folder="xml" />
+        <res width="2560" height="1080" aspect="21:9" default="false" folder="xml" />
+        <res width="2338" height="1080" aspect="19.5:9" default="false" folder="xml" />
+        <res width="2160" height="1080" aspect="18:9" default="false" folder="xml" />
+    </extension>
+    <extension point="xbmc.addon.metadata">
+        <platform>all</platform>
+        <license>CC BY-SA 4.0, GNU GENERAL PUBLIC LICENSE Version 2.0</license>
+        <source>https://github.com/xbmc/skin.estuary/</source>
+        <summary lang="en_GB">Estuary skin by phil65. (Kodi's default skin)</summary>
+        <summary lang="hu_HU">Estuary felszín. Készítette phil65 és Piers. (Kodi alapértelmezett felszín)</summary>
+        <description lang="en_GB">Estuary is the default skin for Kodi 17.0 and above. It attempts to be easy for first time Kodi users to understand and use.</description>
+        <description lang="hu_HU">Az Estuary az alapértelmezett felszín a 17.0 és újabb Kodi kiadásokban. Megpróbál könnyen kezelhető és használható lenni, az újonc Kodi felhasználóknak is.</description>
+        <assets>
+            <icon>resources/icon.png</icon>
+            <fanart>resources/fanart.jpg</fanart>
+        </assets>
     </extension>
 </addon>
 

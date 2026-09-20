@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<addon id="repository.tomszo" name="TomSzo Repository" version="1.0.3" provider-name="TomSzo">
+<addon id="repository.tomszo" name="TomSzo Repository" version="1.0.4" provider-name="TomSzo">
     <requires>
         <import addon="xbmc.addon" version="12.0.0"/>
     </requires>
@@ -21,23 +21,41 @@
             - jurialmunkey (TMDB Helper and skins)
             - MovieShark (Hungarian content)
             - Addons4Kodi collection
+            - Don't Panic (pannal)
+            - signde repository (skins)
+
+            Included addons:
             - service.autosub (Auto subtitle handler)
+            - nCore TV (video addon)
+            - avdvplus.Estuary (skin)
 
             WARNING: This is a BETA repository. Use at your own risk.
         </description>
         <description lang="hu">
             TomSzo személyes Kodi tárolója. Gondosan válogatott harmadik féltől származó tárolókat és hasznos modulokat tartalmaz.
 
-            Tartalmazza:
+            Tartalmazza (tárolók):
             - ElementumOrg (Elementum torrent lejátszó)
             - jurialmunkey (TMDB Helper és skinek)
             - MovieShark (Magyar tartalmak)
             - Addons4Kodi gyűjtemény
+            - Don't Panic (pannal)
+            - signde repository (skinek)
+
+            Addonok:
             - service.autosub (Automatikus felirat kezelő)
+            - nCore TV (videó addon)
+            - avdvplus.Estuary (skin)
 
             FIGYELEM: Ez egy BÉTA tároló. Csak saját felelősségre használd!
         </description>
         <news>
+v1.0.4 (2026-09-20) - BÉTA
+- Hozzáadva: repository.dontpanic (0.2.10)
+- Hozzáadva: repository.signde (1.2)
+- Hozzáadva: plugin.video.nCore_TV (1.2.0) - videó addon
+- Hozzáadva: skin.avdvplus.estuary (4.0.4) - skin
+
 v1.0.3 (2026-09-20) - BÉTA
 - Frissítve: repository.jurialmunkey 3.4 -> 3.5
 - Eltávolítva: repository.bingie
