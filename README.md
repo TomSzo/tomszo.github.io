@@ -6,14 +6,10 @@ Saját Kodi addon gyűjtemény – több repository, módosított skin és haszn
 
 - **repository.tomszo** – saját repository-m
 - Harmadik féltől származó repository-k:
-  - repository.bingie *(Bingie skin - Netflix stílusú UI)*
   - repository.elementumorg *(Elementum torrent lejátszó)*
   - repository.jurialmunkey *(TMDB Helper és skinek)*
   - repository.movieshark *(Magyar tartalmak)*
   - repository.addons4kodi *(Addons4Kodi gyűjtemény)*
-- **skin.estuary.modv2** – Módosított Estuary skin (Kodi 21 Omega támogatással)
-- **script.module.animated_artwork** – Animált artwork támogatás
-- **script.module.pvr.artwork** – PVR artwork modul
 - **service.autosub** – Automatikus felirat kezelő
 
 ---
@@ -28,7 +24,7 @@ Saját Kodi addon gyűjtemény – több repository, módosított skin és haszn
 
 **2. lépés — Repository telepítése:**
 - **Kiegészítők** → **Telepítés ZIP fájlból** → `TomSzo Repo`
-- Válaszd: `repository.tomszo-1.0.2.zip`
+- Válaszd: `repository.tomszo-1.0.3.zip`
 - Várj 5-10 másodpercet
 
 **3. lépés — Addonok telepítése:**
@@ -62,4 +58,4 @@ Saját Kodi addon gyűjtemény – több repository, módosított skin és haszn
 ---
 
 Ha hasznosnak találod, adj egy ⭐ csillagot a repónak!  
-Utolsó frissítés: 2026. április
+Utolsó frissítés: 2026. szeptember

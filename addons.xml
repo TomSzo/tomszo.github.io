@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <addons>
 
-<addon id="repository.tomszo" name="TomSzo Repository" version="1.0.2" provider-name="TomSzo">
+<addon id="repository.tomszo" name="TomSzo Repository" version="1.0.3" provider-name="TomSzo">
     <requires>
         <import addon="xbmc.addon" version="12.0.0"/>
     </requires>
@@ -15,9 +15,18 @@
     <extension point="xbmc.addon.metadata">
         <summary lang="en">TomSzo Kodi Repository</summary>
         <summary lang="hu">TomSzo Kodi Tároló</summary>
-        <description lang="en">A personal Kodi repository by TomSzo. Contains carefully selected third-party repositories, skins and useful modules. Included: Bingie, ElementumOrg, jurialmunkey, MovieShark, Addons4Kodi, service.autosub, Estuary MOD V2. WARNING: BETA repository. Use at your own risk.</description>
-        <description lang="hu">TomSzo személyes Kodi tárolója. Tartalmazza: Bingie, ElementumOrg, jurialmunkey, MovieShark, Addons4Kodi, service.autosub, Estuary MOD V2. FIGYELEM: BÉTA tároló. Csak saját felelősségre!</description>
+        <description lang="en">A personal Kodi repository by TomSzo. Contains carefully selected third-party repositories and useful modules. Included: ElementumOrg, jurialmunkey, MovieShark, Addons4Kodi, service.autosub. WARNING: BETA repository. Use at your own risk.</description>
+        <description lang="hu">TomSzo személyes Kodi tárolója. Tartalmazza: ElementumOrg, jurialmunkey, MovieShark, Addons4Kodi, service.autosub. FIGYELEM: BÉTA tároló. Csak saját felelősségre!</description>
         <news>
+v1.0.3 (2026-09-20) - BÉTA
+- Frissítve: repository.jurialmunkey 3.4 -> 3.5
+- Eltávolítva: repository.bingie
+- Eltávolítva: skin.estuary.modv2
+- Eltávolítva: script.module.pvr.artwork
+- Eltávolítva: script.module.animated_artwork
+- Eltávolítva: resource.images.moviegenreicons.estuarymod
+- Tároló letisztítva: 6 addon maradt
+
 v1.0.2 (2026-04-05) - BÉTA
 - Fix: repository.bingie frissítve Kodi 22 kompatibilis verzióra
 - Fix: service.autosub zip fájlnév javítva
@@ -28,14 +37,9 @@ v1.0.2 (2026-04-05) - BÉTA
 v1.0.1 (2026-04-05) - BÉTA
 - Hozzáadva: repository.addons4kodi
 - Hozzáadva: service.autosub
-- Hozzáadva: skin.estuary.modv2
-- Hozzáadva: script.module.pvr.artwork
-- Hozzáadva: script.module.animated_artwork
-- Hozzáadva: resource.images.moviegenreicons.estuarymod
 
 v1.0.0 (2026-04-04) - BÉTA
 - Kezdeti kiadás
-- Hozzáadva: repository.bingie
 - Hozzáadva: repository.elementumorg
 - Hozzáadva: repository.jurialmunkey
 - Hozzáadva: repository.movieshark
@@ -43,24 +47,6 @@ v1.0.0 (2026-04-04) - BÉTA
         <platform>all</platform>
         <license>GNU GENERAL PUBLIC LICENSE Version 3</license>
         <source>https://github.com/TomSzo/tomszo.github.io</source>
-    </extension>
-</addon>
-
-<addon id="repository.bingie" name="Bingie Repository" provider-name="matke" version="1.0.0">
-    <extension point="xbmc.addon.repository" name="Bingie Repository">
-        <requires>
-            <import addon="xbmc.addon" version="12.0.0"/>
-        </requires>
-        <dir minversion="20.9.1">
-            <info compressed="false">https://raw.githubusercontent.com/matke-84/repository.bingie/main/omega/addons.xml</info>
-            <checksum>https://raw.githubusercontent.com/matke-84/repository.bingie/main/omega/addons.xml.md5</checksum>
-            <datadir zip="true">https://raw.githubusercontent.com/matke-84/repository.bingie/main/omega/</datadir>
-        </dir>
-    </extension>
-    <extension point="xbmc.addon.metadata">
-        <summary lang="en">Bingie Repository</summary>
-        <description lang="en">A repository for Bingie skin.</description>
-        <platform>all</platform>
     </extension>
 </addon>
 
@@ -88,12 +74,17 @@ v1.0.0 (2026-04-04) - BÉTA
     </extension>
 </addon>
 
-<addon id="repository.jurialmunkey" name="jurialmunkey Alpha Repository" version="3.4" provider-name="jurialmunkey">
+<addon id="repository.jurialmunkey" name="jurialmunkey Alpha Repository" version="3.5" provider-name="jurialmunkey">
     <extension point="xbmc.addon.repository" name="jurialmunkey Alpha Repository">
         <dir>
             <info compressed="false">https://raw.githubusercontent.com/jurialmunkey/repository.jurialmunkey/master/repo/zips/addons.xml</info>
             <checksum>https://raw.githubusercontent.com/jurialmunkey/repository.jurialmunkey/master/repo/zips/addons.xml.md5</checksum>
             <datadir zip="true">https://raw.githubusercontent.com/jurialmunkey/repository.jurialmunkey/master/repo/zips/</datadir>
+        </dir>
+        <dir minversion="19.9.1" maxversion="20.9.0">
+            <info compressed="false">https://raw.githubusercontent.com/jurialmunkey/repository.jurialmunkey/master/nexusrepo/zips/addons.xml</info>
+            <checksum>https://raw.githubusercontent.com/jurialmunkey/repository.jurialmunkey/master/nexusrepo/zips/addons.xml.md5</checksum>
+            <datadir zip="true">https://raw.githubusercontent.com/jurialmunkey/repository.jurialmunkey/master/nexusrepo/zips/</datadir>
         </dir>
         <dir minversion="20.9.1">
             <info compressed="false">https://raw.githubusercontent.com/jurialmunkey/repository.jurialmunkey/master/omega/zips/addons.xml</info>
@@ -103,6 +94,7 @@ v1.0.0 (2026-04-04) - BÉTA
     </extension>
     <extension point="xbmc.addon.metadata">
         <summary>jurialmunkey Alpha Repository</summary>
+        <description>A repository for alpha releases of jurialmunkey's skins.</description>
         <platform>all</platform>
     </extension>
 </addon>
@@ -147,41 +139,6 @@ v1.0.0 (2026-04-04) - BÉTA
     <extension point="xbmc.addon.metadata">
         <summary lang="en">Auto Subtitle Enabler</summary>
         <description lang="en">Sets subtitle track according to your language preferences</description>
-        <platform>all</platform>
-    </extension>
-</addon>
-
-<addon id="script.module.pvr.artwork" name="PVR Artwork Module" version="2.2.10" provider-name="PvD">
-    <requires>
-        <import addon="xbmc.python" version="3.0.0"/>
-    </requires>
-    <extension point="xbmc.python.module" library="lib" />
-    <extension point="xbmc.addon.metadata">
-        <summary lang="en">PVR Artwork Module</summary>
-        <platform>all</platform>
-    </extension>
-</addon>
-
-<addon id="script.module.animated_artwork" name="Animated Artwork Module" version="1.0.1+matrix" provider-name="PvD">
-    <requires>
-        <import addon="xbmc.python" version="3.0.0"/>
-    </requires>
-    <extension point="xbmc.addon.metadata">
-        <summary lang="en">Animated Artwork Module</summary>
-        <platform>all</platform>
-    </extension>
-</addon>
-
-<addon id="skin.estuary.modv2" version="21.3+omega.7" name="Estuary MOD V2 Omega" provider-name="Guilouz, K21 branch by PvD">
-    <requires>
-        <import addon="xbmc.python" version="3.0.1"/>
-        <import addon="xbmc.gui" version="5.17.0"/>
-    </requires>
-    <extension point="xbmc.gui.skin" debugging="false">
-        <res width="1920" height="1080" aspect="16:9" default="true" folder="xml" />
-    </extension>
-    <extension point="xbmc.addon.metadata">
-        <summary lang="en_GB">Estuary MOD V2 Omega</summary>
         <platform>all</platform>
     </extension>
 </addon>
