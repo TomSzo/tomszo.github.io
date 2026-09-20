@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <addons>
 
-<addon id="repository.tomszo" name="TomSzo Repository" version="1.0.4" provider-name="TomSzo">
+<addon id="repository.tomszo" name="TomSzo Repository" version="1.0.5" provider-name="TomSzo">
     <requires>
         <import addon="xbmc.addon" version="12.0.0"/>
     </requires>
@@ -15,9 +15,13 @@
     <extension point="xbmc.addon.metadata">
         <summary lang="en">TomSzo Kodi Repository</summary>
         <summary lang="hu">TomSzo Kodi Tároló</summary>
-        <description lang="en">A personal Kodi repository by TomSzo. Contains carefully selected third-party repositories and useful addons. Included: ElementumOrg, jurialmunkey, MovieShark, Addons4Kodi, Don't Panic, signde, service.autosub, nCore TV, avdvplus.Estuary. WARNING: BETA repository. Use at your own risk.</description>
-        <description lang="hu">TomSzo személyes Kodi tárolója. Tartalmazza: ElementumOrg, jurialmunkey, MovieShark, Addons4Kodi, Don't Panic, signde, service.autosub, nCore TV (videó), avdvplus.Estuary (skin). FIGYELEM: BÉTA tároló. Csak saját felelősségre!</description>
+        <description lang="en">A personal Kodi repository by TomSzo. Contains carefully selected third-party repositories and useful addons. Included: ElementumOrg, jurialmunkey, MovieShark, Addons4Kodi, Don't Panic, signde, service.autosub, nCore TV, avdvplus.Estuary, Speed Tester. WARNING: BETA repository. Use at your own risk.</description>
+        <description lang="hu">TomSzo személyes Kodi tárolója. Tartalmazza: ElementumOrg, jurialmunkey, MovieShark, Addons4Kodi, Don't Panic, signde, service.autosub, nCore TV (videó), avdvplus.Estuary (skin), Speed Tester (sebességteszt). FIGYELEM: BÉTA tároló. Csak saját felelősségre!</description>
         <news>
+v1.0.5 (2026-09-20) - BÉTA
+- Hozzáadva: script.speedtester (1.1.3) - internet sebességteszt
+- Fix: script.speedtester xbmc.python 3.0.0-ra állítva (Kodi 19+ kompatibilitás)
+
 v1.0.4 (2026-09-20) - BÉTA
 - Hozzáadva: repository.dontpanic (0.2.10)
 - Hozzáadva: repository.signde (1.2)
@@ -260,6 +264,30 @@ v1.0.0 (2026-04-04) - BÉTA
         <assets>
             <icon>resources/icon.png</icon>
             <fanart>resources/fanart.jpg</fanart>
+        </assets>
+    </extension>
+</addon>
+
+<addon id="script.speedtester" name="Speed Tester" version="1.1.3" provider-name="Dr0idGuy, dagwieers">
+    <requires>
+        <import addon="xbmc.python" version="3.0.0"/>
+    </requires>
+    <extension point="xbmc.python.script" library="resources/lib/addon_entry.py">
+        <provides>executable</provides>
+    </extension>
+    <extension point="xbmc.addon.metadata">
+        <platform>all</platform>
+        <summary lang="en_GB">Test your Internet bandwidth</summary>
+        <description lang="en_GB">This add-on tests your Internet bandwith and reports both download and upload speeds and latency from within Kodi. Use this if you are experiencing streaming issues and you suspect your network to be the cause.</description>
+        <disclaimer lang="en_GB">Speed Tester is powered by speedtest.net</disclaimer>
+        <language>en</language>
+        <license>Apache-2.0</license>
+        <source>https://github.com/add-ons/script.speedtester</source>
+        <assets>
+            <icon>resources/media/icon.png</icon>
+            <screenshot>resources/media/screenshot01.jpg</screenshot>
+            <screenshot>resources/media/screenshot02.jpg</screenshot>
+            <screenshot>resources/media/screenshot03.jpg</screenshot>
         </assets>
     </extension>
 </addon>

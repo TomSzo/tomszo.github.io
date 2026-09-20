@@ -15,6 +15,7 @@ Saját Kodi addon gyűjtemény – több repository, módosított skin és haszn
 - **service.autosub** – Automatikus felirat kezelő
 - **plugin.video.nCore_TV** – nCore TV videó addon
 - **skin.avdvplus.estuary** – avdvplus.Estuary skin
+- **script.speedtester** – Internet sebességteszt (speedtest.net)
 
 ---
 
@@ -28,7 +29,7 @@ Saját Kodi addon gyűjtemény – több repository, módosított skin és haszn
 
 **2. lépés — Repository telepítése:**
 - **Kiegészítők** → **Telepítés ZIP fájlból** → `TomSzo Repo`
-- Válaszd: `repository.tomszo-1.0.4.zip`
+- Válaszd: `repository.tomszo-1.0.5.zip`
 - Várj 5-10 másodpercet
 
 **3. lépés — Addonok telepítése:**

@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<addon id="repository.tomszo" name="TomSzo Repository" version="1.0.4" provider-name="TomSzo">
+<addon id="repository.tomszo" name="TomSzo Repository" version="1.0.5" provider-name="TomSzo">
     <requires>
         <import addon="xbmc.addon" version="12.0.0"/>
     </requires>
@@ -28,6 +28,7 @@
             - service.autosub (Auto subtitle handler)
             - nCore TV (video addon)
             - avdvplus.Estuary (skin)
+            - Speed Tester (Internet bandwidth test)
 
             WARNING: This is a BETA repository. Use at your own risk.
         </description>
@@ -46,10 +47,15 @@
             - service.autosub (Automatikus felirat kezelő)
             - nCore TV (videó addon)
             - avdvplus.Estuary (skin)
+            - Speed Tester (internet sebességteszt)
 
             FIGYELEM: Ez egy BÉTA tároló. Csak saját felelősségre használd!
         </description>
         <news>
+v1.0.5 (2026-09-20) - BÉTA
+- Hozzáadva: script.speedtester (1.1.3) - internet sebességteszt
+- Fix: script.speedtester xbmc.python 3.0.0-ra állítva (Kodi 19+ kompatibilitás)
+
 v1.0.4 (2026-09-20) - BÉTA
 - Hozzáadva: repository.dontpanic (0.2.10)
 - Hozzáadva: repository.signde (1.2)
