@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<addon id="repository.tomszo" name="TomSzo Repository" version="1.0.5" provider-name="TomSzo">
+<addon id="repository.tomszo" name="TomSzo Repository" version="1.0.6" provider-name="TomSzo">
     <requires>
         <import addon="xbmc.addon" version="12.0.0"/>
     </requires>
@@ -52,6 +52,9 @@
             FIGYELEM: Ez egy BÉTA tároló. Csak saját felelősségre használd!
         </description>
         <news>
+v1.0.6 (2026-09-20) - BÉTA
+- Frissítve: script.speedtester 2.0.0 (TomSzo saját fork, modern-server-discovery)
+
 v1.0.5 (2026-09-20) - BÉTA
 - Hozzáadva: script.speedtester (1.1.3) - internet sebességteszt
 - Fix: script.speedtester xbmc.python 3.0.0-ra állítva (Kodi 19+ kompatibilitás)
