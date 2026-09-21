@@ -1,3 +1,8 @@
+v1.0.1 (2026-09-21)
+- Cookie-k (Set-Cookie) elkapása requests.Session-nel, átadás a lejátszónak
+- Packed JS (eval(p,a,c,k,e,d)) kicsomagolása az m3u8 kinyeréséhez
+- Fejlécek urlencode-dal (Referer/Origin/Cookie/User-Agent), manifest+stream headers
+
 v1.0.0 (2026-09-21)
 - Kezdeti kiadás
 - streamed.pk nyilvános API-kliens

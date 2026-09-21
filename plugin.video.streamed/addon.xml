@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<addon id="plugin.video.streamed" name="Streamed" version="1.0.0" provider-name="TomSzo">
+<addon id="plugin.video.streamed" name="Streamed" version="1.0.1" provider-name="TomSzo">
     <requires>
         <import addon="xbmc.python" version="3.0.0"/>
         <import addon="script.module.requests" version="2.22.0"/>
@@ -20,6 +20,10 @@
         <license>GPL-3.0-or-later</license>
         <source>https://github.com/TomSzo/tomszo.github.io</source>
         <news>
+v1.0.1 (2026-09-21)
+- Cookie-k átemelése (requests.Session) a lejátszóhoz
+- Packed JS (Dean Edwards) kicsomagolás az m3u8-hoz, urlencode-olt fejlécek
+
 v1.0.0 (2026-09-21)
 - Kezdeti kiadás
 - Élő most, Népszerű, Ma, Sportágak szerinti böngészés (streamed.pk API)
