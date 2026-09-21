@@ -15,7 +15,6 @@ Saját Kodi addon gyűjtemény – több repository, módosított skin és haszn
 - **service.autosub** – Automatikus felirat kezelő
 - **plugin.video.nCore_TV** – nCore TV videó addon
 - **plugin.video.subvito** – SubVito videó addon *(South Park magyarul – subvito.eu)*
-- **plugin.video.streamed** – Streamed videó addon *(élő sport – streamed.pk)*
 - **skin.avdvplus.estuary** – avdvplus.Estuary skin
 - **script.speedtester** – Internet sebességteszt (speedtest.net) – *TomSzo v2.0.0 fork*
 
@@ -31,7 +30,7 @@ Saját Kodi addon gyűjtemény – több repository, módosított skin és haszn
 
 **2. lépés — Repository telepítése:**
 - **Kiegészítők** → **Telepítés ZIP fájlból** → `TomSzo Repo`
-- Válaszd: `repository.tomszo-1.0.10.zip`
+- Válaszd: `repository.tomszo-1.0.11.zip`
 - Várj 5-10 másodpercet
 
 **3. lépés — Addonok telepítése:**
