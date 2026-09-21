@@ -1,10 +1,10 @@
 v1.0.0 (2026-09-21)
 - Kezdeti kiadás
-- Évadok böngészése (URL-minta alapú, a főoldalról kiolvasva)
-- Részek listázása évadonként
-- Legfrissebb részek a főoldalról
-- Keresés a részek között
-- Robusztus lejátszó: mp4 / m3u8 kinyerés, iframe egy szintű követés
-- HLS lejátszás InputStream Adaptive segítségével
-- Magyar felirat (srt/vtt) automatikus csatolása, ha elérhető
-- Magyar és angol nyelvi fájlok
+- Katalógus a subvito.eu menüjéből: évadok (1-29), Filmek, P+ (Paramount+)
+- Részek címmel, évadonként
+- Legfrissebb részek (a legújabb évad)
+- Helyi keresés a részek címei között (ékezet- és kis/nagybetű-független)
+- Lejátszás: közvetlen MP4 forrás kinyerése az epizód-oldalról
+- Magyar (és angol) felirat automatikus csatolása (VTT), magyar előre sorolva
+- Tartalék: iframe egy szintű követés, m3u8/HLS InputStream Adaptive támogatással
+- Magyar és angol nyelvi fájlok, saját ikon és fanart

@@ -329,9 +329,9 @@ v2.0.0 (2026-07-26)
         <news>
 v1.0.0 (2026-09-21)
 - Kezdeti kiadás
-- Évadok és részek böngészése a subvito.eu oldalról
-- Keresés
-- Robusztus lejátszó: iframe / mp4 / m3u8 kinyerés, InputStream Adaptive HLS támogatással
+- Évadok (1-29), Filmek, P+ böngészése a subvito.eu oldalról
+- Részek címmel, keresés (ékezet-független)
+- Lejátszás közvetlen MP4-ből, magyar felirattal (VTT)
         </news>
         <assets>
             <icon>icon.png</icon>

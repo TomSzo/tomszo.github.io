@@ -9,27 +9,34 @@ Nem hivatalos Kodi videó addon a **[subvito.eu](https://subvito.eu/)** oldalhoz
 
 ## Funkciók
 
-- **Évadok** böngészése
-- **Részek** listázása évadonként
-- **Legfrissebb részek** a főoldalról
-- **Keresés** a South Park részek között
-- Robusztus lejátszó:
-  - közvetlen `mp4` / `m3u8` linkek kinyerése
-  - `iframe` beágyazások egy szintű követése
-  - HLS (`m3u8`) lejátszás **InputStream Adaptive** segítségével
-  - magyar felirat (`srt` / `vtt`) automatikus csatolása, ha az oldal kínálja
+- **Évadok** (1-29), **Filmek** és **P+ (Paramount+)** böngészése
+- **Részek** listázása kategóriánként, címmel
+- **Legfrissebb részek** (a legújabb évad)
+- **Keresés** a részek címei között (ékezet- és kis/nagybetű-független)
+- Lejátszás:
+  - közvetlen `mp4` forrás kinyerése az epizód-oldalról
+  - magyar (és angol) **felirat** (`vtt` / `srt`) automatikus csatolása, magyar előre sorolva
+  - tartalék: `iframe` egy szintű követés és HLS (`m3u8`) lejátszás **InputStream Adaptive** segítségével
 
 ## Hogyan működik
 
-Az addon **URL-minta alapú**, nem függ az oldal CSS-osztályaitól. A subvito.eu
-linkjei így épülnek fel:
+A subvito.eu minden oldalának fejlécében ott a teljes menü (évadok + részek,
+címmel). Az addon ezt **egyetlen kéréssel** kiolvassa, és ebből építi a
+katalógust – így nem függ az oldal CSS-osztályaitól, és a keresés is helyben,
+hálózat nélkül fut.
+
+A kategória-URL-ek felépítése:
 
 ```
-https://subvito.eu/<évad>-evad/<rész-slug>/
+https://subvito.eu/<N>-evad/        (2–29. évad)
+https://subvito.eu/1-evad-2/        (1. évad – eltérő cím)
+https://subvito.eu/filmek/          (Filmek)
+https://subvito.eu/paramount-plus/  (P+)
 ```
 
-Az addon a főoldalról olvassa ki az évadokat, az évad-oldalakról a részeket, a
-rész-oldalról pedig a lejátszható forrást.
+Egy rész oldalán a videó közvetlen MP4-ként van beágyazva
+(`<video><source src="…mp4">`), a felirat pedig `<track src="…hun.vtt">`-ként –
+ezeket nyeri ki és adja át a Kodi lejátszójának.
 
 ## Telepítés
 

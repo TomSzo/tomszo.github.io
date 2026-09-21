@@ -82,16 +82,15 @@ def view_root():
 
 
 def view_seasons():
-    seasons = subvito.list_seasons()
-    if not seasons:
+    cats = subvito.list_categories()
+    if not cats:
         _notify(L(30020, 'Nincs találat'))
-    for num, url in seasons:
-        label = L(30013, '%d. évad')
-        try:
-            label = label % num
-        except Exception:  # noqa
-            label = '%d. évad' % num
-        add_dir(label, build_url(action='episodes', url=url, season=num),
+    for cat in cats:
+        count = len(cat.get('episodes') or [])
+        label = cat['label']
+        if count:
+            label = '%s  (%d)' % (label, count)
+        add_dir(label, build_url(action='episodes', url=cat['url']),
                 thumb=ADDON.getAddonInfo('icon'))
     end(content='seasons')
 
