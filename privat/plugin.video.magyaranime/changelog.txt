@@ -1,3 +1,8 @@
+v0.1.9 (2026-09-21) - PRIVÁT / BÉTA
+- A magyaranime kereso DataTables/AJAX-alapu (a talalatok kulon vegpontrol jonnek).
+  A "Keresés HTML mentése" most a betolto JS fajlokat (search.js, kereso_v2.js) is
+  elmenti, hogy a valodi kereso-vegpont megtalalhato es implementalhato legyen.
+
 v0.1.8 (2026-09-21) - PRIVÁT / BÉTA
 - Uj "Keresés HTML mentése" menupont: a keresesi oldal nyers HTML-jet elmenti
   (Download/ma_search.html), hogy a talalat-olvaso pontosan javithato legyen.

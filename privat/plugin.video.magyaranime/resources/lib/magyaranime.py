@@ -229,6 +229,16 @@ def search_raw(term):
     return post('web/kereso/', {'search_text': term}, referer=base_url() + 'web/kereso/') or ''
 
 
+def dump_debug(term):
+    """Kereső-oldal + a találatokat betöltő JS fájlok mentése (hibakereséshez)."""
+    ref = base_url() + 'web/kereso/'
+    parts = ['===== POST web/kereso (shell) =====\n' + (search_raw(term) or '(ures)')]
+    for u in ('data/search/search.js', 'js/kereso/kereso_v2.js',
+              'js/magyaranime_simple.js'):
+        parts.append('\n\n===== %s =====\n%s' % (u, get(u, referer=ref) or '(ures/hiba)'))
+    return '\n'.join(parts)
+
+
 def search(term):
     """Keresés címre. Visszaad: [{aid, title, art}]."""
     html = post('web/kereso/', {'search_text': term}, referer=base_url() + 'web/kereso/')
