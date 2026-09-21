@@ -135,9 +135,23 @@ def view_anime(aid):
     if not eps:
         notify('Nincs epizód (vagy nincs bejelentkezve)')
     for ep in eps:
-        add_dir(ep['title'], build_url(action='play', vid=ep['vid'], server=ep.get('server', 's1')),
-                folder=False, playable=True, art=ep.get('thumb'), info={'mediatype': 'episode'})
+        add_dir(ep['title'], build_url(action='servers', vid=ep['vid']),
+                folder=True, art=ep.get('thumb'), info={'mediatype': 'episode'})
     end('episodes')
+
+
+def view_servers(vid):
+    servers = ma.list_servers(vid)
+    if not servers:
+        notify('Nincs elérhető szerver / forrás')
+    for s in servers:
+        host = s.get('host') or 'ismeretlen'
+        label = host[:1].upper() + host[1:]
+        if 'mega' in host.lower():
+            label = '[COLOR gray]%s (nem támogatott)[/COLOR]' % label
+        add_dir(label, build_url(action='play', vid=vid, server=s['server']),
+                folder=False, playable=True, info={'mediatype': 'episode'})
+    end('files')
 
 
 def view_byid():
@@ -152,8 +166,8 @@ def view_byid():
     if not eps:
         notify('Nincs epizód (vagy nincs bejelentkezve)')
     for ep in eps:
-        add_dir(ep['title'], build_url(action='play', vid=ep['vid'], server=ep.get('server', 's1')),
-                folder=False, playable=True, info={'mediatype': 'episode'})
+        add_dir(ep['title'], build_url(action='servers', vid=ep['vid']),
+                folder=True, info={'mediatype': 'episode'})
     end('episodes')
 
 
@@ -195,6 +209,8 @@ def router(qs):
         view_search()
     elif action == 'anime':
         view_anime(p['aid'])
+    elif action == 'servers':
+        view_servers(p['vid'])
     elif action == 'byid':
         view_byid()
     elif action == 'diag':
