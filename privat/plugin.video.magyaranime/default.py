@@ -78,7 +78,7 @@ def view_dumpsearch():
     if not kb.isConfirmed() or not kb.getText().strip():
         end()
         return
-    html = ma.search_raw(kb.getText().strip())
+    html = ma.dump_debug(kb.getText().strip())
     data = html.encode('utf-8') if isinstance(html, str) else (html or b'')
     targets = ['/storage/emulated/0/Download/ma_search.html',
                xbmcvfs.translatePath('special://profile/addon_data/%s/ma_search.html'
