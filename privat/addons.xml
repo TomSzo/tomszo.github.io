@@ -28,4 +28,31 @@ v1.0.0 (2026-09-21) - PRIVÁT
     </extension>
 </addon>
 
+<addon id="plugin.video.magyaranime" name="MagyarAnime (privát)" version="0.1.0" provider-name="TomSzo">
+    <requires>
+        <import addon="xbmc.python" version="3.0.0"/>
+        <import addon="script.module.requests" version="2.22.0"/>
+        <import addon="inputstream.adaptive" optional="true"/>
+    </requires>
+    <extension point="xbmc.python.pluginsource" library="default.py">
+        <provides>video</provides>
+    </extension>
+    <extension point="xbmc.addon.metadata">
+        <summary lang="hu">MagyarAnime – privát, csak a tulajdonos saját cookie-jával működik</summary>
+        <description lang="hu">Privát, magánhasználatú videó addon a magyaranime.eu-hoz. KIZÁRÓLAG a tulajdonos saját, böngészőből kinyert munkamenet-sütijével (PHPSESSID + loginkey) működik, amit a beállításokban kell megadni. Mások számára használhatatlan: a bejelentkezés Cloudflare Turnstile-lal védett, süti nélkül az oldal login/401/403 választ ad. Magánhasználat, saját felelősségre.</description>
+        <disclaimer lang="hu">Privát, magánhasználatú kiegészítő. Csak a tulajdonos saját fiókjával működik.</disclaimer>
+        <language>hu</language>
+        <platform>all</platform>
+        <license>GPL-3.0-or-later</license>
+        <news>
+v0.1.0 (2026-09-21) - PRIVÁT / BÉTA
+- Kezdeti kiadás: cookie-alapú belépés, keresés, epizódlista
+- Lejátszás: data_player.php -> mp4 / HLS / indavideo feloldás (naplózással)
+        </news>
+        <assets>
+            <icon>icon.png</icon>
+        </assets>
+    </extension>
+</addon>
+
 </addons>

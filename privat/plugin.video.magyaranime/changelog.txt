@@ -1,0 +1,6 @@
+v0.1.0 (2026-09-21) - PRIVÁT / BÉTA
+- Kezdeti kiadás
+- Cookie-alapú belépés (PHPSESSID + loginkey a beállításokban)
+- Keresés, epizódlista (/resz/{vid}/), "rész megnyitása azonosítóval"
+- Lejátszás: data_player.php -> mp4 / HLS (hls_url) / indavideo feloldás
+- A data_player.php nyers válaszát naplózza a finomításhoz
