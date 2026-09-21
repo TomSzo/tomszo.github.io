@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<addon id="plugin.video.magyaranime" name="MagyarAnime (privát)" version="0.1.0" provider-name="TomSzo">
+<addon id="plugin.video.magyaranime" name="MagyarAnime (privát)" version="0.1.1" provider-name="TomSzo">
     <requires>
         <import addon="xbmc.python" version="3.0.0"/>
         <import addon="script.module.requests" version="2.22.0"/>
@@ -16,6 +16,9 @@
         <platform>all</platform>
         <license>GPL-3.0-or-later</license>
         <news>
+v0.1.1 (2026-09-21) - PRIVÁT / BÉTA
+- Adatlap-böngészés: részek közvetlenül a /leiras/{aid}/ oldalról, bélyegképekkel
+
 v0.1.0 (2026-09-21) - PRIVÁT / BÉTA
 - Kezdeti kiadás: cookie-alapú belépés, keresés, epizódlista
 - Lejátszás: data_player.php -> mp4 / HLS / indavideo feloldás (naplózással)

@@ -87,7 +87,7 @@ def view_anime(aid):
         notify('Nincs epizód (vagy nincs bejelentkezve)')
     for ep in eps:
         add_dir(ep['title'], build_url(action='play', vid=ep['vid'], server=ep.get('server', 's1')),
-                folder=False, playable=True, info={'mediatype': 'episode'})
+                folder=False, playable=True, art=ep.get('thumb'), info={'mediatype': 'episode'})
     end('episodes')
 
 
