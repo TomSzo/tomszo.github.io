@@ -161,8 +161,12 @@ def play(vid, server=None):
     data = ma.resolve(vid, prefer_server=server)
     url = data.get('url')
     if not url:
-        hint = '' if ma.has_resolver() else ' – telepítsd a ResolveURL-t (indavideo/videa)'
-        notify('Nem sikerült a lejátszás%s' % hint, t=8000)
+        if data.get('mega'):
+            notify('Ez a rész mega.nz-en van, ami jelenleg nem támogatott. '
+                   'Próbálj másik szervert/feliratot, vagy másik részt.', t=9000)
+        else:
+            hint = '' if ma.has_resolver() else ' – telepítsd a ResolveURL-t (indavideo/videa)'
+            notify('Nem sikerült a lejátszás%s' % hint, t=8000)
         xbmcplugin.setResolvedUrl(HANDLE, False, xbmcgui.ListItem())
         return
     li = xbmcgui.ListItem(path=url)
