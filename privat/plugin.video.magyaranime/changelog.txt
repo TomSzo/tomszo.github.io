@@ -1,3 +1,8 @@
+v0.4.1 (2026-09-22) - PRIVÁT / BÉTA
+- A kereso index (data/search/data_search.php) mostantol AJAX-fejlecekkel tolt
+  (X-Requested-With, Accept: json), ahogy az oldal $.getJSON hivasa. Enelkul ures/mas
+  valaszt adott (0 talalat). Ha meg mindig 0, a naplo kiirja a valasz elejet.
+
 v0.4.0 (2026-09-22) - PRIVÁT / BÉTA
 - KERESES JAVITVA. A magyaranime kereso DataTables/AJAX volt (a HTML nem tartalmazta
   a talalatokat), ezert eddig csak a "Random anime" jott. Mostantol az addon a teljes

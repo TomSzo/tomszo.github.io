@@ -173,11 +173,12 @@ def _headers(referer=None, ajax=False):
     return h
 
 
-def get(url, referer=None, timeout=25):
+def get(url, referer=None, timeout=25, ajax=False):
     url = urljoin(base_url(), url)
     log('GET %s' % url)
     try:
-        r = _SESSION.get(url, headers=_headers(referer), cookies=_cookies(), timeout=timeout)
+        r = _SESSION.get(url, headers=_headers(referer, ajax=ajax),
+                         cookies=_cookies(), timeout=timeout)
         r.encoding = r.apparent_encoding or 'utf-8'
         return r.text
     except Exception as exc:  # noqa
@@ -241,17 +242,24 @@ def dump_debug(term):
 
 def _search_index():
     """A teljes anime-index JSON-ja (ugyanaz, amit az oldal fejléc-keresője használ)."""
-    txt = get('data/search/data_search.php', referer=base_url() + 'web/kereso/')
+    txt = get('data/search/data_search.php', referer=base_url() + 'web/kereso/', ajax=True)
     if not txt:
+        log('data_search.php üres válasz', xbmc.LOGWARNING)
         return []
     try:
         data = json.loads(txt)
     except ValueError:
-        log('data_search.php nem JSON (részlet): %s' % txt[:200], xbmc.LOGWARNING)
+        log('data_search.php nem JSON (%d byte, részlet): %s' % (len(txt), txt[:200]),
+            xbmc.LOGWARNING)
         return []
     if isinstance(data, dict):
-        data = data.get('data') or list(data.values())
-    return data if isinstance(data, list) else []
+        data = data.get('data') or data.get('aaData') or list(data.values())
+    if not isinstance(data, list) or not data:
+        log('data_search.php index üres/ismeretlen (%d byte, részlet): %s'
+            % (len(txt), txt[:200]), xbmc.LOGWARNING)
+        return []
+    log('anime-index betöltve: %d elem' % len(data))
+    return data
 
 
 def _poster(aid):
