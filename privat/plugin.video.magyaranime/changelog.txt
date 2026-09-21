@@ -1,3 +1,12 @@
+v0.1.5 (2026-09-21) - PRIVÁT / BÉTA
+- Állítható "Böngésző User-Agent" beállítás. A magyaranime a munkamenetet a
+  böngésző-azonosítóhoz (és gyakran az IP-hez) kötheti; ha az addon más UA-t
+  küld, a szerver eltérítésnek veheti, a sütit érvényteleníti (a böngészőből is
+  kijelentkezik). Állítsd be pontosan a bejelentkezett böngésződ UA-ját.
+- A Kapcsolat teszt mostantól kiírja a használt User-Agentet is.
+- FONTOS: ha a munkamenet IP-hez kötött, a cookie csak ugyanarról a hálózatról
+  (ugyanaz a publikus IP) működik, mint ahol bejelentkeztél.
+
 v0.1.4 (2026-09-21) - PRIVÁT / BÉTA
 - Beépített "Kapcsolat teszt" a főmenüben: megmutatja, hány süti töltődött be,
   honnan (szöveg/fájl/fix hely), betölt-e a főoldal, és be vagy-e jelentkezve.

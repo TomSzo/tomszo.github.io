@@ -72,11 +72,12 @@ def view_root():
 def view_diag():
     src, names = ma.cookie_status()
     lines = ['Cookie forrás: %s' % src,
-             'Sütik (%d): %s' % (len(names), ', '.join(names) if names else '-')]
+             'Sütik (%d): %s' % (len(names), ', '.join(names) if names else '-'),
+             'User-Agent: %s' % ma.user_agent()]
     if names:
         ok, length = ma.check_login()
         lines.append('Főoldal betöltve: %d byte' % length)
-        lines.append('Bejelentkezve: %s' % ('IGEN' if ok else 'NEM (rossz/lejárt cookie?)'))
+        lines.append('Bejelentkezve: %s' % ('IGEN' if ok else 'NEM (más eszköz/IP vagy UA?)'))
     else:
         lines.append('Nincs betölthető cookie – add meg a fájlt vagy a szöveget a beállításokban.')
     xbmcgui.Dialog().textviewer(ADDON.getAddonInfo('name') + ' – teszt', '\n'.join(lines))
