@@ -1,3 +1,10 @@
+v0.4.0 (2026-09-22) - PRIVÁT / BÉTA
+- KERESES JAVITVA. A magyaranime kereso DataTables/AJAX volt (a HTML nem tartalmazta
+  a talalatokat), ezert eddig csak a "Random anime" jott. Mostantol az addon a teljes
+  anime-indexet tolti be (data/search/data_search.php) es arra szur - pontosan ugy,
+  ahogy az oldal fejlec-keresoje. Nev, japan cim, szinonima es egyeb cim alapjan is
+  keres, es a talalatokhoz boritokepet is mutat.
+
 v0.3.0 (2026-09-22) - PRIVÁT / BÉTA
 - Reszenkent SZERVERLISTA: az epizodra kattintva a resz osszes elerheto forrasa
   megjelenik (indavideo, videa, mega.nz, dailymotion, streamtape, stb.), a
