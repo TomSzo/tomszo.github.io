@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<addon id="plugin.video.streamed" name="Streamed" version="1.0.1" provider-name="TomSzo">
+<addon id="plugin.video.streamed" name="Streamed" version="1.0.2" provider-name="TomSzo">
     <requires>
         <import addon="xbmc.python" version="3.0.0"/>
         <import addon="script.module.requests" version="2.22.0"/>
@@ -20,6 +20,11 @@
         <license>GPL-3.0-or-later</license>
         <source>https://github.com/TomSzo/tomszo.github.io</source>
         <news>
+v1.0.2 (2026-09-21)
+- Valódi lejátszás: POST embed.st/fetch -> m3u8 (strmd.st), Referer az embed origin
+- /fetch válasz feldolgozása (URL/JSON/nyers), reklám-iframe-ek kihagyása
+- Nyers /fetch válasz naplózása a hibakereséshez
+
 v1.0.1 (2026-09-21)
 - Cookie-k átemelése (requests.Session) a lejátszóhoz
 - Packed JS (Dean Edwards) kicsomagolás az m3u8-hoz, urlencode-olt fejlécek

@@ -287,32 +287,106 @@ def cookie_header():
         return ''
 
 
+_BAD_IFRAME = ('ad.html', '/ads', 'facebook.', 'disqus.', 'google.', 'gravatar.',
+               'doubleclick', 'adexchange', 'impression')
+
+
+def post(url, payload, referer=None, timeout=20):
+    """JSON POST (a session-nel, hogy a sütiket is vigye/kapja)."""
+    log('POST %s' % url)
+    try:
+        headers = _headers(referer, json_accept=True)
+        headers['Content-Type'] = 'application/json'
+        headers['X-Requested-With'] = 'XMLHttpRequest'
+        if HAVE_REQUESTS:
+            resp = _SESSION.post(url, data=json.dumps(payload), headers=headers, timeout=timeout)
+            if resp.status_code not in (200, 201, 202):
+                log('POST HTTP %s: %s' % (resp.status_code, url), xbmc.LOGWARNING)
+            resp.encoding = resp.apparent_encoding or 'utf-8'
+            return resp.text
+        req = Request(url, data=json.dumps(payload).encode('utf-8'), headers=headers)
+        return urlopen(req, timeout=timeout).read().decode('utf-8', 'replace')
+    except Exception as exc:  # noqa
+        log('POST hiba: %s (%s)' % (exc, url), xbmc.LOGERROR)
+        return ''
+
+
+def _urls_from_fetch(resp):
+    """A /fetch válaszból m3u8 URL-ek kinyerése (URL, JSON vagy nyers útvonal)."""
+    resp = (resp or '').strip()
+    if not resp:
+        return []
+    cands = list(_M3U8_RE.findall(resp))
+    # JSON válasz: minden string mezőt megnézünk
+    try:
+        data = json.loads(resp)
+
+        def _walk(v):
+            if isinstance(v, str):
+                if '.m3u8' in v or v.startswith('http') or '/' in v:
+                    cands.append(v)
+            elif isinstance(v, dict):
+                for x in v.values():
+                    _walk(x)
+            elif isinstance(v, list):
+                for x in v:
+                    _walk(x)
+        _walk(data)
+    except ValueError:
+        # nem JSON: idézőjelektől megtisztított nyers string
+        cands.append(resp.strip().strip('"').strip("'"))
+
+    out = []
+    for u in cands:
+        u = (u or '').strip().strip('"').strip("'")
+        if not u:
+            continue
+        if u.startswith('//'):
+            u = 'https:' + u
+        elif not u.startswith('http') and ('.m3u8' in u or '/' in u):
+            u = 'https://' + u.lstrip('/')
+        if '.m3u8' in u.lower():
+            out.append(u)
+    return out
+
+
 def resolve(st):
     """
     Visszaad: {'m3u8': [...], 'embed': <url>, 'origin': <origin>, 'cookie': <str>}.
-    Kinyerés az embed-oldalról: közvetlen regex, packed-JS kicsomagolás,
-    majd egy szint iframe-követés. A munkamenet sütijeit is elkapja.
+
+    Elsődleges: a streamed 'POST {origin}/fetch' végpontja (source/id/streamNo),
+    amely a valódi .m3u8-hoz vezet (Referer: az embed origin).
+    Tartalék: az embed-oldal szkennelése (regex + packed-JS + iframe-követés).
     """
     embed = _embed_url(st)
     origin = '%s://%s' % (urlparse(embed).scheme, urlparse(embed).netloc)
     result = {'m3u8': [], 'embed': embed, 'origin': origin, 'cookie': ''}
 
+    # Az embed-oldal betöltése (sütikért is), majd a /fetch végpont.
     html = fetch(embed, referer=base_url())
-    found = _scan_m3u8(html)
-    if not found:
-        found = _scan_m3u8(_unpack_packed(html))
+    payload = {'source': st['source'], 'id': st['id'],
+               'streamNo': int(str(st.get('streamNo') or 1)) if str(st.get('streamNo') or 1).isdigit() else st.get('streamNo')}
+    fetch_resp = post(origin + '/fetch', payload, referer=embed)
+    if fetch_resp:
+        log('/fetch válasz (részlet): %s' % fetch_resp[:300].replace('\n', ' '))
+    found = _urls_from_fetch(fetch_resp)
 
+    # Tartalék 1: közvetlen/packed az embed-oldalról
+    if not found:
+        found = _scan_m3u8(html) or _scan_m3u8(_unpack_packed(html))
+
+    # Tartalék 2: egy szint iframe-követés (reklám-iframe-ek kihagyva)
     if not found:
         for frame in _IFRAME_RE.findall(html):
             furl = urljoin(embed, frame)
+            if any(b in furl.lower() for b in _BAD_IFRAME):
+                continue
             fhtml = fetch(furl, referer=embed)
             found = _scan_m3u8(fhtml) or _scan_m3u8(_unpack_packed(fhtml))
             if found:
-                origin = '%s://%s' % (urlparse(furl).scheme, urlparse(furl).netloc)
                 break
 
-    result['m3u8'] = _dedup([urljoin(embed, u) for u in found])
-    result['origin'] = origin
+    result['m3u8'] = _dedup(found)
     result['cookie'] = cookie_header()
     log('resolve(%s) -> m3u8=%s origin=%s cookie=%s'
         % (embed, result['m3u8'], origin, 'igen' if result['cookie'] else 'nincs'))

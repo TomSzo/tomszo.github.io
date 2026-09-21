@@ -31,7 +31,7 @@ Saját Kodi addon gyűjtemény – több repository, módosított skin és haszn
 
 **2. lépés — Repository telepítése:**
 - **Kiegészítők** → **Telepítés ZIP fájlból** → `TomSzo Repo`
-- Válaszd: `repository.tomszo-1.0.9.zip`
+- Válaszd: `repository.tomszo-1.0.10.zip`
 - Várj 5-10 másodpercet
 
 **3. lépés — Addonok telepítése:**
