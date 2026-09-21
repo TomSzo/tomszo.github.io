@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<settings version="1">
+    <section id="plugin.video.magyaranime">
+        <category id="auth" label="Belépés">
+            <group id="1" label="Munkamenet (cookie)">
+                <setting id="cookie" type="string" label="Cookie (PHPSESSID=...; loginkey=...)" help="A böngészőből (pl. Cookie-Editor) kinyert magyaranime.eu munkamenet-süti. Csak a te gépeden tárolódik.">
+                    <level>0</level>
+                    <default></default>
+                    <control type="edit" format="string">
+                        <heading>Cookie beillesztése</heading>
+                    </control>
+                </setting>
+            </group>
+            <group id="2" label="Egyéb">
+                <setting id="base_url" type="string" label="Alap URL" help="Csak domainváltozáskor módosítsd.">
+                    <level>0</level>
+                    <default>https://magyaranime.eu/</default>
+                    <control type="edit" format="string">
+                        <heading>Alap URL</heading>
+                    </control>
+                </setting>
+                <setting id="debug" type="boolean" label="Hibakeresési naplózás">
+                    <level>0</level>
+                    <default>false</default>
+                    <control type="toggle"/>
+                </setting>
+            </group>
+        </category>
+    </section>
+</settings>

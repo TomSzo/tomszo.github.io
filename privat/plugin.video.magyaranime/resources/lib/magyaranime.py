@@ -1,0 +1,344 @@
+# -*- coding: utf-8 -*-
+"""
+MagyarAnime (magyaranime.eu) - privát, cookie-alapú kliens.
+
+Belépés: a felhasználó a böngészőből kinyert munkamenet-sütijét
+(PHPSESSID + loginkey) adja meg a beállításokban. Az addon ezzel dolgozik.
+
+Lejátszás:
+    GET  /resz/{vid}/                         -> CSRF (meta magyaranime) + data-server
+    POST data/lejatszo/data_player.php        {server, vid, csrf_token}
+      -> JSON: output (player HTML), servers[], hls (bool), hls_url (base64), ...
+    A videó vagy közvetlen mp4 az output-ban, vagy HLS a hls_url-ből,
+    vagy indavideo iframe (amit feloldunk).
+"""
+import base64
+import json
+import re
+
+try:
+    from urllib.parse import urljoin, urlparse, quote
+except ImportError:
+    from urlparse import urljoin, urlparse
+    from urllib import quote
+
+import xbmc
+import xbmcaddon
+
+try:
+    import requests
+    HAVE_REQUESTS = True
+except ImportError:
+    HAVE_REQUESTS = False
+
+ADDON = xbmcaddon.Addon()
+ADDON_ID = ADDON.getAddonInfo('id')
+DEFAULT_BASE = 'https://magyaranime.eu/'
+USER_AGENT = ('Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 '
+              '(KHTML, like Gecko) Chrome/124.0 Safari/537.36')
+
+_SESSION = requests.Session() if HAVE_REQUESTS else None
+
+
+def log(msg, level=xbmc.LOGINFO):
+    xbmc.log('[%s] %s' % (ADDON_ID, msg), level)
+
+
+def base_url():
+    url = (ADDON.getSetting('base_url') or DEFAULT_BASE).strip()
+    if not url:
+        url = DEFAULT_BASE
+    if not url.startswith('http'):
+        url = 'https://' + url
+    if not url.endswith('/'):
+        url += '/'
+    return url
+
+
+def _cookies():
+    """A beállításban megadott cookie-string -> dict."""
+    raw = (ADDON.getSetting('cookie') or '').strip()
+    jar = {}
+    for part in raw.replace('\n', ';').split(';'):
+        part = part.strip()
+        if '=' in part:
+            k, v = part.split('=', 1)
+            jar[k.strip()] = v.strip()
+    return jar
+
+
+def _headers(referer=None, ajax=False):
+    h = {'User-Agent': USER_AGENT,
+         'Accept-Language': 'hu-HU,hu;q=0.9,en;q=0.5'}
+    if ajax:
+        h['X-Requested-With'] = 'XMLHttpRequest'
+        h['Accept'] = 'application/json, text/javascript, */*; q=0.01'
+    if referer:
+        h['Referer'] = referer
+    return h
+
+
+def get(url, referer=None, timeout=25):
+    url = urljoin(base_url(), url)
+    log('GET %s' % url)
+    try:
+        r = _SESSION.get(url, headers=_headers(referer), cookies=_cookies(), timeout=timeout)
+        r.encoding = r.apparent_encoding or 'utf-8'
+        return r.text
+    except Exception as exc:  # noqa
+        log('GET hiba: %s (%s)' % (exc, url), xbmc.LOGERROR)
+        return ''
+
+
+def post(url, data, referer=None, timeout=30):
+    url = urljoin(base_url(), url)
+    log('POST %s data=%s' % (url, data))
+    try:
+        r = _SESSION.post(url, data=data, headers=_headers(referer, ajax=True),
+                          cookies=_cookies(), timeout=timeout)
+        r.encoding = r.apparent_encoding or 'utf-8'
+        return r.text
+    except Exception as exc:  # noqa
+        log('POST hiba: %s (%s)' % (exc, url), xbmc.LOGERROR)
+        return ''
+
+
+def logged_in(html):
+    """Bejelentkezettség ellenőrzése egy oldal HTML-je alapján."""
+    if not html:
+        return False
+    return 'felhasznalo/kijelentkezes' in html or 'gen-account-menu' in html and 'bejelentkezes/' not in html.split('gen-account-menu', 1)[-1][:400]
+
+
+# ---------------------------------------------------------------------------
+# Keresés / böngészés
+# ---------------------------------------------------------------------------
+_LEIRAS_RE = re.compile(r'href="[^"]*?/?leiras/(\d+)/?"', re.IGNORECASE)
+_RESZ_RE = re.compile(r'href="[^"]*?/?resz/(\d+)/?"', re.IGNORECASE)
+_META_CSRF_RE = re.compile(r'<meta\s+name="magyaranime"\s+content="([^"]+)"', re.IGNORECASE)
+
+
+def _clean(t):
+    t = re.sub(r'<[^>]+>', ' ', t or '')
+    for a, b in (('&amp;', '&'), ('&#039;', "'"), ('&quot;', '"'), ('&nbsp;', ' ')):
+        t = t.replace(a, b)
+    return re.sub(r'\s+', ' ', t).strip()
+
+
+def search(term):
+    """Keresés címre. Visszaad: [{aid, title, art}]."""
+    html = post('web/kereso/', {'search_text': term}, referer=base_url() + 'web/kereso/')
+    if not html:
+        return []
+    results = []
+    seen = set()
+    # anime-adatlap linkek + a link szövege
+    for m in re.finditer(r'<a[^>]+href="[^"]*?/?leiras/(\d+)/?"[^>]*>(.*?)</a>', html,
+                         re.DOTALL | re.IGNORECASE):
+        aid = m.group(1)
+        if aid in seen:
+            continue
+        title = _clean(m.group(2))
+        # kép a link belsejéből
+        img = re.search(r'src="([^"]+)"', m.group(2))
+        art = urljoin(base_url(), img.group(1)) if img else None
+        if title:
+            seen.add(aid)
+            results.append({'aid': aid, 'title': title, 'art': art})
+    log('%d keresési találat: "%s"' % (len(results), term))
+    return results
+
+
+def episodes_of_anime(aid):
+    """Egy anime részei. Az adatlapról átmegyünk az első /resz/ oldalra, ott a teljes lista."""
+    html = get('leiras/%s/' % aid, referer=base_url())
+    m = _RESZ_RE.search(html or '')
+    if not m:
+        log('Nincs resz-link a leiras/%s oldalon' % aid, xbmc.LOGWARNING)
+        return {'title': '', 'episodes': []}
+    return episodes_of_resz(m.group(1))
+
+
+def episodes_of_resz(vid):
+    """A /resz/{vid}/ oldal epizódlistája + anime cím."""
+    html = get('resz/%s/' % vid, referer=base_url())
+    if not html:
+        return {'title': '', 'episodes': [], 'html': ''}
+    title = ''
+    tm = re.search(r'<div id="InfoBox".*?<h2>.*?leiras/\d+/">.*?</i>\s*([^<]+)</a>', html, re.DOTALL)
+    if tm:
+        title = _clean(tm.group(1))
+    episodes = []
+    seen = set()
+    for block in re.findall(r'<li[^>]*class="[^"]*videoChange[^"]*"[^>]*>.*?</li>', html, re.DOTALL):
+        vm = re.search(r'data-vid="(\d+)"', block)
+        if not vm:
+            continue
+        evid = vm.group(1)
+        if evid in seen:
+            continue
+        seen.add(evid)
+        sm = re.search(r'data-server="([^"]*)"', block)
+        tm2 = re.search(r'episode-title">([^<]+)<', block)
+        episodes.append({'vid': evid,
+                         'server': (sm.group(1) if sm else 's1'),
+                         'title': _clean(tm2.group(1)) if tm2 else ('rész %s' % evid)})
+    log('%d rész: resz/%s ("%s")' % (len(episodes), vid, title))
+    return {'title': title, 'episodes': episodes, 'html': html}
+
+
+# ---------------------------------------------------------------------------
+# Lejátszás
+# ---------------------------------------------------------------------------
+_MP4_RE = re.compile(r'https?:\\?/\\?/[^"\'\s<>]+?\.mp4[^"\'\s<>]*', re.IGNORECASE)
+_SRC_RE = re.compile(r'<source[^>]+src=["\']([^"\']+)["\']', re.IGNORECASE)
+_IFRAME_RE = re.compile(r'<iframe[^>]+src=["\']([^"\']+)["\']', re.IGNORECASE)
+
+
+def _unescape_url(u):
+    return (u or '').replace('\\/', '/').replace('&amp;', '&')
+
+
+def player_data(server, vid, csrf, referer):
+    txt = post('data/lejatszo/data_player.php',
+               {'server': server, 'vid': vid, 'csrf_token': csrf}, referer=referer)
+    if not txt:
+        return None
+    try:
+        return json.loads(txt)
+    except ValueError:
+        log('data_player.php nem JSON (részlet): %s' % txt[:300], xbmc.LOGWARNING)
+        return None
+
+
+def _extract_from_output(output):
+    """A player HTML-jéből lejátszható forrás(ok) kinyerése."""
+    urls = []
+    for m in _SRC_RE.finditer(output):
+        urls.append(_unescape_url(m.group(1)))
+    for m in _MP4_RE.finditer(output):
+        urls.append(_unescape_url(m.group(0)))
+    iframes = [_unescape_url(u) for u in _IFRAME_RE.findall(output)]
+    return _dedup(urls), iframes
+
+
+def resolve(vid, prefer_server=None):
+    """
+    Visszaad: {'url':..., 'hls':bool, 'headers':str, 'servers':[...], 'embed':...}.
+    A megadott résznél végigmegy a szervereken, míg lejátszható forrást talál.
+    """
+    result = {'url': None, 'hls': False, 'headers': '', 'servers': [], 'embed': None}
+    page = get('resz/%s/' % vid, referer=base_url())
+    if not page:
+        return result
+    csrf_m = _META_CSRF_RE.search(page)
+    csrf = csrf_m.group(1) if csrf_m else ''
+    dv = re.search(r'id="VideoPlayer"[^>]*data-server="([^"]*)"', page)
+    default_server = dv.group(1) if dv else 's1'
+
+    referer = base_url() + 'resz/%s/' % vid
+    tried = []
+    order = [prefer_server] if prefer_server else []
+    order += [default_server, 's1', 's2', 's3', 's4', 's5']
+
+    for server in order:
+        if not server or server in tried:
+            continue
+        tried.append(server)
+        data = player_data(server, vid, csrf, referer)
+        if not data:
+            continue
+        if data.get('servers'):
+            result['servers'] = data['servers']
+        if data.get('error'):
+            log('data_player error (%s): %s' % (server, data.get('error')), xbmc.LOGWARNING)
+            continue
+        # 1) HLS
+        if data.get('hls') and data.get('hls_url'):
+            try:
+                hls = base64.b64decode(data['hls_url']).decode('utf-8', 'replace')
+            except Exception:  # noqa
+                hls = ''
+            if hls:
+                result.update({'url': hls, 'hls': True,
+                               'headers': _hls_headers(referer)})
+                log('resolve(%s) HLS: %s' % (vid, hls))
+                return result
+        # 2) output-ból mp4 / iframe
+        output = data.get('output') or ''
+        urls, iframes = _extract_from_output(output)
+        mp4 = [u for u in urls if '.mp4' in u.lower()]
+        if mp4:
+            result.update({'url': mp4[0], 'headers': _hls_headers(referer)})
+            log('resolve(%s) MP4: %s' % (vid, mp4[0]))
+            return result
+        # 3) indavideo iframe
+        for fr in iframes:
+            if 'indavideo' in fr.lower():
+                iv = indavideo_resolve(fr)
+                if iv:
+                    result.update({'url': iv, 'headers': _hls_headers(referer)})
+                    log('resolve(%s) indavideo: %s' % (vid, iv))
+                    return result
+            result['embed'] = fr
+        # bármilyen m3u8 az output-ban
+        m3 = re.search(r'https?://[^"\'\s]+?\.m3u8[^"\'\s]*', output)
+        if m3:
+            result.update({'url': m3.group(0), 'hls': True, 'headers': _hls_headers(referer)})
+            return result
+
+    log('resolve(%s): nem sikerült forrást kinyerni. Szerverek: %s'
+        % (vid, [s.get('server') for s in result['servers']]), xbmc.LOGWARNING)
+    return result
+
+
+def _hls_headers(referer):
+    return '&'.join(['User-Agent=%s' % quote(USER_AGENT, ''),
+                     'Referer=%s' % quote(referer, ''),
+                     'Origin=%s' % quote(base_url().rstrip('/'), '')])
+
+
+# ---------------------------------------------------------------------------
+# indavideo feloldó (nyilvános amfphp API)
+# ---------------------------------------------------------------------------
+def indavideo_resolve(embed_url):
+    """indavideo embedből közvetlen mp4 (a legjobb minőség)."""
+    try:
+        m = re.search(r'/(?:player/video|video)/([0-9a-zA-Z-]+)', embed_url)
+        vid = m.group(1) if m else embed_url.rstrip('/').split('/')[-1]
+        api = 'https://amfphp.indavideo.hu/SYm0json.php/player.getVideoData/%s' % vid
+        txt = get(api, referer=embed_url)
+        data = json.loads(txt)
+        d = data.get('data') or data
+        files = d.get('video_files') or []
+        if isinstance(files, dict):
+            files = list(files.values())
+        tokens = d.get('filesh') or {}
+        best = None
+        best_h = -1
+        for f in files:
+            hm = re.search(r'\.(\d{3,4})\.mp4', f)
+            h = int(hm.group(1)) if hm else 0
+            url = f
+            if tokens:
+                q = str(h)
+                tok = tokens.get(q) or (list(tokens.values())[0] if tokens else None)
+                if tok:
+                    url = f + ('&' if '?' in f else '?') + 'token=' + tok
+            if h >= best_h:
+                best_h = h
+                best = url
+        return best
+    except Exception as exc:  # noqa
+        log('indavideo feloldás hiba: %s' % exc, xbmc.LOGWARNING)
+        return None
+
+
+def _dedup(seq):
+    seen = set()
+    out = []
+    for x in seq:
+        if x and x not in seen:
+            seen.add(x)
+            out.append(x)
+    return out
