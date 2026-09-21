@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<addon id="plugin.video.subvito" name="SubVito" version="1.0.0" provider-name="TomSzo">
+    <requires>
+        <import addon="xbmc.python" version="3.0.0"/>
+        <import addon="script.module.requests" version="2.22.0"/>
+        <import addon="inputstream.adaptive" optional="true"/>
+    </requires>
+    <extension point="xbmc.python.pluginsource" library="default.py">
+        <provides>video</provides>
+    </extension>
+    <extension point="xbmc.addon.metadata">
+        <summary lang="en">SubVito - South Park in Hungarian</summary>
+        <summary lang="hu">SubVito - South Park magyarul</summary>
+        <description lang="en">Unofficial video add-on for browsing and playing South Park episodes with Hungarian subtitles from subvito.eu. Browse seasons, episodes and search. Not affiliated with subvito.eu.</description>
+        <description lang="hu">Nem hivatalos videó addon a subvito.eu oldalról: South Park epizódok böngészése és lejátszása magyar felirattal. Évadok, részek böngészése és keresés. Nincs kapcsolatban a subvito.eu üzemeltetőivel.</description>
+        <disclaimer lang="en">This add-on only indexes publicly available links from subvito.eu. It does not host any content. Use at your own risk.</disclaimer>
+        <disclaimer lang="hu">Ez az addon csak a subvito.eu nyilvánosan elérhető hivatkozásait listázza, semmilyen tartalmat nem tárol. Csak saját felelősségre használd.</disclaimer>
+        <language>hu</language>
+        <platform>all</platform>
+        <license>GPL-3.0-or-later</license>
+        <source>https://github.com/TomSzo/tomszo.github.io</source>
+        <news>
+v1.0.0 (2026-09-21)
+- Kezdeti kiadás
+- Évadok és részek böngészése a subvito.eu oldalról
+- Keresés
+- Robusztus lejátszó: iframe / mp4 / m3u8 kinyerés, InputStream Adaptive HLS támogatással
+        </news>
+        <assets>
+            <icon>icon.png</icon>
+            <fanart>fanart.jpg</fanart>
+        </assets>
+    </extension>
+</addon>

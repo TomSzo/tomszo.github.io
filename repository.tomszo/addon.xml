@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<addon id="repository.tomszo" name="TomSzo Repository" version="1.0.6" provider-name="TomSzo">
+<addon id="repository.tomszo" name="TomSzo Repository" version="1.0.7" provider-name="TomSzo">
     <requires>
         <import addon="xbmc.addon" version="12.0.0"/>
     </requires>
@@ -27,6 +27,7 @@
             Included addons:
             - service.autosub (Auto subtitle handler)
             - nCore TV (video addon)
+            - SubVito (South Park in Hungarian, video addon)
             - avdvplus.Estuary (skin)
             - Speed Tester (Internet bandwidth test)
 
@@ -46,12 +47,16 @@
             Addonok:
             - service.autosub (Automatikus felirat kezelő)
             - nCore TV (videó addon)
+            - SubVito (South Park magyarul, videó addon)
             - avdvplus.Estuary (skin)
             - Speed Tester (internet sebességteszt)
 
             FIGYELEM: Ez egy BÉTA tároló. Csak saját felelősségre használd!
         </description>
         <news>
+v1.0.7 (2026-09-21) - BÉTA
+- Hozzáadva: plugin.video.subvito (1.0.0) - SubVito, South Park magyarul (videó addon)
+
 v1.0.6 (2026-09-20) - BÉTA
 - Frissítve: script.speedtester 2.0.0 (TomSzo saját fork, modern-server-discovery)
 
