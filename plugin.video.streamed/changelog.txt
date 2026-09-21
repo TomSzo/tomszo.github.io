@@ -1,0 +1,8 @@
+v1.0.0 (2026-09-21)
+- Kezdeti kiadás
+- streamed.pk nyilvános API-kliens
+- Böngészés: Élő most, Népszerű, Ma, Sportágak, Összes meccs
+- Meccs -> stream-választás (forrás, nyelv, HD, szám)
+- Best-effort lejátszás: m3u8 kinyerés az embedből, InputStream Adaptive (HLS)
+  a szükséges Referer/Origin fejlécekkel
+- Magyar és angol nyelvi fájlok, saját ikon és fanart

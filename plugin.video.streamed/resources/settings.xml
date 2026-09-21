@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<settings version="1">
+    <section id="plugin.video.streamed">
+        <category id="general" label="30100">
+            <group id="1" label="30101">
+                <setting id="base_url" type="string" label="30102" help="30103">
+                    <level>0</level>
+                    <default>https://streamed.pk/</default>
+                    <constraints>
+                        <allowempty>false</allowempty>
+                    </constraints>
+                    <control type="edit" format="string">
+                        <heading>30102</heading>
+                    </control>
+                </setting>
+            </group>
+            <group id="2" label="30104">
+                <setting id="debug" type="boolean" label="30105" help="30106">
+                    <level>0</level>
+                    <default>false</default>
+                    <control type="toggle"/>
+                </setting>
+            </group>
+        </category>
+    </section>
+</settings>
