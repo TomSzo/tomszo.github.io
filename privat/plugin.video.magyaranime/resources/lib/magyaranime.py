@@ -24,6 +24,7 @@ except ImportError:
 
 import xbmc
 import xbmcaddon
+import xbmcvfs
 
 try:
     import requests
@@ -55,16 +56,82 @@ def base_url():
     return url
 
 
-def _cookies():
-    """A beállításban megadott cookie-string -> dict."""
-    raw = (ADDON.getSetting('cookie') or '').strip()
+def cookie_file_path():
+    """A fix cookie-fájl helye (ide másolható a cookie.txt / export)."""
+    prof = xbmcvfs.translatePath(ADDON.getAddonInfo('profile'))
+    return prof, xbmcvfs.translatePath('special://profile/addon_data/%s/cookie.txt' % ADDON_ID)
+
+
+def _parse_cookie_text(text):
+    """Cookie kinyerése: JSON (Cookie-Editor export), Netscape cookies.txt, vagy sima szöveg."""
+    text = (text or '').strip()
+    if not text:
+        return {}
+    # 1) JSON (Cookie-Editor "Export")
+    if text[:1] in '[{':
+        try:
+            data = json.loads(text)
+            if isinstance(data, dict):
+                data = data.get('cookies') or data.get('data') or list(data.values())
+            jar = {}
+            for c in data:
+                if isinstance(c, dict) and c.get('name'):
+                    jar[c['name']] = c.get('value', '')
+            if jar:
+                return jar
+        except Exception:  # noqa
+            pass
+    # 2) Netscape cookies.txt (tab-tagolt)
+    if '\t' in text:
+        jar = {}
+        for line in text.splitlines():
+            if line.startswith('#') or not line.strip():
+                continue
+            p = line.split('\t')
+            if len(p) >= 7 and p[5]:
+                jar[p[5]] = p[6]
+        if jar:
+            return jar
+    # 3) sima "name=value; name=value"
     jar = {}
-    for part in raw.replace('\n', ';').split(';'):
-        part = part.strip()
+    for part in text.replace('\n', ';').split(';'):
         if '=' in part:
             k, v = part.split('=', 1)
             jar[k.strip()] = v.strip()
     return jar
+
+
+def _read_file(path):
+    try:
+        if path and xbmcvfs.exists(path):
+            fh = xbmcvfs.File(path)
+            data = fh.read()
+            fh.close()
+            return data
+    except Exception as exc:  # noqa
+        log('Cookie-fájl olvasási hiba (%s): %s' % (path, exc), xbmc.LOGWARNING)
+    return ''
+
+
+def _cookies():
+    """
+    Cookie forrás sorrend:
+      1) 'cookie' beállítás (kézzel beírt string)
+      2) 'cookie_file' beállítás (kiválasztott fájl: JSON export / cookies.txt)
+      3) fix fájl: addon_data/<id>/cookie.txt
+    """
+    raw = (ADDON.getSetting('cookie') or '').strip()
+    if raw:
+        return _parse_cookie_text(raw)
+    for path in [(ADDON.getSetting('cookie_file') or '').strip(),
+                 xbmcvfs.translatePath('special://profile/addon_data/%s/cookie.txt' % ADDON_ID)]:
+        data = _read_file(path)
+        if data:
+            jar = _parse_cookie_text(data)
+            if jar:
+                log('Cookie betöltve: %s (%d süti)' % (path, len(jar)))
+                return jar
+    return {}
 
 
 def _headers(referer=None, ajax=False):
