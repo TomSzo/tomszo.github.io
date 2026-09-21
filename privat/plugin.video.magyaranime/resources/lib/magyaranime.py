@@ -134,6 +134,28 @@ def _cookies():
     return {}
 
 
+def cookie_status():
+    """Diagnosztika: (forrás_leírás, [sütinevek]). Nem ad vissza értékeket."""
+    raw = (ADDON.getSetting('cookie') or '').strip()
+    if raw:
+        return 'szöveg-mező', list(_parse_cookie_text(raw).keys())
+    cf = (ADDON.getSetting('cookie_file') or '').strip()
+    data = _read_file(cf)
+    if data:
+        return 'fájl: %s' % cf, list(_parse_cookie_text(data).keys())
+    fixed = xbmcvfs.translatePath('special://profile/addon_data/%s/cookie.txt' % ADDON_ID)
+    data = _read_file(fixed)
+    if data:
+        return 'fix fájl (cookie.txt)', list(_parse_cookie_text(data).keys())
+    return 'nincs', []
+
+
+def check_login():
+    """Betölti a főoldalt a jelenlegi sütivel. Visszaad: (bejelentkezve?, hossz)."""
+    html = get('', referer=base_url())
+    return logged_in(html), len(html or '')
+
+
 def _headers(referer=None, ajax=False):
     h = {'User-Agent': USER_AGENT,
          'Accept-Language': 'hu-HU,hu;q=0.9,en;q=0.5'}
@@ -174,7 +196,11 @@ def logged_in(html):
     """Bejelentkezettség ellenőrzése egy oldal HTML-je alapján."""
     if not html:
         return False
-    return 'felhasznalo/kijelentkezes' in html or 'gen-account-menu' in html and 'bejelentkezes/' not in html.split('gen-account-menu', 1)[-1][:400]
+    low = html.lower()
+    # pozitív jel: kijelentkezés/logout link jelenléte
+    if 'kijelentkezes' in low or 'logout' in low or 'felhasznalo/adatok' in low:
+        return True
+    return False
 
 
 # ---------------------------------------------------------------------------

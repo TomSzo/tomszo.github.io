@@ -28,7 +28,7 @@ v1.0.0 (2026-09-21) - PRIVÁT
     </extension>
 </addon>
 
-<addon id="plugin.video.magyaranime" name="MagyarAnime (privát)" version="0.1.3" provider-name="TomSzo">
+<addon id="plugin.video.magyaranime" name="MagyarAnime (privát)" version="0.1.4" provider-name="TomSzo">
     <requires>
         <import addon="xbmc.python" version="3.0.0"/>
         <import addon="script.module.requests" version="2.22.0"/>
@@ -45,6 +45,10 @@ v1.0.0 (2026-09-21) - PRIVÁT
         <platform>all</platform>
         <license>GPL-3.0-or-later</license>
         <news>
+v0.1.4 (2026-09-21) - PRIVÁT / BÉTA
+- Beépített "Kapcsolat teszt": cookie + bejelentkezés ellenőrzés
+- Javítva: fájl-alapú cookie téves figyelmeztetése
+
 v0.1.3 (2026-09-21) - PRIVÁT / BÉTA
 - Cookie fájlból is betölthető (nincs gépelés): Cookie-Editor Export, cookies.txt vagy name=value
 - Fix hely is: special://profile/addon_data/plugin.video.magyaranime/cookie.txt

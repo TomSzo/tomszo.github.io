@@ -1,3 +1,9 @@
+v0.1.4 (2026-09-21) - PRIVÁT / BÉTA
+- Beépített "Kapcsolat teszt" a főmenüben: megmutatja, hány süti töltődött be,
+  honnan (szöveg/fájl/fix hely), betölt-e a főoldal, és be vagy-e jelentkezve.
+- Javítva: fájlból betöltött cookie-nál is eltűnik a "nincs cookie" piros sor.
+- Megbízhatóbb bejelentkezés-érzékelés (kijelentkezés-link alapján).
+
 v0.1.3 (2026-09-21) - PRIVÁT / BÉTA
 - Cookie fájlból is betölthető (nincs gépelés a Kodiban):
   * Cookie-Editor "Export" fájl (JSON), Netscape cookies.txt, vagy "name=value; name=value"
