@@ -73,7 +73,8 @@ def view_diag():
     src, names = ma.cookie_status()
     lines = ['Cookie forrás: %s' % src,
              'Sütik (%d): %s' % (len(names), ', '.join(names) if names else '-'),
-             'User-Agent: %s' % ma.user_agent()]
+             'User-Agent: %s' % ma.user_agent(),
+             'Feloldó modul: %s' % (ma.has_resolver() or 'nincs (indavideo saját; videa NEM megy)')]
     if names:
         ok, length = ma.check_login()
         lines.append('Főoldal betöltve: %d byte' % length)
@@ -130,8 +131,8 @@ def play(vid, server=None):
     data = ma.resolve(vid, prefer_server=server)
     url = data.get('url')
     if not url:
-        srv = ', '.join(s.get('server', '?') for s in data.get('servers') or [])
-        notify('Nem sikerült a lejátszás%s' % ((' (szerverek: %s)' % srv) if srv else ''), t=7000)
+        hint = '' if ma.has_resolver() else ' – telepítsd a ResolveURL-t (indavideo/videa)'
+        notify('Nem sikerült a lejátszás%s' % hint, t=8000)
         xbmcplugin.setResolvedUrl(HANDLE, False, xbmcgui.ListItem())
         return
     li = xbmcgui.ListItem(path=url)

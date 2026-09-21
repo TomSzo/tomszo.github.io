@@ -390,15 +390,20 @@ def resolve(vid, prefer_server=None):
             result.update({'url': mp4[0], 'headers': _hls_headers(referer)})
             log('resolve(%s) MP4: %s' % (vid, mp4[0]))
             return result
-        # 3) indavideo iframe
+        # 3) indavideo / videa / egyéb beágyazott lejátszó
         for fr in iframes:
-            if 'indavideo' in fr.lower():
-                iv = indavideo_resolve(fr)
-                if iv:
-                    result.update({'url': iv, 'headers': _hls_headers(referer)})
-                    log('resolve(%s) indavideo: %s' % (vid, iv))
-                    return result
             result['embed'] = fr
+            low = fr.lower()
+            media = None
+            if 'indavideo' in low:
+                media = indavideo_resolve(fr)      # saját, gyors út (nincs függőség)
+            if not media:
+                media = resolve_via_module(fr)     # ResolveURL/URLResolver, ha telepítve
+            if media:
+                hls = '.m3u8' in media.lower()
+                result.update({'url': media, 'hls': hls, 'headers': _hls_headers(referer)})
+                log('resolve(%s) beágyazott feloldva: %s' % (vid, media))
+                return result
         # bármilyen m3u8 az output-ban
         m3 = re.search(r'https?://[^"\'\s]+?\.m3u8[^"\'\s]*', output)
         if m3:
@@ -414,6 +419,43 @@ def _hls_headers(referer):
     return '&'.join(['User-Agent=%s' % quote(user_agent(), ''),
                      'Referer=%s' % quote(referer, ''),
                      'Origin=%s' % quote(base_url().rstrip('/'), '')])
+
+
+def has_resolver():
+    """Van-e telepített ResolveURL/URLResolver modul? Visszaadja a nevét vagy ''-t."""
+    try:
+        import resolveurl  # noqa
+        return 'ResolveURL'
+    except ImportError:
+        pass
+    try:
+        import urlresolver  # noqa
+        return 'URLResolver'
+    except ImportError:
+        return ''
+
+
+def resolve_via_module(url):
+    """Beágyazott lejátszó (indavideo/videa/stb.) feloldása a telepített modullal."""
+    mod = None
+    try:
+        import resolveurl as mod
+    except ImportError:
+        try:
+            import urlresolver as mod
+        except ImportError:
+            log('Nincs ResolveURL/URLResolver – nem feloldható: %s' % url, xbmc.LOGWARNING)
+            return None
+    try:
+        hmf = mod.HostedMediaFile(url)
+        if hmf and hmf.valid_url():
+            u = hmf.resolve()
+            if u:
+                return u
+        log('ResolveURL nem tudta feloldani: %s' % url, xbmc.LOGWARNING)
+    except Exception as exc:  # noqa
+        log('ResolveURL hiba (%s): %s' % (url, exc), xbmc.LOGWARNING)
+    return None
 
 
 # ---------------------------------------------------------------------------
@@ -432,6 +474,9 @@ def indavideo_resolve(embed_url):
         if isinstance(files, dict):
             files = list(files.values())
         tokens = d.get('filesh') or {}
+        if not files:
+            log('indavideo: nincs video_files (válasz eleje: %s)' % (txt or '')[:400],
+                xbmc.LOGWARNING)
         best = None
         best_h = -1
         for f in files:
