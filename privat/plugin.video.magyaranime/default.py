@@ -12,6 +12,7 @@ import xbmc
 import xbmcgui
 import xbmcplugin
 import xbmcaddon
+import xbmcvfs
 
 from resources.lib import magyaranime as ma
 
@@ -66,6 +67,35 @@ def view_root():
     add_dir('Rész megnyitása azonosítóval', build_url(action='byid'))
     add_dir('[COLOR yellow]Kapcsolat teszt (cookie ellenőrzés)[/COLOR]',
             build_url(action='diag'), folder=False)
+    add_dir('[COLOR yellow]Keresés HTML mentése (hibakereséshez)[/COLOR]',
+            build_url(action='dumpsearch'), folder=False)
+    end('files')
+
+
+def view_dumpsearch():
+    kb = xbmc.Keyboard('', 'Keresett szó (HTML mentés)')
+    kb.doModal()
+    if not kb.isConfirmed() or not kb.getText().strip():
+        end()
+        return
+    html = ma.search_raw(kb.getText().strip())
+    data = html.encode('utf-8') if isinstance(html, str) else (html or b'')
+    targets = ['/storage/emulated/0/Download/ma_search.html',
+               xbmcvfs.translatePath('special://profile/addon_data/%s/ma_search.html'
+                                     % ADDON.getAddonInfo('id'))]
+    saved = ''
+    for t in targets:
+        try:
+            fh = xbmcvfs.File(t, 'w')
+            fh.write(bytearray(data))
+            fh.close()
+            saved = t
+            break
+        except Exception:
+            continue
+    xbmcgui.Dialog().textviewer('Keresés HTML mentés',
+                                'Mentve ide:\n%s\n\n%d byte\n\nKüldd el ezt a fájlt.'
+                                % (saved or 'SIKERTELEN', len(data)))
     end('files')
 
 
@@ -165,6 +195,8 @@ def router(qs):
         view_byid()
     elif action == 'diag':
         view_diag()
+    elif action == 'dumpsearch':
+        view_dumpsearch()
     elif action == 'play':
         play(p['vid'], p.get('server'))
     elif action == 'opensettings':

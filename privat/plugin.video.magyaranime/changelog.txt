@@ -1,3 +1,8 @@
+v0.1.8 (2026-09-21) - PRIVÁT / BÉTA
+- Uj "Keresés HTML mentése" menupont: a keresesi oldal nyers HTML-jet elmenti
+  (Download/ma_search.html), hogy a talalat-olvaso pontosan javithato legyen.
+  (Jelenleg a kereso tevesen csak a "Random anime" gombot adja vissza.)
+
 v0.1.7 (2026-09-21) - PRIVÁT / BÉTA
 - Lejatszas javitas: a beagyazott lejatszokat (indavideo, videa, stb.) a telepitett
   ResolveURL (script.module.resolveurl) vagy URLResolver modul oldja fel. Igy a videa

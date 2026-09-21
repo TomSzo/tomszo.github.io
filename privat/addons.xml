@@ -28,7 +28,7 @@ v1.0.0 (2026-09-21) - PRIVÁT
     </extension>
 </addon>
 
-<addon id="plugin.video.magyaranime" name="MagyarAnime (privát)" version="0.1.7" provider-name="TomSzo">
+<addon id="plugin.video.magyaranime" name="MagyarAnime (privát)" version="0.1.8" provider-name="TomSzo">
     <requires>
         <import addon="xbmc.python" version="3.0.0"/>
         <import addon="script.module.requests" version="2.22.0"/>
@@ -46,6 +46,9 @@ v1.0.0 (2026-09-21) - PRIVÁT
         <platform>all</platform>
         <license>GPL-3.0-or-later</license>
         <news>
+v0.1.8 (2026-09-21) - PRIVÁT / BÉTA
+- Uj "Keresés HTML mentése" gomb hibakeresehez (talalat-olvaso javitasahoz)
+
 v0.1.7 (2026-09-21) - PRIVÁT / BÉTA
 - Lejatszas: indavideo/videa feloldas ResolveURL modullal (ha telepitve)
 - Kapcsolat teszt kiirja, van-e feloldo modul
