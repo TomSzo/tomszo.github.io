@@ -35,8 +35,14 @@ except ImportError:
 ADDON = xbmcaddon.Addon()
 ADDON_ID = ADDON.getAddonInfo('id')
 DEFAULT_BASE = 'https://magyaranime.eu/'
-USER_AGENT = ('Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 '
-              '(KHTML, like Gecko) Chrome/124.0 Safari/537.36')
+# Alapértelmezett UA: modern Android Firefox (a legtöbb felhasználó innen exportál).
+# A pontos, bejelentkezett böngésző UA-ját a beállításokban lehet megadni.
+DEFAULT_UA = 'Mozilla/5.0 (Android 14; Mobile; rv:131.0) Gecko/131.0 Firefox/131.0'
+USER_AGENT = DEFAULT_UA
+
+
+def user_agent():
+    return (ADDON.getSetting('user_agent') or '').strip() or DEFAULT_UA
 
 _SESSION = requests.Session() if HAVE_REQUESTS else None
 
@@ -157,7 +163,7 @@ def check_login():
 
 
 def _headers(referer=None, ajax=False):
-    h = {'User-Agent': USER_AGENT,
+    h = {'User-Agent': user_agent(),
          'Accept-Language': 'hu-HU,hu;q=0.9,en;q=0.5'}
     if ajax:
         h['X-Requested-With'] = 'XMLHttpRequest'
@@ -405,7 +411,7 @@ def resolve(vid, prefer_server=None):
 
 
 def _hls_headers(referer):
-    return '&'.join(['User-Agent=%s' % quote(USER_AGENT, ''),
+    return '&'.join(['User-Agent=%s' % quote(user_agent(), ''),
                      'Referer=%s' % quote(referer, ''),
                      'Origin=%s' % quote(base_url().rstrip('/'), '')])
 
