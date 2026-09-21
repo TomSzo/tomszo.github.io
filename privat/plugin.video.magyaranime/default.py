@@ -53,7 +53,8 @@ def notify(msg, t=4000):
 
 
 def _cookie_ok():
-    return bool((ADDON.getSetting('cookie') or '').strip())
+    src, names = ma.cookie_status()
+    return bool(names)
 
 
 # --------------------------------------------------------------------------
@@ -63,6 +64,22 @@ def view_root():
                 build_url(action='opensettings'), folder=False)
     add_dir('Keresés', build_url(action='search'))
     add_dir('Rész megnyitása azonosítóval', build_url(action='byid'))
+    add_dir('[COLOR yellow]Kapcsolat teszt (cookie ellenőrzés)[/COLOR]',
+            build_url(action='diag'), folder=False)
+    end('files')
+
+
+def view_diag():
+    src, names = ma.cookie_status()
+    lines = ['Cookie forrás: %s' % src,
+             'Sütik (%d): %s' % (len(names), ', '.join(names) if names else '-')]
+    if names:
+        ok, length = ma.check_login()
+        lines.append('Főoldal betöltve: %d byte' % length)
+        lines.append('Bejelentkezve: %s' % ('IGEN' if ok else 'NEM (rossz/lejárt cookie?)'))
+    else:
+        lines.append('Nincs betölthető cookie – add meg a fájlt vagy a szöveget a beállításokban.')
+    xbmcgui.Dialog().textviewer(ADDON.getAddonInfo('name') + ' – teszt', '\n'.join(lines))
     end('files')
 
 
@@ -144,6 +161,8 @@ def router(qs):
         view_anime(p['aid'])
     elif action == 'byid':
         view_byid()
+    elif action == 'diag':
+        view_diag()
     elif action == 'play':
         play(p['vid'], p.get('server'))
     elif action == 'opensettings':
