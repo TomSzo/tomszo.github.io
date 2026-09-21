@@ -1,3 +1,10 @@
+v0.1.7 (2026-09-21) - PRIVÁT / BÉTA
+- Lejatszas javitas: a beagyazott lejatszokat (indavideo, videa, stb.) a telepitett
+  ResolveURL (script.module.resolveurl) vagy URLResolver modul oldja fel. Igy a videa
+  is megy, es az indavideo is megbizhatobb. A modul nelkul a sajat indavideo-ut mukodik.
+- Kapcsolat teszt: kiirja, van-e telepitett feloldo modul.
+- Hiba eseten az indavideo valaszat naplozza a finomitashoz.
+
 v0.1.6 (2026-09-21) - PRIVÁT / BÉTA
 - Alapértelmezett User-Agent frissítve: Android 16 / Firefox 156.
   (Ha frissül a böngésző, a beállításokban felülírható.)
