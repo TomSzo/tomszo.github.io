@@ -1,3 +1,9 @@
+v0.2.0 (2026-09-22) - PRIVÁT / BÉTA
+- A ResolveURL felismeri az indavideo/videa/dailymotion/streamtape stb. forrasokat,
+  ezek mostantol lejatszhatok. A mega.nz-hez NINCS ingyenes feloldo a ResolveURL-ben
+  (csak fizetos debrid), ezert a csak-mega reszeknel ertheto uzenetet ad.
+- resolve() jelzi, ha a forras mega.nz.
+
 v0.1.9 (2026-09-21) - PRIVÁT / BÉTA
 - A magyaranime kereso DataTables/AJAX-alapu (a talalatok kulon vegpontrol jonnek).
   A "Keresés HTML mentése" most a betolto JS fajlokat (search.js, kereso_v2.js) is

@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<addon id="plugin.video.magyaranime" name="MagyarAnime (privát)" version="0.1.9" provider-name="TomSzo">
+<addon id="plugin.video.magyaranime" name="MagyarAnime (privát)" version="0.2.0" provider-name="TomSzo">
     <requires>
         <import addon="xbmc.python" version="3.0.0"/>
         <import addon="script.module.requests" version="2.22.0"/>
@@ -17,6 +17,10 @@
         <platform>all</platform>
         <license>GPL-3.0-or-later</license>
         <news>
+v0.2.0 (2026-09-22) - PRIVÁT / BÉTA
+- Lejatszas: indavideo/videa/stb. mukodik ResolveURL-lel; mega.nz-nel ertheto uzenet
+- (ResolveURL-ben nincs ingyenes mega.nz feloldo)
+
 v0.1.9 (2026-09-21) - PRIVÁT / BÉTA
 - A keres0 DataTables/AJAX-alapu; a "Keresés HTML mentése" most a betolto JS-t is menti
 

@@ -409,6 +409,8 @@ def resolve(vid, prefer_server=None):
         for fr in iframes:
             result['embed'] = fr
             low = fr.lower()
+            if 'mega.nz' in low or 'mega.co.nz' in low:
+                result['mega'] = True
             media = None
             if 'indavideo' in low:
                 media = indavideo_resolve(fr)      # saját, gyors út (nincs függőség)
@@ -450,8 +452,23 @@ def has_resolver():
         return ''
 
 
+def _embed_variants(url):
+    """Néhány beágyazott URL-t át kell írni, hogy a ResolveURL felismerje.
+    Pl. a mega.nz 'embed' formátumát a ResolveURL a '/file/' alakban ismeri."""
+    variants = [url]
+    low = url.lower()
+    if 'mega' in low and '/embed/' in low:
+        # https://mega.nz/embed/{id}#{kulcs} -> https://mega.nz/file/{id}#{kulcs}
+        variants.insert(0, re.sub(r'/embed/', '/file/', url, count=1))
+        # klasszikus alak is: https://mega.nz/#!{id}!{kulcs}
+        m = re.search(r'/embed/([0-9A-Za-z_-]+)#([0-9A-Za-z_-]+)', url)
+        if m:
+            variants.append('https://mega.nz/#!%s!%s' % (m.group(1), m.group(2)))
+    return variants
+
+
 def resolve_via_module(url):
-    """Beágyazott lejátszó (indavideo/videa/stb.) feloldása a telepített modullal."""
+    """Beágyazott lejátszó (mega, videa, indavideo, stb.) feloldása a telepített modullal."""
     mod = None
     try:
         import resolveurl as mod
@@ -461,15 +478,17 @@ def resolve_via_module(url):
         except ImportError:
             log('Nincs ResolveURL/URLResolver – nem feloldható: %s' % url, xbmc.LOGWARNING)
             return None
-    try:
-        hmf = mod.HostedMediaFile(url)
-        if hmf and hmf.valid_url():
-            u = hmf.resolve()
-            if u:
-                return u
-        log('ResolveURL nem tudta feloldani: %s' % url, xbmc.LOGWARNING)
-    except Exception as exc:  # noqa
-        log('ResolveURL hiba (%s): %s' % (url, exc), xbmc.LOGWARNING)
+    for u in _embed_variants(url):
+        try:
+            hmf = mod.HostedMediaFile(u)
+            if hmf and hmf.valid_url():
+                res = hmf.resolve()
+                if res:
+                    log('ResolveURL feloldva (%s): %s' % (u, res))
+                    return res
+        except Exception as exc:  # noqa
+            log('ResolveURL hiba (%s): %s' % (u, exc), xbmc.LOGWARNING)
+    log('ResolveURL nem tudta feloldani: %s' % url, xbmc.LOGWARNING)
     return None
 
 
