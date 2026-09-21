@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <addons>
 
-<addon id="repository.tomszo" name="TomSzo Repository" version="1.0.6" provider-name="TomSzo">
+<addon id="repository.tomszo" name="TomSzo Repository" version="1.0.7" provider-name="TomSzo">
     <requires>
         <import addon="xbmc.addon" version="12.0.0"/>
     </requires>
@@ -15,9 +15,12 @@
     <extension point="xbmc.addon.metadata">
         <summary lang="en">TomSzo Kodi Repository</summary>
         <summary lang="hu">TomSzo Kodi Tároló</summary>
-        <description lang="en">A personal Kodi repository by TomSzo. Contains carefully selected third-party repositories and useful addons. Included: ElementumOrg, jurialmunkey, MovieShark, Addons4Kodi, Don't Panic, signde, service.autosub, nCore TV, avdvplus.Estuary, Speed Tester. WARNING: BETA repository. Use at your own risk.</description>
-        <description lang="hu">TomSzo személyes Kodi tárolója. Tartalmazza: ElementumOrg, jurialmunkey, MovieShark, Addons4Kodi, Don't Panic, signde, service.autosub, nCore TV (videó), avdvplus.Estuary (skin), Speed Tester (sebességteszt). FIGYELEM: BÉTA tároló. Csak saját felelősségre!</description>
+        <description lang="en">A personal Kodi repository by TomSzo. Contains carefully selected third-party repositories and useful addons. Included: ElementumOrg, jurialmunkey, MovieShark, Addons4Kodi, Don't Panic, signde, service.autosub, nCore TV, SubVito, avdvplus.Estuary, Speed Tester. WARNING: BETA repository. Use at your own risk.</description>
+        <description lang="hu">TomSzo személyes Kodi tárolója. Tartalmazza: ElementumOrg, jurialmunkey, MovieShark, Addons4Kodi, Don't Panic, signde, service.autosub, nCore TV (videó), SubVito (South Park magyarul), avdvplus.Estuary (skin), Speed Tester (sebességteszt). FIGYELEM: BÉTA tároló. Csak saját felelősségre!</description>
         <news>
+v1.0.7 (2026-09-21) - BÉTA
+- Hozzáadva: plugin.video.subvito (1.0.0) - SubVito, South Park magyarul (videó addon)
+
 v1.0.6 (2026-09-20) - BÉTA
 - Frissítve: script.speedtester 2.0.0 (TomSzo saját fork, modern-server-discovery)
 
@@ -299,6 +302,40 @@ v2.0.0 (2026-07-26)
             <screenshot>resources/media/screenshot01.jpg</screenshot>
             <screenshot>resources/media/screenshot02.jpg</screenshot>
             <screenshot>resources/media/screenshot03.jpg</screenshot>
+        </assets>
+    </extension>
+</addon>
+
+<addon id="plugin.video.subvito" name="SubVito" version="1.0.0" provider-name="TomSzo">
+    <requires>
+        <import addon="xbmc.python" version="3.0.0"/>
+        <import addon="script.module.requests" version="2.22.0"/>
+        <import addon="inputstream.adaptive" optional="true"/>
+    </requires>
+    <extension point="xbmc.python.pluginsource" library="default.py">
+        <provides>video</provides>
+    </extension>
+    <extension point="xbmc.addon.metadata">
+        <summary lang="en">SubVito - South Park in Hungarian</summary>
+        <summary lang="hu">SubVito - South Park magyarul</summary>
+        <description lang="en">Unofficial video add-on for browsing and playing South Park episodes with Hungarian subtitles from subvito.eu. Browse seasons, episodes and search. Not affiliated with subvito.eu.</description>
+        <description lang="hu">Nem hivatalos videó addon a subvito.eu oldalról: South Park epizódok böngészése és lejátszása magyar felirattal. Évadok, részek böngészése és keresés. Nincs kapcsolatban a subvito.eu üzemeltetőivel.</description>
+        <disclaimer lang="en">This add-on only indexes publicly available links from subvito.eu. It does not host any content. Use at your own risk.</disclaimer>
+        <disclaimer lang="hu">Ez az addon csak a subvito.eu nyilvánosan elérhető hivatkozásait listázza, semmilyen tartalmat nem tárol. Csak saját felelősségre használd.</disclaimer>
+        <language>hu</language>
+        <platform>all</platform>
+        <license>GPL-3.0-or-later</license>
+        <source>https://github.com/TomSzo/tomszo.github.io</source>
+        <news>
+v1.0.0 (2026-09-21)
+- Kezdeti kiadás
+- Évadok (1-29), Filmek, P+ böngészése a subvito.eu oldalról
+- Részek címmel, keresés (ékezet-független)
+- Lejátszás közvetlen MP4-ből, magyar felirattal (VTT)
+        </news>
+        <assets>
+            <icon>icon.png</icon>
+            <fanart>fanart.jpg</fanart>
         </assets>
     </extension>
 </addon>
