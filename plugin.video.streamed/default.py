@@ -129,7 +129,7 @@ def play(st):
     urls = data.get('m3u8') or []
     if urls:
         stream_url = urls[0]
-        headers = streamed.hls_headers(data['origin'])
+        headers = streamed.hls_headers(data['origin'], data.get('cookie', ''))
         li = xbmcgui.ListItem(path=stream_url)
         li.setProperty('inputstream', 'inputstream.adaptive')
         li.setProperty('inputstreamaddon', 'inputstream.adaptive')

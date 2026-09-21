@@ -50,6 +50,9 @@ DEFAULT_EMBED = 'https://embed.st/'
 USER_AGENT = ('Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 '
               '(KHTML, like Gecko) Chrome/124.0 Safari/537.36')
 
+# Munkamenet a sütik (Set-Cookie) elkapásához, hogy a lejátszónak átadhassuk.
+_SESSION = requests.Session() if HAVE_REQUESTS else None
+
 
 def log(msg, level=xbmc.LOGINFO):
     xbmc.log('[%s] %s' % (ADDON_ID, msg), level)
@@ -87,7 +90,7 @@ def fetch(url, referer=None, timeout=20, json_accept=False):
     log('GET %s' % url)
     try:
         if HAVE_REQUESTS:
-            resp = requests.get(url, headers=_headers(referer, json_accept), timeout=timeout)
+            resp = _SESSION.get(url, headers=_headers(referer, json_accept), timeout=timeout)
             if resp.status_code != 200:
                 log('HTTP %s: %s' % (resp.status_code, url), xbmc.LOGWARNING)
             resp.encoding = resp.apparent_encoding or 'utf-8'
@@ -234,6 +237,38 @@ _JSHLS_RE = re.compile(
     r'(?:source|file|src|hls|url|playlist)\s*[:=]\s*["\']([^"\']+\.m3u8[^"\']*)["\']',
     re.IGNORECASE)
 _IFRAME_RE = re.compile(r'<iframe[^>]+src=["\']([^"\']+)["\']', re.IGNORECASE)
+_PACKED_RE = re.compile(
+    r"\}\('(.*?)',\s*(\d+),\s*(\d+),\s*'(.*?)'\.split\('\|'\)", re.DOTALL)
+
+
+def _unpack_packed(text):
+    """Dean Edwards p,a,c,k,e,d JS kicsomagolása (függőség nélkül)."""
+    out = []
+    for m in _PACKED_RE.finditer(text or ''):
+        try:
+            payload, a, c, keywords = m.group(1), int(m.group(2)), int(m.group(3)), m.group(4).split('|')
+
+            def _b(n):
+                first = '' if n < a else _b(int(n // a))
+                r = n % a
+                return first + (chr(r + 29) if r > 35 else
+                                '0123456789abcdefghijklmnopqrstuvwxyz'[r])
+
+            table = {}
+            i = c
+            while i:
+                i -= 1
+                key = _b(i)
+                table[key] = keywords[i] if i < len(keywords) and keywords[i] else key
+            decoded = re.sub(r'\b\w+\b', lambda mm: table.get(mm.group(0), mm.group(0)), payload)
+            out.append(decoded)
+        except Exception as exc:  # noqa
+            log('Unpack hiba: %s' % exc, xbmc.LOGWARNING)
+    return '\n'.join(out)
+
+
+def _scan_m3u8(text):
+    return _M3U8_RE.findall(text or '') + _JSHLS_RE.findall(text or '')
 
 
 def _embed_url(st):
@@ -242,44 +277,62 @@ def _embed_url(st):
     return '%sembed/%s/%s/%s' % (embed_base(), st['source'], st['id'], st['streamNo'])
 
 
+def cookie_header():
+    """A munkamenet sütijei 'k=v; k2=v2' formában (a lejátszóhoz)."""
+    if not _SESSION:
+        return ''
+    try:
+        return '; '.join('%s=%s' % (c.name, c.value) for c in _SESSION.cookies)
+    except Exception:  # noqa
+        return ''
+
+
 def resolve(st):
     """
-    Visszaad: {'m3u8': [...], 'embed': <url>, 'origin': <embed origin>}.
-    Az embed-oldalról (egy szint iframe-követéssel) próbál m3u8-at kinyerni.
+    Visszaad: {'m3u8': [...], 'embed': <url>, 'origin': <origin>, 'cookie': <str>}.
+    Kinyerés az embed-oldalról: közvetlen regex, packed-JS kicsomagolás,
+    majd egy szint iframe-követés. A munkamenet sütijeit is elkapja.
     """
     embed = _embed_url(st)
     origin = '%s://%s' % (urlparse(embed).scheme, urlparse(embed).netloc)
-    result = {'m3u8': [], 'embed': embed, 'origin': origin}
+    result = {'m3u8': [], 'embed': embed, 'origin': origin, 'cookie': ''}
 
     html = fetch(embed, referer=base_url())
-    found = _M3U8_RE.findall(html) + _JSHLS_RE.findall(html)
+    found = _scan_m3u8(html)
+    if not found:
+        found = _scan_m3u8(_unpack_packed(html))
 
     if not found:
         for frame in _IFRAME_RE.findall(html):
             furl = urljoin(embed, frame)
             fhtml = fetch(furl, referer=embed)
-            found += _M3U8_RE.findall(fhtml) + _JSHLS_RE.findall(fhtml)
+            found = _scan_m3u8(fhtml) or _scan_m3u8(_unpack_packed(fhtml))
             if found:
                 origin = '%s://%s' % (urlparse(furl).scheme, urlparse(furl).netloc)
                 break
 
     result['m3u8'] = _dedup([urljoin(embed, u) for u in found])
-    log('resolve(%s) -> m3u8=%s origin=%s' % (embed, result['m3u8'], origin))
     result['origin'] = origin
+    result['cookie'] = cookie_header()
+    log('resolve(%s) -> m3u8=%s origin=%s cookie=%s'
+        % (embed, result['m3u8'], origin, 'igen' if result['cookie'] else 'nincs'))
     return result
 
 
-def hls_headers(origin):
-    """A HLS lekérésekhez szükséges fejlécek (Kodi ISA formátum)."""
+def hls_headers(origin, cookie=''):
+    """A HLS lekérésekhez szükséges fejlécek (Kodi ISA formátum, URL-kódolt)."""
     try:
-        from urllib.parse import quote
+        from urllib.parse import urlencode
     except ImportError:
-        from urllib import quote
-    return '&'.join([
-        'User-Agent=%s' % quote(USER_AGENT, ''),
-        'Referer=%s' % quote(origin + '/', ''),
-        'Origin=%s' % quote(origin, ''),
-    ])
+        from urllib import urlencode
+    headers = {
+        'User-Agent': USER_AGENT,
+        'Referer': origin + '/',
+        'Origin': origin,
+    }
+    if cookie:
+        headers['Cookie'] = cookie
+    return urlencode(headers)
 
 
 def _dedup(seq):
