@@ -37,7 +37,7 @@ ADDON_ID = ADDON.getAddonInfo('id')
 DEFAULT_BASE = 'https://magyaranime.eu/'
 # Alapértelmezett UA: modern Android Firefox (a legtöbb felhasználó innen exportál).
 # A pontos, bejelentkezett böngésző UA-ját a beállításokban lehet megadni.
-DEFAULT_UA = 'Mozilla/5.0 (Android 14; Mobile; rv:131.0) Gecko/131.0 Firefox/131.0'
+DEFAULT_UA = 'Mozilla/5.0 (Android 16; Mobile; rv:156.0) Gecko/156.0 Firefox/156.0'
 USER_AGENT = DEFAULT_UA
 
 

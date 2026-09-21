@@ -1,3 +1,7 @@
+v0.1.6 (2026-09-21) - PRIVÁT / BÉTA
+- Alapértelmezett User-Agent frissítve: Android 16 / Firefox 156.
+  (Ha frissül a böngésző, a beállításokban felülírható.)
+
 v0.1.5 (2026-09-21) - PRIVÁT / BÉTA
 - Állítható "Böngésző User-Agent" beállítás. A magyaranime a munkamenetet a
   böngésző-azonosítóhoz (és gyakran az IP-hez) kötheti; ha az addon más UA-t
