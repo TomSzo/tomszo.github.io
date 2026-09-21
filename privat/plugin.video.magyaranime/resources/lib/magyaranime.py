@@ -438,6 +438,59 @@ def _hls_headers(referer):
                      'Origin=%s' % quote(base_url().rstrip('/'), '')])
 
 
+_HOSTS = ('indavideo', 'videa', 'mega.nz', 'mega.co.nz', 'dailymotion', 'streamtape',
+          'doodstream', 'dood', 'mp4upload', 'rumble', 'ok.ru', 'vk.com', 'sibnet',
+          'youtube', 'streamsb', 'filemoon', 'vidoza', 'voe')
+
+
+def _host_of(url):
+    u = (url or '').lower()
+    for h in _HOSTS:
+        if h in u:
+            return h.replace('.nz', '').replace('.co', '').replace('.ru', '').replace('.com', '')
+    m = re.search(r'https?://([^/]+)/', url or '')
+    return (m.group(1) if m else 'ismeretlen')
+
+
+def list_servers(vid):
+    """Egy részhez elérhető szerverek/források listája: [{server, host, kind, embed}]."""
+    out = []
+    page = get('resz/%s/' % vid, referer=base_url())
+    if not page:
+        return out
+    csrf_m = _META_CSRF_RE.search(page)
+    csrf = csrf_m.group(1) if csrf_m else ''
+    dv = re.search(r'id="VideoPlayer"[^>]*data-server="([^"]*)"', page)
+    default_server = dv.group(1) if dv else 's1'
+    referer = base_url() + 'resz/%s/' % vid
+    seen = set()
+    for server in _dedup([default_server, 's1', 's2', 's3', 's4', 's5', 's6']):
+        data = player_data(server, vid, csrf, referer)
+        if not data or data.get('error'):
+            continue
+        kind = host = embed = None
+        if data.get('hls') and data.get('hls_url'):
+            kind, host = 'hls', 'Közvetlen (HLS)'
+        else:
+            output = data.get('output') or ''
+            urls, iframes = _extract_from_output(output)
+            mp4 = [u for u in urls if '.mp4' in u.lower()]
+            if mp4:
+                kind, host = 'mp4', 'Közvetlen (MP4)'
+            elif iframes:
+                embed, kind = iframes[0], 'embed'
+                host = _host_of(embed)
+        if not kind:
+            continue
+        key = embed or ('%s|%s' % (host, server))
+        if key in seen:
+            continue
+        seen.add(key)
+        out.append({'server': server, 'host': host, 'kind': kind, 'embed': embed})
+    log('list_servers(%s): %d forrás' % (vid, len(out)))
+    return out
+
+
 def has_resolver():
     """Van-e telepített ResolveURL/URLResolver modul? Visszaadja a nevét vagy ''-t."""
     try:

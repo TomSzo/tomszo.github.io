@@ -1,3 +1,10 @@
+v0.3.0 (2026-09-22) - PRIVÁT / BÉTA
+- Reszenkent SZERVERLISTA: az epizodra kattintva a resz osszes elerheto forrasa
+  megjelenik (indavideo, videa, mega.nz, dailymotion, streamtape, stb.), a
+  szolgaltato nevevel. Te valasztod ki, melyikrol jatssza le.
+- A mega.nz forras "nem tamogatott" jelzessel szurken jelenik meg.
+- A lejatszast tovabbra is a ResolveURL vegzi (232 szolgaltato) + sajat indavideo.
+
 v0.2.0 (2026-09-22) - PRIVÁT / BÉTA
 - A ResolveURL felismeri az indavideo/videa/dailymotion/streamtape stb. forrasokat,
   ezek mostantol lejatszhatok. A mega.nz-hez NINCS ingyenes feloldo a ResolveURL-ben
