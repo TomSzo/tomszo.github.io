@@ -1,3 +1,6 @@
+v0.1.1 (2026-09-21) - PRIVÁT / BÉTA
+- Adatlap-böngészés: részek + bélyegképek a /leiras/{aid}/ oldalról
+
 v0.1.0 (2026-09-21) - PRIVÁT / BÉTA
 - Kezdeti kiadás
 - Cookie-alapú belépés (PHPSESSID + loginkey a beállításokban)

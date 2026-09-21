@@ -149,14 +149,33 @@ def search(term):
     return results
 
 
+_EP_TITLE_RE = re.compile(r'<a href="resz/(\d+)/"\s+oncontextmenu="return false;">([^<]+)</a>',
+                          re.IGNORECASE)
+_EP_THUMB_RE = re.compile(r"window\.location='resz/(\d+)/';\"[^>]*>\s*<img[^>]*data-src=\"([^\"]+)\"",
+                          re.IGNORECASE)
+
+
 def episodes_of_anime(aid):
-    """Egy anime részei. Az adatlapról átmegyünk az első /resz/ oldalra, ott a teljes lista."""
+    """Egy anime részei közvetlenül az adatlapról (/leiras/{aid}/): cím + bélyegkép."""
     html = get('leiras/%s/' % aid, referer=base_url())
-    m = _RESZ_RE.search(html or '')
-    if not m:
-        log('Nincs resz-link a leiras/%s oldalon' % aid, xbmc.LOGWARNING)
+    if not html:
         return {'title': '', 'episodes': []}
-    return episodes_of_resz(m.group(1))
+    tm = re.search(r'<h2 class="gen-title[^"]*">([^<]+)</h2>', html)
+    title = _clean(tm.group(1)) if tm else ''
+    thumbs = {v: urljoin(base_url(), t) for v, t in _EP_THUMB_RE.findall(html)}
+    eps = []
+    seen = set()
+    for v, etitle in _EP_TITLE_RE.findall(html):
+        if v in seen:
+            continue
+        seen.add(v)
+        eps.append({'vid': v, 'title': _clean(etitle), 'server': 's1', 'thumb': thumbs.get(v)})
+    if not eps:
+        m = _RESZ_RE.search(html)
+        if m:
+            return episodes_of_resz(m.group(1))
+    log('%d rész (adatlap): leiras/%s ("%s")' % (len(eps), aid, title))
+    return {'title': title, 'episodes': eps}
 
 
 def episodes_of_resz(vid):
