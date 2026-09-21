@@ -239,28 +239,46 @@ def dump_debug(term):
     return '\n'.join(parts)
 
 
+def _search_index():
+    """A teljes anime-index JSON-ja (ugyanaz, amit az oldal fejléc-keresője használ)."""
+    txt = get('data/search/data_search.php', referer=base_url() + 'web/kereso/')
+    if not txt:
+        return []
+    try:
+        data = json.loads(txt)
+    except ValueError:
+        log('data_search.php nem JSON (részlet): %s' % txt[:200], xbmc.LOGWARNING)
+        return []
+    if isinstance(data, dict):
+        data = data.get('data') or list(data.values())
+    return data if isinstance(data, list) else []
+
+
+def _poster(aid):
+    return urljoin(base_url(), '_public/images_v2/boritokepek/%s.webp' % aid)
+
+
 def search(term):
-    """Keresés címre. Visszaad: [{aid, title, art}]."""
-    html = post('web/kereso/', {'search_text': term}, referer=base_url() + 'web/kereso/')
-    if not html:
+    """Keresés az anime-indexben (cím / japán / szinonim / egyéb). Visszaad: [{aid,title,art}]."""
+    term = (term or '').strip().lower()
+    if not term:
         return []
     results = []
     seen = set()
-    # anime-adatlap linkek + a link szövege
-    for m in re.finditer(r'<a[^>]+href="[^"]*?/?leiras/(\d+)/?"[^>]*>(.*?)</a>', html,
-                         re.DOTALL | re.IGNORECASE):
-        aid = m.group(1)
-        if aid in seen:
+    for it in _search_index():
+        if not isinstance(it, dict):
             continue
-        title = _clean(m.group(2))
-        # kép a link belsejéből
-        img = re.search(r'src="([^"]+)"', m.group(2))
-        art = urljoin(base_url(), img.group(1)) if img else None
-        if title:
+        aid = str(it.get('id') or '').strip()
+        if not aid or aid in seen:
+            continue
+        fields = (it.get('name'), it.get('name_jap'), it.get('name_syn'),
+                  it.get('name_other'), it.get('myanimelist'))
+        if any(f and term in str(f).lower() for f in fields):
+            title = _clean(it.get('name') or it.get('name_jap') or ('anime %s' % aid))
             seen.add(aid)
-            results.append({'aid': aid, 'title': title, 'art': art})
-    log('%d keresési találat: "%s"' % (len(results), term))
-    return results
+            results.append({'aid': aid, 'title': title, 'art': _poster(aid)})
+    log('%d keresési találat (index): "%s"' % (len(results), term))
+    return results[:300]
 
 
 _EP_TITLE_RE = re.compile(r'<a href="resz/(\d+)/"\s+oncontextmenu="return false;">([^<]+)</a>',
