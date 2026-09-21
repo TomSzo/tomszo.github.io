@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<addons>
+
+<addon id="repository.tomszo.private" name="TomSzo Privát Tároló" version="1.0.0" provider-name="TomSzo">
+    <requires>
+        <import addon="xbmc.addon" version="12.0.0"/>
+    </requires>
+    <extension point="xbmc.addon.repository" name="TomSzo Privát Tároló">
+        <dir>
+            <info compressed="false">https://tomszo.github.io/privat/addons.xml</info>
+            <checksum>https://tomszo.github.io/privat/addons.xml.md5</checksum>
+            <datadir zip="true">https://tomszo.github.io/privat/</datadir>
+        </dir>
+    </extension>
+    <extension point="xbmc.addon.metadata">
+        <summary lang="hu">TomSzo privát, személyes tárolója – kizárólag a tulajdonos saját fiókjával működik.</summary>
+        <summary lang="en">TomSzo private, personal repository – works only with the owner's own account.</summary>
+        <description lang="hu">FIGYELEM – SZEMÉLYES, PRIVÁT TÁROLÓ. Az itt lévő kiegészítők kizárólag a tulajdonos (TomSzo) saját, hitelesített munkamenetével (böngészőből kinyert session cookie) működnek, amit a tulajdonos csak a saját Kodijában tárol. A cél-oldalak bejelentkezéshez kötöttek, a login Cloudflare Turnstile/reCAPTCHA védett, ezért automatizált belépés nincs; a kiegészítők a tulajdonos érvényes sütijét replikálják. Süti nélkül a cél-oldal login/401/403 választ ad, így semmi nem listázható vagy játszható le. Ha nem te vagy a tulajdonos, NE telepítsd – nem fog működni a saját fiókod nélkül. Magánhasználat, saját felelősségre.</description>
+        <description lang="en">NOTICE – PERSONAL, PRIVATE REPOSITORY. The add-ons here work only with the owner's (TomSzo) own authenticated session (a browser-extracted session cookie stored solely in the owner's Kodi). The target sites require login protected by Cloudflare Turnstile/reCAPTCHA, so there is no automated sign-in; the add-ons replay the owner's valid cookie. Without it the site returns login/401/403 and nothing can be listed or played. If you are not the owner, do NOT install this – it will not work without your own account. Personal use, at your own risk.</description>
+        <platform>all</platform>
+        <license>GPL-3.0-or-later</license>
+        <source>https://github.com/TomSzo/tomszo.github.io</source>
+        <news>
+v1.0.0 (2026-09-21) - PRIVÁT
+- Kezdeti kiadás: TomSzo privát tároló
+- Cookie-alapú, kizárólag a tulajdonos saját fiókjával működő kiegészítőkhöz
+        </news>
+    </extension>
+</addon>
+
+</addons>
