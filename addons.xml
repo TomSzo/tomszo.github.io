@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <addons>
 
-<addon id="repository.tomszo" name="TomSzo Repository" version="1.0.7" provider-name="TomSzo">
+<addon id="repository.tomszo" name="TomSzo Repository" version="1.0.8" provider-name="TomSzo">
     <requires>
         <import addon="xbmc.addon" version="12.0.0"/>
     </requires>
@@ -15,9 +15,12 @@
     <extension point="xbmc.addon.metadata">
         <summary lang="en">TomSzo Kodi Repository</summary>
         <summary lang="hu">TomSzo Kodi Tároló</summary>
-        <description lang="en">A personal Kodi repository by TomSzo. Contains carefully selected third-party repositories and useful addons. Included: ElementumOrg, jurialmunkey, MovieShark, Addons4Kodi, Don't Panic, signde, service.autosub, nCore TV, SubVito, avdvplus.Estuary, Speed Tester. WARNING: BETA repository. Use at your own risk.</description>
-        <description lang="hu">TomSzo személyes Kodi tárolója. Tartalmazza: ElementumOrg, jurialmunkey, MovieShark, Addons4Kodi, Don't Panic, signde, service.autosub, nCore TV (videó), SubVito (South Park magyarul), avdvplus.Estuary (skin), Speed Tester (sebességteszt). FIGYELEM: BÉTA tároló. Csak saját felelősségre!</description>
+        <description lang="en">A personal Kodi repository by TomSzo. Contains carefully selected third-party repositories and useful addons. Included: ElementumOrg, jurialmunkey, MovieShark, Addons4Kodi, Don't Panic, signde, service.autosub, nCore TV, SubVito, Streamed, avdvplus.Estuary, Speed Tester. WARNING: BETA repository. Use at your own risk.</description>
+        <description lang="hu">TomSzo személyes Kodi tárolója. Tartalmazza: ElementumOrg, jurialmunkey, MovieShark, Addons4Kodi, Don't Panic, signde, service.autosub, nCore TV (videó), SubVito (South Park magyarul), Streamed (élő sport), avdvplus.Estuary (skin), Speed Tester (sebességteszt). FIGYELEM: BÉTA tároló. Csak saját felelősségre!</description>
         <news>
+v1.0.8 (2026-09-21) - BÉTA
+- Hozzáadva: plugin.video.streamed (1.0.0) - Streamed, élő sport (videó addon)
+
 v1.0.7 (2026-09-21) - BÉTA
 - Hozzáadva: plugin.video.subvito (1.0.0) - SubVito, South Park magyarul (videó addon)
 
@@ -332,6 +335,40 @@ v1.0.0 (2026-09-21)
 - Évadok (1-29), Filmek, P+ böngészése a subvito.eu oldalról
 - Részek címmel, keresés (ékezet-független)
 - Lejátszás közvetlen MP4-ből, magyar felirattal (VTT)
+        </news>
+        <assets>
+            <icon>icon.png</icon>
+            <fanart>fanart.jpg</fanart>
+        </assets>
+    </extension>
+</addon>
+
+<addon id="plugin.video.streamed" name="Streamed" version="1.0.0" provider-name="TomSzo">
+    <requires>
+        <import addon="xbmc.python" version="3.0.0"/>
+        <import addon="script.module.requests" version="2.22.0"/>
+        <import addon="inputstream.adaptive" optional="true"/>
+    </requires>
+    <extension point="xbmc.python.pluginsource" library="default.py">
+        <provides>video</provides>
+    </extension>
+    <extension point="xbmc.addon.metadata">
+        <summary lang="en">Streamed - live sports</summary>
+        <summary lang="hu">Streamed - élő sport</summary>
+        <description lang="en">Unofficial video add-on for the streamed.pk public API: browse live sports events by sport, popular and live now, then pick a stream. Not affiliated with streamed.pk. Indexes only, hosts no content.</description>
+        <description lang="hu">Nem hivatalos videó addon a streamed.pk nyilvános API-jához: élő sportesemények böngészése sportágak szerint, népszerű és élő most listák, majd stream-választás. Nincs kapcsolatban a streamed.pk üzemeltetőivel. Csak listáz, tartalmat nem tárol.</description>
+        <disclaimer lang="en">This add-on only indexes publicly available links from the streamed.pk API. It does not host any content. Use at your own risk.</disclaimer>
+        <disclaimer lang="hu">Ez az addon csak a streamed.pk nyilvános API hivatkozásait listázza, semmilyen tartalmat nem tárol. Csak saját felelősségre használd.</disclaimer>
+        <language>en hu</language>
+        <platform>all</platform>
+        <license>GPL-3.0-or-later</license>
+        <source>https://github.com/TomSzo/tomszo.github.io</source>
+        <news>
+v1.0.0 (2026-09-21)
+- Kezdeti kiadás
+- Élő most, Népszerű, Ma, Sportágak szerinti böngészés (streamed.pk API)
+- Stream-választás (forrás, nyelv, HD, szám szerint)
+- Best-effort lejátszás: m3u8 kinyerés az embedből, InputStream Adaptive HLS
         </news>
         <assets>
             <icon>icon.png</icon>

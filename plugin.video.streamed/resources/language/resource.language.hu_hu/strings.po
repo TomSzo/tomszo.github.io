@@ -1,0 +1,72 @@
+# Kodi Media Center language file
+# Addon Name: Streamed
+# Addon id: plugin.video.streamed
+# Addon Provider: TomSzo
+msgid ""
+msgstr ""
+"Project-Id-Version: plugin.video.streamed\n"
+"Language-Team: Hungarian\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Language: hu_hu\n"
+
+msgctxt "#30010"
+msgid "Live now"
+msgstr "Élő most"
+
+msgctxt "#30011"
+msgid "Popular"
+msgstr "Népszerű"
+
+msgctxt "#30012"
+msgid "Today"
+msgstr "Ma"
+
+msgctxt "#30013"
+msgid "Sports"
+msgstr "Sportágak"
+
+msgctxt "#30014"
+msgid "All matches"
+msgstr "Összes meccs"
+
+msgctxt "#30020"
+msgid "No results"
+msgstr "Nincs találat"
+
+msgctxt "#30021"
+msgid "No stream available"
+msgstr "Nincs elérhető stream"
+
+msgctxt "#30022"
+msgid "Could not extract the stream (%s)"
+msgstr "Nem sikerült kinyerni a streamet (%s)"
+
+msgctxt "#30100"
+msgid "General"
+msgstr "Általános"
+
+msgctxt "#30101"
+msgid "Website"
+msgstr "Weboldal"
+
+msgctxt "#30102"
+msgid "API base URL"
+msgstr "API alap URL"
+
+msgctxt "#30103"
+msgid "The streamed.pk address (change only if the domain changes, e.g. streamed.su)."
+msgstr "A streamed.pk címe (csak domainváltozáskor módosítsd, pl. streamed.su)."
+
+msgctxt "#30104"
+msgid "Advanced"
+msgstr "Haladó"
+
+msgctxt "#30105"
+msgid "Debug logging"
+msgstr "Hibakeresési naplózás"
+
+msgctxt "#30106"
+msgid "Write detailed logs to help troubleshooting."
+msgstr "Részletes napló írása a hibakereséshez."
