@@ -224,6 +224,11 @@ def _clean(t):
     return re.sub(r'\s+', ' ', t).strip()
 
 
+def search_raw(term):
+    """A keresés nyers HTML-je (hibakereséshez)."""
+    return post('web/kereso/', {'search_text': term}, referer=base_url() + 'web/kereso/') or ''
+
+
 def search(term):
     """Keresés címre. Visszaad: [{aid, title, art}]."""
     html = post('web/kereso/', {'search_text': term}, referer=base_url() + 'web/kereso/')
