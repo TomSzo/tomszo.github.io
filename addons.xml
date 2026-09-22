@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <addons>
 
-<addon id="repository.tomszo" name="TomSzo Repository" version="1.0.11" provider-name="TomSzo">
+<addon id="repository.tomszo" name="TomSzo Repository" version="1.0.12" provider-name="TomSzo">
     <requires>
         <import addon="xbmc.addon" version="12.0.0"/>
     </requires>
@@ -15,9 +15,14 @@
     <extension point="xbmc.addon.metadata">
         <summary lang="en">TomSzo Kodi Repository</summary>
         <summary lang="hu">TomSzo Kodi Tároló</summary>
-        <description lang="en">A personal Kodi repository by TomSzo. Contains carefully selected third-party repositories and useful addons. Included: ElementumOrg, jurialmunkey, MovieShark, Addons4Kodi, Don't Panic, signde, service.autosub, nCore TV, SubVito, avdvplus.Estuary, Speed Tester. WARNING: BETA repository. Use at your own risk.</description>
-        <description lang="hu">TomSzo személyes Kodi tárolója. Tartalmazza: ElementumOrg, jurialmunkey, MovieShark, Addons4Kodi, Don't Panic, signde, service.autosub, nCore TV (videó), SubVito (South Park magyarul), avdvplus.Estuary (skin), Speed Tester (sebességteszt). FIGYELEM: BÉTA tároló. Csak saját felelősségre!</description>
+        <description lang="en">A personal Kodi repository by TomSzo. Third-party repositories: ElementumOrg, jurialmunkey, MovieShark, Addons4Kodi (for subtitles), Don't Panic (CoreELEC builds only, e.g. AVDV+), signde (CoreELEC builds only). Addons: service.autosub (auto subtitles; mainly for anime), nCore TV (video - FORK, original author: heg), SubVito (South Park in Hungarian), avdvplus.Estuary (skin - AVDV release 9 builds only), Speed Tester. WARNING: BETA repository. Use at your own risk.</description>
+        <description lang="hu">TomSzo személyes Kodi tárolója. Harmadik féltől: ElementumOrg, jurialmunkey, MovieShark, Addons4Kodi (feliratokhoz), Don't Panic (csak CoreELEC-buildekhez, pl. AVDV+), signde (csak CoreELEC-buildekhez). Addonok: service.autosub (automatikus felirat; főleg animenézőknek), nCore TV (videó - FORK, eredeti szerző: heg), SubVito (South Park magyarul), avdvplus.Estuary (skin - csak AVDV release 9 buildekhez), Speed Tester (sebességteszt). FIGYELEM: BÉTA tároló. Csak saját felelősségre!</description>
         <news>
+v1.0.12 (2026-09-22) - BÉTA
+- Leírás frissítve (Kodiban is látható): addon-címkék - Addons4Kodi=feliratok,
+  Don't Panic/signde=csak CoreELEC-buildekhez, autosub=animenézőknek, nCore TV=FORK
+  (eredeti szerző: heg), skin.avdvplus.estuary=csak AVDV release 9 buildekhez
+
 v1.0.11 (2026-09-21) - BÉTA
 - Tároló karbantartás és tisztítás
 
