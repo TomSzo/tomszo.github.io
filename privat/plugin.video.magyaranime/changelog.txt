@@ -1,3 +1,9 @@
+v0.5.4 (2026-09-22) - PRIVÁT / BÉTA
+- RESZLAPOZAS VEGLEGES JAVITAS. Felderitve az adatlap ablaka: epizod_szam=N a
+  [N-9 .. N+16] reszeket adja (26 db), az URL-lapozas (/leiras/id/2/) nem mukodik.
+  Mostantol N=kezdorel+9-cel kerve, 26-os lepessel hezagmentesen vegigcsempezzuk
+  1..max-ig, plusz biztonsagi hezag-kitoltes. Igy MINDEN resz (pl. 220) osszejon.
+
 v0.5.3 (2026-09-22) - PRIVÁT / BÉTA
 - Az "Adatlap mentése" gomb mostantol felderiti a lapozast: kiprobalja a
   /leiras/{aid}/2/ URL-t es a epizod_szam=27/50/100/150/200 POST-okat, es kiirja,
