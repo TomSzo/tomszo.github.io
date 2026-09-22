@@ -745,6 +745,13 @@ def list_servers(vid):
         data = player_data(server, vid, csrf, referer)
         if not data or data.get('error'):
             continue
+        # DIAG (0.6.10, ideiglenes): a felbontas forrasanak felderitese
+        try:
+            log('DIAG[%s] keys=%s servers=%s' % (
+                server, list(data.keys()),
+                json.dumps(data.get('servers'), ensure_ascii=False)[:500]))
+        except Exception:  # noqa
+            pass
         kind = host = embed = None
         quality = ''
         if data.get('hls') and data.get('hls_url'):
@@ -762,6 +769,7 @@ def list_servers(vid):
             if mp4:
                 kind, host = 'mp4', 'Közvetlen (MP4)'
                 quality = _quality_label(mp4[0])
+                log('DIAG[%s] mp4=%s | output_snip=%s' % (server, mp4[0], output[:350]))
             elif iframes:
                 embed, kind = iframes[0], 'embed'
                 host = _host_of(embed)
