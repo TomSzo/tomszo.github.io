@@ -1,3 +1,8 @@
+v0.6.3 (2026-09-22) - PRIVÁT / BÉTA
+- Az "Adatlapok" bongeszo mostantol tartalmazza a teljes, DINAMIKUS szuro-listakat is
+  (az oldalrol olvasva, mindig aktualis): Szezon szerint, Besorolas szerint, Allapot
+  szerint, Rendezes szerint, Kezdobetu szerint. Barmelyik opciora kattintva lapozhato lista.
+
 v0.6.2 (2026-09-22) - PRIVÁT / BÉTA
 - IDEGEN RESZ JAVITAS. Nemely adatlapon a "kapcsolodo animek" szekcio belyegkepei
   is bekerultek (idegen anime 1-4. resze a lista vegen). Mostantol a parser csak azokat
