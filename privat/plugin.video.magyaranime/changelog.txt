@@ -1,3 +1,8 @@
+v0.5.3 (2026-09-22) - PRIVÁT / BÉTA
+- Az "Adatlap mentése" gomb mostantol felderiti a lapozast: kiprobalja a
+  /leiras/{aid}/2/ URL-t es a epizod_szam=27/50/100/150/200 POST-okat, es kiirja,
+  melyik rész-szamokat adjak vissza. Ebbol javithato, hogy MINDEN resz osszejojjon.
+
 v0.5.2 (2026-09-22) - PRIVÁT / BÉTA
 - RESZLAPOZAS JAVITVA. A korabbi lapozo egyetlen "0 uj resz" ablaknal leallt (ezert
   csak 179/220 jott ossze). Mostantol fel-ablaknyi (13) lepesekkel, atfedessel jarja
