@@ -50,6 +50,25 @@ def user_agent():
 
 
 def cookie():
+    """A süti nyers szövege. Elsőbbség: FÁJL (távirányítóval könnyebb, mint gépelni),
+    utána a kézi szövegmező."""
+    path = (ADDON.getSetting('cookie_file') or '').strip()
+    if path:
+        try:
+            import xbmcvfs
+            if xbmcvfs.exists(path):
+                f = xbmcvfs.File(path)
+                try:
+                    txt = f.read()
+                finally:
+                    f.close()
+                if txt and txt.strip():
+                    return txt.strip()
+                log('Cookie-fájl üres: %s' % path, xbmc.LOGWARNING)
+            else:
+                log('Cookie-fájl nem található: %s' % path, xbmc.LOGWARNING)
+        except Exception as exc:  # noqa
+            log('Cookie-fájl olvasás hiba: %s' % exc, xbmc.LOGWARNING)
     return (ADDON.getSetting('cookie') or '').strip()
 
 
