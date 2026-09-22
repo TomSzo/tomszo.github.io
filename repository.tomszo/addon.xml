@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<addon id="repository.tomszo" name="TomSzo Repository" version="1.0.11" provider-name="TomSzo">
+<addon id="repository.tomszo" name="TomSzo Repository" version="1.0.12" provider-name="TomSzo">
     <requires>
         <import addon="xbmc.addon" version="12.0.0"/>
     </requires>
@@ -20,15 +20,15 @@
             - ElementumOrg (Elementum torrent player)
             - jurialmunkey (TMDB Helper and skins)
             - MovieShark (Hungarian content)
-            - Addons4Kodi collection
-            - Don't Panic (pannal)
-            - signde repository (skins)
+            - Addons4Kodi (for subtitles)
+            - Don't Panic (for CoreELEC builds only, e.g. AVDV+)
+            - signde (for CoreELEC builds only, e.g. AVDV+; skins)
 
             Included addons:
-            - service.autosub (Auto subtitle handler)
-            - nCore TV (video addon)
+            - service.autosub (auto subtitle handler; mainly for anime watchers)
+            - nCore TV (video addon - FORK, not the original; original author: heg)
             - SubVito (South Park in Hungarian, video addon)
-            - avdvplus.Estuary (skin)
+            - avdvplus.Estuary (skin - for AVDV release 9 builds only)
             - Speed Tester (Internet bandwidth test)
 
             WARNING: This is a BETA repository. Use at your own risk.
@@ -36,24 +36,29 @@
         <description lang="hu">
             TomSzo személyes Kodi tárolója. Gondosan válogatott harmadik féltől származó tárolókat és hasznos modulokat tartalmaz.
 
-            Tartalmazza (tárolók):
+            Tárolók:
             - ElementumOrg (Elementum torrent lejátszó)
             - jurialmunkey (TMDB Helper és skinek)
             - MovieShark (Magyar tartalmak)
-            - Addons4Kodi gyűjtemény
-            - Don't Panic (pannal)
-            - signde repository (skinek)
+            - Addons4Kodi (feliratokhoz)
+            - Don't Panic (csak CoreELEC-buildekhez, pl. AVDV+)
+            - signde (csak CoreELEC-buildekhez, pl. AVDV+; skinek)
 
             Addonok:
-            - service.autosub (Automatikus felirat kezelő)
-            - nCore TV (videó addon)
+            - service.autosub (automatikus felirat; főleg animenézőknek)
+            - nCore TV (videó addon - FORK, nem az eredeti; eredeti szerző: heg)
             - SubVito (South Park magyarul, videó addon)
-            - avdvplus.Estuary (skin)
+            - avdvplus.Estuary (skin - csak AVDV release 9 buildekhez)
             - Speed Tester (internet sebességteszt)
 
             FIGYELEM: Ez egy BÉTA tároló. Csak saját felelősségre használd!
         </description>
         <news>
+v1.0.12 (2026-09-22) - BÉTA
+- Leírás frissítve (Kodiban is látható): addon-címkék - Addons4Kodi=feliratok,
+  Don't Panic/signde=csak CoreELEC-buildekhez, autosub=animenézőknek, nCore TV=FORK
+  (eredeti szerző: heg), skin.avdvplus.estuary=csak AVDV release 9 buildekhez
+
 v1.0.11 (2026-09-21) - BÉTA
 - Tároló karbantartás és tisztítás
 
