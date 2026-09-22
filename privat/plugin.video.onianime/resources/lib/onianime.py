@@ -50,12 +50,17 @@ def user_agent():
 
 
 def _headers(referer=None):
-    h = {'User-Agent': user_agent(),
-         'Accept': 'application/json, text/plain, */*',
-         'Accept-Language': 'hu-HU,hu;q=0.9,en;q=0.5'}
-    if referer:
-        h['Referer'] = referer
-    return h
+    # Böngésző-szerű fejlécek: néhány oldal (Cloudflare) különben HTML-t/403-at ad JSON helyett.
+    return {'User-Agent': user_agent(),
+            'Accept': 'application/json, text/plain, */*',
+            'Accept-Language': 'hu-HU,hu;q=0.9,en;q=0.8',
+            'Referer': referer or BASE,
+            'Origin': BASE.rstrip('/'),
+            'X-Requested-With': 'XMLHttpRequest',
+            'Sec-Fetch-Dest': 'empty',
+            'Sec-Fetch-Mode': 'cors',
+            'Sec-Fetch-Site': 'same-origin',
+            'Connection': 'keep-alive'}
 
 
 def _get_json(path, referer=None, timeout=20):
@@ -65,14 +70,18 @@ def _get_json(path, referer=None, timeout=20):
     if not _SESSION:
         return None
     try:
-        r = _SESSION.get(url, headers=_headers(referer or BASE), timeout=timeout)
-        r.encoding = 'utf-8'
-        return r.json()
-    except ValueError:
-        log('Nem JSON válasz: %s' % url, xbmc.LOGWARNING)
-        return None
+        r = _SESSION.get(url, headers=_headers(referer), timeout=timeout)
     except Exception as exc:  # noqa
         log('GET hiba: %s (%s)' % (exc, url), xbmc.LOGERROR)
+        return None
+    try:
+        return r.json()
+    except ValueError:
+        body = (r.text or '')[:300].replace('\n', ' ').replace('\r', ' ')
+        cf = 'CF/Cloudflare?' if re.search(r'cloudflare|just a moment|cf-chl|attention required',
+                                           (r.text or ''), re.IGNORECASE) else ''
+        log('Nem JSON (HTTP %s, %d byte) %s: %s'
+            % (r.status_code, len(r.text or ''), cf, body), xbmc.LOGWARNING)
         return None
 
 
