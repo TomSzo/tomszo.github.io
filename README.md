@@ -1,22 +1,40 @@
 # 🛠️ TomSzo Kodi Repository
 
-Saját Kodi addon gyűjtemény – több repository, módosított skin és hasznos modulok egy helyen.
+Saját Kodi addon-gyűjtemény – repository-k, egy módosított skin és hasznos modulok
+egy helyen. A cél, hogy magyar tartalom, feliratok és a megszokott kiegészítők
+egyetlen tárolóból települjenek.
+
+---
 
 ### 📦 Mi található benne?
 
-- **repository.tomszo** – saját repository-m
-- Harmadik féltől származó repository-k:
-  - repository.elementumorg *(Elementum torrent lejátszó)*
-  - repository.jurialmunkey *(TMDB Helper és skinek)*
-  - repository.movieshark *(Magyar tartalmak)*
-  - repository.addons4kodi *(Addons4Kodi gyűjtemény)*
-  - repository.dontpanic *(pannal repo)*
-  - repository.signde *(skin repo)*
-- **service.autosub** – Automatikus felirat kezelő
-- **plugin.video.nCore_TV** – nCore TV videó addon
-- **plugin.video.subvito** – SubVito videó addon *(South Park magyarul – subvito.eu)*
-- **skin.avdvplus.estuary** – avdvplus.Estuary skin
-- **script.speedtester** – Internet sebességteszt (speedtest.net) – *TomSzo v2.0.0 fork*
+#### Saját tároló
+| Addon | Mire jó? |
+|-------|----------|
+| **repository.tomszo** | Ez a saját repository-m – innen települ minden alábbi kiegészítő. |
+
+#### Harmadik féltől származó repository-k
+| Repository | Mire jó? |
+|------------|----------|
+| **repository.elementumorg** | Elementum torrent-lejátszó. |
+| **repository.jurialmunkey** | TMDB Helper és a hozzá tartozó skinek. |
+| **repository.movieshark** | Magyar tartalmak (filmek, sorozatok). |
+| **repository.addons4kodi** | **Feliratok** miatt van itt – feliratszolgáltató kiegészítők forrása. |
+| **repository.dontpanic** | Főleg **CoreELEC-buildekhez** hasznos (pl. AVDV+ stb.). |
+| **repository.signde** | Szintén csak **CoreELEC-buildekhez** jó (pl. AVDV+ stb.) – skinek forrása. |
+
+#### Önálló kiegészítők
+| Addon | Mire jó? |
+|-------|----------|
+| **service.autosub** | Automatikus felirat-kezelő. Elsősorban azoknak jó, akik **animét néznek**. |
+| **plugin.video.nCore_TV** *(fork)* | nCore TV videó addon. **Ez egy fork** – nem az eredeti, csak TomSzo által karbantartott, módosított változat. Részletek: [plugin.video.nCore_TV/README.md](plugin.video.nCore_TV/README.md). |
+| **plugin.video.subvito** | SubVito videó addon *(South Park magyarul – subvito.eu)*. |
+| **script.speedtester** | Internet-sebességteszt (speedtest.net) – *TomSzo v2.0.0 fork*. |
+
+#### Skin
+| Skin | Mire jó? |
+|------|----------|
+| **skin.avdvplus.estuary** | Módosított Estuary skin. **Csak az AVDV release 9 buildekhez** jó. |
 
 ---
 
@@ -41,7 +59,7 @@ Saját Kodi addon gyűjtemény – több repository, módosított skin és haszn
 
 ### ⚙️ Ajánlott beállítások
 
-- **Addon frissítések:** Automatikus (minden repóból)
+- **Addon-frissítések:** Automatikus (minden repóból)
 - **Ismeretlen források:** Engedélyezve
 - **GPU hardveres dekódolás:** DXVA2 (Windows) / VAAPI (Linux)
 
@@ -50,8 +68,10 @@ Saját Kodi addon gyűjtemény – több repository, módosított skin és haszn
 ### ⚠️ Fontos figyelmeztetés
 
 - Ez egy **harmadik féltől származó** gyűjtemény. Csak **saját felelősségre** használd.
-- Egyes streaming addonok szürke zónában vannak – mindig tartsd be az országod törvényeit.
+- Egyes streaming-addonok szürke zónában vannak – mindig tartsd be az országod törvényeit.
 - Erősen ajánlott **VPN** használata.
+- Az **nCore TV** addon egy **fork**, nem az eredeti szerző hivatalos kiadása – a fork
+  hibáival ne az eredeti szerzőt keresd. (Eredeti forrás: MovieShark Kodi-tároló.)
 
 ---
 
