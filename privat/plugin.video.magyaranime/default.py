@@ -63,7 +63,7 @@ def view_root():
         add_dir('[COLOR red]! Nincs cookie beállítva – kattints a beállításokhoz[/COLOR]',
                 build_url(action='opensettings'), folder=False)
     add_dir('Keresés', build_url(action='search'))
-    add_dir('Adatlapok (böngészés)', build_url(action='catalog', page='1'))
+    add_dir('Adatlapok (böngészés)', build_url(action='catmenu'))
     add_dir('Rész megnyitása azonosítóval', build_url(action='byid'))
     add_dir('[COLOR yellow]Kapcsolat teszt (cookie ellenőrzés)[/COLOR]',
             build_url(action='diag'), folder=False)
@@ -100,8 +100,34 @@ def view_search():
     end('tvshows')
 
 
-def view_catalog(page):
-    data = ma.catalog(page)
+_CAT_FILTER_KEYS = ('allapot', 'szezon', 'besorolas', 'rendezes', 'kezdo')
+_CAT_LETTERS = list('abcdefghijklmnopqrstuvwxyz')
+
+
+def view_catmenu():
+    add_dir('Aktuális szezon', build_url(action='catalog', allapot='1'))
+    add_dir('Összes anime (A→Z)', build_url(action='catalog', allapot='-1', rendezes='1'))
+    add_dir('Kezdőbetű szerint', build_url(action='catletters'))
+    add_dir('Legújabbak (megjelenés szerint)',
+            build_url(action='catalog', allapot='-1', rendezes='4'))
+    add_dir('Befejezett animék', build_url(action='catalog', allapot='0'))
+    add_dir('Várható animék', build_url(action='catalog', allapot='2'))
+    end('files')
+
+
+def view_catletters():
+    add_dir('Bármely', build_url(action='catalog', allapot='-1', kezdo='az'))
+    for ch in _CAT_LETTERS:
+        add_dir(ch.upper(), build_url(action='catalog', allapot='-1', kezdo=ch))
+    end('files')
+
+
+def _filters_from(p):
+    return {k: p[k] for k in _CAT_FILTER_KEYS if p.get(k) not in (None, '')}
+
+
+def view_catalog(page, filters):
+    data = ma.catalog(page, filters or None)
     items = data.get('items') or []
     if not items:
         notify('Nincs adatlap (vagy nincs bejelentkezve)')
@@ -109,8 +135,11 @@ def view_catalog(page):
         add_dir(it['title'], build_url(action='anime', aid=it['aid']), art=it.get('art'))
     pg, pages = data.get('page', 1), data.get('pages', 1)
     if pg < pages:
+        nxt = dict(filters or {})
+        nxt['action'] = 'catalog'
+        nxt['page'] = str(pg + 1)
         add_dir('[COLOR yellow]Következő oldal (%d/%d) »[/COLOR]' % (pg + 1, pages),
-                build_url(action='catalog', page=str(pg + 1)), folder=True)
+                BASE + '?' + urlencode(nxt), folder=True)
     end('tvshows')
 
 
@@ -198,8 +227,12 @@ def router(qs):
         view_root()
     elif action == 'search':
         view_search()
+    elif action == 'catmenu':
+        view_catmenu()
+    elif action == 'catletters':
+        view_catletters()
     elif action == 'catalog':
-        view_catalog(int(p.get('page', 1)))
+        view_catalog(int(p.get('page', 1)), _filters_from(p))
     elif action == 'anime':
         view_anime(p['aid'])
     elif action == 'servers':

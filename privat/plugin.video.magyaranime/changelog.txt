@@ -1,3 +1,8 @@
+v0.6.1 (2026-09-22) - PRIVÁT / BÉTA
+- Az "Adatlapok (böngészés)" mostantol menufa szurokkel: Aktualis szezon,
+  Osszes anime (A-Z), Kezdobetu szerint (A-Z), Legujabbak, Befejezett, Varhato.
+  Minden lista lapozhato, es a szuro a lapozasnal is megmarad.
+
 v0.6.0 (2026-09-22) - PRIVÁT / BÉTA
 - UJ MENUPONT: "Adatlapok (böngészés)". A /anime/adatlapok/ katalogust listazza
   (aktualis szezon), boritokeppel; a "Kovetkezo oldal" gombbal lapozhato.
