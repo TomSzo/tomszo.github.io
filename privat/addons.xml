@@ -28,7 +28,7 @@ v1.0.0 (2026-09-21) - PRIVÁT
     </extension>
 </addon>
 
-<addon id="plugin.video.magyaranime" name="MagyarAnime (privát)" version="0.5.3" provider-name="TomSzo">
+<addon id="plugin.video.magyaranime" name="MagyarAnime (privát)" version="0.5.4" provider-name="TomSzo">
     <requires>
         <import addon="xbmc.python" version="3.0.0"/>
         <import addon="script.module.requests" version="2.22.0"/>
@@ -46,6 +46,9 @@ v1.0.0 (2026-09-21) - PRIVÁT
         <platform>all</platform>
         <license>GPL-3.0-or-later</license>
         <news>
+v0.5.4 (2026-09-22) - PRIVÁT / BÉTA
+- Teljes reszlista veglegesen (ablak [N-9..N+16], 26-os csempezes)
+
 v0.5.3 (2026-09-22) - PRIVÁT / BÉTA
 - "Adatlap mentése" lapozas-felderites (resz-szamok tobb poziciobol)
 

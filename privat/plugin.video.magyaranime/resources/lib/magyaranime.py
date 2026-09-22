@@ -367,19 +367,31 @@ def episodes_of_anime(aid):
             return episodes_of_resz(m.group(1))
 
     referer = base_url() + 'leiras/%s/' % aid
-    # Az adatlap ~26-os ablakot ad. Fél-ablaknyi (13) lépésekkel, átfedéssel járjuk
-    # végig 1..max_ep-ig, és csak ott kérünk le, ahol az adott blokkban hiányzik rész.
-    # Így nincs idő előtti leállás, és top-aligned / középre igazított ablaknál is teljes.
-    need, guard = 1, 0
-    while max_ep and need <= max_ep and guard < 120:
+
+    def _window(center):
+        html2 = post('leiras/%s/' % aid,
+                     {'epizod_szam': str(center), 'csrf_token': csrf},
+                     referer=referer, ajax=False)
+        if html2:
+            _parse_ep_window(html2, acc)
+
+    # Az adatlap ablaka: epizod_szam=N -> [N-9 .. N+16] (26 rész). Ezért N=need+9-cel
+    # kérve az ablak a 'need' résznél kezdődik; 26-os lépéssel hézagmentesen csempézünk.
+    need, guard = 27, 0
+    while max_ep and need <= max_ep and guard < 60:
         guard += 1
-        if any(n not in acc for n in range(need, min(need + 13, max_ep + 1))):
-            html2 = post('leiras/%s/' % aid,
-                         {'epizod_szam': str(need), 'csrf_token': csrf},
-                         referer=referer, ajax=False)
-            if html2:
-                _parse_ep_window(html2, acc)
-        need += 13
+        _window(need + 9)
+        need += 26
+
+    # Biztonsági hézag-kitöltés, ha valahol mégis maradt ki rész.
+    guard = 0
+    for e in [n for n in range(1, (max_ep or 0) + 1) if n not in acc]:
+        if guard >= 30:
+            break
+        if e in acc:
+            continue
+        guard += 1
+        _window(e + 9)
 
     eps = [acc[n] for n in sorted(acc)]
     log('%d rész (adatlap, max %s): leiras/%s ("%s")' % (len(eps), max_ep or '?', aid, title))
