@@ -179,7 +179,7 @@ def get(url, referer=None, timeout=25, ajax=False):
     try:
         r = _SESSION.get(url, headers=_headers(referer, ajax=ajax),
                          cookies=_cookies(), timeout=timeout)
-        r.encoding = r.apparent_encoding or 'utf-8'
+        r.encoding = 'utf-8'  # magyaranime UTF-8; a talalgatas elrontja az ekezeteket
         return r.text
     except Exception as exc:  # noqa
         log('GET hiba: %s (%s)' % (exc, url), xbmc.LOGERROR)
@@ -192,7 +192,7 @@ def post(url, data, referer=None, timeout=30, ajax=True):
     try:
         r = _SESSION.post(url, data=data, headers=_headers(referer, ajax=ajax),
                           cookies=_cookies(), timeout=timeout)
-        r.encoding = r.apparent_encoding or 'utf-8'
+        r.encoding = 'utf-8'  # magyaranime UTF-8; a talalgatas elrontja az ekezeteket
         return r.text
     except Exception as exc:  # noqa
         log('POST hiba: %s (%s)' % (exc, url), xbmc.LOGERROR)

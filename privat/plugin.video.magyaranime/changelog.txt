@@ -1,3 +1,8 @@
+v0.5.1 (2026-09-22) - PRIVÁT / BÉTA
+- EKEZET-JAVITAS. A magyaranime UTF-8, de a chardet-alapu talalgatas elrontotta az
+  ekezeteket (pl. "rész" -> "r√©sz"). Mostantol a valaszokat kenyszeritetten UTF-8-kent
+  dekodolja, igy a cimek/reszek helyesen jelennek meg.
+
 v0.5.0 (2026-09-22) - PRIVÁT / BÉTA
 - TELJES RESZLISTA. Az adatlap csak ~26 reszes ablakot mutat; mostantol az addon a
   'epizod_szam' POST-tal vegiglapozza a hianyzo epizodszamokat (1..max), es minden
