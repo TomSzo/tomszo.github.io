@@ -240,14 +240,38 @@ def dump_debug(term):
     return '\n'.join(parts)
 
 
+def _epnums(html):
+    nums = set()
+    for m in re.findall(r'epizodkepek/\d+/(\d+)\.jpg', html or ''):
+        nums.add(int(m))
+    return sorted(nums)
+
+
 def dump_anime(aid):
-    """Egy adatlap HTML-je + a részeket betöltő JS (rész-lapozás hibakereséshez)."""
+    """Rész-lapozás hibakereséshez: több pozíciót kipróbál és kiírja a rész-számokat."""
     ref = base_url()
-    parts = ['===== GET leiras/%s =====\n%s'
-             % (aid, get('leiras/%s/' % aid, referer=ref) or '(ures)')]
-    for u in ('data/adatlap/adatlap_v2.js', 'js/magyaranime_loads.js'):
-        parts.append('\n\n===== %s =====\n%s' % (u, get(u, referer=ref) or '(ures/hiba)'))
-    return '\n'.join(parts)
+    ref2 = base_url() + 'leiras/%s/' % aid
+    base_html = get('leiras/%s/' % aid, referer=ref)
+    mx = re.search(r'id="epizod_szam"[^>]*data-max="(\d+)"', base_html or '')
+    csrf_m = _META_CSRF_RE.search(base_html or '')
+    csrf = csrf_m.group(1) if csrf_m else ''
+    out = ['data-max: %s' % (mx.group(1) if mx else '?'),
+           'GET default -> %s' % _epnums(base_html)]
+    # URL-alapu lapozas teszt
+    for pg in (2, 3):
+        h = get('leiras/%s/%d/' % (aid, pg), referer=ref)
+        out.append('GET leiras/%s/%d/ -> %s' % (aid, pg, _epnums(h)))
+    # epizod_szam POST teszt kulonbozo pozicioknal
+    for n in (27, 50, 100, 150, 200):
+        h = post('leiras/%s/' % aid, {'epizod_szam': str(n), 'csrf_token': csrf},
+                 referer=ref2, ajax=False)
+        out.append('POST epizod_szam=%d -> %s' % (n, _epnums(h)))
+    # egy nyers POST valasz a szerkezethez
+    raw = post('leiras/%s/' % aid, {'epizod_szam': '100', 'csrf_token': csrf},
+               referer=ref2, ajax=False)
+    out.append('\n\n===== RAW POST epizod_szam=100 (%d byte) =====\n%s'
+               % (len(raw or ''), raw or '(ures)'))
+    return '\n'.join(out)
 
 
 def _search_index():
