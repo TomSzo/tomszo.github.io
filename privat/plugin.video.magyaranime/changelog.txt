@@ -1,3 +1,13 @@
+v0.6.8 (2026-09-22) - PRIVÁT / BÉTA
+- UJ: ANIME LEIRASOK. Az adatlapon (anime megnyitasa) az elso sor egy "Ismertető /
+  Információ" gomb: megnyit egy szovegablakot az anime ismertetojevel (a leiras_text
+  mezobol) es fobb adataival (Epizodok, Evad, Korhatar, MAL/MA ertekeles). Ezenkivul a
+  reszek info-paneljen (kijelolve) is megjelenik az ismerteto szoveg.
+- EPIZOD-JELOLES (filler). Ahol a magyaranime jelzi, a rész cime mellett megjelenik a
+  tipusa: Filler / Half-Filler / Canon (szurkeben). Igy konnyebb a fillereket kihagyni.
+- Megj.: epizodonkenti kulon ismerteto/leiras a magyaranime-on nincs; a filler-jeloles az
+  egyetlen epizodonkenti extra info, amit az oldal ad.
+
 v0.6.7 (2026-09-22) - PRIVÁT / BÉTA
 - NAGY EPIZOD-JAVITAS. A naploban lathato volt, hogy egyes animeknel (pl. leiras/545,
   leiras/5535) a parser 0 reszt talalt: a POST-ok uresben porogtek (epizod_szam 26,27,28,29...),

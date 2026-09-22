@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<addon id="plugin.video.magyaranime" name="MagyarAnime (privát)" version="0.6.7" provider-name="TomSzo">
+<addon id="plugin.video.magyaranime" name="MagyarAnime (privát)" version="0.6.8" provider-name="TomSzo">
     <requires>
         <import addon="xbmc.python" version="3.0.0"/>
         <import addon="script.module.requests" version="2.22.0"/>
@@ -17,6 +17,13 @@
         <platform>all</platform>
         <license>GPL-3.0-or-later</license>
         <news>
+v0.6.8 (2026-09-22) - PRIVÁT / BÉTA
+- UJ: ANIME LEIRASOK. Az adatlapon belul mostantol az elso sor egy "Ismertető / Információ"
+  gomb, ami megnyitja az anime ismertetojet + fobb adatait (epizodszam, evad, korhatar,
+  MAL/MA ertekeles). A reszek info-paneljen is latszik az ismerteto.
+- EPIZOD-JELOLES: ahol az oldal jelzi, a rész cime mellett megjelenik a tipusa
+  (Filler / Half-Filler / Canon), igy konnyebb kihagyni a fillereket.
+
 v0.6.7 (2026-09-22) - PRIVÁT / BÉTA
 - NAGY EPIZOD-JAVITAS. Kiderult, hogy egyes animek belyegkepe indavideo-URL
   (pics.indavideo.hu/.../5-1.jpg), amiben NINCS epizodszam - ezert a parser 0 reszt talalt,
