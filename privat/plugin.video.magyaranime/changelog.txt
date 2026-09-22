@@ -1,3 +1,8 @@
+v0.6.0 (2026-09-22) - PRIVÁT / BÉTA
+- UJ MENUPONT: "Adatlapok (böngészés)". A /anime/adatlapok/ katalogust listazza
+  (aktualis szezon), boritokeppel; a "Kovetkezo oldal" gombbal lapozhato.
+  A talalatra kattintva a szokasos adatlap (teljes reszlista) nyilik.
+
 v0.5.5 (2026-09-22) - PRIVÁT / BÉTA
 - A "Rész megnyitása azonosítóval" mostantol a megadott resz alapjan az anime
   adatlapjat nyitja meg (anime_id_of_resz), es a TELJES, tiszta rész-listat adja -

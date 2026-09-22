@@ -63,6 +63,7 @@ def view_root():
         add_dir('[COLOR red]! Nincs cookie beállítva – kattints a beállításokhoz[/COLOR]',
                 build_url(action='opensettings'), folder=False)
     add_dir('Keresés', build_url(action='search'))
+    add_dir('Adatlapok (böngészés)', build_url(action='catalog', page='1'))
     add_dir('Rész megnyitása azonosítóval', build_url(action='byid'))
     add_dir('[COLOR yellow]Kapcsolat teszt (cookie ellenőrzés)[/COLOR]',
             build_url(action='diag'), folder=False)
@@ -96,6 +97,20 @@ def view_search():
         notify('Nincs találat (be vagy jelentkezve? cookie helyes?)')
     for r in results:
         add_dir(r['title'], build_url(action='anime', aid=r['aid']), art=r.get('art'))
+    end('tvshows')
+
+
+def view_catalog(page):
+    data = ma.catalog(page)
+    items = data.get('items') or []
+    if not items:
+        notify('Nincs adatlap (vagy nincs bejelentkezve)')
+    for it in items:
+        add_dir(it['title'], build_url(action='anime', aid=it['aid']), art=it.get('art'))
+    pg, pages = data.get('page', 1), data.get('pages', 1)
+    if pg < pages:
+        add_dir('[COLOR yellow]Következő oldal (%d/%d) »[/COLOR]' % (pg + 1, pages),
+                build_url(action='catalog', page=str(pg + 1)), folder=True)
     end('tvshows')
 
 
@@ -183,6 +198,8 @@ def router(qs):
         view_root()
     elif action == 'search':
         view_search()
+    elif action == 'catalog':
+        view_catalog(int(p.get('page', 1)))
     elif action == 'anime':
         view_anime(p['aid'])
     elif action == 'servers':
