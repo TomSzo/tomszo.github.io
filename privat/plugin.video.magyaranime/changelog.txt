@@ -1,3 +1,15 @@
+v0.6.7 (2026-09-22) - PRIVÁT / BÉTA
+- NAGY EPIZOD-JAVITAS. A naploban lathato volt, hogy egyes animeknel (pl. leiras/545,
+  leiras/5535) a parser 0 reszt talalt: a POST-ok uresben porogtek (epizod_szam 26,27,28,29...),
+  majd 0 rész. Kiderult az ok: ezeknel az animeknel a belyegkep INDAVIDEO-URL
+  (pics.indavideo.hu/videos/.../5-1.jpg), amiben NINCS epizodszam - a regi parser viszont a
+  kep nevebol probalta kiolvasni a sorszamot, ezert semmit sem talalt.
+  Javitas: a rész SORSZAMA mostantol a CIMBOL jon ("N. rész" -> N), a belyegkep pedig kulon
+  van parositva a reszhez (data-src elsobbseggel, kulonben src). Igy MINDEN anime osszes
+  resze megjelenik, fuggetlenul attol, hogy a belyegkep sajat (epizodkepek) vagy indavideo.
+  A tiszta AJAX-ablakok az elsodleges forras (nincs bennuk idegen 'kapcsolodo' rész), a
+  nyitooldalt es a rész-oldal listat csak vegso esetben hasznaljuk.
+
 v0.6.6 (2026-09-22) - PRIVÁT / BÉTA
 - IDEGEN RESZ (rovid animek). Kiderult, hogy nemely animenel (pl. a 9 reszes
   "Kimi wo Aisuru...") az adatlap-parszer egyaltalan nem talal belyegkepes reszt, ezert a

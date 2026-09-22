@@ -28,7 +28,7 @@ v1.0.0 (2026-09-21) - PRIVÁT
     </extension>
 </addon>
 
-<addon id="plugin.video.magyaranime" name="MagyarAnime (privát)" version="0.6.6" provider-name="TomSzo">
+<addon id="plugin.video.magyaranime" name="MagyarAnime (privát)" version="0.6.7" provider-name="TomSzo">
     <requires>
         <import addon="xbmc.python" version="3.0.0"/>
         <import addon="script.module.requests" version="2.22.0"/>
@@ -46,6 +46,10 @@ v1.0.0 (2026-09-21) - PRIVÁT
         <platform>all</platform>
         <license>GPL-3.0-or-later</license>
         <news>
+v0.6.7 (2026-09-22) - PRIVÁT / BÉTA
+- Nagy epizod-javitas: a rész sorszáma mostantol a CIMBOL jon ("N. rész"), nem a belyegkep
+  nevebol - igy az indavideo-belyegkepes animek reszei is megjelennek (eddig 0/hibas volt)
+
 v0.6.6 (2026-09-22) - PRIVÁT / BÉTA
 - Idegen resz (rovid animek): a tartalek rész-lista mostantol a data-max-ra (vagy az
   ujrainduló sorszámnál) van vagva, igy pl. a 9 reszes animenel nem lesz 13; belyegkep-regex bovitve
