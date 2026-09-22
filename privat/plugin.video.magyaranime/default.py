@@ -236,7 +236,11 @@ def play(vid, server=None):
     data = ma.resolve(vid, prefer_server=server)
     url = data.get('url')
     if not url:
-        if data.get('mega'):
+        if data.get('limit_error'):
+            notify('MagyarAnime napi videó-limit elérve (a fiókodon, az oldal oldaláról). '
+                   'Ez naponta nullázódik – próbáld később/holnap. Ez nem az addon hibája.',
+                   t=10000)
+        elif data.get('mega'):
             notify('Ez a rész mega.nz-en van, ami jelenleg nem támogatott. '
                    'Próbálj másik szervert/feliratot, vagy másik részt.', t=9000)
         else:
