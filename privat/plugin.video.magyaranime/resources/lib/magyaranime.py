@@ -240,6 +240,16 @@ def dump_debug(term):
     return '\n'.join(parts)
 
 
+def dump_anime(aid):
+    """Egy adatlap HTML-je + a részeket betöltő JS (rész-lapozás hibakereséshez)."""
+    ref = base_url()
+    parts = ['===== GET leiras/%s =====\n%s'
+             % (aid, get('leiras/%s/' % aid, referer=ref) or '(ures)')]
+    for u in ('data/adatlap/adatlap_v2.js', 'js/magyaranime_loads.js'):
+        parts.append('\n\n===== %s =====\n%s' % (u, get(u, referer=ref) or '(ures/hiba)'))
+    return '\n'.join(parts)
+
+
 def _search_index():
     """A teljes anime-index JSON-ja (ugyanaz, amit az oldal fejléc-keresője használ)."""
     txt = get('data/search/data_search.php', referer=base_url() + 'web/kereso/', ajax=True)
