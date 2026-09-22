@@ -165,12 +165,31 @@ def view_catalog(page, filters):
 def view_anime(aid):
     data = ma.episodes_of_anime(aid)
     eps = data.get('episodes') or []
+    plot = data.get('plot') or ''
     if not eps:
         notify('Nincs epizód (vagy nincs bejelentkezve)')
+    if plot:
+        add_dir('[COLOR gold]📖 Ismertető / Információ[/COLOR]',
+                build_url(action='animeinfo', aid=str(aid)), folder=False)
     for ep in eps:
-        add_dir(ep['title'], build_url(action='servers', vid=ep['vid']),
-                folder=True, art=ep.get('thumb'), info={'mediatype': 'episode'})
+        label = ep['title']
+        if ep.get('filler'):
+            label = '%s  [COLOR grey](%s)[/COLOR]' % (label, ep['filler'])
+        add_dir(label, build_url(action='servers', vid=ep['vid']),
+                folder=True, art=ep.get('thumb'), plot=ep.get('plot') or plot,
+                info={'mediatype': 'episode'})
     end('episodes')
+
+
+def view_animeinfo(aid):
+    info = ma.anime_info(aid)
+    parts = []
+    if info.get('meta'):
+        parts.append(info['meta'])
+    parts.append(info.get('plot') or 'Ehhez az animéhez nincs ismertető.')
+    xbmcgui.Dialog().textviewer(info.get('title') or ADDON.getAddonInfo('name'),
+                                '\n\n'.join(parts))
+    end('files')
 
 
 def view_servers(vid):
@@ -256,6 +275,8 @@ def router(qs):
         view_catalog(int(p.get('page', 1)), _filters_from(p))
     elif action == 'anime':
         view_anime(p['aid'])
+    elif action == 'animeinfo':
+        view_animeinfo(p['aid'])
     elif action == 'servers':
         view_servers(p['vid'])
     elif action == 'byid':

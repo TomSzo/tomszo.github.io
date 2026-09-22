@@ -347,26 +347,84 @@ _EP_THUMB_SRC_RE = re.compile(
     re.IGNORECASE)
 
 
+# Egy epizód "filler" jelölése (Filler / Half-Filler / Canon) a cím utáni badge-ből.
+_EP_FILLER_RE = re.compile(
+    r'<a href="resz/(\d+)/"\s+oncontextmenu="return false;">[^<]*</a>(.*?)</h3>',
+    re.DOTALL | re.IGNORECASE)
+# Az anime ismertetője (leírás) az adatlapon.
+_DESC_RE = re.compile(r'<div class="leiras_text"[^>]*>(.*?)</div>', re.DOTALL | re.IGNORECASE)
+
+
+def _plot_text(fragment):
+    """A leiras_text HTML-jét olvasható szöveggé alakítja (a <br>-ekből sortörés)."""
+    t = re.sub(r'(?i)<\s*br\s*/?>', '\n', fragment or '')
+    t = re.sub(r'(?i)<b>\s*Ismertető:\s*</b>\s*', '', t)
+    t = re.sub(r'<[^>]+>', '', t)
+    for a, b in (('&amp;', '&'), ('&#039;', "'"), ('&quot;', '"'), ('&nbsp;', ' '),
+                 ('&lt;', '<'), ('&gt;', '>')):
+        t = t.replace(a, b)
+    t = re.sub(r'[ \t]+\n', '\n', t)
+    t = re.sub(r'\n{3,}', '\n\n', t)
+    return t.strip()
+
+
 def _collect_ep_window(html):
-    """Egy adatlap-ablak nyers epizód-jelöltjei: [(vid, epnum, thumb, title)].
+    """Egy adatlap-ablak nyers epizód-jelöltjei: [(vid, epnum, thumb, title, filler)].
 
     FONTOS: a rész SORSZÁMA a CÍMBŐL jön ("N. rész"), NEM a bélyegkép nevéből - mert
     egyes animék bélyegképe indavideo-URL (pics.indavideo.hu/.../5-1.jpg), amiben nincs
-    epizódszám. A cím-link (resz/<vid> -> "N. rész") viszont mindig megvan."""
+    epizódszám. A cím-link (resz/<vid> -> "N. rész") viszont mindig megvan.
+    A 'filler' a rész típusa (Filler / Half-Filler / Canon), ha az oldal jelöli."""
     # bélyegképek vid szerint: elsőként a valódi data-src, majd (ha nincs) a sima src
     thumbs = {}
     for vid, thumb in _EP_THUMB_DATASRC_RE.findall(html):
         thumbs.setdefault(vid, thumb)
     for vid, thumb in _EP_THUMB_SRC_RE.findall(html):
         thumbs.setdefault(vid, thumb)
+    # filler-jelölés vid szerint (csak a valódi filler/canon badge-ek)
+    fillers = {}
+    for vid, tail in _EP_FILLER_RE.findall(html):
+        bm = re.search(r'badge bg-\w+">([^<]+)</span>', tail)
+        if bm:
+            b = _clean(bm.group(1))
+            if 'filler' in b.lower() or 'canon' in b.lower():
+                fillers.setdefault(vid, b)
     out = []
     for vid, ttext in _EP_TITLE_RE.findall(html):
         t = _clean(ttext)
         mnum = re.search(r'(\d+)', t)
         if not mnum:
             continue  # pl. "Film"/"OVA" felirat szám nélkül - kihagyjuk
-        out.append((vid, int(mnum.group(1)), thumbs.get(vid), t))
+        out.append((vid, int(mnum.group(1)), thumbs.get(vid), t, fillers.get(vid)))
     return out
+
+
+def anime_info(aid):
+    """Az anime adatlap-fejléce a textviewerhez: {title, plot, meta}."""
+    html = get('leiras/%s/' % aid, referer=base_url())
+    if not html:
+        return {'title': '', 'plot': '', 'meta': ''}
+    tm = re.search(r'<h2 class="gen-title[^"]*">([^<]+)</h2>', html)
+    title = _clean(tm.group(1)) if tm else ''
+    dm = _DESC_RE.search(html)
+    plot = _plot_text(dm.group(1)) if dm else ''
+    lines = []
+    em = re.search(r'Epizódok:\s*([0-9]+\s*/\s*[0-9]+)', html)
+    if em:
+        lines.append('Epizódok: %s' % re.sub(r'\s+', '', em.group(1)))
+    sm = re.search(r'>\s*(\d{4}\s+(?:Tavasz|Nyár|Ősz|Tél))\s*<', html)
+    if sm:
+        lines.append('Évad: %s' % sm.group(1))
+    pgm = re.search(r'<span>\s*((?:PG-\d+|R\+?|G|NC-17|R-17\+?|PG)\b[^<]*)</span>', html)
+    if pgm:
+        lines.append('Korhatár: %s' % _clean(pgm.group(1)))
+    malm = re.search(r'MAL:\s*<span>([^<]+)</span>', html)
+    if malm:
+        lines.append('MAL: %s' % _clean(malm.group(1)))
+    mam = re.search(r'MA:\s*<span>([^<]+)</span>', html)
+    if mam:
+        lines.append('MA: %s' % _clean(mam.group(1)))
+    return {'title': title, 'plot': plot, 'meta': '\n'.join(lines)}
 
 
 def episodes_of_anime(aid):
@@ -387,15 +445,19 @@ def episodes_of_anime(aid):
     csrf = csrf_m.group(1) if csrf_m else ''
     referer = base_url() + 'leiras/%s/' % aid
 
+    # Az anime ismertetője (a részekhez plot-ként is odaadjuk).
+    dm = _DESC_RE.search(html)
+    plot = _plot_text(dm.group(1)) if dm else ''
+
     acc = {}
 
     def _add(cands):
-        for vid, epnum, thumb, ep_title in cands:
+        for vid, epnum, thumb, ep_title, filler in cands:
             if epnum in acc:
                 continue
             acc[epnum] = {'vid': vid, 'title': ep_title or ('%d. rész' % epnum),
                           'thumb': urljoin(base_url(), thumb) if thumb else None,
-                          'server': 's1'}
+                          'server': 's1', 'filler': filler, 'plot': plot}
 
     def _window(center):
         html2 = post('leiras/%s/' % aid,
@@ -435,7 +497,7 @@ def episodes_of_anime(aid):
 
     eps = [acc[n] for n in sorted(acc) if not max_ep or n <= max_ep]
     log('%d rész (adatlap, max %s): leiras/%s ("%s")' % (len(eps), max_ep or '?', aid, title))
-    return {'title': title, 'episodes': eps}
+    return {'title': title, 'plot': plot, 'episodes': eps}
 
 
 def anime_id_of_resz(vid):
