@@ -321,15 +321,23 @@ _EP_THUMB_RE = re.compile(r"window\.location='resz/(\d+)/';\"[^>]*>\s*<img[^>]*d
                           re.IGNORECASE)
 
 
-def _parse_ep_window(html, acc):
-    """Egy adatlap-ablak (max ~26 rész) beolvasása az acc dict-be (kulcs: epizódszám)."""
+def _parse_ep_window(html, acc, aid=None):
+    """Egy adatlap-ablak (max ~26 rész) beolvasása az acc dict-be (kulcs: epizódszám).
+    Csak az ADOTT animéhez tartozó bélyegképeket fogadja el (mappa-id = aid), így nem
+    kerülnek be a 'kapcsolódó animék' idegen részei."""
     titles = {v: _clean(t) for v, t in _EP_TITLE_RE.findall(html)}
     added = 0
     for v, thumb in _EP_THUMB_RE.findall(html):
-        m = re.search(r'/(\d{1,4})\.jpg', thumb)
-        if not m:
-            continue
-        epnum = int(m.group(1))
+        m = re.search(r'epizodkepek/0*(\d+)/0*(\d+)\.(?:jpg|jpeg|png|webp)', thumb, re.IGNORECASE)
+        if m:
+            folder, epnum = int(m.group(1)), int(m.group(2))
+        else:
+            m2 = re.search(r'/(\d{1,4})\.(?:jpg|jpeg|png|webp)', thumb, re.IGNORECASE)
+            if not m2:
+                continue
+            folder, epnum = None, int(m2.group(1))
+        if aid is not None and folder is not None and folder != int(aid):
+            continue  # idegen anime bélyegképe (kapcsolódó szekció)
         if epnum in acc:
             continue
         acc[epnum] = {'vid': v, 'title': titles.get(v) or ('%d. rész' % epnum),
@@ -352,7 +360,7 @@ def episodes_of_anime(aid):
     csrf = csrf_m.group(1) if csrf_m else ''
 
     acc = {}
-    _parse_ep_window(html, acc)
+    _parse_ep_window(html, acc, aid)
     if not acc:
         m = _RESZ_RE.search(html)
         if m:
@@ -365,7 +373,7 @@ def episodes_of_anime(aid):
                      {'epizod_szam': str(center), 'csrf_token': csrf},
                      referer=referer, ajax=False)
         if html2:
-            _parse_ep_window(html2, acc)
+            _parse_ep_window(html2, acc, aid)
 
     # Az adatlap ablaka: epizod_szam=N -> [N-9 .. N+16] (26 rész). Ezért N=need+9-cel
     # kérve az ablak a 'need' résznél kezdődik; 26-os lépéssel hézagmentesen csempézünk.

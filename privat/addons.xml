@@ -28,7 +28,7 @@ v1.0.0 (2026-09-21) - PRIVÁT
     </extension>
 </addon>
 
-<addon id="plugin.video.magyaranime" name="MagyarAnime (privát)" version="0.6.1" provider-name="TomSzo">
+<addon id="plugin.video.magyaranime" name="MagyarAnime (privát)" version="0.6.2" provider-name="TomSzo">
     <requires>
         <import addon="xbmc.python" version="3.0.0"/>
         <import addon="script.module.requests" version="2.22.0"/>
@@ -46,6 +46,9 @@ v1.0.0 (2026-09-21) - PRIVÁT
         <platform>all</platform>
         <license>GPL-3.0-or-later</license>
         <news>
+v0.6.2 (2026-09-22) - PRIVÁT / BÉTA
+- Javitva: nincs idegen resz az adatlapon (belyegkep-mappa szures)
+
 v0.6.1 (2026-09-22) - PRIVÁT / BÉTA
 - Adatlapok bongeszes szurokkel (szezon/osszes/kezdobetu/allapot)
 
