@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<addon id="plugin.video.magyaranime" name="MagyarAnime (privát)" version="0.6.9" provider-name="TomSzo">
+<addon id="plugin.video.magyaranime" name="MagyarAnime (privát)" version="0.6.10" provider-name="TomSzo">
     <requires>
         <import addon="xbmc.python" version="3.0.0"/>
         <import addon="script.module.requests" version="2.22.0"/>
@@ -17,6 +17,11 @@
         <platform>all</platform>
         <license>GPL-3.0-or-later</license>
         <news>
+v0.6.10 (2026-09-22) - PRIVÁT / BÉTA
+- DIAGNOSZTIKA (ideiglenes): a naploba kiirja a data_player.php valaszanak kulcsait, a
+  'servers' tombot es az MP4 URL-t/kimenetet, hogy megtalaljuk, hol van a felbontas-info
+  a kozvetlen (MP4) forrasoknal. A kovetkezo verzio ez alapjan irja majd ki a felbontast.
+
 v0.6.9 (2026-09-22) - PRIVÁT / BÉTA
 - UJ: FELBONTAS a forrasok mellett. A szerver/forras listaban mostantol - ahol kideritheto -
   ott a felbontas is: HLS-nel az osszes elerheto (pl. [480p/720p/1080p]) a manifestbol,
