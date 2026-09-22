@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<addon id="plugin.video.magyaranime" name="MagyarAnime (privát)" version="0.6.5" provider-name="TomSzo">
+<addon id="plugin.video.magyaranime" name="MagyarAnime (privát)" version="0.6.6" provider-name="TomSzo">
     <requires>
         <import addon="xbmc.python" version="3.0.0"/>
         <import addon="script.module.requests" version="2.22.0"/>
@@ -17,6 +17,13 @@
         <platform>all</platform>
         <license>GPL-3.0-or-later</license>
         <news>
+v0.6.6 (2026-09-22) - PRIVÁT / BÉTA
+- IDEGEN RESZ (rovid animek). Nemely animenel az adatlap-parszer semmit sem talal, ezert a
+  tartalek rész-oldal lista fut - ez a sajat reszek UTAN idegen 'kapcsolodo' reszeket is
+  felsorol (pl. 9 reszes anime -> 13). Mostantol a tartalek listat az adatlap data-max
+  ertekere vagjuk, es ha az hianyzik, akkor az ujrainduló rész-sorszámnal (9 -> 1). Igy
+  csak a valodi reszek latszanak. A belyegkep-regex is bovult (data-src ES src).
+
 v0.6.5 (2026-09-22) - PRIVÁT / BÉTA
 - IDEGEN RESZ VEGLEGES JAVITAS (2). A belyegkep-mappa id nem mindig egyezik a leiras-id-vel,
   ezert a korabbi szigoru szures nemely animenel MINDENT kidobott, es a tartalek lista
