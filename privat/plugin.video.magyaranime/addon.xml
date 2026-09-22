@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<addon id="plugin.video.magyaranime" name="MagyarAnime (privát)" version="0.5.4" provider-name="TomSzo">
+<addon id="plugin.video.magyaranime" name="MagyarAnime (privát)" version="0.5.5" provider-name="TomSzo">
     <requires>
         <import addon="xbmc.python" version="3.0.0"/>
         <import addon="script.module.requests" version="2.22.0"/>
@@ -17,6 +17,10 @@
         <platform>all</platform>
         <license>GPL-3.0-or-later</license>
         <news>
+v0.5.5 (2026-09-22) - PRIVÁT / BÉTA
+- "Resz megnyitasa azonositoval" a teljes, tiszta adatlap-listat adja (nincs idegen resz)
+- Hibakereso menupontok eltavolitva
+
 v0.5.4 (2026-09-22) - PRIVÁT / BÉTA
 - TELJES reszlista veglegesen: az ablak [N-9..N+16], 26-os lepessel hezagmentes csempezes
 

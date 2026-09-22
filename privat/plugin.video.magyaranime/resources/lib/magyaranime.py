@@ -225,55 +225,6 @@ def _clean(t):
     return re.sub(r'\s+', ' ', t).strip()
 
 
-def search_raw(term):
-    """A keresés nyers HTML-je (hibakereséshez)."""
-    return post('web/kereso/', {'search_text': term}, referer=base_url() + 'web/kereso/') or ''
-
-
-def dump_debug(term):
-    """Kereső-oldal + a találatokat betöltő JS fájlok mentése (hibakereséshez)."""
-    ref = base_url() + 'web/kereso/'
-    parts = ['===== POST web/kereso (shell) =====\n' + (search_raw(term) or '(ures)')]
-    for u in ('data/search/search.js', 'js/kereso/kereso_v2.js',
-              'js/magyaranime_simple.js'):
-        parts.append('\n\n===== %s =====\n%s' % (u, get(u, referer=ref) or '(ures/hiba)'))
-    return '\n'.join(parts)
-
-
-def _epnums(html):
-    nums = set()
-    for m in re.findall(r'epizodkepek/\d+/(\d+)\.jpg', html or ''):
-        nums.add(int(m))
-    return sorted(nums)
-
-
-def dump_anime(aid):
-    """Rész-lapozás hibakereséshez: több pozíciót kipróbál és kiírja a rész-számokat."""
-    ref = base_url()
-    ref2 = base_url() + 'leiras/%s/' % aid
-    base_html = get('leiras/%s/' % aid, referer=ref)
-    mx = re.search(r'id="epizod_szam"[^>]*data-max="(\d+)"', base_html or '')
-    csrf_m = _META_CSRF_RE.search(base_html or '')
-    csrf = csrf_m.group(1) if csrf_m else ''
-    out = ['data-max: %s' % (mx.group(1) if mx else '?'),
-           'GET default -> %s' % _epnums(base_html)]
-    # URL-alapu lapozas teszt
-    for pg in (2, 3):
-        h = get('leiras/%s/%d/' % (aid, pg), referer=ref)
-        out.append('GET leiras/%s/%d/ -> %s' % (aid, pg, _epnums(h)))
-    # epizod_szam POST teszt kulonbozo pozicioknal
-    for n in (27, 50, 100, 150, 200):
-        h = post('leiras/%s/' % aid, {'epizod_szam': str(n), 'csrf_token': csrf},
-                 referer=ref2, ajax=False)
-        out.append('POST epizod_szam=%d -> %s' % (n, _epnums(h)))
-    # egy nyers POST valasz a szerkezethez
-    raw = post('leiras/%s/' % aid, {'epizod_szam': '100', 'csrf_token': csrf},
-               referer=ref2, ajax=False)
-    out.append('\n\n===== RAW POST epizod_szam=100 (%d byte) =====\n%s'
-               % (len(raw or ''), raw or '(ures)'))
-    return '\n'.join(out)
-
-
 def _search_index():
     """A teljes anime-index JSON-ja (ugyanaz, amit az oldal fejléc-keresője használ)."""
     txt = get('data/search/data_search.php', referer=base_url() + 'web/kereso/', ajax=True)
@@ -393,9 +344,21 @@ def episodes_of_anime(aid):
         guard += 1
         _window(e + 9)
 
-    eps = [acc[n] for n in sorted(acc)]
+    eps = [acc[n] for n in sorted(acc) if not max_ep or n <= max_ep]
     log('%d rész (adatlap, max %s): leiras/%s ("%s")' % (len(eps), max_ep or '?', aid, title))
     return {'title': title, 'episodes': eps}
+
+
+def anime_id_of_resz(vid):
+    """Egy rész (resz/{vid}) alapján az anime adatlap-azonosítója (leiras/{aid})."""
+    html = get('resz/%s/' % vid, referer=base_url())
+    if not html:
+        return None
+    m = re.search(r'id="InfoBox".*?leiras/(\d+)/', html, re.DOTALL)
+    if m:
+        return m.group(1)
+    m = _LEIRAS_RE.search(html)
+    return m.group(1) if m else None
 
 
 def episodes_of_resz(vid):

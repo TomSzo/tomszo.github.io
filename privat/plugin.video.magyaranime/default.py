@@ -12,7 +12,6 @@ import xbmc
 import xbmcgui
 import xbmcplugin
 import xbmcaddon
-import xbmcvfs
 
 from resources.lib import magyaranime as ma
 
@@ -67,35 +66,6 @@ def view_root():
     add_dir('Rész megnyitása azonosítóval', build_url(action='byid'))
     add_dir('[COLOR yellow]Kapcsolat teszt (cookie ellenőrzés)[/COLOR]',
             build_url(action='diag'), folder=False)
-    add_dir('[COLOR yellow]Keresés HTML mentése (hibakereséshez)[/COLOR]',
-            build_url(action='dumpsearch'), folder=False)
-    end('files')
-
-
-def view_dumpsearch():
-    kb = xbmc.Keyboard('', 'Keresett szó (HTML mentés)')
-    kb.doModal()
-    if not kb.isConfirmed() or not kb.getText().strip():
-        end()
-        return
-    html = ma.dump_debug(kb.getText().strip())
-    data = html.encode('utf-8') if isinstance(html, str) else (html or b'')
-    targets = ['/storage/emulated/0/Download/ma_search.html',
-               xbmcvfs.translatePath('special://profile/addon_data/%s/ma_search.html'
-                                     % ADDON.getAddonInfo('id'))]
-    saved = ''
-    for t in targets:
-        try:
-            fh = xbmcvfs.File(t, 'w')
-            fh.write(bytearray(data))
-            fh.close()
-            saved = t
-            break
-        except Exception:
-            continue
-    xbmcgui.Dialog().textviewer('Keresés HTML mentés',
-                                'Mentve ide:\n%s\n\n%d byte\n\nKüldd el ezt a fájlt.'
-                                % (saved or 'SIKERTELEN', len(data)))
     end('files')
 
 
@@ -137,32 +107,7 @@ def view_anime(aid):
     for ep in eps:
         add_dir(ep['title'], build_url(action='servers', vid=ep['vid']),
                 folder=True, art=ep.get('thumb'), info={'mediatype': 'episode'})
-    add_dir('[COLOR yellow]Adatlap mentése (rész-hibakereséshez)[/COLOR]',
-            build_url(action='dumpanime', aid=aid), folder=False)
     end('episodes')
-
-
-def view_dumpanime(aid):
-    html = ma.dump_anime(aid)
-    data = html.encode('utf-8') if isinstance(html, str) else (html or b'')
-    targets = ['/storage/emulated/0/Download/ma_anime.html',
-               '/storage/downloads/ma_anime.html',
-               xbmcvfs.translatePath('special://profile/addon_data/%s/ma_anime.html'
-                                     % ADDON.getAddonInfo('id'))]
-    saved = ''
-    for t in targets:
-        try:
-            fh = xbmcvfs.File(t, 'w')
-            fh.write(bytearray(data))
-            fh.close()
-            saved = t
-            break
-        except Exception:
-            continue
-    xbmcgui.Dialog().textviewer('Adatlap mentés',
-                                'Mentve ide:\n%s\n\n%d byte\n\nKüldd el ezt a fájlt.'
-                                % (saved or 'SIKERTELEN', len(data)))
-    end('files')
 
 
 def view_servers(vid):
@@ -186,6 +131,12 @@ def view_byid():
         end()
         return
     vid = kb.getText().strip()
+    # A megadott rész alapján az anime adatlapja -> teljes, tiszta rész-lista.
+    aid = ma.anime_id_of_resz(vid)
+    if aid:
+        view_anime(aid)
+        return
+    # tartalék: ha nincs adatlap-azonosító, a rész-oldal saját listája
     data = ma.episodes_of_resz(vid)
     eps = data.get('episodes') or []
     if not eps:
@@ -236,14 +187,10 @@ def router(qs):
         view_anime(p['aid'])
     elif action == 'servers':
         view_servers(p['vid'])
-    elif action == 'dumpanime':
-        view_dumpanime(p['aid'])
     elif action == 'byid':
         view_byid()
     elif action == 'diag':
         view_diag()
-    elif action == 'dumpsearch':
-        view_dumpsearch()
     elif action == 'play':
         play(p['vid'], p.get('server'))
     elif action == 'opensettings':
