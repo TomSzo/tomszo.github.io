@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<addon id="plugin.video.onianime" name="OniAnime" version="1.0.4" provider-name="TomSzo">
+<addon id="plugin.video.onianime" name="OniAnime" version="1.0.5" provider-name="TomSzo">
     <requires>
         <import addon="xbmc.python" version="3.0.0"/>
         <import addon="script.module.requests" version="2.22.0"/>
@@ -20,6 +20,10 @@
         <license>GPL-3.0-or-later</license>
         <source>https://github.com/TomSzo/tomszo.github.io</source>
         <news>
+v1.0.5 (2026-09-22)
+- Cookie FAJLBOL tallozhato (CoreELEC/tavvezerlo): nem kell hosszu JSON-t gepelni.
+  Mentsd a Cookie-Editor exportot fajlba, es tallozd ki. A fajl elsobbseget elvez.
+
 v1.0.4 (2026-09-22)
 - A cookie-mezo mostmar a Cookie-Editor JSON exportjat is elfogadja (magatol
   atalakitja nev=ertek formatumra) - mobilon eleg Export -> beillesztes.

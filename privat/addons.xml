@@ -169,7 +169,7 @@ v0.1.0 (2026-09-21) - PRIVÁT / BÉTA
     </extension>
 </addon>
 
-<addon id="plugin.video.onianime" name="OniAnime" version="1.0.4" provider-name="TomSzo">
+<addon id="plugin.video.onianime" name="OniAnime" version="1.0.5" provider-name="TomSzo">
     <requires>
         <import addon="xbmc.python" version="3.0.0"/>
         <import addon="script.module.requests" version="2.22.0"/>
@@ -186,6 +186,9 @@ v0.1.0 (2026-09-21) - PRIVÁT / BÉTA
         <platform>all</platform>
         <license>GPL-3.0-or-later</license>
         <news>
+v1.0.5 (2026-09-22)
+- Cookie FAJLBOL tallozhato (CoreELEC/tavvezerlo baratsagos), a fajl elsobbseget elvez
+
 v1.0.4 (2026-09-22)
 - A cookie-mezo a Cookie-Editor JSON exportjat is elfogadja (magatol atalakitja)
 

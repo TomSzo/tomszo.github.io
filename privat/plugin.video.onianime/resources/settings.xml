@@ -2,7 +2,8 @@
 	<category label="Általános">
 		<setting id="user_agent" type="text" label="Böngésző User-Agent" default="Mozilla/5.0 (Android 16; Mobile; rv:156.0) Gecko/156.0 Firefox/156.0" />
 		<setting type="lsep" label="Süti (a 403 megkerüléséhez)" />
-		<setting id="cookie" type="text" label="Cookie (böngészőből másolva)" default="" />
-		<setting type="lsep" label="Mobilon: onianime.hu megnyitása böngészőben (legyél bejelentkezve) → Cookie-Editor → Export → a JSON-t illeszd be ide (a plugin átalakítja). A User-Agent egyezzen a böngészőével." />
+		<setting id="cookie_file" type="file" label="Cookie FÁJLBÓL (tallózás) — ajánlott távirányítóhoz" default="" />
+		<setting id="cookie" type="text" label="Cookie (kézzel beillesztve, ha nincs fájl)" default="" />
+		<setting type="lsep" label="Böngészőben (bejelentkezve) → Cookie-Editor → Export → mentsd fájlba (USB/hálózat), majd itt tallózd ki. A fájl elsőbbséget élvez. A User-Agent egyezzen a böngészőével." />
 	</category>
 </settings>
