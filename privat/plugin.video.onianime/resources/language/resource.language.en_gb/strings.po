@@ -1,0 +1,3 @@
+msgctxt "Addon Summary"
+msgid ""
+msgstr ""

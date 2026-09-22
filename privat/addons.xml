@@ -169,6 +169,34 @@ v0.1.0 (2026-09-21) - PRIVÁT / BÉTA
     </extension>
 </addon>
 
+<addon id="plugin.video.onianime" name="OniAnime" version="1.0.0" provider-name="TomSzo">
+    <requires>
+        <import addon="xbmc.python" version="3.0.0"/>
+        <import addon="script.module.requests" version="2.22.0"/>
+        <import addon="inputstream.adaptive" optional="true"/>
+    </requires>
+    <extension point="xbmc.python.pluginsource" library="default.py">
+        <provides>video</provides>
+    </extension>
+    <extension point="xbmc.addon.metadata">
+        <summary lang="hu">OniAnime - anime böngészés és lejátszás (onianime.hu)</summary>
+        <description lang="hu">Nem hivatalos videó addon az onianime.hu nyilvános API-jához: anime böngészés (katalógus), keresés, epizódok, és közvetlen videa.hu lejátszás felbontás-választással (240p/480p/1080p). Nem kell belépés. Kérés-takarékos: egy művelet = egy kérés, a lejátszás nem küld további kérést; a weboldal statisztikai/egyéb hívásait (viewers, watched, stb.) nem futtatja. Nincs kapcsolatban az onianime.hu üzemeltetőivel.</description>
+        <disclaimer lang="hu">Ez az addon csak az onianime.hu nyilvánosan elérhető adatait listázza, semmilyen tartalmat nem tárol. Csak saját felelősségre használd.</disclaimer>
+        <language>hu</language>
+        <platform>all</platform>
+        <license>GPL-3.0-or-later</license>
+        <news>
+v1.0.0 (2026-09-22)
+- Kezdeti kiadás: katalógus/keresés, epizódok, közvetlen videa lejátszás (240p/480p/1080p)
+- Kérés-takarékos: csak a szükséges 3 végpont, egy művelet = egy kérés
+        </news>
+        <assets>
+            <icon>icon.png</icon>
+            <fanart>fanart.jpg</fanart>
+        </assets>
+    </extension>
+</addon>
+
 <addon id="script.module.resolveurl" name="ResolveURL" version="5.1.209" provider-name="gujal">
     <requires>
         <!-- <import addon="xbmc.python" version="3.0.0" /> -->

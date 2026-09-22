@@ -1,0 +1,5 @@
+<settings>
+	<category label="Általános">
+		<setting id="user_agent" type="text" label="Böngésző User-Agent" default="Mozilla/5.0 (Android 16; Mobile; rv:156.0) Gecko/156.0 Firefox/156.0" />
+	</category>
+</settings>
