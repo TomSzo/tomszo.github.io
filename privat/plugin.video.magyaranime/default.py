@@ -199,6 +199,9 @@ def view_servers(vid):
     for s in servers:
         host = s.get('host') or 'ismeretlen'
         label = host[:1].upper() + host[1:]
+        q = s.get('quality')
+        if q:
+            label = '%s  [COLOR yellow][%s][/COLOR]' % (label, q)
         if 'mega' in host.lower():
             label = '[COLOR gray]%s (nem támogatott)[/COLOR]' % label
         add_dir(label, build_url(action='play', vid=vid, server=s['server']),

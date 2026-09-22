@@ -1,3 +1,11 @@
+v0.6.9 (2026-09-22) - PRIVÁT / BÉTA
+- UJ: FELBONTAS a forrasok mellett. A "szerverlista" (egy reszre kattintva) most a forras
+  neve mellett - ahol kideritheto - a felbontast is kiirja (sargaval, pl. [720p]):
+  * HLS: a master manifestbol az OSSZES elerheto felbontas (pl. [480p/720p/1080p]).
+  * Kozvetlen MP4: a fajlnevbol (pl. ...720p... -> [720p]) vagy WxH-bol.
+  * Embed (indavideo/videa/stb.): a felbontas csak lejatszaskor (feloldas utan) derul ki,
+    ezert ott NINCS cimke - ez varhato, nem hiba.
+
 v0.6.8 (2026-09-22) - PRIVÁT / BÉTA
 - UJ: ANIME LEIRASOK. Az adatlapon (anime megnyitasa) az elso sor egy "Ismertető /
   Információ" gomb: megnyit egy szovegablakot az anime ismertetojevel (a leiras_text

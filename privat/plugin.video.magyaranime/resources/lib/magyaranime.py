@@ -698,6 +698,37 @@ def _host_of(url):
     return (m.group(1) if m else 'ismeretlen')
 
 
+# Felbontás-kinyerés a forrás URL-jéből / a player kimenetéből.
+_RES_P_RE = re.compile(r'(?<!\d)(\d{3,4})\s*[pP](?![a-z])')      # "720p", "1080p"
+_RES_WH_RE = re.compile(r'(\d{3,4})\s*[xX]\s*(\d{3,4})')          # "1280x720"
+
+
+def _quality_label(text):
+    """Egy szövegből (URL/output) kiolvasott felbontás, pl. '1080p' - vagy '' ha nincs."""
+    if not text:
+        return ''
+    m = _RES_P_RE.search(text)
+    if m and 144 <= int(m.group(1)) <= 4320:
+        return '%sp' % m.group(1)
+    m = _RES_WH_RE.search(text)
+    if m:
+        return '%sp' % m.group(2)  # a magasság a felbontás
+    return ''
+
+
+def _hls_qualities(hls_url, referer):
+    """Egy HLS master manifest elérhető felbontásai csökkenő sorrendben, pl.
+    ['1080p','720p','480p']. Ha csak egy (média-)lista, üres marad."""
+    try:
+        txt = get(hls_url, referer=referer)
+    except Exception:  # noqa
+        return []
+    heights = set()
+    for m in re.finditer(r'RESOLUTION=\d+x(\d+)', txt or '', re.IGNORECASE):
+        heights.add(int(m.group(1)))
+    return ['%dp' % h for h in sorted(heights, reverse=True)]
+
+
 def list_servers(vid):
     """Egy részhez elérhető szerverek/források listája: [{server, host, kind, embed}]."""
     out = []
@@ -715,24 +746,34 @@ def list_servers(vid):
         if not data or data.get('error'):
             continue
         kind = host = embed = None
+        quality = ''
         if data.get('hls') and data.get('hls_url'):
             kind, host = 'hls', 'Közvetlen (HLS)'
+            try:
+                hls = base64.b64decode(data['hls_url']).decode('utf-8', 'replace')
+            except Exception:  # noqa
+                hls = ''
+            if hls:
+                quality = '/'.join(_hls_qualities(hls, referer))
         else:
             output = data.get('output') or ''
             urls, iframes = _extract_from_output(output)
             mp4 = [u for u in urls if '.mp4' in u.lower()]
             if mp4:
                 kind, host = 'mp4', 'Közvetlen (MP4)'
+                quality = _quality_label(mp4[0])
             elif iframes:
                 embed, kind = iframes[0], 'embed'
                 host = _host_of(embed)
+                quality = _quality_label(embed)  # ritkán van benne, de ha igen, mutatjuk
         if not kind:
             continue
         key = embed or ('%s|%s' % (host, server))
         if key in seen:
             continue
         seen.add(key)
-        out.append({'server': server, 'host': host, 'kind': kind, 'embed': embed})
+        out.append({'server': server, 'host': host, 'kind': kind, 'embed': embed,
+                    'quality': quality})
     log('list_servers(%s): %d forrás' % (vid, len(out)))
     return out
 
