@@ -5,7 +5,7 @@
 > ## ⚠️ Ez NEM az eredeti addon
 > Ez az addon **nem az enyém**. Az eredeti **nCore TV** addon szerzője **heg** (az `addon.xml` `provider-name` mezője és a forrásfájlok szerzői jogi fejlécei szerint). Ez a repó egy **nem hivatalos, saját módosított változat (fork)**, amelyet **TomSzo** tart karban a saját használatára és kényelmére.
 >
-> - Az eredeti projekt: **[ide az eredeti repó linkje]** *(töltsd ki)*
+> - Az eredeti projekt a **MovieShark Kodi-tárolóban** érhető el: **[repo.mvshrk.xyz](https://repo.mvshrk.xyz/)**
 > - A fork **nem az eredeti szerző hivatalos kiadása**, az eredeti szerző nem felelős a benne található hibákért. **A fork hibáival ne az eredeti szerzőt keresd.**
 > - A fork **nem hivatalos kiadás**, és nem áll kapcsolatban az nCore, a TMDb, a Trakt, a Simkl, a Plex, a Kodi, a CoreELEC és az Elementum projektekkel.
 
