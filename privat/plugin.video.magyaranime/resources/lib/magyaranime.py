@@ -186,11 +186,11 @@ def get(url, referer=None, timeout=25, ajax=False):
         return ''
 
 
-def post(url, data, referer=None, timeout=30):
+def post(url, data, referer=None, timeout=30, ajax=True):
     url = urljoin(base_url(), url)
     log('POST %s data=%s' % (url, data))
     try:
-        r = _SESSION.post(url, data=data, headers=_headers(referer, ajax=True),
+        r = _SESSION.post(url, data=data, headers=_headers(referer, ajax=ajax),
                           cookies=_cookies(), timeout=timeout)
         r.encoding = r.apparent_encoding or 'utf-8'
         return r.text
@@ -305,26 +305,58 @@ _EP_THUMB_RE = re.compile(r"window\.location='resz/(\d+)/';\"[^>]*>\s*<img[^>]*d
                           re.IGNORECASE)
 
 
+def _parse_ep_window(html, acc):
+    """Egy adatlap-ablak (max ~26 rész) beolvasása az acc dict-be (kulcs: epizódszám)."""
+    titles = {v: _clean(t) for v, t in _EP_TITLE_RE.findall(html)}
+    added = 0
+    for v, thumb in _EP_THUMB_RE.findall(html):
+        m = re.search(r'/(\d{1,4})\.jpg', thumb)
+        if not m:
+            continue
+        epnum = int(m.group(1))
+        if epnum in acc:
+            continue
+        acc[epnum] = {'vid': v, 'title': titles.get(v) or ('%d. rész' % epnum),
+                      'thumb': urljoin(base_url(), thumb), 'server': 's1'}
+        added += 1
+    return added
+
+
 def episodes_of_anime(aid):
-    """Egy anime részei közvetlenül az adatlapról (/leiras/{aid}/): cím + bélyegkép."""
+    """Egy anime ÖSSZES része az adatlapról. Az adatlap ~26-os ablakot mutat, ezért
+    a 'epizod_szam' POST-tal végiglapozzuk a hiányzó epizódszámokat."""
     html = get('leiras/%s/' % aid, referer=base_url())
     if not html:
         return {'title': '', 'episodes': []}
     tm = re.search(r'<h2 class="gen-title[^"]*">([^<]+)</h2>', html)
     title = _clean(tm.group(1)) if tm else ''
-    thumbs = {v: urljoin(base_url(), t) for v, t in _EP_THUMB_RE.findall(html)}
-    eps = []
-    seen = set()
-    for v, etitle in _EP_TITLE_RE.findall(html):
-        if v in seen:
-            continue
-        seen.add(v)
-        eps.append({'vid': v, 'title': _clean(etitle), 'server': 's1', 'thumb': thumbs.get(v)})
-    if not eps:
+    mx = re.search(r'id="epizod_szam"[^>]*data-max="(\d+)"', html)
+    max_ep = int(mx.group(1)) if mx else 0
+    csrf_m = _META_CSRF_RE.search(html)
+    csrf = csrf_m.group(1) if csrf_m else ''
+
+    acc = {}
+    _parse_ep_window(html, acc)
+    if not acc:
         m = _RESZ_RE.search(html)
         if m:
             return episodes_of_resz(m.group(1))
-    log('%d rész (adatlap): leiras/%s ("%s")' % (len(eps), aid, title))
+
+    referer = base_url() + 'leiras/%s/' % aid
+    guard = 0
+    while max_ep and len(acc) < max_ep and guard < 30:
+        guard += 1
+        need = next((n for n in range(1, max_ep + 1) if n not in acc), None)
+        if need is None:
+            break
+        html2 = post('leiras/%s/' % aid,
+                     {'epizod_szam': str(need), 'csrf_token': csrf},
+                     referer=referer, ajax=False)
+        if not html2 or _parse_ep_window(html2, acc) == 0:
+            break
+
+    eps = [acc[n] for n in sorted(acc)]
+    log('%d rész (adatlap, max %s): leiras/%s ("%s")' % (len(eps), max_ep or '?', aid, title))
     return {'title': title, 'episodes': eps}
 
 

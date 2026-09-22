@@ -1,3 +1,9 @@
+v0.5.0 (2026-09-22) - PRIVÁT / BÉTA
+- TELJES RESZLISTA. Az adatlap csak ~26 reszes ablakot mutat; mostantol az addon a
+  'epizod_szam' POST-tal vegiglapozza a hianyzo epizodszamokat (1..max), es minden
+  reszt osszegyujt. Igy pl. a Naruto mind a 220 resze megjelenik.
+- A resz sorszama a bélyegkép nevebol (epizodkepek/XXXX.jpg) jon.
+
 v0.4.2 (2026-09-22) - PRIVÁT / BÉTA
 - Uj "Adatlap mentése (rész-hibakereséshez)" gomb az anime reszlistaja alatt: az adott
   adatlap HTML-jet + a betolto JS-t (adatlap_v2.js) menti (Download/ma_anime.html).
