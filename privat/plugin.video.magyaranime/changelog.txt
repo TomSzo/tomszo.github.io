@@ -1,3 +1,19 @@
+v0.6.11 (2026-09-22) - PRIVÁT / BÉTA
+- FELBONTAS a forrasok mellett + kevesebb duplikatum. A naploból kiderult: a data_player.php
+  valaszaban van egy 'servers' tomb, ami a VALOS szervereket es a MINOSEGET is tartalmazza,
+  pl. [{'server':'s1','hq':'hq720'}, {'server':'s3','hq':'hq1080'}]. A tobb azonos
+  "Közvetlen (MP4)" azert volt, mert a kod vakon probalta s1..s6-ot, es a nem-valos szerverek
+  ugyanazt a 720p MP4-et adtak vissza.
+  Javitas: mostantol a 'servers' tomb az elsodleges forras - csak a valos szervereket
+  listazzuk, a minoseg a 'hq' mezobol jon (hq720 -> 720p, hq1080 -> 1080p), es a forrasokat
+  a tenyleges lejatszo-URL alapjan deduplikaljuk (a valtozo token levagva). Igy pl. 2 forras
+  lesz: "Közvetlen (MP4) [720p]" es "Videa [1080p]", nem 4-5 egyforma.
+  Az MP4 URL-bol is olvasunk felbontast (pl. ...nev.720.mp4 -> 720p). A DIAG naplozas kiveve.
+
+v0.6.10 (2026-09-22) - PRIVÁT / BÉTA
+- Diagnosztika (ideiglenes): a naplo kiirta a data_player.php valaszat (kulcsok/servers/mp4),
+  hogy megtaljuk, hol van a felbontas. (A 0.6.11 mar hasznalja: a 'servers' tomb 'hq' mezoje.)
+
 v0.6.9 (2026-09-22) - PRIVÁT / BÉTA
 - UJ: FELBONTAS a forrasok mellett. A "szerverlista" (egy reszre kattintva) most a forras
   neve mellett - ahol kideritheto - a felbontast is kiirja (sargaval, pl. [720p]):

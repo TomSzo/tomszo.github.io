@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<addon id="plugin.video.magyaranime" name="MagyarAnime (privát)" version="0.6.10" provider-name="TomSzo">
+<addon id="plugin.video.magyaranime" name="MagyarAnime (privát)" version="0.6.11" provider-name="TomSzo">
     <requires>
         <import addon="xbmc.python" version="3.0.0"/>
         <import addon="script.module.requests" version="2.22.0"/>
@@ -17,6 +17,13 @@
         <platform>all</platform>
         <license>GPL-3.0-or-later</license>
         <news>
+v0.6.11 (2026-09-22) - PRIVÁT / BÉTA
+- FELBONTAS + kevesebb duplikatum. A valos szervereket es a minoseget mostantol a
+  data_player.php 'servers' tombjebol vesszuk (pl. hq720 -> 720p, hq1080 -> 1080p), nem
+  vakon tapogatva s1..s6-ot. Igy a forrasok mellett ott a felbontas ([720p]/[1080p]/...),
+  es megszunik a tobb azonos "Közvetlen (MP4)" (URL-alapu duplikatum-szures). A DIAG
+  naplozas eltavolitva.
+
 v0.6.10 (2026-09-22) - PRIVÁT / BÉTA
 - DIAGNOSZTIKA (ideiglenes): a naploba kiirja a data_player.php valaszanak kulcsait, a
   'servers' tombot es az MP4 URL-t/kimenetet, hogy megtalaljuk, hol van a felbontas-info
