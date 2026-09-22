@@ -630,7 +630,13 @@ def resolve(vid, prefer_server=None):
         if data.get('servers'):
             result['servers'] = data['servers']
         if data.get('error'):
-            log('data_player error (%s): %s' % (server, data.get('error')), xbmc.LOGWARNING)
+            err = str(data.get('error'))
+            log('data_player error (%s): %s' % (server, err), xbmc.LOGWARNING)
+            # Napi limit: MINDEN szerver ugyanezt adja, ezért NE pörgessük tovább
+            # (különben feleslegesen tovább terheljük a limitet). Jelezzük a hívónak.
+            if 'limit' in err.lower():
+                result['limit_error'] = err
+                return result
             continue
         # 1) HLS
         if data.get('hls') and data.get('hls_url'):
@@ -739,21 +745,33 @@ def _hls_qualities(hls_url, referer):
     return ['%dp' % h for h in sorted(heights, reverse=True)]
 
 
-def _dedup_key(play_url, host, server):
-    """Dedup-kulcs a tényleges lejátszó-URL alapján (a változó token levágva),
-    így a több szerverről visszaadott UGYANAZON forrás nem duplázódik."""
-    if not play_url:
-        return '%s|%s' % (host, server)
-    u = re.sub(r'[?&](?:token|expires|e|h|st|s)=[^&]*', '', play_url)
-    return u.split('?')[0] if '?' in u else u
+def _classify(data, referer):
+    """Egy data_player.php válaszból: (kind, host, quality). Nem hív extra data_player-t."""
+    if data.get('hls') and data.get('hls_url'):
+        try:
+            hls = base64.b64decode(data['hls_url']).decode('utf-8', 'replace')
+        except Exception:  # noqa
+            hls = ''
+        q = '/'.join(_hls_qualities(hls, referer)) if hls else ''
+        return 'hls', 'Közvetlen (HLS)', q
+    output = data.get('output') or ''
+    urls, iframes = _extract_from_output(output)
+    mp4 = [u for u in urls if '.mp4' in u.lower()]
+    if mp4:
+        return 'mp4', 'Közvetlen (MP4)', _quality_label(mp4[0])
+    if iframes:
+        return 'embed', _host_of(iframes[0]), _quality_label(iframes[0])
+    return None, None, ''
 
 
 def list_servers(vid):
     """Egy részhez elérhető szerverek/források listája: [{server, host, kind, embed, quality}].
 
-    A valós szervereket és a MINŐSÉGET a data_player.php 'servers' tömbjéből vesszük
-    (pl. {'server':'s1','hq':'hq720'} -> 720p). Így nincs vak s1..s6 tapogatózás és
-    duplikátum, és a felbontás (720p/1080p/...) is megjelenik."""
+    FONTOS (napi limit!): a magyaranime napi videó-lejátszási limitet számol, és minden
+    data_player.php hívás beleszámíthat. Ezért itt MINDÖSSZE EGY data_player.php hívást
+    teszünk (a default szerverre), a többi szervert a válasz 'servers' tömbjéből listázzuk
+    (nevek + minőség a 'hq'-ból), külön lekérdezés NÉLKÜL. A tényleges feloldás csak akkor
+    fut, amikor a felhasználó ténylegesen elindít egy forrást."""
     out = []
     page = get('resz/%s/' % vid, referer=base_url())
     if not page:
@@ -764,63 +782,37 @@ def list_servers(vid):
     default_server = dv.group(1) if dv else 's1'
     referer = base_url() + 'resz/%s/' % vid
 
-    # 1) Egy hívás: megkapjuk a valós szerverlistát + a minőségeket.
-    first = player_data(default_server, vid, csrf, referer)
-    hq_map = {}
-    server_ids = []
-    if first and isinstance(first.get('servers'), list):
-        for s in first['servers']:
-            sid = s.get('server')
-            if sid and sid not in server_ids:
-                server_ids.append(sid)
-                hq_map[sid] = _hq_to_res(s.get('hq'))
-    # a 'servers' tömb néha nem tartalmazza az éppen aktívat - vegyük hozzá
-    if default_server not in server_ids:
-        server_ids.insert(0, default_server)
-    # ha semmi (régi/más adatlap), essünk vissza a régi tapogatózásra
-    if not server_ids:
-        server_ids = _dedup([default_server, 's1', 's2', 's3', 's4', 's5', 's6'])
+    # AZ EGYETLEN data_player.php hívás.
+    data = player_data(default_server, vid, csrf, referer)
+    if not data:
+        return out
+    def_kind, def_host, def_q = _classify(data, referer)
+
+    servers = data.get('servers') if isinstance(data.get('servers'), list) else []
+    hq = {}
+    titles = {}
+    order_ids = []
+    for s in servers:
+        sid = s.get('server')
+        if sid and sid not in order_ids:
+            order_ids.append(sid)
+            hq[sid] = _hq_to_res(s.get('hq'))
+            titles[sid] = _clean(s.get('title') or '')
 
     seen = set()
-    for server in server_ids:
-        data = first if (server == default_server and first) else \
-            player_data(server, vid, csrf, referer)
-        if not data or data.get('error'):
+    # A default szerver elöl, a TÉNYLEGES típusával/minőségével (ezt már ismerjük).
+    if def_kind:
+        out.append({'server': default_server, 'host': def_host, 'kind': def_kind,
+                    'embed': None, 'quality': def_q or hq.get(default_server, '')})
+        seen.add(default_server)
+    # A többi valós szerver a 'servers' tömbből - extra hívás nélkül (nevek + minőség).
+    for sid in order_ids:
+        if sid in seen:
             continue
-        kind = host = embed = None
-        play_url = ''
-        quality = hq_map.get(server, '')
-        if data.get('hls') and data.get('hls_url'):
-            kind, host = 'hls', 'Közvetlen (HLS)'
-            try:
-                hls = base64.b64decode(data['hls_url']).decode('utf-8', 'replace')
-            except Exception:  # noqa
-                hls = ''
-            play_url = hls
-            if not quality and hls:
-                quality = '/'.join(_hls_qualities(hls, referer))
-        else:
-            output = data.get('output') or ''
-            urls, iframes = _extract_from_output(output)
-            mp4 = [u for u in urls if '.mp4' in u.lower()]
-            if mp4:
-                kind, host, play_url = 'mp4', 'Közvetlen (MP4)', mp4[0]
-                if not quality:
-                    quality = _quality_label(mp4[0])
-            elif iframes:
-                embed, kind, play_url = iframes[0], 'embed', iframes[0]
-                host = _host_of(embed)
-                if not quality:
-                    quality = _quality_label(embed)
-        if not kind:
-            continue
-        key = _dedup_key(play_url, host, server)
-        if key in seen:
-            continue
-        seen.add(key)
-        out.append({'server': server, 'host': host, 'kind': kind, 'embed': embed,
-                    'quality': quality})
-    log('list_servers(%s): %d forrás' % (vid, len(out)))
+        seen.add(sid)
+        out.append({'server': sid, 'host': titles.get(sid) or ('Szerver %s' % sid),
+                    'kind': 'server', 'embed': None, 'quality': hq.get(sid, '')})
+    log('list_servers(%s): %d forrás (1 data_player hívás)' % (vid, len(out)))
     return out
 
 

@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<addon id="plugin.video.magyaranime" name="MagyarAnime (privát)" version="0.6.11" provider-name="TomSzo">
+<addon id="plugin.video.magyaranime" name="MagyarAnime (privát)" version="0.6.12" provider-name="TomSzo">
     <requires>
         <import addon="xbmc.python" version="3.0.0"/>
         <import addon="script.module.requests" version="2.22.0"/>
@@ -17,6 +17,15 @@
         <platform>all</platform>
         <license>GPL-3.0-or-later</license>
         <news>
+v0.6.12 (2026-09-22) - PRIVÁT / BÉTA
+- NAPI LIMIT KIMELESE. A magyaranime napi videó-lejátszási limitet szamol (pl. 200/nap),
+  es minden data_player.php hivas beleszamit. A szerverlista mostantol MINDOSSZE 1 ilyen
+  hivast tesz (korabban 2-7-et!), a tobbi szervert a valasz 'servers' tombjebol listazza,
+  kulon lekérés nelkul. Limit eseten a lejátszas AZONNAL megall (nem probalja vegig az
+  osszes szervert), es ertheto uzenetet ad. Igy sokkal lassabban fogy a napi keret.
+- Megj.: a napi limit az OLDAL sajat korlatja (a fiokodra), naponta nullazodik - nem az
+  addon hibaja. A GY.I.K.-ben olvashato a reszletekrol.
+
 v0.6.11 (2026-09-22) - PRIVÁT / BÉTA
 - FELBONTAS + kevesebb duplikatum. A valos szervereket es a minoseget mostantol a
   data_player.php 'servers' tombjebol vesszuk (pl. hq720 -> 720p, hq1080 -> 1080p), nem

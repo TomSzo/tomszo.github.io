@@ -1,3 +1,20 @@
+v0.6.12 (2026-09-22) - PRIVÁT / BÉTA
+- NAPI LIMIT KIMELESE. A magyaranime napi videó-lejátszási limitet szamol (pl. 200/nap,
+  vagy az elso idoszakban oránként 5), es minden data_player.php hivas beleszamithat.
+  Eddig a szerverlista megnyitasa 2-7 ilyen hivast is csinalt (szerver-tapogatozas), ami
+  gyorsan fogyasztotta a keretet.
+  Javitas:
+  * A szerverlista mostantol MINDOSSZE 1 data_player.php hivast tesz (a default szerverre);
+    a tobbi szervert a valasz 'servers' tombjebol listazza (nevek + minoseg a 'hq'-bol),
+    KULON lekérés nelkul. A tényleges feloldas csak lejatszaskor fut.
+  * Limit eseten (a valasz 'error' mezoje 'limit'-et tartalmaz) a resolve AZONNAL megall,
+    nem probalja vegig az osszes szervert (kulonben feleslegesen tovabb terhelne a limitet).
+  * Ilyenkor ertheto uzenet jelenik meg ("napi videó-limit elerve ... naponta nullazodik").
+- FONTOS: a napi limit az OLDAL sajat korlatja a fiokodra (nem az addon hibaja), es naponta
+  nullazodik. A magyaranime GY.I.K.-ben olvashato: az elso idoszakban oránként max 5 epizod,
+  kesobb napi limit (a peldaban 200/nap = ~1200 perc). Ha rendszeresen tullepi valaki, az
+  oldal mas forras hasznalatat javasolja.
+
 v0.6.11 (2026-09-22) - PRIVÁT / BÉTA
 - FELBONTAS a forrasok mellett + kevesebb duplikatum. A naploból kiderult: a data_player.php
   valaszaban van egy 'servers' tomb, ami a VALOS szervereket es a MINOSEGET is tartalmazza,
