@@ -339,49 +339,43 @@ def catalog_filters():
 
 _EP_TITLE_RE = re.compile(r'<a href="resz/(\d+)/"\s+oncontextmenu="return false;">([^<]+)</a>',
                           re.IGNORECASE)
-_EP_THUMB_RE = re.compile(
-    r"window\.location='resz/(\d+)/';\"[^>]*>\s*<img[^>]*?(?:data-src|src)=\"([^\"]+)\"",
+_EP_THUMB_DATASRC_RE = re.compile(
+    r"window\.location='resz/(\d+)/';\"[^>]*>\s*<img[^>]*?\bdata-src=\"([^\"]+)\"",
+    re.IGNORECASE)
+_EP_THUMB_SRC_RE = re.compile(
+    r"window\.location='resz/(\d+)/';\"[^>]*>\s*<img(?![^>]*\bdata-src)[^>]*?\bsrc=\"([^\"]+)\"",
     re.IGNORECASE)
 
 
 def _collect_ep_window(html):
-    """Egy adatlap-ablak nyers epizód-jelöltjei: [(vid, folder, epnum, thumb, title)].
-    A 'folder' a bélyegkép mappa-azonosítója (epizodkepek/<folder>/<epnum>.jpg), amiből
-    később eldönthető, melyik az anime SAJÁT mappája és melyik idegen ('kapcsolódó animék')."""
-    titles = {v: _clean(t) for v, t in _EP_TITLE_RE.findall(html)}
+    """Egy adatlap-ablak nyers epizód-jelöltjei: [(vid, epnum, thumb, title)].
+
+    FONTOS: a rész SORSZÁMA a CÍMBŐL jön ("N. rész"), NEM a bélyegkép nevéből - mert
+    egyes animék bélyegképe indavideo-URL (pics.indavideo.hu/.../5-1.jpg), amiben nincs
+    epizódszám. A cím-link (resz/<vid> -> "N. rész") viszont mindig megvan."""
+    # bélyegképek vid szerint: elsőként a valódi data-src, majd (ha nincs) a sima src
+    thumbs = {}
+    for vid, thumb in _EP_THUMB_DATASRC_RE.findall(html):
+        thumbs.setdefault(vid, thumb)
+    for vid, thumb in _EP_THUMB_SRC_RE.findall(html):
+        thumbs.setdefault(vid, thumb)
     out = []
-    for v, thumb in _EP_THUMB_RE.findall(html):
-        m = re.search(r'epizodkepek/0*(\d+)/0*(\d+)\.(?:jpg|jpeg|png|webp)', thumb, re.IGNORECASE)
-        if m:
-            folder, epnum = int(m.group(1)), int(m.group(2))
-        else:
-            m2 = re.search(r'/(\d{1,4})\.(?:jpg|jpeg|png|webp)', thumb, re.IGNORECASE)
-            if not m2:
-                continue
-            folder, epnum = None, int(m2.group(1))
-        out.append((v, folder, epnum, thumb, titles.get(v)))
+    for vid, ttext in _EP_TITLE_RE.findall(html):
+        t = _clean(ttext)
+        mnum = re.search(r'(\d+)', t)
+        if not mnum:
+            continue  # pl. "Film"/"OVA" felirat szám nélkül - kihagyjuk
+        out.append((vid, int(mnum.group(1)), thumbs.get(vid), t))
     return out
-
-
-def _mode_folder(cands):
-    """A leggyakoribb (nem None) mappa-id a jelöltek között."""
-    counts = {}
-    for _v, folder, _e, _t, _ti in cands:
-        if folder is not None:
-            counts[folder] = counts.get(folder, 0) + 1
-    if not counts:
-        return None
-    return max(counts.items(), key=lambda kv: kv[1])[0]
 
 
 def episodes_of_anime(aid):
     """Egy anime ÖSSZES része az adatlapról. Az adatlap ~26-os ablakot mutat, ezért a
     'epizod_szam' POST-tal végiglapozzuk a hiányzó epizódszámokat.
 
-    Az idegen ('kapcsolódó animék') részek kiszűrése NEM a leiras-id-hez van kötve
-    (a bélyegkép-mappa id nem mindig egyezik a leiras-id-vel!), hanem az anime SAJÁT
-    mappa-id-jéhez, amit a TISZTA AJAX-ablakokból állapítunk meg (azokban csak az adott
-    anime részei vannak, nincs 'kapcsolódó' szekció)."""
+    A TISZTA AJAX-ablakok (epizod_szam POST) az elsődleges forrás: ezekben CSAK az adott
+    anime részei vannak, nincs 'kapcsolódó animék' idegen szekció. A nyitóoldalt és a
+    rész-oldal listáját csak végső esetben használjuk."""
     html = get('leiras/%s/' % aid, referer=base_url())
     if not html:
         return {'title': '', 'episodes': []}
@@ -393,73 +387,54 @@ def episodes_of_anime(aid):
     csrf = csrf_m.group(1) if csrf_m else ''
     referer = base_url() + 'leiras/%s/' % aid
 
-    # A nyitóoldal jelöltjei (ez tartalmazhat idegen 'kapcsolódó' részeket is).
-    initial = _collect_ep_window(html)
+    acc = {}
 
-    # TISZTA AJAX-ablakok: csak az adott anime részei. Ezekből derül ki a saját mappa-id.
-    window_cands = []
+    def _add(cands):
+        for vid, epnum, thumb, ep_title in cands:
+            if epnum in acc:
+                continue
+            acc[epnum] = {'vid': vid, 'title': ep_title or ('%d. rész' % epnum),
+                          'thumb': urljoin(base_url(), thumb) if thumb else None,
+                          'server': 's1'}
 
     def _window(center):
         html2 = post('leiras/%s/' % aid,
                      {'epizod_szam': str(center), 'csrf_token': csrf},
                      referer=referer, ajax=False)
         if html2:
-            window_cands.extend(_collect_ep_window(html2))
+            _add(_collect_ep_window(html2))
 
     # Az ablak: epizod_szam=N -> [N-9 .. N+16] (26 rész). N=need+9-cel az ablak a 'need'
-    # résznél kezdődik; 26-os lépéssel hézagmentesen csempézünk. MINDIG kérünk legalább
-    # egy ablakot (a rövid animéknél is), hogy legyen tiszta minta a saját mappához.
+    # résznél kezdődik; 26-os lépéssel hézagmentesen csempézünk.
     top = max_ep or 100000
     need, guard = 1, 0
     while need <= top and guard < 80:
         guard += 1
-        before = len(window_cands)
+        before = len(acc)
         _window(need + 9)
-        gained = len(window_cands) - before
-        if not max_ep and gained == 0:
+        if not max_ep and len(acc) == before:
             break  # ismeretlen max: állj le, amint egy ablak semmit sem ad
         need += 26
 
-    # Saját mappa-id a tiszta ablakokból; ha azok üresek, a nyitóoldal többségéből.
-    own_folder = _mode_folder(window_cands)
-    if own_folder is None:
-        own_folder = _mode_folder(initial)
-
-    acc = {}
-
-    def _add(cands):
-        for v, folder, epnum, thumb, ep_title in cands:
-            if own_folder is not None and folder is not None and folder != own_folder:
-                continue  # idegen ('kapcsolódó animék') rész kimarad
-            if epnum in acc:
-                continue
-            acc[epnum] = {'vid': v, 'title': ep_title or ('%d. rész' % epnum),
-                          'thumb': urljoin(base_url(), thumb), 'server': 's1'}
-
-    _add(window_cands)  # előbb a tiszta ablakok
-    _add(initial)       # majd a nyitóoldal (saját mappára szűrve)
-
-    # Biztonsági hézag-kitöltés, ha valahol mégis maradt ki rész.
-    if max_ep:
-        guard = 0
+    # Hézag-kitöltés CSAK ha már van eredmény és tényleg hiányzik rész (nem pörgünk üresen).
+    if max_ep and acc:
+        g = 0
         for e in [n for n in range(1, max_ep + 1) if n not in acc]:
-            if guard >= 20:
+            if g >= 15:
                 break
-            guard += 1
+            g += 1
             _window(e + 9)
-        _add(window_cands)  # az újonnan lehívottak felvétele (acc dedup-ol)
 
-    # Tartalék: ha semmi nem jött össze (pl. az AJAX nem működik), a rész-oldal listája.
-    # A rész-oldal a saját epizódok UTÁN idegen ('kapcsolódó') részeket is felsorolhat
-    # (a lista végén), ezért a data-max-ra (max_ep) vágjuk: az első max_ep az igazi lista.
+    # Ha az ablakok semmit sem adtak: a nyitóoldal, majd a rész-oldal (idegen rész kiszűrve).
+    if not acc:
+        _add(_collect_ep_window(html))
     if not acc:
         m = _RESZ_RE.search(html)
         if m:
             return episodes_of_resz(m.group(1), limit=max_ep or None)
 
     eps = [acc[n] for n in sorted(acc) if not max_ep or n <= max_ep]
-    log('%d rész (adatlap, max %s, saját mappa %s): leiras/%s ("%s")'
-        % (len(eps), max_ep or '?', own_folder, aid, title))
+    log('%d rész (adatlap, max %s): leiras/%s ("%s")' % (len(eps), max_ep or '?', aid, title))
     return {'title': title, 'episodes': eps}
 
 
