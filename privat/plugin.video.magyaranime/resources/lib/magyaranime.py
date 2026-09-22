@@ -315,6 +315,28 @@ def catalog(page=1, filters=None):
     return {'items': items, 'page': page, 'pages': pages}
 
 
+_CAT_SELECT_RE = re.compile(
+    r'<select name="(allapot|szezon|besorolas|rendezes|kezdo)"[^>]*>(.*?)</select>',
+    re.DOTALL | re.IGNORECASE)
+_CAT_OPTION_RE = re.compile(r'<option value="([^"]*)"[^>]*>\s*(.*?)\s*</option>',
+                            re.DOTALL | re.IGNORECASE)
+
+
+def catalog_filters():
+    """A katalógus-oldal szűrő-legördülőinek opciói: {name: [(value, label), ...]}."""
+    html = get('anime/adatlapok/', referer=base_url())
+    out = {}
+    for name, block in _CAT_SELECT_RE.findall(html or ''):
+        opts = []
+        for value, label in _CAT_OPTION_RE.findall(block):
+            label = _clean(label)
+            if value != '' and label:
+                opts.append((value, label))
+        if opts:
+            out[name] = opts
+    return out
+
+
 _EP_TITLE_RE = re.compile(r'<a href="resz/(\d+)/"\s+oncontextmenu="return false;">([^<]+)</a>',
                           re.IGNORECASE)
 _EP_THUMB_RE = re.compile(r"window\.location='resz/(\d+)/';\"[^>]*>\s*<img[^>]*data-src=\"([^\"]+)\"",

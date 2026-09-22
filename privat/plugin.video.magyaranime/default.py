@@ -104,14 +104,33 @@ _CAT_FILTER_KEYS = ('allapot', 'szezon', 'besorolas', 'rendezes', 'kezdo')
 _CAT_LETTERS = list('abcdefghijklmnopqrstuvwxyz')
 
 
+_CAT_FILTER_TITLES = {'allapot': 'Állapot szerint', 'szezon': 'Szezon szerint',
+                      'besorolas': 'Besorolás szerint', 'rendezes': 'Rendezés szerint',
+                      'kezdo': 'Kezdőbetű szerint'}
+
+
 def view_catmenu():
     add_dir('Aktuális szezon', build_url(action='catalog', allapot='1'))
     add_dir('Összes anime (A→Z)', build_url(action='catalog', allapot='-1', rendezes='1'))
-    add_dir('Kezdőbetű szerint', build_url(action='catletters'))
     add_dir('Legújabbak (megjelenés szerint)',
             build_url(action='catalog', allapot='-1', rendezes='4'))
-    add_dir('Befejezett animék', build_url(action='catalog', allapot='0'))
-    add_dir('Várható animék', build_url(action='catalog', allapot='2'))
+    # Dinamikus szűrő-listák (az oldalról olvasva)
+    for which in ('szezon', 'besorolas', 'allapot', 'rendezes', 'kezdo'):
+        add_dir(_CAT_FILTER_TITLES[which], build_url(action='catfilter', which=which))
+    end('files')
+
+
+def view_catfilter(which):
+    opts = ma.catalog_filters().get(which, [])
+    if not opts:
+        notify('Nem sikerült betölteni a szűrőt')
+    for value, label in opts:
+        # Az adott szűrőt alkalmazzuk; az állapotot "Bármely"-re állítjuk,
+        # kivéve ha épp az állapotot választjuk.
+        params = {'action': 'catalog', which: value}
+        if which != 'allapot':
+            params['allapot'] = '-1'
+        add_dir(label, BASE + '?' + urlencode(params))
     end('files')
 
 
@@ -231,6 +250,8 @@ def router(qs):
         view_catmenu()
     elif action == 'catletters':
         view_catletters()
+    elif action == 'catfilter':
+        view_catfilter(p.get('which', 'szezon'))
     elif action == 'catalog':
         view_catalog(int(p.get('page', 1)), _filters_from(p))
     elif action == 'anime':
