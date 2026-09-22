@@ -274,6 +274,47 @@ def search(term):
     return results[:300]
 
 
+# ---------------------------------------------------------------------------
+# Adatlapok (böngészés / katalógus)
+# ---------------------------------------------------------------------------
+_CAT_CARD_RE = re.compile(
+    r"window\.open\('leiras/(\d+)/[^)]*\)[^>]*>\s*"
+    r'<img[^>]+src="([^"]+)"[^>]*>.*?'
+    r'<div class="movie-title">\s*(.*?)\s*</div>',
+    re.DOTALL | re.IGNORECASE)
+_CAT_PAGES_RE = re.compile(r'Jelenlegi oldal:\s*</b>\s*(\d+)\s*/\s*(\d+)', re.IGNORECASE)
+
+# Az adatlapok űrlap alapértelmezései (a böngészőben is ez a kiindulás).
+CATALOG_DEFAULTS = {'allapot': '1', 'szezon': '1', 'besorolas': '1',
+                    'rendezes': '1', 'kezdo': 'az'}
+
+
+def catalog(page=1, filters=None):
+    """Anime-katalógus egy oldala. Visszaad: {'items':[{aid,title,art}], 'page', 'pages'}."""
+    page = max(1, int(page or 1))
+    data = dict(CATALOG_DEFAULTS)
+    if filters:
+        data.update(filters)
+    ref = base_url() + 'anime/adatlapok/'
+    if page <= 1 and not filters:
+        html = get('anime/adatlapok/', referer=base_url())
+    else:
+        data['page'] = str(page)
+        html = post('anime/adatlapok/', data, referer=ref, ajax=False)
+    items = []
+    seen = set()
+    for aid, art, title in _CAT_CARD_RE.findall(html or ''):
+        if aid in seen:
+            continue
+        seen.add(aid)
+        art = art if art.startswith('http') else urljoin(base_url(), art)
+        items.append({'aid': aid, 'title': _clean(title), 'art': art})
+    pm = _CAT_PAGES_RE.search(html or '')
+    pages = int(pm.group(2)) if pm else 1
+    log('%d adatlap (oldal %d/%d)' % (len(items), page, pages))
+    return {'items': items, 'page': page, 'pages': pages}
+
+
 _EP_TITLE_RE = re.compile(r'<a href="resz/(\d+)/"\s+oncontextmenu="return false;">([^<]+)</a>',
                           re.IGNORECASE)
 _EP_THUMB_RE = re.compile(r"window\.location='resz/(\d+)/';\"[^>]*>\s*<img[^>]*data-src=\"([^\"]+)\"",
