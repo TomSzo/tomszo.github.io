@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<addon id="plugin.video.magyaranime" name="MagyarAnime (privát)" version="0.6.4" provider-name="TomSzo">
+<addon id="plugin.video.magyaranime" name="MagyarAnime (privát)" version="0.6.5" provider-name="TomSzo">
     <requires>
         <import addon="xbmc.python" version="3.0.0"/>
         <import addon="script.module.requests" version="2.22.0"/>
@@ -17,6 +17,12 @@
         <platform>all</platform>
         <license>GPL-3.0-or-later</license>
         <news>
+v0.6.5 (2026-09-22) - PRIVÁT / BÉTA
+- IDEGEN RESZ VEGLEGES JAVITAS (2). A belyegkep-mappa id nem mindig egyezik a leiras-id-vel,
+  ezert a korabbi szigoru szures nemely animenel MINDENT kidobott, es a tartalek lista
+  (rendezetlen + idegen 1-4. resz) jelent meg. Mostantol az anime sajat mappa-id-jet a
+  TISZTA AJAX-ablakokbol allapitjuk meg, es arra szurunk. Minden resz sorban, idegen nelkul.
+
 v0.6.4 (2026-09-22) - PRIVÁT / BÉTA
 - Idegen resz vegleges javitas: csak az adott anime sajat belyegkepei szamitanak (leiras/1 kiszurve)
 

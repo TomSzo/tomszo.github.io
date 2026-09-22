@@ -1,3 +1,14 @@
+v0.6.5 (2026-09-22) - PRIVÁT / BÉTA
+- IDEGEN RESZ VEGLEGES JAVITAS (2). Kiderult, hogy a bélyegkép-mappa azonositoja NEM
+  mindig egyezik a leiras (adatlap) id-vel. Ezert a 0.6.4 szigoru "mappa = aid" szurese
+  nemely animenel MINDEN reszt kidobott -> a kod a tartalek listara esett, ami rendezetlen
+  volt es tartalmazta a "kapcsolodo animek" idegen 1-4. reszet is (a lista vegen).
+  Mostantol az anime SAJAT mappa-id-jet a TISZTA AJAX-ablakokbol (epizod_szam POST, ezekben
+  nincs 'kapcsolodo' szekcio) allapitjuk meg, es kizarolag arra szurunk. Igy minden anime
+  osszes resze szepen sorban jelenik meg, idegen resz nelkul - a folder != aid esetben is.
+- A tartalek (rész-oldal) lista MAR CSAK vegso esetben fut (ha az AJAX egyaltalan nem ad
+  semmit), nem pedig azonnal, amint a nyitooldal szurese ures.
+
 v0.6.4 (2026-09-22) - PRIVÁT / BÉTA
 - IDEGEN RESZ VEGLEGES JAVITAS. A beszuremkedo 1-4. resz mindig a leiras/1 anime volt.
   Mostantol ha ismert az anime id-je, a parser KIZAROLAG a sajat epizodkepek/{aid}/
