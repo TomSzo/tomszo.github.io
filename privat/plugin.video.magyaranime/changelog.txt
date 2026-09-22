@@ -1,3 +1,13 @@
+v0.6.6 (2026-09-22) - PRIVÁT / BÉTA
+- IDEGEN RESZ (rovid animek). Kiderult, hogy nemely animenel (pl. a 9 reszes
+  "Kimi wo Aisuru...") az adatlap-parszer egyaltalan nem talal belyegkepes reszt, ezert a
+  kod a tartalek rész-oldal listara esik. A rész-oldal viszont a sajat epizodok UTAN idegen
+  ('kapcsolodo animek') reszeket is felsorol a lista vegen (9 valodi + 4 idegen = 13).
+  Javitas: a tartalek listat mostantol az adatlap data-max ertekere vagjuk; ha az hianyzik,
+  akkor az elso ujrainduló rész-sorszámnal (pl. 9 -> 1) vagunk. Igy csak a valodi reszek
+  latszanak. Ezenkivul a belyegkep-regex bovult: data-src ES sima src is szamit (hatha
+  emiatt bukott el az adatlap-parszolas ennel az animenel).
+
 v0.6.5 (2026-09-22) - PRIVÁT / BÉTA
 - IDEGEN RESZ VEGLEGES JAVITAS (2). Kiderult, hogy a bélyegkép-mappa azonositoja NEM
   mindig egyezik a leiras (adatlap) id-vel. Ezert a 0.6.4 szigoru "mappa = aid" szurese

@@ -339,8 +339,9 @@ def catalog_filters():
 
 _EP_TITLE_RE = re.compile(r'<a href="resz/(\d+)/"\s+oncontextmenu="return false;">([^<]+)</a>',
                           re.IGNORECASE)
-_EP_THUMB_RE = re.compile(r"window\.location='resz/(\d+)/';\"[^>]*>\s*<img[^>]*data-src=\"([^\"]+)\"",
-                          re.IGNORECASE)
+_EP_THUMB_RE = re.compile(
+    r"window\.location='resz/(\d+)/';\"[^>]*>\s*<img[^>]*?(?:data-src|src)=\"([^\"]+)\"",
+    re.IGNORECASE)
 
 
 def _collect_ep_window(html):
@@ -449,10 +450,12 @@ def episodes_of_anime(aid):
         _add(window_cands)  # az újonnan lehívottak felvétele (acc dedup-ol)
 
     # Tartalék: ha semmi nem jött össze (pl. az AJAX nem működik), a rész-oldal listája.
+    # A rész-oldal a saját epizódok UTÁN idegen ('kapcsolódó') részeket is felsorolhat
+    # (a lista végén), ezért a data-max-ra (max_ep) vágjuk: az első max_ep az igazi lista.
     if not acc:
         m = _RESZ_RE.search(html)
         if m:
-            return episodes_of_resz(m.group(1))
+            return episodes_of_resz(m.group(1), limit=max_ep or None)
 
     eps = [acc[n] for n in sorted(acc) if not max_ep or n <= max_ep]
     log('%d rész (adatlap, max %s, saját mappa %s): leiras/%s ("%s")'
@@ -472,8 +475,12 @@ def anime_id_of_resz(vid):
     return m.group(1) if m else None
 
 
-def episodes_of_resz(vid):
-    """A /resz/{vid}/ oldal epizódlistája + anime cím."""
+def episodes_of_resz(vid, limit=None):
+    """A /resz/{vid}/ oldal epizódlistája + anime cím.
+
+    A rész-oldal a saját epizódok UTÁN idegen ('kapcsolódó animék') részeket is
+    felsorolhat (a lista végén). Ha 'limit' meg van adva (pl. az adatlap data-max
+    értéke), csak az első 'limit' részt adjuk vissza - így az idegen rész kimarad."""
     html = get('resz/%s/' % vid, referer=base_url())
     if not html:
         return {'title': '', 'episodes': [], 'html': ''}
@@ -496,7 +503,29 @@ def episodes_of_resz(vid):
         episodes.append({'vid': evid,
                          'server': (sm.group(1) if sm else 's1'),
                          'title': _clean(tm2.group(1)) if tm2 else ('rész %s' % evid)})
-    log('%d rész: resz/%s ("%s")' % (len(episodes), vid, title))
+    note = ''
+    if limit and limit > 0:
+        if len(episodes) > limit:
+            episodes = episodes[:limit]
+            note = ' [max %d-re vagva]' % limit
+    else:
+        # Nincs megbizhato max: ha a rész-sorszámok UJRAINDULNAK (pl. 9 -> 1), ott
+        # kezdodik az idegen ('kapcsolódó') blokk, ezert addig vagunk.
+        prev, cut = None, None
+        for i, ep in enumerate(episodes):
+            mnum = re.match(r'\s*(\d+)', ep.get('title') or '')
+            n = int(mnum.group(1)) if mnum else None
+            if n is None:
+                prev = None
+                continue
+            if prev is not None and n <= prev:
+                cut = i
+                break
+            prev = n
+        if cut:
+            episodes = episodes[:cut]
+            note = ' [ujrainduló sorszámnál vagva: %d]' % cut
+    log('%d rész: resz/%s ("%s")%s' % (len(episodes), vid, title, note))
     return {'title': title, 'episodes': episodes, 'html': html}
 
 
