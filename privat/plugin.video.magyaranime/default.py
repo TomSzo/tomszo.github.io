@@ -137,7 +137,32 @@ def view_anime(aid):
     for ep in eps:
         add_dir(ep['title'], build_url(action='servers', vid=ep['vid']),
                 folder=True, art=ep.get('thumb'), info={'mediatype': 'episode'})
+    add_dir('[COLOR yellow]Adatlap mentése (rész-hibakereséshez)[/COLOR]',
+            build_url(action='dumpanime', aid=aid), folder=False)
     end('episodes')
+
+
+def view_dumpanime(aid):
+    html = ma.dump_anime(aid)
+    data = html.encode('utf-8') if isinstance(html, str) else (html or b'')
+    targets = ['/storage/emulated/0/Download/ma_anime.html',
+               '/storage/downloads/ma_anime.html',
+               xbmcvfs.translatePath('special://profile/addon_data/%s/ma_anime.html'
+                                     % ADDON.getAddonInfo('id'))]
+    saved = ''
+    for t in targets:
+        try:
+            fh = xbmcvfs.File(t, 'w')
+            fh.write(bytearray(data))
+            fh.close()
+            saved = t
+            break
+        except Exception:
+            continue
+    xbmcgui.Dialog().textviewer('Adatlap mentés',
+                                'Mentve ide:\n%s\n\n%d byte\n\nKüldd el ezt a fájlt.'
+                                % (saved or 'SIKERTELEN', len(data)))
+    end('files')
 
 
 def view_servers(vid):
@@ -211,6 +236,8 @@ def router(qs):
         view_anime(p['aid'])
     elif action == 'servers':
         view_servers(p['vid'])
+    elif action == 'dumpanime':
+        view_dumpanime(p['aid'])
     elif action == 'byid':
         view_byid()
     elif action == 'diag':

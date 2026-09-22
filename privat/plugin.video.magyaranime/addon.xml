@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<addon id="plugin.video.magyaranime" name="MagyarAnime (privát)" version="0.4.1" provider-name="TomSzo">
+<addon id="plugin.video.magyaranime" name="MagyarAnime (privát)" version="0.4.2" provider-name="TomSzo">
     <requires>
         <import addon="xbmc.python" version="3.0.0"/>
         <import addon="script.module.requests" version="2.22.0"/>
@@ -17,6 +17,10 @@
         <platform>all</platform>
         <license>GPL-3.0-or-later</license>
         <news>
+v0.4.2 (2026-09-22) - PRIVÁT / BÉTA
+- Lejatszas MUKODIK (indavideo/videa ResolveURL-lel es kozvetlen MP4)
+- Uj "Adatlap mentése" gomb: a hosszu animek reszlapozasanak hibakeresehez
+
 v0.4.1 (2026-09-22) - PRIVÁT / BÉTA
 - Kereses: AJAX-fejlecek (X-Requested-With) a data_search.php-hoz + diagnosztika
 

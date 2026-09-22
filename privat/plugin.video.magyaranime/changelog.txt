@@ -1,3 +1,9 @@
+v0.4.2 (2026-09-22) - PRIVÁT / BÉTA
+- Uj "Adatlap mentése (rész-hibakereséshez)" gomb az anime reszlistaja alatt: az adott
+  adatlap HTML-jet + a betolto JS-t (adatlap_v2.js) menti (Download/ma_anime.html).
+  A hosszu animeknél (pl. Naruto) csak 26 resz jelenik meg - ebbol javitjuk a lapozast.
+- (Megj.: a kereses es a lejatszas mar mukodik.)
+
 v0.4.1 (2026-09-22) - PRIVÁT / BÉTA
 - A kereso index (data/search/data_search.php) mostantol AJAX-fejlecekkel tolt
   (X-Requested-With, Accept: json), ahogy az oldal $.getJSON hivasa. Enelkul ures/mas
