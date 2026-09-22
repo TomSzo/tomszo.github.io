@@ -1,3 +1,8 @@
+v0.6.2 (2026-09-22) - PRIVÁT / BÉTA
+- IDEGEN RESZ JAVITAS. Nemely adatlapon a "kapcsolodo animek" szekcio belyegkepei
+  is bekerultek (idegen anime 1-4. resze a lista vegen). Mostantol a parser csak azokat
+  a reszeket fogadja el, amelyek belyegkepe az ADOTT animehez tartozik (mappa-id = aid).
+
 v0.6.1 (2026-09-22) - PRIVÁT / BÉTA
 - Az "Adatlapok (böngészés)" mostantol menufa szurokkel: Aktualis szezon,
   Osszes anime (A-Z), Kezdobetu szerint (A-Z), Legujabbak, Befejezett, Varhato.
