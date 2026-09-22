@@ -53,6 +53,31 @@ def cookie():
     return (ADDON.getSetting('cookie') or '').strip()
 
 
+def _cookie_header():
+    """A beállított süti 'Cookie:' fejléc-értékké alakítva.
+    Elfogad NYERS 'nev=ertek; nev=ertek' sztringet, ÉS a Cookie-Editor
+    (vagy hasonló) JSON exportját is - utóbbit magától átalakítja."""
+    raw = cookie()
+    if not raw:
+        return ''
+    if raw[:1] in ('[', '{'):
+        try:
+            data = json.loads(raw)
+        except ValueError:
+            return raw  # nem érvényes JSON -> nyersen használjuk
+        if isinstance(data, dict):
+            data = data.get('cookies') or [data]
+        pairs = []
+        for c in (data or []):
+            if not isinstance(c, dict):
+                continue
+            n, v = c.get('name'), c.get('value')
+            if n is not None and v is not None:
+                pairs.append('%s=%s' % (n, v))
+        return '; '.join(pairs)
+    return raw
+
+
 _PRIMED = False
 
 
@@ -94,10 +119,10 @@ def _headers(referer=None):
          'Sec-Fetch-Mode': 'cors',
          'Sec-Fetch-Site': 'same-origin',
          'Connection': 'keep-alive'}
-    ck = cookie()
+    ck = _cookie_header()
     if ck:
-        # A böngészőből másolt süti (pl. cf_clearance) - ezzel a Cloudflare
-        # átengedi a kérést a TLS-ujjlenyomattól függetlenül (ha IP+UA egyezik).
+        # A böngészőből másolt süti (bejelentkezett munkamenet) - ezzel a kérés
+        # átjut az onianime.hu botvédelmén (ha az IP és a User-Agent egyezik).
         h['Cookie'] = ck
     return h
 
@@ -120,9 +145,9 @@ def _get_json(path, referer=None, timeout=20):
         body = (r.text or '')[:300].replace('\n', ' ').replace('\r', ' ')
         cf = 'CF?' if re.search(r'cloudflare|just a moment|cf-chl|attention required',
                                 (r.text or ''), re.IGNORECASE) else ''
-        ck = len(_SESSION.cookies.get_dict()) if _SESSION else 0
-        log('Nem JSON (HTTP %s, %d byte, %d süti) %s: %s'
-            % (r.status_code, len(r.text or ''), ck, cf, body), xbmc.LOGWARNING)
+        sent = 'saját-süti' if _cookie_header() else 'nincs-süti'
+        log('Nem JSON (HTTP %s, %d byte, %s) %s: %s'
+            % (r.status_code, len(r.text or ''), sent, cf, body), xbmc.LOGWARNING)
         return None
 
 
