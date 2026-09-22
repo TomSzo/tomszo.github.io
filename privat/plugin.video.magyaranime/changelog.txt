@@ -1,3 +1,9 @@
+v0.5.5 (2026-09-22) - PRIVÁT / BÉTA
+- A "Rész megnyitása azonosítóval" mostantol a megadott resz alapjan az anime
+  adatlapjat nyitja meg (anime_id_of_resz), es a TELJES, tiszta rész-listat adja -
+  nem lognak oda mas anime reszei. Az adatlap-lista a max_ep-ig van vagva.
+- A hibakereso menupontok (Keresés HTML mentése, Adatlap mentése) eltavolitva.
+
 v0.5.4 (2026-09-22) - PRIVÁT / BÉTA
 - RESZLAPOZAS VEGLEGES JAVITAS. Felderitve az adatlap ablaka: epizod_szam=N a
   [N-9 .. N+16] reszeket adja (26 db), az URL-lapozas (/leiras/id/2/) nem mukodik.
