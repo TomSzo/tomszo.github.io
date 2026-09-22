@@ -49,14 +49,40 @@ def user_agent():
     return (ADDON.getSetting('user_agent') or '').strip() or DEFAULT_UA
 
 
+_PRIMED = False
+
+
+def _prime():
+    """A főoldal egyszeri betöltése, hogy a munkamenet megkapja a (vendég) sütit,
+    amit az API elvárhat. Csak egyszer fut munkamenetenként."""
+    global _PRIMED
+    if _PRIMED or not _SESSION:
+        return
+    _PRIMED = True
+    try:
+        r = _SESSION.get(BASE, timeout=15, headers={
+            'User-Agent': user_agent(),
+            'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8',
+            'Accept-Language': 'hu-HU,hu;q=0.9,en;q=0.8',
+            'Upgrade-Insecure-Requests': '1',
+            'Sec-Fetch-Dest': 'document',
+            'Sec-Fetch-Mode': 'navigate',
+            'Sec-Fetch-Site': 'none',
+            'Connection': 'keep-alive'})
+        names = list(_SESSION.cookies.get_dict().keys())
+        log('Föoldal betöltve: HTTP %s, %d süti (%s)'
+            % (r.status_code, len(names), ', '.join(names) if names else '-'))
+    except Exception as exc:  # noqa
+        log('Föoldal betöltés hiba: %s' % exc, xbmc.LOGWARNING)
+
+
 def _headers(referer=None):
-    # Böngésző-szerű fejlécek: néhány oldal (Cloudflare) különben HTML-t/403-at ad JSON helyett.
+    # Valódi same-origin fetch-szerű fejlécek. NINCS Origin / X-Requested-With
+    # (a böngésző same-origin GET fetch-je sem küldi ezeket).
     return {'User-Agent': user_agent(),
             'Accept': 'application/json, text/plain, */*',
             'Accept-Language': 'hu-HU,hu;q=0.9,en;q=0.8',
-            'Referer': referer or BASE,
-            'Origin': BASE.rstrip('/'),
-            'X-Requested-With': 'XMLHttpRequest',
+            'Referer': referer or (BASE + 'catalog'),
             'Sec-Fetch-Dest': 'empty',
             'Sec-Fetch-Mode': 'cors',
             'Sec-Fetch-Site': 'same-origin',
@@ -65,6 +91,7 @@ def _headers(referer=None):
 
 def _get_json(path, referer=None, timeout=20):
     """Egyetlen GET kérés JSON-válaszra. Hiba esetén None (nincs agresszív retry)."""
+    _prime()
     url = urljoin(BASE, path)
     log('GET %s' % url)
     if not _SESSION:
@@ -78,10 +105,11 @@ def _get_json(path, referer=None, timeout=20):
         return r.json()
     except ValueError:
         body = (r.text or '')[:300].replace('\n', ' ').replace('\r', ' ')
-        cf = 'CF/Cloudflare?' if re.search(r'cloudflare|just a moment|cf-chl|attention required',
-                                           (r.text or ''), re.IGNORECASE) else ''
-        log('Nem JSON (HTTP %s, %d byte) %s: %s'
-            % (r.status_code, len(r.text or ''), cf, body), xbmc.LOGWARNING)
+        cf = 'CF?' if re.search(r'cloudflare|just a moment|cf-chl|attention required',
+                                (r.text or ''), re.IGNORECASE) else ''
+        ck = len(_SESSION.cookies.get_dict()) if _SESSION else 0
+        log('Nem JSON (HTTP %s, %d byte, %d süti) %s: %s'
+            % (r.status_code, len(r.text or ''), ck, cf, body), xbmc.LOGWARNING)
         return None
 
 
