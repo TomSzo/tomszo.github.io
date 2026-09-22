@@ -348,18 +348,23 @@ def _parse_ep_window(html, acc, aid=None):
     Csak az ADOTT animéhez tartozó bélyegképeket fogadja el (mappa-id = aid), így nem
     kerülnek be a 'kapcsolódó animék' idegen részei."""
     titles = {v: _clean(t) for v, t in _EP_TITLE_RE.findall(html)}
+    aid_i = int(aid) if aid not in (None, '') else None
     added = 0
     for v, thumb in _EP_THUMB_RE.findall(html):
         m = re.search(r'epizodkepek/0*(\d+)/0*(\d+)\.(?:jpg|jpeg|png|webp)', thumb, re.IGNORECASE)
-        if m:
-            folder, epnum = int(m.group(1)), int(m.group(2))
+        if aid_i is not None:
+            # SZIGORÚ: csak az adott anime saját bélyegképei (mappa = aid) számítanak.
+            # Így semmi idegen (pl. a leiras/1 első 4 része) nem kerül a listába.
+            if not m or int(m.group(1)) != aid_i:
+                continue
+            epnum = int(m.group(2))
+        elif m:
+            epnum = int(m.group(2))
         else:
             m2 = re.search(r'/(\d{1,4})\.(?:jpg|jpeg|png|webp)', thumb, re.IGNORECASE)
             if not m2:
                 continue
-            folder, epnum = None, int(m2.group(1))
-        if aid is not None and folder is not None and folder != int(aid):
-            continue  # idegen anime bélyegképe (kapcsolódó szekció)
+            epnum = int(m2.group(1))
         if epnum in acc:
             continue
         acc[epnum] = {'vid': v, 'title': titles.get(v) or ('%d. rész' % epnum),

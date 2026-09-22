@@ -1,3 +1,8 @@
+v0.6.4 (2026-09-22) - PRIVÁT / BÉTA
+- IDEGEN RESZ VEGLEGES JAVITAS. A beszuremkedo 1-4. resz mindig a leiras/1 anime volt.
+  Mostantol ha ismert az anime id-je, a parser KIZAROLAG a sajat epizodkepek/{aid}/
+  belyegkepu reszeket fogadja el; minden mas (idegen/placeholder) kimarad.
+
 v0.6.3 (2026-09-22) - PRIVÁT / BÉTA
 - Az "Adatlapok" bongeszo mostantol tartalmazza a teljes, DINAMIKUS szuro-listakat is
   (az oldalrol olvasva, mindig aktualis): Szezon szerint, Besorolas szerint, Allapot
