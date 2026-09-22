@@ -169,7 +169,7 @@ v0.1.0 (2026-09-21) - PRIVÁT / BÉTA
     </extension>
 </addon>
 
-<addon id="plugin.video.onianime" name="OniAnime" version="1.0.3" provider-name="TomSzo">
+<addon id="plugin.video.onianime" name="OniAnime" version="1.0.4" provider-name="TomSzo">
     <requires>
         <import addon="xbmc.python" version="3.0.0"/>
         <import addon="script.module.requests" version="2.22.0"/>
@@ -186,8 +186,11 @@ v0.1.0 (2026-09-21) - PRIVÁT / BÉTA
         <platform>all</platform>
         <license>GPL-3.0-or-later</license>
         <news>
+v1.0.4 (2026-09-22)
+- A cookie-mezo a Cookie-Editor JSON exportjat is elfogadja (magatol atalakitja)
+
 v1.0.3 (2026-09-22)
-- Cookie-mezo a beallitasokban (bongeszobol masolt suti, pl. cf_clearance) a 403 ellen
+- Cookie-mezo a beallitasokban (bongeszobol masolt suti) a 403 ellen
 
 v1.0.2 (2026-09-22)
 - Munkamenet-elokeszites (fooldal betoltes a sutiert) + tisztabb fejlecek a 403 ellen
