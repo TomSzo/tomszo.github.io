@@ -49,14 +49,21 @@ def user_agent():
     return (ADDON.getSetting('user_agent') or '').strip() or DEFAULT_UA
 
 
+def cookie():
+    return (ADDON.getSetting('cookie') or '').strip()
+
+
 _PRIMED = False
 
 
 def _prime():
     """A főoldal egyszeri betöltése, hogy a munkamenet megkapja a (vendég) sütit,
-    amit az API elvárhat. Csak egyszer fut munkamenetenként."""
+    amit az API elvárhat. Csak egyszer fut munkamenetenként.
+    Ha a felhasználó megadott sütit a beállításokban, NEM kell előkészítés
+    (már van érvényes sütink), így egy kérést is megspórolunk."""
     global _PRIMED
-    if _PRIMED or not _SESSION:
+    if _PRIMED or not _SESSION or cookie():
+        _PRIMED = True
         return
     _PRIMED = True
     try:
@@ -79,14 +86,20 @@ def _prime():
 def _headers(referer=None):
     # Valódi same-origin fetch-szerű fejlécek. NINCS Origin / X-Requested-With
     # (a böngésző same-origin GET fetch-je sem küldi ezeket).
-    return {'User-Agent': user_agent(),
-            'Accept': 'application/json, text/plain, */*',
-            'Accept-Language': 'hu-HU,hu;q=0.9,en;q=0.8',
-            'Referer': referer or (BASE + 'catalog'),
-            'Sec-Fetch-Dest': 'empty',
-            'Sec-Fetch-Mode': 'cors',
-            'Sec-Fetch-Site': 'same-origin',
-            'Connection': 'keep-alive'}
+    h = {'User-Agent': user_agent(),
+         'Accept': 'application/json, text/plain, */*',
+         'Accept-Language': 'hu-HU,hu;q=0.9,en;q=0.8',
+         'Referer': referer or (BASE + 'catalog'),
+         'Sec-Fetch-Dest': 'empty',
+         'Sec-Fetch-Mode': 'cors',
+         'Sec-Fetch-Site': 'same-origin',
+         'Connection': 'keep-alive'}
+    ck = cookie()
+    if ck:
+        # A böngészőből másolt süti (pl. cf_clearance) - ezzel a Cloudflare
+        # átengedi a kérést a TLS-ujjlenyomattól függetlenül (ha IP+UA egyezik).
+        h['Cookie'] = ck
+    return h
 
 
 def _get_json(path, referer=None, timeout=20):

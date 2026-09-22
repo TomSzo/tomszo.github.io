@@ -1,5 +1,8 @@
 <settings>
 	<category label="Általános">
 		<setting id="user_agent" type="text" label="Böngésző User-Agent" default="Mozilla/5.0 (Android 16; Mobile; rv:156.0) Gecko/156.0 Firefox/156.0" />
+		<setting type="lsep" label="Süti (a 403 megkerüléséhez)" />
+		<setting id="cookie" type="text" label="Cookie (böngészőből másolva)" default="" />
+		<setting type="lsep" label="Tipp: nyisd meg az onianime.hu-t Firefoxban, F12 → Hálózat → egy kérés → Kérésfejlécek → a teljes 'Cookie:' sor értékét másold ide. A User-Agent-nek egyeznie kell a böngészőével." />
 	</category>
 </settings>
