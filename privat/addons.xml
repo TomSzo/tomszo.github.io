@@ -317,7 +317,7 @@ v0.1.0 (2026-09-24) - PRIVAT / BETA
     </extension>
 </addon>
 
-<addon id="plugin.video.network4" name="Network4 (privát)" version="0.1.1" provider-name="TomSzo">
+<addon id="plugin.video.network4" name="Network4 (privát)" version="0.1.2" provider-name="TomSzo">
     <requires>
         <import addon="xbmc.python" version="3.0.0"/>
         <import addon="script.module.requests" version="2.22.0"/>
@@ -329,12 +329,22 @@ v0.1.0 (2026-09-24) - PRIVAT / BETA
     </extension>
     <extension point="xbmc.addon.metadata">
         <summary lang="hu">Network4 (network4.hu) – privát, a saját előfizetéssel, Widevine DRM-mel</summary>
-        <description lang="hu">Privát, magánhasználatú videó addon a network4.hu-hoz, KIZÁRÓLAG a tulajdonos saját előfizetésével. A beállításokban megadott email/jelszóval (vagy txt-fájlból) a /login űrlapon automatikusan belép, listázza a sport kategóriákat és gyűjteményeket, és a /sport/watch oldal Uplynk DASH manifestjét az inputstream.adaptive-val, a készülék hivatalos Widevine CDM-jével játssza le. Magánhasználat, saját felelősségre.</description>
+        <description lang="hu">Privát, magánhasználatú videó addon a network4.hu-hoz, KIZÁRÓLAG a tulajdonos saját előfizetésével. A /login Cloudflare-kihívás mögött van, ezért a tulajdonos böngészőjéből kimásolt sütikkel (Cookie fejléc, cookies.txt vagy JSON export) dolgozik; tartalékként email/jelszó is megadható. listázza a sport kategóriákat és gyűjteményeket, és a /sport/watch oldal Uplynk DASH manifestjét az inputstream.adaptive-val, a készülék hivatalos Widevine CDM-jével játssza le. Magánhasználat, saját felelősségre.</description>
         <disclaimer lang="hu">Privát, magánhasználatú kiegészítő. Csak a tulajdonos saját előfizetésével működik.</disclaimer>
         <language>hu</language>
         <platform>all</platform>
         <license>GPL-3.0-or-later</license>
         <news>
+v0.1.2 (2026-09-25) - PRIVAT / BETA
+- A network4.hu /login oldala Cloudflare-kihivas ("Just a moment...") moge kerult,
+  ezert az email/jelszos auto-belepes a Kodibol nem mukodik. UJ: bongeszos suti-mod.
+  Beallitasok -> Belepes -> Bongeszos sutik (Cookie fejlec), vagy suti-fajl
+  (cookies.txt / Cookie-Editor JSON), vagy addon_data/.../cookies.txt.
+  A 'maradjak bejelentkezve' remember_web_* sutivel sokaig ervenyes.
+- Kihivas felismerese: nincs belepesi ciklus, a Kapcsolat teszt jelzi, a kihivas-oldal
+  a debug mappaba kerul. Kijelentkezeskor a bongeszos sutik ujratoltodnek.
+- cf_clearance hasznalatakor a User-Agent a bongeszoevel egyezzen (ugyanarrol az IP-rol).
+
 v0.1.1 (2026-09-25) - PRIVAT / BETA
 - A valodi oldalszerkezetre igazitva (bejelentkezett HTML alapjan):
   /sport/collections -> kategoriak (Kiemelt sportok, Labdarugas, Motorsport, ...)
