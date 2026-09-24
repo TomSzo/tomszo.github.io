@@ -1,3 +1,8 @@
+v0.6.14 (2026-09-24) - PRIVAT / BETA
+- Napi limit HELYI SZAMLALORA valtott: a site a FORRAS-LEKERDEZESEKET (data_player.php)
+  szamolja, nem a lejatszasokat. Minden forras-lekeresnel +1, naponta nullazodik.
+  Fomenu/szerverlista: "Ma: N / 200 forras-lekeres". Helyi szamlalo (csak ez az eszkoz).
+
 v0.6.13 (2026-09-24) - PRIVAT / BETA
 - UJ: Napi limit-szamlalo. A data_player.php valaszaban jon a napi limit (X / 200);
   ezt lejatszaskor amugy is lekerjuk, ezert PLUSZ KERES NELKUL kiolvassuk es mentjuk.

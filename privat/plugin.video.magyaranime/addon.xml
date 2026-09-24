@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<addon id="plugin.video.magyaranime" name="MagyarAnime (privát)" version="0.6.13" provider-name="TomSzo">
+<addon id="plugin.video.magyaranime" name="MagyarAnime (privát)" version="0.6.14" provider-name="TomSzo">
     <requires>
         <import addon="xbmc.python" version="3.0.0"/>
         <import addon="script.module.requests" version="2.22.0"/>
@@ -17,6 +17,12 @@
         <platform>all</platform>
         <license>GPL-3.0-or-later</license>
         <news>
+v0.6.14 (2026-09-24) - PRIVAT / BETA
+- Napi limit MOSTANTOL HELYI SZAMLALO: a magyaranime a FORRAS-LEKERDEZESEKET
+  (data_player.php hivasok) szamolja a limitbe, nem a lejatszasokat. Minden forras-
+  lekeresnel +1, naponta nullazodik. Fomenu/szerverlista: 'Ma: N / 200 forras-lekeres'.
+  (A korabbi 0.6.13 a site allapot-mezojet mutatta, ami nem szamlalo volt.)
+
 v0.6.13 (2026-09-24) - PRIVAT / BETA
 - UJ: Napi limit-szamlalo. A magyaranime a data_player.php valaszaban visszaadja a napi
   limitet ('X / 200'); ezt a hivast lejatszaskor amugy is megtesszuk, ezert PLUSZ KERES
