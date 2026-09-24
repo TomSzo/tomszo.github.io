@@ -58,32 +58,34 @@ def _cookie_ok():
 
 
 # --------------------------------------------------------------------------
+_DAILY_LIMIT_MAX = 200  # tájékoztató felső korlát a megjelenítéshez
+
+
 def _daily_limit_label():
-    import datetime
-    dl = ma.load_daily_limit()
-    if not dl or not dl.get('text'):
-        return '[COLOR grey]📊 Napi limit: — (lejátszás után frissül)[/COLOR]'
-    if dl.get('date') == datetime.date.today().isoformat():
-        return '[COLOR yellow]📊 Napi limit: %s[/COLOR]' % dl['text']
-    return '[COLOR grey]📊 Napi limit: %s (korábbi nap)[/COLOR]' % dl['text']
+    n = ma.today_count()
+    color = 'yellow'
+    if n >= _DAILY_LIMIT_MAX:
+        color = 'red'
+    elif n >= _DAILY_LIMIT_MAX * 0.8:
+        color = 'orange'
+    return '[COLOR %s]📊 Ma: %d / %d forrás-lekérés[/COLOR]' % (color, n, _DAILY_LIMIT_MAX)
 
 
 def view_dailylimit():
-    import datetime
-    dl = ma.load_daily_limit()
-    if not dl or not dl.get('text'):
-        msg = ('Még nincs adat.\n\nA napi limit lejátszáskor (szerverlista megnyitása / '
-               'indítás) frissül automatikusan, PLUSZ KÉRÉS NÉLKÜL – nyiss meg egy részt, '
-               'és utána itt látszik.')
-    else:
-        stale = '' if dl.get('date') == datetime.date.today().isoformat() else '   (korábbi nap!)'
-        msg = ('A magyaranime.eu napi videó-limitje (a fiókodon):\n\n'
-               '        %s%s\n\n'
-               'Utoljára frissítve: %s\n\n'
-               'A limit naponta nullázódik. Minden lejátszás (szerver-lekérés) 1-et fogyaszt '
-               'belőle. Ez az OLDAL korlátja a fiókra, nem addon-hiba.'
-               % (dl['text'], stale, dl.get('date', '?')))
-    xbmcgui.Dialog().textviewer(ADDON.getAddonInfo('name') + ' – Napi limit', msg)
+    n = ma.today_count()
+    dl = ma.load_daily_limit() or {}
+    when = dl.get('date') or '—'
+    msg = ('Napi forrás-lekérés számláló (helyi):\n\n'
+           '        %d / %d\n\n'
+           'Nap: %s\n\n'
+           'A magyaranime a FORRÁS-LEKÉRDEZÉSEKET (data_player.php hívások) számolja a napi '
+           'limitbe, nem a lejátszásokat. Ez a számláló minden forrás-lekérésnél +1-et lép, '
+           'és naponta nullázódik.\n\n'
+           'Fontos: ez HELYI számláló – csak az ezen az eszközön (ezzel az addonnal) végzett '
+           'lekéréseket látja; a weboldalon vagy más eszközön végzetteket nem. A 200 csak '
+           'tájékoztató felső korlát. A tényleges limit az OLDAL korlátja a fiókra.'
+           % (n, _DAILY_LIMIT_MAX, when))
+    xbmcgui.Dialog().textviewer(ADDON.getAddonInfo('name') + ' – Napi forrás-lekérés', msg)
     end('files')
 
 

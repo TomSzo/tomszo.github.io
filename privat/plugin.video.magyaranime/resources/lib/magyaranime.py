@@ -579,20 +579,11 @@ def _unescape_url(u):
 
 
 # ---------------------------------------------------------------------------
-# Napi limit-számláló  (az oldal a data_player.php válaszában adja 'daily_limit'-ként;
-# ezt a hívást lejátszáskor amúgy is megtesszük -> NINCS plusz kérés)
+# Napi forrás-lekérés számláló (helyi)
+# A magyaranime a data_player.php HÍVÁSOKAT számolja a napi limitbe (nem a
+# lejátszásokat). Ezért minden data_player.php kérésnél +1-et számolunk helyben.
+# Naponta nullázódik. NINCS plusz kérés – csak a meglévő hívásokat számoljuk.
 # ---------------------------------------------------------------------------
-_TAG_RE = re.compile(r'<[^>]+>')
-
-
-def _clean_daily_limit(html):
-    """A daily_limit HTML-jéből egyszerű szöveg (pl. '134 / 200')."""
-    t = _TAG_RE.sub(' ', html or '')
-    for a, b in (('&nbsp;', ' '), ('&amp;', '&'), ('&lt;', '<'), ('&gt;', '>')):
-        t = t.replace(a, b)
-    return re.sub(r'\s+', ' ', t).strip()
-
-
 def _daily_limit_path():
     prof = ADDON.getAddonInfo('profile')
     try:
@@ -603,26 +594,8 @@ def _daily_limit_path():
     return prof.rstrip('/') + '/daily_limit.json'
 
 
-def save_daily_limit(text):
-    if not text:
-        return
-    import time as _time
-    import datetime
-    try:
-        payload = json.dumps({'text': text,
-                              'date': datetime.date.today().isoformat(),
-                              'ts': int(_time.time())})
-        f = xbmcvfs.File(_daily_limit_path(), 'w')
-        try:
-            f.write(payload)
-        finally:
-            f.close()
-    except Exception as exc:  # noqa
-        log('napi limit mentés hiba: %s' % exc, xbmc.LOGWARNING)
-
-
 def load_daily_limit():
-    """Visszaad: {'text','date','ts'} vagy None."""
+    """Visszaad: {'date','count','ts'} vagy None."""
     try:
         p = _daily_limit_path()
         if not xbmcvfs.exists(p):
@@ -637,24 +610,49 @@ def load_daily_limit():
         return None
 
 
+def today_count():
+    """A MAI forrás-lekérések száma (ha a mentett dátum nem ma, akkor 0)."""
+    import datetime
+    d = load_daily_limit() or {}
+    if d.get('date') == datetime.date.today().isoformat():
+        return int(d.get('count', 0))
+    return 0
+
+
+def bump_request_count():
+    """Egy data_player.php kérés megtörtént -> +1 a mai számlálóhoz."""
+    import time as _time
+    import datetime
+    today = datetime.date.today().isoformat()
+    d = load_daily_limit() or {}
+    if d.get('date') != today:
+        d = {'date': today, 'count': 0}
+    d['count'] = int(d.get('count', 0)) + 1
+    d['ts'] = int(_time.time())
+    try:
+        f = xbmcvfs.File(_daily_limit_path(), 'w')
+        try:
+            f.write(json.dumps(d))
+        finally:
+            f.close()
+    except Exception as exc:  # noqa
+        log('napi számláló mentés hiba: %s' % exc, xbmc.LOGWARNING)
+    log('Napi forrás-lekérés (helyi): %d' % d['count'])
+    return d['count']
+
+
 def player_data(server, vid, csrf, referer):
     txt = post('data/lejatszo/data_player.php',
                {'server': server, 'vid': vid, 'csrf_token': csrf}, referer=referer)
     if not txt:
         return None
+    # A kérés elérte a szervert -> ez beleszámít a napi limitbe. Helyi +1.
+    bump_request_count()
     try:
-        data = json.loads(txt)
+        return json.loads(txt)
     except ValueError:
         log('data_player.php nem JSON (részlet): %s' % txt[:300], xbmc.LOGWARNING)
         return None
-    # Napi limit kiolvasása és mentése (a lejátszó dobozban látható 'X / 200').
-    dl = data.get('daily_limit')
-    if dl:
-        clean = _clean_daily_limit(dl)
-        if clean:
-            save_daily_limit(clean)
-            log('Napi limit: %s' % clean)
-    return data
 
 
 def _extract_from_output(output):
