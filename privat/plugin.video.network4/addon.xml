@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<addon id="plugin.video.network4" name="Network4 (privát)" version="0.1.0" provider-name="TomSzo">
+<addon id="plugin.video.network4" name="Network4 (privát)" version="0.1.1" provider-name="TomSzo">
     <requires>
         <import addon="xbmc.python" version="3.0.0"/>
         <import addon="script.module.requests" version="2.22.0"/>
@@ -11,12 +11,21 @@
     </extension>
     <extension point="xbmc.addon.metadata">
         <summary lang="hu">Network4 (network4.hu) – privát, a saját előfizetéssel, Widevine DRM-mel</summary>
-        <description lang="hu">Privát, magánhasználatú videó addon a network4.hu-hoz, KIZÁRÓLAG a tulajdonos saját előfizetésével. A beállításokban megadott email/jelszóval (vagy txt-fájlból) a /login űrlapon automatikusan belép, listázza a sport tartalmakat, és a /sport/details oldal Uplynk DASH manifestjét az inputstream.adaptive-val, a készülék hivatalos Widevine CDM-jével játssza le. Magánhasználat, saját felelősségre.</description>
+        <description lang="hu">Privát, magánhasználatú videó addon a network4.hu-hoz, KIZÁRÓLAG a tulajdonos saját előfizetésével. A beállításokban megadott email/jelszóval (vagy txt-fájlból) a /login űrlapon automatikusan belép, listázza a sport kategóriákat és gyűjteményeket, és a /sport/watch oldal Uplynk DASH manifestjét az inputstream.adaptive-val, a készülék hivatalos Widevine CDM-jével játssza le. Magánhasználat, saját felelősségre.</description>
         <disclaimer lang="hu">Privát, magánhasználatú kiegészítő. Csak a tulajdonos saját előfizetésével működik.</disclaimer>
         <language>hu</language>
         <platform>all</platform>
         <license>GPL-3.0-or-later</license>
         <news>
+v0.1.1 (2026-09-25) - PRIVAT / BETA
+- A valodi oldalszerkezetre igazitva (bejelentkezett HTML alapjan):
+  /sport/collections -> kategoriak (Kiemelt sportok, Labdarugas, Motorsport, ...)
+  -> gyujtemenyek (/sport/collection/details/&lt;slug&gt;) -> adasok (/sport/watch/&lt;slug&gt;).
+- Lejatszas a /sport/watch oldalrol: a player.source Uplynk .mpd URL-je es a
+  contentProtection.widevine.licenseAcquisitionURL (content.uplynk.com/wv) kozvetlenul.
+- Cim es poszter a lejatszo konfigjabol (chromecastSource metadata / player.poster).
+- Uj menupont: Sport musorujsag (EPG). A kezi megnyitas watch-slugot / teljes linket var.
+
 v0.1.0 (2026-09-25) - PRIVAT / BETA
 - Kezdeti kiadas a network4.hu-hoz (sajat elofizetes).
 - Email/jelszo auto-belepes: GET /login (_token) -> POST /login (_token, email, password,
