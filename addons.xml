@@ -221,7 +221,7 @@ v1.0.0 (2026-04-04) - BÉTA
     </extension>
 </addon>
 
-<addon id="plugin.video.nCore_TV" name="nCore TV" version="1.2.0" provider-name="heg (fork: TomSzo)">
+<addon id="plugin.video.nCore_TV" name="nCore TV" version="1.2.1" provider-name="heg (fork: TomSzo)">
     <requires>
         <import addon="script.module.beautifulsoup4" version="4.6.2"/>
         <import addon="script.module.requests" version="2.22.0"/>
@@ -233,19 +233,163 @@ v1.0.0 (2026-04-04) - BÉTA
     </extension>
     <extension point="xbmc.addon.metadata">
         <summary lang="en">nCore TV</summary>
-        <description lang="en">Különböző tartalmak lejátszása az https://ncore.pro/ oldalról! Nem hivatalos, módosított fork (eredeti szerző: heg).</description>
+        <summary lang="hu">nCore TV</summary>
+        <description lang="hu">Tartalmak böngészése és lejátszása az https://ncore.pro/ oldalról (torrent-lejátszás Elementumon át). Nem hivatalos, saját igényekre szabott FORK — eredeti szerző: heg. Az eredeti a MovieShark tárolóban érhető el.
+
+Mit módosítottunk ebben a forkban:
+- TMDb Helper lejátszó (Auto Play + Source Select), színkódolt minőség-címkékkel (felbontás, REMUX, DV/HDR, seederek)
+- REMUX-keresés és minőség-felismerés, minőség szerinti rendezés
+- Widget mód: kész listák (REMUX / 4K / 1080) skin-widgetnek
+- Helyi funkciók: lokális lejátszás-követés, évadpakk-menü, gyors mód ki/be
+- Sebesség: kevesebb indításkori hálózati kérés, gyorsabb adatbázis és listák
+- Film/lejátszás indításakor NINCS auto-pause (az elejéről induló tartalom egyből megy)</description>
+        <description lang="en">Browse and play content from https://ncore.pro/ (torrent playback via Elementum). Unofficial, personally customized FORK — original author: heg (available in the MovieShark repository).
+
+What this fork changes:
+- TMDb Helper player (Auto Play + Source Select) with color-coded quality labels (resolution, REMUX, DV/HDR, seeders)
+- REMUX search and quality detection, quality-based sorting
+- Widget mode: ready-made lists (REMUX / 4K / 1080) for skin widgets
+- Local features: local playback tracking, season-pack menu, fast mode toggle
+- Speed: fewer network requests at startup, faster database and lists
+- No auto-pause when starting playback (content started from the beginning plays right away)</description>
         <language>hu</language>
         <platform>all</platform>
         <news>
+1.2.1 (fork: TomSzo, 2026-09-24)
+- Film/lejatszas inditasakor megszunt az auto-pause (az elejerol indulo tartalom egybol megy)
+- Leiras bovitve a fork-modositasok listajaval (Kodiban is latszik)
 1.2.0 (fork: TomSzo, 2026-09-20)
 - TMDb Helper player (Auto Play + Source Select), REMUX-keresés
 - Widget mód, Widgetek menü
 - Helyi funkciók: lokális követés, évadpakk-menü, gyors mód ki/be
 - Jelentős sebesség-optimalizálás (indítás, listák, DB)
 - Részletek: CHANGELOG.md
+1.1.2
+- ipv4 kényszerítése
+- Trakt/Simkl/Plex token lejáratának pontosabb ellenőrzése
+  újraellenőrzés gomb hozzáadva, ha ennél 200-at mutatna valamiért
+  akkor nem kell újra hitelesíteni...
+főmenübe hozzáadva: 
+- Megnézendők (Trakt/Simkl/Plex)
+  mind a 3 watchlist összefésülve
+eltávolítva:
+- supersubtitles.org
+  cloudflare védelmet kapott
+1.1.1
+új kereső menü hozzáadva:
+- Keresés IMDb oldalon keresztül
+  Sorozat|Film cím / imdb-id
+
+javítva:
+- Trakt api változás lekövetve:
+  hibás utoljára látott epizód: S00E00
+
+- Régebbi kodi verziók támogatása:
+  Matrix V19, Nexus V20
+
+1.1.0
+javítva:
+- újabb sample bug
+- évad pakk kezelő
+
+1.0.9
+- Sample hiba javítva
+- Új funkció: Megnézettek (Archívum)
+  - Ide kerül, minden olyan tartalom, ami a lejátszóban eléri a 92%-ot
+    Évad pakk esetén csak akkor kerül ide, ha az utolsó epizódhoz (8/8) is elérte a 92%-ot
+
+1.0.8
+- Trakt fiókhoz:
+ - Az összes eddigi értékelésed lekérése a filmekhez és a sorozatokhoz
+   (bal oldali részen fog megjelenni)
+ - Context menüt használva lehet pontozni: 1-10 pontot használva
+  - Trakt értékelő rendszer:
+    Film / Sorozat értékelése
+    Évad(ok), Epizód(ok) értékelése (torrent fájllista alapján)
+
+- Trakt.tv új menü hozzáadva:
+ - Borítók és ID pakk gyors begyűjtése Trakthoz
+   top filmekhez és sorozatokhoz (1,2 MB) [14324 db borító])
+   (ez csak a 'felfedezés' és a 'Megnézett filmek' menüre vonatkozik)
+
+- Bővített kereső javítva
+
+1.0.7
+- Felhő alapú szinkronizáció: Trakt, Simkl és Plex támogatás hozzáadva.
+  (Lehetővé teszi a lejátszás folytatását bármilyen eszközön.)
+  - Bejelentkezés a Beállítások menüpontban.
+  - Automatikus "Megnézve" jelzés küldése 85%-os állapotnál.
+  - Szüneteltetési (pause) állapot küldése 1% feletti progress esetén.
+
+  - Félbehagyottak (Continue Watching) kezelése.
+  - Megnézett filmek és Elkezdett sorozatok listázása.
+  - Watchlist (Lejátszási lista) elérése.
+  - Up Next (Következő epizódok) és Airing Next (Közelgő premierek) funkciók.
+  
+  - Indikátorok megjelenítése a torrentek böngészése közben.
+  
+  - Continue Watching-ból "hozott" pl. S03E09 találatok megjelenítése egy sorozatból
+    ilyenkor az nCore találatai az S03E09, S03, Completed lesz hozzá csak megjelenítve
+
+- Fejlett évadpakk (Season Pack) kezelő:
+  - Jelenlegi epizód indítása (folytatási lehetőséggel).
+  - Következő és előző rész gyors elérése.
+  - Tallózás a teljes torrent csomag tartalmában.
+
+- Extra információs menü lejátszás közben:
+  - Előhívható a szünetelés alatt 3x OK vagy ENTER gombbal.
+  - Videó felbontás és kijelző frissítési frekvencia (Hz/FPS) megjelenítése.
+
+- Adattárolás váltása: JSON > SQL adatbázisra való átállás a gyorsabb működésért.
+
+- Ajánlók menü bővítve: simkl, TMDb, trakt
+  - TMDb Felfedezés menüben a context-hez hozzáadva: A Film többi része (Franchise)
+
+- CoreELEC (NO) fix
+
+1.0.6
+- javítva: film és sorozat bemutatók
+- javítva: borítók
+- javítva: ajánlókban a themoviedb
+- Kereső (felbontás) szűrő hozzáadva a főmenübe
+  - Ha nem látszódna egyből a választás akkor egy másik kiegészítőre kell váltani majd visszalépni
+  - Beállításokba egy kapcsoló hozzá, ha 0 találat lenne akkor ideglenesen lehessen keresni szűrő nélkül
+- javítva: keresés színészre
+
+1.0.5:
+- Lejátszás közben a kategória alapján automatikusan a kijelölt könyvjelzőcsoporthoz kerül hozzáadásra,
+  ha a beállításokban engedélyezve van és a Könyvjelző menüben a Context menü segítségével beállításra került.
+
+1.0.4:
+- 2 fajta Seedelési lehetőség hozzáadva
+- Github szinkronizáció
+- SorozatFigyelő (profilokra bontva)
+- Akinél aktív: belépés kétlépcsős azonosítással (2fa)
+- keresés színészre
+- belépési adatok betöltése fájlból
+- megjelenés változtatása, ha nem az alap Estuary skint használod
+
+1.0.2 - 1.0.3:
+- Kezdeti Borítók megjelenítése local proxy-val
+  Ha már létezik a port akkor ugrik a következőre
+  Beállításokba ki-be kapcsolható
+  Beállításokba megadható egyedi port is hozzá
+- JustWatch megjelenések listázása (dátum választó)
+  (a teljes hét találataival)
+
+1.0.1:
+- Feliratok keresése csak külföldi vagy minden tartalomhoz
+- Utoljára nézett epizód/fájl listázása
+- Kiválasztott keresés törlése a listából (context menü)
+- Bővített kereső (leírás, címszavak/kategóriák stb.)
+- Bejeletkezés kényszerítése (elgépelt belépési adatok miatt)
+
+1.0.0:
+- Első verzió
         </news>
         <assets>
             <icon>icon.png</icon>
+            <fanart></fanart>
             <screenshot>resources/screenshots/screenshot-1.jpg</screenshot>
             <screenshot>resources/screenshots/screenshot-2.jpg</screenshot>
             <screenshot>resources/screenshots/screenshot-3.jpg</screenshot>
