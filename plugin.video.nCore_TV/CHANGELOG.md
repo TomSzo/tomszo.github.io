@@ -8,6 +8,16 @@ A formátum a [Keep a Changelog](https://keepachangelog.com/hu/1.1.0/) szerkezet
 
 ---
 
+## [1.2.1] – 2026-09-24 (fork: TomSzo)
+
+### Javítva
+- **Nincs auto-pause a lejátszás indításakor.** A folytatási pont meghatározásához a lejátszás korábban megállt, és ha nem folytatás-menüből indult a tartalom (pl. film az elejéről), a videó szünetben ragadt. Mostantól a figyelő ciklus előtt visszaindul, így az elejéről indított tartalom egyből megy.
+
+### Egyéb
+- Az addon **leírása bővült** a fork-módosítások listájával, hogy Kodiban is látszódjon.
+
+---
+
 ## [1.2.0] – 2026-09-20 (fork: TomSzo)
 
 Első fork-kiadás. Alap: **nCore TV 1.1.2** (eredeti szerző: heg, GPL-3.0-or-later).
