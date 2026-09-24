@@ -211,6 +211,38 @@ v0.1.0 (2026-09-21) - PRIVÁT / BÉTA
     </extension>
 </addon>
 
+<addon id="plugin.video.mutekifansub" name="Muteki Fansub (privát)" version="0.1.0" provider-name="TomSzo">
+    <requires>
+        <import addon="xbmc.python" version="3.0.0"/>
+        <import addon="script.module.requests" version="2.22.0"/>
+    </requires>
+    <extension point="xbmc.python.pluginsource" library="default.py">
+        <provides>video</provides>
+    </extension>
+    <extension point="xbmc.addon.metadata">
+        <summary lang="hu">Muteki Fansub (mutekifansub.hu) – privát, email/jelszó auto-belépéssel</summary>
+        <description lang="hu">Privát, magánhasználatú videó addon a mutekifansub.hu magyar animefeliratozó oldalhoz. A beállításokban megadott saját email/jelszó párossal automatikusan bejelentkezik, és a bejelentkezett munkamenettel böngészi a legfrissebb részeket, a projekteket (állapot/szezon/műfaj szerint), keres, majd a beépített lejátszóból a közvetlen MP4 forrást (720p/1080p/2K/4K) játssza le felirattal. KIZÁRÓLAG a tulajdonos saját fiókjával működik. Magánhasználat, saját felelősségre.</description>
+        <disclaimer lang="hu">Privát, magánhasználatú kiegészítő. Csak a tulajdonos saját fiókjával működik.</disclaimer>
+        <language>hu</language>
+        <platform>all</platform>
+        <license>GPL-3.0-or-later</license>
+        <news>
+v0.1.0 (2026-09-24) - PRIVAT / BETA
+- Kezdeti kiadas. Email/jelszo auto-belepes a /login urlapon (a _csrf_token mezot
+  automatikusan felismeri es kitolti), a munkamenet-suti lemezre mentve.
+- Menu: Legfrissebb reszek (fooldal), Projektek (Aktiv/Befejezett/Tervezett/
+  Felfuggesztett, Osszes A-Z, Szezon szerint, Mufaj szerint), Kereses.
+- Lejatszas: a watch oldal data-file attributumabol a kozvetlen MP4 (720p/1080p/2K/4K),
+  minoseg-valasztassal (auto/kerdezzen/fix), a session-cookie fejleccel.
+- Felirat: a resz felirata automatikusan letoltve es betoltve (.ass/.srt).
+- Kapcsolat teszt es "Munkamenet torlese" gomb a beallitasokban.
+        </news>
+        <assets>
+            <icon>icon.png</icon>
+        </assets>
+    </extension>
+</addon>
+
 <addon id="script.module.resolveurl" name="ResolveURL" version="5.1.209" provider-name="gujal">
     <requires>
         <!-- <import addon="xbmc.python" version="3.0.0" /> -->
