@@ -249,6 +249,43 @@ v0.1.0 (2026-09-24) - PRIVAT / BETA
     </extension>
 </addon>
 
+<addon id="plugin.video.kintsugifansub" name="Kintsugi Fansub (privát)" version="0.1.0" provider-name="TomSzo">
+    <requires>
+        <import addon="xbmc.python" version="3.0.0"/>
+        <import addon="script.module.requests" version="2.22.0"/>
+    </requires>
+    <extension point="xbmc.python.pluginsource" library="default.py">
+        <provides>video</provides>
+    </extension>
+    <extension point="xbmc.addon.metadata">
+        <summary lang="hu">Kintsugi Fansub (kintsugi-fansub.hu) – privát, email/jelszó auto-belépéssel</summary>
+        <description lang="hu">Privát, magánhasználatú videó addon a kintsugi-fansub.hu magyar animefeliratozó oldalhoz (a csapat a Muteki Fansubból vált ki, ugyanaz a fiók használható). A beállításokban megadott saját email/jelszó párossal (vagy txt-fájlból) automatikusan bejelentkezik, és a bejelentkezett munkamenettel böngészi az aktív projektek legfrissebb részeit, a projekteket (állapot/szezon/műfaj szerint), keres, majd a beépített lejátszóból a közvetlen MP4 forrást (720p/1080p/2K/4K) játssza le felirattal. KIZÁRÓLAG a tulajdonos saját fiókjával működik. Magánhasználat, saját felelősségre.</description>
+        <disclaimer lang="hu">Privát, magánhasználatú kiegészítő. Csak a tulajdonos saját fiókjával működik.</disclaimer>
+        <language>hu</language>
+        <platform>all</platform>
+        <license>GPL-3.0-or-later</license>
+        <news>
+v0.1.0 (2026-09-24) - PRIVAT / BETA
+- Kezdeti kiadas a Kintsugi Fansub (kintsugi-fansub.hu) oldalhoz. A csapat a Mutekibol
+  valt ki, ugyanazzal a fiokkal lehet belepni.
+- Email/jelszo auto-belepes a /login urlapon (a signin[_csrf_token] es _request_token
+  mezoket automatikusan felismeri es kitolti, "maradjak bejelentkezve"), a munkamenet-suti
+  lemezre mentve. Email/jelszo txt-fajlbol is megadhato (nincs gepeles): Beallitasok ->
+  Belepes -> "email/jelszo txt fajl". Fix hely: addon_data/plugin.video.kintsugifansub/login.txt.
+- Menu: Legfrissebb reszek (aktiv projektek legujabb epizodjai, datum szerint), Projektek
+  (Aktiv/Befejezett/Tervezett/Felfuggesztett/Dobott, Osszes A-Z, Szezon szerint, Mufaj szerint),
+  Kereses.
+- Lejatszas: a watch oldal data-file attributumabol a kozvetlen MP4 (720p/1080p/2K/4K),
+  minoseg-valasztassal (auto/kerdezzen/fix), a session-cookie fejleccel.
+- Felirat: a resz felirata automatikusan letoltve es betoltve (.ass/.srt).
+- Kapcsolat teszt es "Munkamenet torlese" gomb a beallitasokban.
+        </news>
+        <assets>
+            <icon>icon.png</icon>
+        </assets>
+    </extension>
+</addon>
+
 <addon id="script.module.resolveurl" name="ResolveURL" version="5.1.209" provider-name="gujal">
     <requires>
         <!-- <import addon="xbmc.python" version="3.0.0" /> -->
