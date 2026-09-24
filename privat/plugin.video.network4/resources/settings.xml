@@ -12,7 +12,7 @@
 		<setting id="base_url" type="text" label="Alap URL (csak domainváltáskor)"
 		         default="https://www.network4.hu/" />
 		<setting id="user_agent" type="text" label="Böngésző User-Agent (cf_clearance-nél a böngészőével EGYEZZEN)"
-		         default="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/131.0.0.0 Safari/537.36" />
+		         default="Mozilla/5.0 (Android 16; Mobile; rv:156.0) Gecko/156.0 Firefox/156.0" />
 	</category>
 	<category label="Lejátszás">
 		<setting id="license_url" type="text" label="Widevine licenc URL (üres = automatikus / Uplynk)" default="" />

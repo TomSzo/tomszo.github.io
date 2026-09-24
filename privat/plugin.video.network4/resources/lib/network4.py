@@ -46,8 +46,7 @@ ADDON_ID = ADDON.getAddonInfo('id')
 DEFAULT_BASE = 'https://www.network4.hu/'
 DEFAULT_DOMAIN = '.network4.hu'
 DEFAULT_LICENSE = 'https://content.uplynk.com/wv'
-DEFAULT_UA = ('Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 '
-              '(KHTML, like Gecko) Chrome/131.0.0.0 Safari/537.36')
+DEFAULT_UA = 'Mozilla/5.0 (Android 16; Mobile; rv:156.0) Gecko/156.0 Firefox/156.0'
 
 _SESSION = requests.Session() if HAVE_REQUESTS else None
 _COOKIES_LOADED = False

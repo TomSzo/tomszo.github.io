@@ -26,6 +26,7 @@ v0.1.2 (2026-09-25) - PRIVAT / BETA
 - Kihivas felismerese: nincs belepesi ciklus, a Kapcsolat teszt jelzi, a kihivas-oldal
   a debug mappaba kerul. Kijelentkezeskor a bongeszos sutik ujratoltodnek.
 - cf_clearance hasznalatakor a User-Agent a bongeszoevel egyezzen (ugyanarrol az IP-rol).
+  Alapertelmezett UA: a tulajdonos Firefox for Android bongeszoje (rv:156).
 
 v0.1.1 (2026-09-25) - PRIVAT / BETA
 - A valodi oldalszerkezetre igazitva (bejelentkezett HTML alapjan):
