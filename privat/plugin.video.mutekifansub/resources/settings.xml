@@ -1,0 +1,21 @@
+<settings>
+	<category label="Belépés">
+		<setting id="email" type="text" label="Email cím" default="" />
+		<setting id="password" type="text" label="Jelszó" option="hidden" default="" />
+		<setting type="action" label="Munkamenet törlése (újra bejelentkezés)"
+		         action="RunPlugin(plugin://plugin.video.mutekifansub/?action=clearsession)" />
+		<setting id="base_url" type="text" label="Alap URL (csak domainváltáskor)"
+		         default="https://mutekifansub.hu/" />
+		<setting id="user_agent" type="text" label="Böngésző User-Agent"
+		         default="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/131.0.0.0 Safari/537.36" />
+	</category>
+	<category label="Lejátszás">
+		<setting id="quality" type="enum" label="Videó minőség"
+		         values="Automatikus (legjobb)|Mindig kérdezzen|4K|2K|1080p|720p|480p" default="0" />
+		<setting id="subtitles" type="bool" label="Felirat automatikus betöltése" default="true" />
+	</category>
+	<category label="Egyéb">
+		<setting id="cache_minutes" type="number" label="Projekt-lista gyorsítótár (perc)" default="30" />
+		<setting id="debug" type="bool" label="Hibakeresési naplózás" default="false" />
+	</category>
+</settings>
