@@ -1,7 +1,8 @@
 <settings>
 	<category label="Belépés">
-		<setting id="email" type="text" label="Email cím" default="" />
+		<setting id="email" type="text" label="Email cím (vagy felhasználónév)" default="" />
 		<setting id="password" type="text" label="Jelszó" option="hidden" default="" />
+		<setting id="cred_file" type="file" label="VAGY email/jelszó txt fájl (nincs gépelés)" default="" />
 		<setting type="action" label="Munkamenet törlése (újra bejelentkezés)"
 		         action="RunPlugin(plugin://plugin.video.mutekifansub/?action=clearsession)" />
 		<setting id="base_url" type="text" label="Alap URL (csak domainváltáskor)"

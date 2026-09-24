@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<addon id="plugin.video.mutekifansub" name="Muteki Fansub (privát)" version="0.1.0" provider-name="TomSzo">
+<addon id="plugin.video.mutekifansub" name="Muteki Fansub (privát)" version="0.1.1" provider-name="TomSzo">
     <requires>
         <import addon="xbmc.python" version="3.0.0"/>
         <import addon="script.module.requests" version="2.22.0"/>
@@ -15,6 +15,12 @@
         <platform>all</platform>
         <license>GPL-3.0-or-later</license>
         <news>
+v0.1.1 (2026-09-24) - PRIVAT / BETA
+- UJ: email/jelszo txt-fajlbol is megadhato (nincs gepeles). Beallitasok -> Belepes ->
+  "email/jelszo txt fajl". Rugalmas formatum: 'email:jelszo', ket sor, 'email=..'/
+  'password=..', vagy JSON. Fix hely is: addon_data/plugin.video.mutekifansub/login.txt.
+- A Kapcsolat teszt kiirja a belepesi adat forrasat (beallitas / fajl).
+
 v0.1.0 (2026-09-24) - PRIVAT / BETA
 - Kezdeti kiadas. Email/jelszo auto-belepes a /login urlapon (a _csrf_token mezot
   automatikusan felismeri es kitolti), a munkamenet-suti lemezre mentve.
