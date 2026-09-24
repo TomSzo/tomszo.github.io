@@ -55,8 +55,8 @@ def notify(msg, t=5000):
 
 # --------------------------------------------------------------------------
 def view_root():
-    if not n4.have_credentials():
-        add_dir('[COLOR red]! Add meg az email/jelszó párost a beállításokban[/COLOR]',
+    if not n4.have_auth():
+        add_dir('[COLOR red]! Add meg a böngészős sütiket a beállításokban[/COLOR]',
                 build_url(action='opensettings'), folder=False)
     for i, (name, items) in enumerate(n4.collections_page()):
         label = '[COLOR gold]★ %s[/COLOR]' % name if i == 0 else name
@@ -108,7 +108,10 @@ def view_diag():
     ok, who, length, keys = n4.check_login()
     lines = ['Alap URL: %s' % n4.base_url(),
              'Belépési adat forrása: %s' % n4.cred_source(),
+             'Böngészős sütik megadva: %s' % ('igen' if n4.have_cookie_input() else 'NEM'),
              'Email/jelszó megadva: %s' % ('igen' if n4.have_credentials() else 'NEM'),
+             'Cloudflare-kihívás: %s' % ('IGEN – süti + a böngésző User-Agentje kell'
+                                         if n4.LAST_CHALLENGE[0] else 'nem'),
              'Főoldal betöltve: %d byte' % length,
              'Bejelentkezve: %s' % ('IGEN' if ok else 'NEM'),
              'Felhasználó: %s' % (who or '—'),
@@ -116,8 +119,14 @@ def view_diag():
              'inputstream.adaptive: %s' % (_ia_version() or 'NINCS telepítve'),
              'Hibakereső mappa: %s' % n4.debug_dir()]
     if not ok:
-        lines += ['', 'Ha NEM vagy bejelentkezve: ellenőrizd az email/jelszót. A sikertelen '
-                  'belépés oldalát a hibakereső mappába mentettem (login_result.html).']
+        lines += ['', 'Ha NEM vagy bejelentkezve: a network4.hu /login oldala Cloudflare-kihívás '
+                  'mögött van, ezért a megbízható mód a BÖNGÉSZŐS SÜTI:',
+                  '1) Lépj be a böngészőben (pipáld be: maradjak bejelentkezve).',
+                  '2) Másold ki a www.network4.hu sütijeit (Cookie fejléc, cookies.txt vagy '
+                  'Cookie-Editor JSON export).',
+                  '3) Beállítások -> Belépés -> Böngészős sütik (vagy a cookies.txt fájl).',
+                  '4) Ha van cf_clearance süti is, a User-Agent legyen PONTOSAN a böngészőé, '
+                  'és ugyanarról a hálózatról (IP) nézd.']
     xbmcgui.Dialog().textviewer(ADDON.getAddonInfo('name') + ' – teszt', '\n'.join(lines))
 
 
@@ -262,6 +271,7 @@ def router(qs):
         view_diag()
     elif action == 'clearsession':
         n4.clear_cookies()
+        n4.import_cookies(force=True)
         notify('Munkamenet törölve – következő lekéréskor újra bejelentkezik')
     elif action == 'play':
         play(p['slug'])

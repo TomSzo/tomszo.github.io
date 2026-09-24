@@ -46,8 +46,7 @@ ADDON_ID = ADDON.getAddonInfo('id')
 DEFAULT_BASE = 'https://www.network4.hu/'
 DEFAULT_DOMAIN = '.network4.hu'
 DEFAULT_LICENSE = 'https://content.uplynk.com/wv'
-DEFAULT_UA = ('Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 '
-              '(KHTML, like Gecko) Chrome/131.0.0.0 Safari/537.36')
+DEFAULT_UA = 'Mozilla/5.0 (Android 16; Mobile; rv:156.0) Gecko/156.0 Firefox/156.0'
 
 _SESSION = requests.Session() if HAVE_REQUESTS else None
 _COOKIES_LOADED = False
@@ -153,6 +152,106 @@ def cookie_header():
 
 
 # ---------------------------------------------------------------------------
+# Süti-mód: a böngészőből kimásolt sütik (a /login Cloudflare-kihívás mögött van)
+# ---------------------------------------------------------------------------
+def parse_cookie_input(text):
+    """Böngészőből kimásolt sütik -> [(név, érték)]. Elfogadott formák:
+      - Cookie fejléc:        a=b; c=d
+      - Netscape cookies.txt: tabulátorral tagolt 7 mező
+      - JSON export:          [{"name": .., "value": ..}, ..] (Cookie-Editor stb.)"""
+    text = (text or '').strip()
+    if not text:
+        return []
+    out = []
+    if text[:1] in '[{':
+        try:
+            d = json.loads(text)
+            if isinstance(d, dict):
+                d = d.get('cookies') or [d]
+            for c in d:
+                if isinstance(c, dict) and c.get('name'):
+                    dom = str(c.get('domain') or '')
+                    if not dom or 'network4' in dom:
+                        out.append((str(c['name']), str(c.get('value', ''))))
+            return out
+        except Exception:  # noqa
+            pass
+    lines = [l for l in text.splitlines() if l.strip()]
+    if any(l.count('\t') >= 6 for l in lines):
+        for l in lines:
+            if l.startswith('#') and not l.startswith('#HttpOnly_'):
+                continue
+            f = l.split('\t')
+            if len(f) >= 7 and 'network4' in f[0]:
+                out.append((f[5].strip(), f[6].strip()))
+        return out
+    text = re.sub(r'^\s*cookie\s*:\s*', '', ' '.join(lines), flags=re.I)
+    for part in text.split(';'):
+        if '=' in part:
+            n, _, v = part.strip().partition('=')
+            if n.strip():
+                out.append((n.strip(), v.strip()))
+    return out
+
+
+def _cookie_input():
+    """A beállításban megadott süti-szöveg, vagy a süti-fájl / fix cookies.txt tartalma."""
+    txt = (ADDON.getSetting('cookie') or '').strip()
+    if txt:
+        return txt
+    for path in [(ADDON.getSetting('cookie_file') or '').strip(),
+                 xbmcvfs.translatePath('special://profile/addon_data/%s/cookies.txt' % ADDON_ID)]:
+        data = _read_file(path)
+        if data and data.strip():
+            return data
+    return ''
+
+
+def have_cookie_input():
+    return bool(parse_cookie_input(_cookie_input()))
+
+
+def import_cookies(force=False):
+    """A böngészős sütik betöltése a munkamenetbe, ha újak/változtak (vagy force)."""
+    if not _SESSION:
+        return False
+    raw = _cookie_input()
+    pairs = parse_cookie_input(raw)
+    if not pairs:
+        return False
+    import hashlib
+    h = hashlib.md5(raw.encode('utf-8')).hexdigest()
+    mark = os.path.join(_profile_dir(), 'cookie_src.md5')
+    if not force and _read_file(mark).strip() == h:
+        return False
+    for n, v in pairs:
+        _SESSION.cookies.set(n, v, domain=DEFAULT_DOMAIN, path='/')
+    save_cookies()
+    try:
+        f = xbmcvfs.File(mark, 'w')
+        try:
+            f.write(h)
+        finally:
+            f.close()
+    except Exception:  # noqa
+        pass
+    log('Böngészős sütik betöltve: %s' % ', '.join(n for n, _ in pairs))
+    return True
+
+
+LAST_CHALLENGE = [False]
+
+
+def is_challenge(html, resp=None):
+    """Cloudflare 'Just a moment...' / managed challenge oldal?"""
+    if (getattr(resp, 'headers', None) or {}).get('cf-mitigated') == 'challenge':
+        return True
+    h = html or ''
+    return ('_cf_chl_opt' in h
+            or ('challenge-platform/h/' in h and '<title>Just a moment' in h))
+
+
+# ---------------------------------------------------------------------------
 # HTTP
 # ---------------------------------------------------------------------------
 
@@ -252,8 +351,18 @@ def have_credentials():
     return bool(e and p)
 
 
+def have_auth():
+    """Van-e bármilyen belépési mód (böngészős süti vagy email/jelszó)."""
+    return have_cookie_input() or have_credentials()
+
+
 def cred_source():
-    """Diagnosztika: honnan jön a belépés ('beállítás' / 'fájl: ...' / 'nincs')."""
+    """Diagnosztika: honnan jön a belépés (süti / beállítás / fájl / nincs)."""
+    if parse_cookie_input((ADDON.getSetting('cookie') or '').strip()):
+        return 'böngészős sütik (beállítás)'
+    if parse_cookie_input(_cookie_input()):
+        return 'böngészős sütik (fájl)'
+
     if (ADDON.getSetting('email') or '').strip() and (ADDON.getSetting('password') or ''):
         return 'beállítás-mezők'
     cf = (ADDON.getSetting('cred_file') or '').strip()
@@ -363,6 +472,12 @@ def login():
     except Exception as exc:  # noqa
         log('login GET hiba: %s' % exc, xbmc.LOGERROR)
         return False
+    if is_challenge(page):
+        LAST_CHALLENGE[0] = True
+        log('A /login Cloudflare-kihívás mögött van - email/jelszós belépés nem lehetséges. '
+            'Használd a süti-módot (Beállítások -> Belépés).', xbmc.LOGWARNING)
+        save_debug('login.html', page)
+        return False
     form = _find_login_form(page)
     data, action = {}, login_url
     if form:
@@ -388,6 +503,12 @@ def login():
     h['Content-Type'] = 'application/x-www-form-urlencoded'
     try:
         r = _SESSION.post(action, data=data, headers=h, timeout=30, allow_redirects=True)
+        if is_challenge(r.text, r):
+            LAST_CHALLENGE[0] = True
+            log('A login POST Cloudflare-kihívást kapott - használd a süti-módot.',
+                xbmc.LOGWARNING)
+            save_debug('login_result.html', r.text)
+            return False
         ok = logged_in(r.text) and not urlparse(r.url).path.rstrip('/').endswith('/login')
         if not ok:
             ok = logged_in(_SESSION.get(base_url(), headers=_headers(base_url()),
@@ -412,6 +533,7 @@ def ensure_login():
         return True
     _ENSURED = True
     load_cookies()
+    import_cookies()
     if _SESSION and len(_SESSION.cookies) > 0:
         return True   # feltételezzük, hogy érvényes; a get() ellenőrzi/újralép
     return login()
@@ -439,12 +561,30 @@ def get(url, referer=None, timeout=25, ajax=False, auth=True):
         log('GET hiba: %s (%s)' % (exc, full), xbmc.LOGERROR)
         return ''
     html = r.text
+    if is_challenge(html, r):
+        LAST_CHALLENGE[0] = True
+        log('Cloudflare-kihívás (%s) - a böngészős sütik (és a böngésző User-Agentje) '
+            'kellenek a beállításokban.' % full, xbmc.LOGWARNING)
+        save_debug('challenge_%s.html' % (urlparse(full).path.strip('/').replace('/', '_')
+                                           or 'root'), html)
+        return ''
     relogin = False
     if auth and not ajax and not logged_in(html):
         relogin = True
     if auth and ajax and r.status_code in (401, 419):
         relogin = True
-    if relogin:
+    if relogin and import_cookies(force=True):
+        log('Kijelentkezve érzékelve – böngészős sütik újratöltve.')
+        try:
+            r = _do()
+            html = '' if is_challenge(r.text, r) else r.text
+            relogin = auth and not ajax and not logged_in(html)
+        except Exception as exc:  # noqa
+            log('GET (retry) hiba: %s' % exc, xbmc.LOGERROR)
+    if relogin and not have_credentials():
+        log('Kijelentkezve, és nincs email/jelszó - frissítsd a böngészős sütiket.',
+            xbmc.LOGWARNING)
+    elif relogin:
         log('Kijelentkezve érzékelve – újrabejelentkezés.')
         if login():
             try:
