@@ -1,3 +1,8 @@
+v0.6.13 (2026-09-24) - PRIVAT / BETA
+- UJ: Napi limit-szamlalo. A data_player.php valaszaban jon a napi limit (X / 200);
+  ezt lejatszaskor amugy is lekerjuk, ezert PLUSZ KERES NELKUL kiolvassuk es mentjuk.
+  Latszik a fomenuben es a szerverlistaban, kulon nezetben a reszletek.
+
 v0.6.12 (2026-09-22) - PRIVÁT / BÉTA
 - NAPI LIMIT KIMELESE. A magyaranime napi videó-lejátszási limitet szamol (pl. 200/nap,
   vagy az elso idoszakban oránként 5), es minden data_player.php hivas beleszamithat.

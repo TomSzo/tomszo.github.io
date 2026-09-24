@@ -28,7 +28,7 @@ v1.0.0 (2026-09-21) - PRIVÁT
     </extension>
 </addon>
 
-<addon id="plugin.video.magyaranime" name="MagyarAnime (privát)" version="0.6.12" provider-name="TomSzo">
+<addon id="plugin.video.magyaranime" name="MagyarAnime (privát)" version="0.6.13" provider-name="TomSzo">
     <requires>
         <import addon="xbmc.python" version="3.0.0"/>
         <import addon="script.module.requests" version="2.22.0"/>
@@ -46,118 +46,154 @@ v1.0.0 (2026-09-21) - PRIVÁT
         <platform>all</platform>
         <license>GPL-3.0-or-later</license>
         <news>
+v0.6.13 (2026-09-24) - PRIVAT / BETA
+- UJ: Napi limit-szamlalo. A magyaranime a data_player.php valaszaban visszaadja a napi
+  limitet ('X / 200'); ezt a hivast lejatszaskor amugy is megtesszuk, ezert PLUSZ KERES
+  NELKUL kiolvassuk. A fomenuben es a szerverlistaban is latszik (Napi limit: X/200),
+  es kulon nezetben a reszletek. Lejatszaskor/szerverlista-nyitaskor frissul.
+
 v0.6.12 (2026-09-22) - PRIVÁT / BÉTA
-- Napi limit kimelese: a szerverlista mostantol csak 1 data_player.php hivast tesz (2-7 helyett),
-  a tobbi szervert a 'servers' tombbol listazza; limit eseten a lejatszas azonnal megall + uzenet.
-  (A napi limit az OLDAL korlatja a fiokodra, naponta nullazodik - nem addon-hiba.)
+- NAPI LIMIT KIMELESE. A magyaranime napi videó-lejátszási limitet szamol (pl. 200/nap),
+  es minden data_player.php hivas beleszamit. A szerverlista mostantol MINDOSSZE 1 ilyen
+  hivast tesz (korabban 2-7-et!), a tobbi szervert a valasz 'servers' tombjebol listazza,
+  kulon lekérés nelkul. Limit eseten a lejátszas AZONNAL megall (nem probalja vegig az
+  osszes szervert), es ertheto uzenetet ad. Igy sokkal lassabban fogy a napi keret.
+- Megj.: a napi limit az OLDAL sajat korlatja (a fiokodra), naponta nullazodik - nem az
+  addon hibaja. A GY.I.K.-ben olvashato a reszletekrol.
 
 v0.6.11 (2026-09-22) - PRIVÁT / BÉTA
-- Felbontas + kevesebb duplikatum: a valos szerverek es a minoseg a data_player 'servers'
-  tombjebol (hq720->720p, hq1080->1080p); a forrasok mellett [720p]/[1080p], nincs tobb
-  azonos "Közvetlen (MP4)". DIAG naplozas kivéve.
+- FELBONTAS + kevesebb duplikatum. A valos szervereket es a minoseget mostantol a
+  data_player.php 'servers' tombjebol vesszuk (pl. hq720 -> 720p, hq1080 -> 1080p), nem
+  vakon tapogatva s1..s6-ot. Igy a forrasok mellett ott a felbontas ([720p]/[1080p]/...),
+  es megszunik a tobb azonos "Közvetlen (MP4)" (URL-alapu duplikatum-szures). A DIAG
+  naplozas eltavolitva.
 
 v0.6.10 (2026-09-22) - PRIVÁT / BÉTA
-- Diagnosztika (ideiglenes): a naplo kiirja a data_player.php valaszat (kulcsok/servers/mp4),
-  hogy megtaljuk, hol van a felbontas a kozvetlen MP4-forrasoknal
+- DIAGNOSZTIKA (ideiglenes): a naploba kiirja a data_player.php valaszanak kulcsait, a
+  'servers' tombot es az MP4 URL-t/kimenetet, hogy megtalaljuk, hol van a felbontas-info
+  a kozvetlen (MP4) forrasoknal. A kovetkezo verzio ez alapjan irja majd ki a felbontast.
 
 v0.6.9 (2026-09-22) - PRIVÁT / BÉTA
-- Uj: felbontas a forrasok mellett - HLS-nel az osszes elerheto (pl. [480p/720p/1080p]) a
-  manifestbol, kozvetlen MP4-nel a fajlnevbol; embednel (indavideo/videa) nincs (csak lejatszaskor derul ki)
+- UJ: FELBONTAS a forrasok mellett. A szerver/forras listaban mostantol - ahol kideritheto -
+  ott a felbontas is: HLS-nel az osszes elerheto (pl. [480p/720p/1080p]) a manifestbol,
+  kozvetlen MP4-nel a fajlnevbol. Embed (indavideo/videa) eseten a felbontas csak lejatszaskor
+  derul ki, ezert ott nincs cimke.
 
 v0.6.8 (2026-09-22) - PRIVÁT / BÉTA
-- Uj: anime leirasok ("Ismertető / Információ" gomb az adatlapon belul + info-panel);
-  epizodoknal filler-jeloles (Filler / Half-Filler / Canon), ahol az oldal jelzi
+- UJ: ANIME LEIRASOK. Az adatlapon belul mostantol az elso sor egy "Ismertető / Információ"
+  gomb, ami megnyitja az anime ismertetojet + fobb adatait (epizodszam, evad, korhatar,
+  MAL/MA ertekeles). A reszek info-paneljen is latszik az ismerteto.
+- EPIZOD-JELOLES: ahol az oldal jelzi, a rész cime mellett megjelenik a tipusa
+  (Filler / Half-Filler / Canon), igy konnyebb kihagyni a fillereket.
 
 v0.6.7 (2026-09-22) - PRIVÁT / BÉTA
-- Nagy epizod-javitas: a rész sorszáma mostantol a CIMBOL jon ("N. rész"), nem a belyegkep
-  nevebol - igy az indavideo-belyegkepes animek reszei is megjelennek (eddig 0/hibas volt)
+- NAGY EPIZOD-JAVITAS. Kiderult, hogy egyes animek belyegkepe indavideo-URL
+  (pics.indavideo.hu/.../5-1.jpg), amiben NINCS epizodszam - ezert a parser 0 reszt talalt,
+  a hezaskitolto uresben porgott, es a lista ures/hibas lett. Mostantol a rész SORSZAMA a
+  CIMBOL jon ("N. rész"), a belyegkep kulon parositva a reszhez. Igy MINDEN anime resze
+  megjelenik, belyegkep-tipustol fuggetlenul. A tiszta AJAX-ablakok az elsodleges forras,
+  ezert idegen ('kapcsolodo') rész sem kerul a listaba.
 
 v0.6.6 (2026-09-22) - PRIVÁT / BÉTA
-- Idegen resz (rovid animek): a tartalek rész-lista mostantol a data-max-ra (vagy az
-  ujrainduló sorszámnál) van vagva, igy pl. a 9 reszes animenel nem lesz 13; belyegkep-regex bovitve
+- IDEGEN RESZ (rovid animek). Nemely animenel az adatlap-parszer semmit sem talal, ezert a
+  tartalek rész-oldal lista fut - ez a sajat reszek UTAN idegen 'kapcsolodo' reszeket is
+  felsorol (pl. 9 reszes anime -> 13). Mostantol a tartalek listat az adatlap data-max
+  ertekere vagjuk, es ha az hianyzik, akkor az ujrainduló rész-sorszámnal (9 -> 1). Igy
+  csak a valodi reszek latszanak. A belyegkep-regex is bovult (data-src ES src).
 
 v0.6.5 (2026-09-22) - PRIVÁT / BÉTA
-- Idegen resz vegleges javitas (2): a sajat mappa-id-t a tiszta AJAX-ablakokbol allapitjuk
-  meg (folder != aid eset is jo); minden resz sorban, idegen resz nelkul
+- IDEGEN RESZ VEGLEGES JAVITAS (2). A belyegkep-mappa id nem mindig egyezik a leiras-id-vel,
+  ezert a korabbi szigoru szures nemely animenel MINDENT kidobott, es a tartalek lista
+  (rendezetlen + idegen 1-4. resz) jelent meg. Mostantol az anime sajat mappa-id-jet a
+  TISZTA AJAX-ablakokbol allapitjuk meg, es arra szurunk. Minden resz sorban, idegen nelkul.
 
 v0.6.4 (2026-09-22) - PRIVÁT / BÉTA
-- Idegen resz vegleges javitas (szigoru belyegkep-mappa szures)
+- Idegen resz vegleges javitas: csak az adott anime sajat belyegkepei szamitanak (leiras/1 kiszurve)
 
 v0.6.3 (2026-09-22) - PRIVÁT / BÉTA
-- Adatlapok: dinamikus szuro-listak (szezon/besorolas/allapot/rendezes/kezdobetu)
+- Adatlapok: dinamikus szuro-listak (Szezon / Besorolas / Allapot / Rendezes / Kezdobetu)
 
 v0.6.2 (2026-09-22) - PRIVÁT / BÉTA
-- Javitva: nincs idegen resz az adatlapon (belyegkep-mappa szures)
+- Javitva: az adatlapon nem jelennek meg idegen anime reszei (bélyegkép-mappa = anime id)
 
 v0.6.1 (2026-09-22) - PRIVÁT / BÉTA
-- Adatlapok bongeszes szurokkel (szezon/osszes/kezdobetu/allapot)
+- Adatlapok bongeszes szurokkel: Aktualis szezon / Osszes (A-Z) / Kezdobetu / allapot
 
 v0.6.0 (2026-09-22) - PRIVÁT / BÉTA
-- Uj "Adatlapok (böngészés)" menupont (katalogus, lapozas)
+- UJ menupont: "Adatlapok (böngészés)" - anime-katalogus boritokeppel es lapozassal
 
 v0.5.5 (2026-09-22) - PRIVÁT / BÉTA
-- "Resz megnyitasa azonositoval" tiszta teljes lista; hibakereso menuk kiveve
+- "Resz megnyitasa azonositoval" a teljes, tiszta adatlap-listat adja (nincs idegen resz)
+- Hibakereso menupontok eltavolitva
 
 v0.5.4 (2026-09-22) - PRIVÁT / BÉTA
-- Teljes reszlista veglegesen (ablak [N-9..N+16], 26-os csempezes)
+- TELJES reszlista veglegesen: az ablak [N-9..N+16], 26-os lepessel hezagmentes csempezes
 
 v0.5.3 (2026-09-22) - PRIVÁT / BÉTA
-- "Adatlap mentése" lapozas-felderites (resz-szamok tobb poziciobol)
+- "Adatlap mentése" bovitve: kiprobal tobb pozíciot es kiirja a resz-szamokat (lapozas felderites)
 
 v0.5.2 (2026-09-22) - PRIVÁT / BÉTA
-- Reszlista lapozas javitva: minden resz osszejon (nincs ido elotti leallas)
+- Reszlista lapozas javitva: mostantol az OSSZES resz osszejon (nincs ido elotti leallas)
 
 v0.5.1 (2026-09-22) - PRIVÁT / BÉTA
-- Ekezetek javitva (kenyszeritett UTF-8): a cimek helyesen jelennek meg
+- Ekezetek javitva (UTF-8): a cimek helyesen jelennek meg (pl. "rész" nem "r√©sz")
 
 v0.5.0 (2026-09-22) - PRIVÁT / BÉTA
-- Teljes reszlista hosszu animeknel (adatlap-ablak vegiglapozasa)
+- TELJES reszlista: a hosszu animek osszes resze megjelenik (adatlap-ablak vegiglapozasa)
 
 v0.4.2 (2026-09-22) - PRIVÁT / BÉTA
-- "Adatlap mentése" gomb a hosszu animek reszlapozasahoz (hibakereses)
+- Lejatszas MUKODIK (indavideo/videa ResolveURL-lel es kozvetlen MP4)
+- Uj "Adatlap mentése" gomb: a hosszu animek reszlapozasanak hibakeresehez
 
 v0.4.1 (2026-09-22) - PRIVÁT / BÉTA
-- Kereses: AJAX-fejlecek a data_search.php-hoz + diagnosztika
+- Kereses: AJAX-fejlecek (X-Requested-With) a data_search.php-hoz + diagnosztika
 
 v0.4.0 (2026-09-22) - PRIVÁT / BÉTA
-- Kereses javitva: anime-index alapu (mint az oldal fejlec-keresoje), boritokeppel
+- KERESES JAVITVA: az anime-indexbol (data_search.php) szur, mint az oldal fejlec-keresoje
+- Talalatok boritokeppel; nev/japan/szinonim/egyeb cimre is keres
 
 v0.3.0 (2026-09-22) - PRIVÁT / BÉTA
-- Reszenkent szerverlista (forrasvalasztas): indavideo/videa/mega/stb.
+- Reszenkent szerverlista: az epizodra kattintva megjelennek a forrasok (indavideo,
+  videa, mega, stb.), sajat magad valaszthatsz; a mega jelolve "nem tamogatott"
 
 v0.2.0 (2026-09-22) - PRIVÁT / BÉTA
-- indavideo/videa lejatszas ResolveURL-lel; mega.nz-nel ertheto uzenet
+- Lejatszas: indavideo/videa/stb. mukodik ResolveURL-lel; mega.nz-nel ertheto uzenet
+- (ResolveURL-ben nincs ingyenes mega.nz feloldo)
 
 v0.1.9 (2026-09-21) - PRIVÁT / BÉTA
-- Keres0 hibakereses: a betolt0 JS-t is menti a dump
+- A keres0 DataTables/AJAX-alapu; a "Keresés HTML mentése" most a betolto JS-t is menti
 
 v0.1.8 (2026-09-21) - PRIVÁT / BÉTA
-- Uj "Keresés HTML mentése" gomb hibakeresehez (talalat-olvaso javitasahoz)
+- Uj "Keresés HTML mentése" gomb: a talalati oldal HTML-jet fajlba menti hibakeresehez
+- (A keres0 jelenleg csak a "Random anime" gombot fogja el; ezzel javitjuk)
 
 v0.1.7 (2026-09-21) - PRIVÁT / BÉTA
-- Lejatszas: indavideo/videa feloldas ResolveURL modullal (ha telepitve)
+- Lejatszas: indavideo/videa feloldas ResolveURL/URLResolver modullal (ha telepitve)
+- Sajat indavideo-ut megmarad; hiba eseten naplozza a valaszt
 - Kapcsolat teszt kiirja, van-e feloldo modul
 
 v0.1.6 (2026-09-21) - PRIVÁT / BÉTA
-- Alap User-Agent: Android 16 / Firefox 156
+- Alap User-Agent frissítve: Android 16 / Firefox 156
 
 v0.1.5 (2026-09-21) - PRIVÁT / BÉTA
-- Állítható User-Agent (session-védelem miatt)
-- Kapcsolat teszt kiírja a User-Agentet
+- Állítható User-Agent: a bejelentkezett böngésző azonosítóját küldi (session-védelem)
+- A Kapcsolat teszt kiírja a használt User-Agentet
+- Megj.: a magyaranime a munkamenetet eszközhöz/IP-hez kötheti; lásd changelog
 
 v0.1.4 (2026-09-21) - PRIVÁT / BÉTA
-- Beépített "Kapcsolat teszt": cookie + bejelentkezés ellenőrzés
-- Javítva: fájl-alapú cookie téves figyelmeztetése
+- Beépített "Kapcsolat teszt": megmutatja betöltött-e a cookie és be vagy-e jelentkezve
+- Javítva: fájl-alapú cookie esetén nincs téves "nincs cookie" figyelmeztetés
+- Megbízhatóbb bejelentkezés-érzékelés
 
 v0.1.3 (2026-09-21) - PRIVÁT / BÉTA
 - Cookie fájlból is betölthető (nincs gépelés): Cookie-Editor Export, cookies.txt vagy name=value
 - Fix hely is: special://profile/addon_data/plugin.video.magyaranime/cookie.txt
 
 v0.1.2 (2026-09-21) - PRIVÁT / BÉTA
-- Beállítások javítva: a Cookie-mező most helyesen megjelenik
+- Beállítások javítva: a Cookie-mező most helyesen megjelenik (régi formátum)
 
 v0.1.1 (2026-09-21) - PRIVÁT / BÉTA
-- Adatlap-böngészés bélyegképekkel (/leiras/{aid}/)
+- Adatlap-böngészés: részek közvetlenül a /leiras/{aid}/ oldalról, bélyegképekkel
 
 v0.1.0 (2026-09-21) - PRIVÁT / BÉTA
 - Kezdeti kiadás: cookie-alapú belépés, keresés, epizódlista

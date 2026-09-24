@@ -578,16 +578,83 @@ def _unescape_url(u):
     return (u or '').replace('\\/', '/').replace('&amp;', '&')
 
 
+# ---------------------------------------------------------------------------
+# Napi limit-számláló  (az oldal a data_player.php válaszában adja 'daily_limit'-ként;
+# ezt a hívást lejátszáskor amúgy is megtesszük -> NINCS plusz kérés)
+# ---------------------------------------------------------------------------
+_TAG_RE = re.compile(r'<[^>]+>')
+
+
+def _clean_daily_limit(html):
+    """A daily_limit HTML-jéből egyszerű szöveg (pl. '134 / 200')."""
+    t = _TAG_RE.sub(' ', html or '')
+    for a, b in (('&nbsp;', ' '), ('&amp;', '&'), ('&lt;', '<'), ('&gt;', '>')):
+        t = t.replace(a, b)
+    return re.sub(r'\s+', ' ', t).strip()
+
+
+def _daily_limit_path():
+    prof = ADDON.getAddonInfo('profile')
+    try:
+        if not xbmcvfs.exists(prof):
+            xbmcvfs.mkdirs(prof)
+    except Exception:  # noqa
+        pass
+    return prof.rstrip('/') + '/daily_limit.json'
+
+
+def save_daily_limit(text):
+    if not text:
+        return
+    import time as _time
+    import datetime
+    try:
+        payload = json.dumps({'text': text,
+                              'date': datetime.date.today().isoformat(),
+                              'ts': int(_time.time())})
+        f = xbmcvfs.File(_daily_limit_path(), 'w')
+        try:
+            f.write(payload)
+        finally:
+            f.close()
+    except Exception as exc:  # noqa
+        log('napi limit mentés hiba: %s' % exc, xbmc.LOGWARNING)
+
+
+def load_daily_limit():
+    """Visszaad: {'text','date','ts'} vagy None."""
+    try:
+        p = _daily_limit_path()
+        if not xbmcvfs.exists(p):
+            return None
+        f = xbmcvfs.File(p)
+        try:
+            raw = f.read()
+        finally:
+            f.close()
+        return json.loads(raw) if raw else None
+    except Exception:  # noqa
+        return None
+
+
 def player_data(server, vid, csrf, referer):
     txt = post('data/lejatszo/data_player.php',
                {'server': server, 'vid': vid, 'csrf_token': csrf}, referer=referer)
     if not txt:
         return None
     try:
-        return json.loads(txt)
+        data = json.loads(txt)
     except ValueError:
         log('data_player.php nem JSON (részlet): %s' % txt[:300], xbmc.LOGWARNING)
         return None
+    # Napi limit kiolvasása és mentése (a lejátszó dobozban látható 'X / 200').
+    dl = data.get('daily_limit')
+    if dl:
+        clean = _clean_daily_limit(dl)
+        if clean:
+            save_daily_limit(clean)
+            log('Napi limit: %s' % clean)
+    return data
 
 
 def _extract_from_output(output):

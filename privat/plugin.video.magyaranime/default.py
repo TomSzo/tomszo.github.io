@@ -58,10 +58,40 @@ def _cookie_ok():
 
 
 # --------------------------------------------------------------------------
+def _daily_limit_label():
+    import datetime
+    dl = ma.load_daily_limit()
+    if not dl or not dl.get('text'):
+        return '[COLOR grey]📊 Napi limit: — (lejátszás után frissül)[/COLOR]'
+    if dl.get('date') == datetime.date.today().isoformat():
+        return '[COLOR yellow]📊 Napi limit: %s[/COLOR]' % dl['text']
+    return '[COLOR grey]📊 Napi limit: %s (korábbi nap)[/COLOR]' % dl['text']
+
+
+def view_dailylimit():
+    import datetime
+    dl = ma.load_daily_limit()
+    if not dl or not dl.get('text'):
+        msg = ('Még nincs adat.\n\nA napi limit lejátszáskor (szerverlista megnyitása / '
+               'indítás) frissül automatikusan, PLUSZ KÉRÉS NÉLKÜL – nyiss meg egy részt, '
+               'és utána itt látszik.')
+    else:
+        stale = '' if dl.get('date') == datetime.date.today().isoformat() else '   (korábbi nap!)'
+        msg = ('A magyaranime.eu napi videó-limitje (a fiókodon):\n\n'
+               '        %s%s\n\n'
+               'Utoljára frissítve: %s\n\n'
+               'A limit naponta nullázódik. Minden lejátszás (szerver-lekérés) 1-et fogyaszt '
+               'belőle. Ez az OLDAL korlátja a fiókra, nem addon-hiba.'
+               % (dl['text'], stale, dl.get('date', '?')))
+    xbmcgui.Dialog().textviewer(ADDON.getAddonInfo('name') + ' – Napi limit', msg)
+    end('files')
+
+
 def view_root():
     if not _cookie_ok():
         add_dir('[COLOR red]! Nincs cookie beállítva – kattints a beállításokhoz[/COLOR]',
                 build_url(action='opensettings'), folder=False)
+    add_dir(_daily_limit_label(), build_url(action='dailylimit'), folder=False)
     add_dir('Keresés', build_url(action='search'))
     add_dir('Adatlapok (böngészés)', build_url(action='catmenu'))
     add_dir('Rész megnyitása azonosítóval', build_url(action='byid'))
@@ -194,6 +224,8 @@ def view_animeinfo(aid):
 
 def view_servers(vid):
     servers = ma.list_servers(vid)
+    # A list_servers épp lekérte a data_player.php-t -> a napi limit friss.
+    add_dir(_daily_limit_label(), build_url(action='dailylimit'), folder=False)
     if not servers:
         notify('Nincs elérhető szerver / forrás')
     for s in servers:
@@ -290,6 +322,8 @@ def router(qs):
         view_byid()
     elif action == 'diag':
         view_diag()
+    elif action == 'dailylimit':
+        view_dailylimit()
     elif action == 'play':
         play(p['vid'], p.get('server'))
     elif action == 'opensettings':
