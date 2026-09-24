@@ -8,16 +8,17 @@ Belépés (Laravel):
     (XSRF-TOKEN + session), lemezre mentve.
 
 Lejátszás (a böngészős HAR alapján):
-    A /sport/details/<slug> oldalon a THEOplayer egy Uplynk DASH manifestet tölt be:
+    A /sport/watch/<slug> oldalon a THEOplayer egy Uplynk DASH manifestet tölt be:
         https://content.uplynk.com/<cid>.mpd?tc=1&exp=...&...&sig=...
     Az URL szerveroldalon aláírt és kb. 1 óráig érvényes (exp), ezért MINDIG lejátszáskor
     kérjük le frissen. Widevine licenc: Uplynk (alapértelmezés https://content.uplynk.com/wv),
     a Kodi inputstream.adaptive + a készülék hivatalos Widevine CDM-je végzi.
     (A license.theoplayer.com hívás csak a THEOplayer saját lejátszó-licence, nem DRM.)
 
-    Hogy az aláírt .mpd URL pontosan honnan jön (a details oldal HTML-je vagy egy XHR, pl.
-    /user-session), a HAR-ból nem derült ki - ezért mindkét helyen keressük, és ha nem
-    találjuk, a letöltött oldalt elmentjük az addon_data mappába hibakereséshez.
+    Az aláírt .mpd URL és a licenc URL közvetlenül a watch oldal HTML-jében van
+    (player.source / chromecastSource: contentProtection.widevine.licenseAcquisitionURL).
+    Tartalékként a /user-session-t és a lapon hivatkozott API-kat is átnézzük; ha semmi,
+    a letöltött oldalt elmentjük az addon_data mappába hibakereséshez.
 """
 import json
 import os
@@ -499,7 +500,7 @@ _ENT = (('&amp;', '&'), ('&#039;', "'"), ('&#39;', "'"), ('&quot;', '"'),
         ('&nbsp;', ' '), ('&lt;', '<'), ('&gt;', '>'), ('&aacute;', 'á'),
         ('&eacute;', 'é'), ('&ouml;', 'ö'), ('&uuml;', 'ü'), ('&oacute;', 'ó'),
         ('&uacute;', 'ú'), ('&iacute;', 'í'), ('&odblac;', 'ő'), ('&udblac;', 'ű'),
-        ('&#x2F;', '/'), ('&#47;', '/'))
+        ('&ndash;', '–'), ('&mdash;', '—'), ('&#x2F;', '/'), ('&#47;', '/'))
 
 
 def _unent(t):
@@ -564,39 +565,57 @@ def save_debug(name, text):
 
 
 # ---------------------------------------------------------------------------
-# Sport lista
+# Sport: kategóriák -> gyűjtemények -> adások
+#   /sport/collections                     (sport-cat blokkok, league-card linkek)
+#   /sport/collection/details/<slug>       (egy gyűjtemény adásai)
+#   /sport/watch/<slug>                    (lejátszó oldal)
 # ---------------------------------------------------------------------------
-_DETAILS_RE = re.compile(r'(?:https?://[^"\'\s<>]*?)?/sport/details/([A-Za-z0-9._~%-]+)')
+_SLUG = r'([A-Za-z0-9._~%-]+)'
+KIND_COLLECTION = 'sport/collection/details/'
+KIND_WATCH = 'sport/watch/'
 
 
-def parse_details_links(html):
-    """A /sport/details/<slug> linkek kigyűjtése címmel és képpel.
+def _link_re(kind):
+    return re.compile(r'(?:https?://[^"\'\s<>]*?)?/' + re.escape(kind) + _SLUG)
+
+
+def parse_links(html, kind=KIND_WATCH):
+    """A <kind><slug> linkek kigyűjtése címmel és képpel.
     Visszaad: [{'slug', 'title', 'art'}], oldal-sorrendben, egyedi slug-okkal."""
     out, seen = [], {}
     text = html or ''
-    # 1) <a href=".../sport/details/slug"> ... </a> blokkok
-    for m in re.finditer(r'<a\b([^>]*href\s*=\s*["\'][^"\']*/sport/details/[^"\']+["\'][^>]*)>'
-                         r'(.*?)</a>', text, re.DOTALL | re.I):
-        attrs, inner = m.group(1), m.group(2)
-        sm = _DETAILS_RE.search(_attr(attrs, 'href'))
+    lre = _link_re(kind)
+    for m in re.finditer(r'<a\b([^>]*href\s*=\s*["\'][^"\']*/' + re.escape(kind) +
+                         r'[^"\']+["\'][^>]*)>(.*?)</a>(?=(.{0,600}))', text, re.DOTALL | re.I):
+        attrs, inner, after = m.group(1), m.group(2), m.group(3)
+        sm = lre.search(_attr(attrs, 'href'))
         if not sm:
             continue
-        slug = sm.group(1)
+        # a league-card neve az <a> UTÁN áll: <div class="league-card__name">NFL</div>
+        nm = re.search(r'^\s*(?:<[^a][^>]*>\s*)*?<div class="[^"]*__name">(.*?)</div>',
+                       after, re.DOTALL)
         title = (_unent(_attr(attrs, 'title')) or _unent(_attr(attrs, 'aria-label'))
-                 or _heading(inner) or _unent(_attr(inner, 'alt')) or _txt(inner))
+                 or _heading(inner) or _named(inner) or (_txt(nm.group(1)) if nm else '')
+                 or _unent(_attr(inner, 'alt')) or _txt(inner))
         img = (_attr(inner, 'src') or _attr(inner, 'data-src')
                or _first_srcset(_attr(inner, 'srcset')))
         m2 = re.search(r'background-image\s*:\s*url\(([^)]+)\)', inner + attrs, re.I)
         if not img and m2:
             img = m2.group(1).strip('\'" ')
-        _merge(out, seen, slug, title, img)
-    # 2) JSON/JS-be ágyazott linkek (pl. Inertia/Livewire adatok)
-    for m in _DETAILS_RE.finditer(_unescape_js(text)):
+        _merge(out, seen, sm.group(1), title, img)
+    # JSON/JS-be ágyazott linkek (Alpine/Livewire adatok)
+    for m in lre.finditer(_unescape_js(text)):
         _merge(out, seen, m.group(1), '', '')
     for it in out:
         if not it['title']:
             it['title'] = _pretty_slug(it['slug'])
     return out
+
+
+def _named(inner):
+    """Kártya-cím a szokásos BEM-osztályokból (…__name / …__title)."""
+    m = re.search(r'class="[^"]*__(?:name|title)[^"]*"[^>]*>(.*?)</', inner or '', re.DOTALL)
+    return _txt(m.group(1)) if m else ''
 
 
 def _heading(inner):
@@ -624,9 +643,52 @@ def _merge(out, seen, slug, title, img):
     out.append(it)
 
 
-def sport_list(path='sport'):
+def parse_categories(html):
+    """A /sport/collections oldal blokkjai: [(cím, [gyűjtemények])].
+    'Kiemelt sportok' + minden <div class="sport-cat" aria-label="..."> blokk."""
+    text = html or ''
+    cats = []
+    heads = [(m.start(), _txt(m.group(1)))
+             for m in re.finditer(r'<h3 class="sport-cat__title">(.*?)<span', text, re.DOTALL)]
+    feat = re.search(r'<h2 class="section-title">\s*Kiemelt[^<]*</h2>', text)
+    allh = re.search(r'<h2 class="section-title">\s*Összes[^<]*</h2>', text)
+    if feat:
+        end = allh.start() if allh and allh.start() > feat.end() else (
+            heads[0][0] if heads else len(text))
+        items = parse_links(text[feat.end():end], KIND_COLLECTION)
+        if items:
+            cats.append((_txt(feat.group(0)), items))
+    for i, (pos, name) in enumerate(heads):
+        end = heads[i + 1][0] if i + 1 < len(heads) else len(text)
+        items = parse_links(text[pos:end], KIND_COLLECTION)
+        if items:
+            cats.append((name, items))
+    return cats
+
+
+def collections_page():
+    html = get('sport/collections')
+    cats = parse_categories(html)
+    if not cats and html:
+        save_debug('list_sport_collections.html', html)
+    return cats
+
+
+def collection_items(slug):
+    """Egy gyűjtemény oldala: (adások [watch], al-gyűjtemények)."""
+    path = KIND_COLLECTION + slug
     html = get(path)
-    items = parse_details_links(html)
+    watch = parse_links(html, KIND_WATCH)
+    subs = [c for c in parse_links(html, KIND_COLLECTION) if c['slug'] != slug]
+    if not watch and html:
+        save_debug('collection_%s.html' % slug, html)
+    return watch, subs
+
+
+def page_items(path):
+    """Tetszőleges oldal (pl. /sport/epg, /sport) watch-linkjei."""
+    html = get(path)
+    items = parse_links(html, KIND_WATCH)
     if not items and html:
         save_debug('list_%s.html' % path.strip('/').replace('/', '_'), html)
     return items
@@ -640,6 +702,8 @@ _MPD_RE = re.compile(r'https?://' + _URL_CHARS + r'+?\.mpd(?:\?' + _URL_CHARS + 
 _M3U8_RE = re.compile(r'https?://' + _URL_CHARS + r'+?\.m3u8(?:\?' + _URL_CHARS + r'*)?', re.I)
 _LIC_RE = re.compile(r'https?://' + _URL_CHARS + r'*(?:widevine|/wv(?=[/?"\']|$)|'
                      r'license|licence|drm)' + _URL_CHARS + r'*', re.I)
+_WV_RE = re.compile(r'widevine["\']?\s*:\s*\{[^}]*?licenseAcquisitionURL["\']?\s*:\s*'
+                    r'["\'](https?://[^"\']+)["\']', re.I)
 _CID_RE = re.compile(r'["\']?(?:cid|uplynk_?cid|embed_?code|asset_?id)["\']?\s*[:=]\s*'
                      r'["\']([0-9a-f]{32})["\']', re.I)
 
@@ -653,6 +717,9 @@ def find_streams(text):
     lic = [u for u in _uniq(_LIC_RE.findall(t))
            if 'theoplayer.com' not in u and not re.search(r'\.(?:js|css|png|jpe?g|svg|mpd|m3u8)(?:\?|$)', u)]
     cid = _uniq(_CID_RE.findall(t))
+    # THEOplayer: contentProtection: { widevine: { licenseAcquisitionURL: "..." } }
+    wv = _uniq(_WV_RE.findall(t))
+    lic = wv + [u for u in lic if u not in wv]
     key = lambda u: (0 if 'uplynk.com' in u else 1)
     return {'mpd': sorted(mpd, key=key), 'hls': sorted(hls, key=key),
             'license': lic, 'cid': cid}
@@ -682,15 +749,25 @@ def _api_candidates(html):
 
 
 def details_title(html):
+    """Cím: a chromecastSource metadata.title (a <title> csak 'Network4 Online')."""
+    m = re.search(r'metadata\s*:\s*\{\s*title\s*:\s*"((?:[^"\\]|\\.)*)"', html or '')
+    if m:
+        return _unescape_js(m.group(1)).strip()
     m = (re.search(r'<meta\s+property=["\']og:title["\']\s+content=["\']([^"\']+)', html or '')
          or re.search(r'<title>(.*?)</title>', html or '', re.DOTALL | re.I))
     t = _txt(m.group(1)) if m else ''
-    return re.sub(r'\s*[|\-–]\s*Network4.*$', '', t, flags=re.I).strip()
+    t = re.sub(r'\s*[|\-–]?\s*Network4( Online)?.*$', '', t, flags=re.I).strip()
+    return t
 
 
 def details_poster(html):
+    m = (re.search(r'player\.poster\s*=\s*"([^"]+)"', html or '')
+         or re.search(r'\bposter\s*:\s*"([^"]+)"', html or ''))
+    if m:
+        return _abs(_unescape_js(m.group(1)))
     m = re.search(r'<meta\s+property=["\']og:image["\']\s+content=["\']([^"\']+)', html or '')
-    return _abs(_unent(m.group(1))) if m else None
+    u = _abs(_unent(m.group(1))) if m else None
+    return None if (u and 'marshmallow.dev' in u) else u
 
 
 def resolve(slug_or_url):
@@ -700,14 +777,16 @@ def resolve(slug_or_url):
     s = (slug_or_url or '').strip()
     if s.startswith('http'):
         page_url = s
+    elif '/' in s.strip('/'):
+        page_url = urljoin(base_url(), s.lstrip('/'))
     else:
-        page_url = urljoin(base_url(), 'sport/details/' + s.strip('/').split('/')[-1])
+        page_url = urljoin(base_url(), KIND_WATCH + s)
     slug = page_url.rstrip('/').split('/')[-1]
     html = get(page_url)
     if not html:
         return {'error': 'Az oldal nem töltődött be.'}
     if not logged_in(html):
-        p = save_debug('details_%s.html' % slug, html)
+        p = save_debug('watch_%s.html' % slug, html)
         return {'error': 'Nincs bejelentkezve (email/jelszó?).', 'debug': p}
     found = find_streams(html)
     sources = ['details HTML']
@@ -727,7 +806,7 @@ def resolve(slug_or_url):
                 if found['mpd'] or found['hls']:
                     break
         if not found['mpd'] and not found['hls']:
-            p = save_debug('details_%s.html' % slug, html)
+            p = save_debug('watch_%s.html' % slug, html)
             if us_raw:
                 save_debug('user-session_%s.json' % slug, us_raw)
             log('Nincs manifest. Átnézett források: %s; cid: %s'
@@ -743,7 +822,7 @@ def resolve(slug_or_url):
     if not lic and 'uplynk.com' in manifest:
         lic = DEFAULT_LICENSE
     if ADDON.getSetting('debug') == 'true':
-        save_debug('details_%s.html' % slug, html)
+        save_debug('watch_%s.html' % slug, html)
     log('Manifest (%s): %s | licenc: %s' % (mtype, manifest, lic or '-'))
     return {'manifest': manifest, 'type': mtype, 'license': lic,
             'title': details_title(html) or _pretty_slug(slug),
