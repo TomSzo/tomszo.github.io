@@ -211,14 +211,114 @@ def _find_login_form(html):
     return None
 
 
+# ---------------------------------------------------------------------------
+# Hitelesítő adatok: beállítás VAGY txt-fájl (nincs gépelés)
+# ---------------------------------------------------------------------------
+def _read_file(path):
+    try:
+        if path and xbmcvfs.exists(path):
+            fh = xbmcvfs.File(path)
+            try:
+                return fh.read()
+            finally:
+                fh.close()
+    except Exception as exc:  # noqa
+        log('fájl olvasási hiba (%s): %s' % (path, exc), xbmc.LOGWARNING)
+    return ''
+
+
+_CRED_KEY_RE = re.compile(
+    r'\s*(email|username|user|felhasznalonev|felhasznalo|password|jelszo|pass|pw)\s*[:=]\s*(.+?)\s*$',
+    re.IGNORECASE)
+
+
+def _parse_creds(text):
+    """Rugalmas email/jelszó kinyerés txt-ből. Visszaad: (email, jelszó) vagy ('','')."""
+    text = (text or '').strip()
+    if not text:
+        return '', ''
+    # 1) JSON: {"email":..,"password":..} vagy {"username":..}
+    if text[:1] in '{[':
+        try:
+            d = json.loads(text)
+            if isinstance(d, list) and d:
+                d = d[0]
+            if isinstance(d, dict):
+                e = d.get('email') or d.get('username') or d.get('user') or ''
+                p = d.get('password') or d.get('pass') or d.get('pw') or ''
+                if e and p:
+                    return str(e).strip(), str(p)
+        except Exception:  # noqa
+            pass
+    lines = [l for l in re.split(r'[\r\n]+', text) if l.strip()]
+    # 2) kulcs=érték sorok (email=.., password=..)
+    kv = {}
+    for line in lines:
+        m = _CRED_KEY_RE.match(line)
+        if m:
+            kv[m.group(1).lower()] = m.group(2)
+    if kv:
+        e = (kv.get('email') or kv.get('username') or kv.get('user')
+             or kv.get('felhasznalonev') or kv.get('felhasznalo') or '')
+        p = (kv.get('password') or kv.get('jelszo') or kv.get('pass') or kv.get('pw') or '')
+        if e and p:
+            return e.strip(), p
+    # 3) egyetlen sor "email<elválasztó>jelszó"
+    if len(lines) == 1:
+        for sep in (':', '|', ';', ',', '\t'):
+            if sep in lines[0]:
+                a, _, b = lines[0].partition(sep)
+                if a.strip() and b.strip():
+                    return a.strip(), b.strip()
+    # 4) két sor: első = email, második = jelszó
+    if len(lines) >= 2:
+        return lines[0].strip(), lines[1].strip()
+    return '', ''
+
+
+def _cred_fixed_path():
+    return xbmcvfs.translatePath('special://profile/addon_data/%s/login.txt' % ADDON_ID)
+
+
+def _credentials():
+    """(email, jelszó) - előbb a beállítás-mezők, aztán a megadott txt, végül a fix login.txt."""
+    email = (ADDON.getSetting('email') or '').strip()
+    pw = (ADDON.getSetting('password') or '')
+    if email and pw:
+        return email, pw
+    for path in [(ADDON.getSetting('cred_file') or '').strip(), _cred_fixed_path()]:
+        data = _read_file(path)
+        if data:
+            e, p = _parse_creds(data)
+            if e and p:
+                return e, p
+    return email, pw
+
+
+def have_credentials():
+    e, p = _credentials()
+    return bool(e and p)
+
+
+def cred_source():
+    """Diagnosztika: honnan jön a belépés ('beállítás' / 'fájl: ...' / 'nincs')."""
+    if (ADDON.getSetting('email') or '').strip() and (ADDON.getSetting('password') or ''):
+        return 'beállítás-mezők'
+    cf = (ADDON.getSetting('cred_file') or '').strip()
+    if cf and _parse_creds(_read_file(cf))[0]:
+        return 'fájl: %s' % cf
+    if _parse_creds(_read_file(_cred_fixed_path()))[0]:
+        return 'fix fájl (login.txt)'
+    return 'nincs'
+
+
 def login():
     """Auto-bejelentkezés email+jelszóval a /login űrlapon. Visszaad: sikeres?"""
     if not _SESSION:
         return False
-    email = (ADDON.getSetting('email') or '').strip()
-    pw = (ADDON.getSetting('password') or '')
+    email, pw = _credentials()
     if not email or not pw:
-        log('Nincs email/jelszó a beállításokban.', xbmc.LOGWARNING)
+        log('Nincs email/jelszó (sem beállítás, sem txt).', xbmc.LOGWARNING)
         return False
     login_url = urljoin(base_url(), 'login')
     try:

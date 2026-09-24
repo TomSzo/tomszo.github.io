@@ -58,8 +58,7 @@ def notify(msg, t=5000):
 
 
 def _creds_ok():
-    return bool((ADDON.getSetting('email') or '').strip()
-                and (ADDON.getSetting('password') or ''))
+    return mtk.have_credentials()
 
 
 # --------------------------------------------------------------------------
@@ -78,7 +77,8 @@ def view_root():
 def view_diag():
     ok, name, length = mtk.check_login()
     lines = ['Alap URL: %s' % mtk.base_url(),
-             'Email megadva: %s' % ('igen' if _creds_ok() else 'NEM'),
+             'Belépési adat forrása: %s' % mtk.cred_source(),
+             'Email/jelszó megadva: %s' % ('igen' if _creds_ok() else 'NEM'),
              'Főoldal betöltve: %d byte' % length,
              'Bejelentkezve: %s' % ('IGEN' if ok else 'NEM'),
              'Felhasználó: %s' % (name or '—'),
