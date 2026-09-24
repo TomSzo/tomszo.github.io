@@ -1,0 +1,20 @@
+<settings>
+	<category label="Belépés">
+		<setting id="email" type="text" label="Email cím" default="" />
+		<setting id="password" type="text" label="Jelszó" option="hidden" default="" />
+		<setting id="cred_file" type="file" label="VAGY email/jelszó txt fájl (nincs gépelés)" default="" />
+		<setting type="action" label="Munkamenet törlése (újra bejelentkezés)"
+		         action="RunPlugin(plugin://plugin.video.network4/?action=clearsession)" />
+		<setting id="base_url" type="text" label="Alap URL (csak domainváltáskor)"
+		         default="https://www.network4.hu/" />
+		<setting id="user_agent" type="text" label="Böngésző User-Agent"
+		         default="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/131.0.0.0 Safari/537.36" />
+	</category>
+	<category label="Lejátszás">
+		<setting id="license_url" type="text" label="Widevine licenc URL (üres = automatikus / Uplynk)" default="" />
+		<setting id="last_slug" type="text" label="Utoljára megnyitott link/slug" default="" />
+	</category>
+	<category label="Egyéb">
+		<setting id="debug" type="bool" label="Hibakeresés: minden details oldal mentése" default="false" />
+	</category>
+</settings>

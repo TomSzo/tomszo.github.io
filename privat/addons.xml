@@ -317,4 +317,39 @@ v0.1.0 (2026-09-24) - PRIVAT / BETA
     </extension>
 </addon>
 
+<addon id="plugin.video.network4" name="Network4 (privát)" version="0.1.0" provider-name="TomSzo">
+    <requires>
+        <import addon="xbmc.python" version="3.0.0"/>
+        <import addon="script.module.requests" version="2.22.0"/>
+        <import addon="inputstream.adaptive" version="2.6.0"/>
+        <import addon="script.module.inputstreamhelper" version="0.5.0" optional="true"/>
+    </requires>
+    <extension point="xbmc.python.pluginsource" library="default.py">
+        <provides>video</provides>
+    </extension>
+    <extension point="xbmc.addon.metadata">
+        <summary lang="hu">Network4 (network4.hu) – privát, a saját előfizetéssel, Widevine DRM-mel</summary>
+        <description lang="hu">Privát, magánhasználatú videó addon a network4.hu-hoz, KIZÁRÓLAG a tulajdonos saját előfizetésével. A beállításokban megadott email/jelszóval (vagy txt-fájlból) a /login űrlapon automatikusan belép, listázza a sport tartalmakat, és a /sport/details oldal Uplynk DASH manifestjét az inputstream.adaptive-val, a készülék hivatalos Widevine CDM-jével játssza le. Magánhasználat, saját felelősségre.</description>
+        <disclaimer lang="hu">Privát, magánhasználatú kiegészítő. Csak a tulajdonos saját előfizetésével működik.</disclaimer>
+        <language>hu</language>
+        <platform>all</platform>
+        <license>GPL-3.0-or-later</license>
+        <news>
+v0.1.0 (2026-09-25) - PRIVAT / BETA
+- Kezdeti kiadas a network4.hu-hoz (sajat elofizetes).
+- Email/jelszo auto-belepes: GET /login (_token) -> POST /login (_token, email, password,
+  remember), munkamenet-sutik lemezre mentve; txt-fajlbol is megadhato (login.txt).
+- Sport lista a /sport oldal /sport/details/&lt;slug&gt; linkjeibol; link/slug kezi megnyitasa.
+- Lejatszas: a details oldal (vagy /user-session) alairt Uplynk .mpd URL-je, mindig frissen
+  (kb. 1 oraig ervenyes), inputstream.adaptive + Widevine (licenc: content.uplynk.com/wv,
+  a beallitasokban felulirhato). IA 21.4.4+ eseten drm_legacy, regebbin license_key.
+- Hibakereses: ha nincs manifest/belepes, az oldal az addon_data/.../debug mappaba mentve;
+  "Details oldal mentese" menupont es Kapcsolat teszt.
+        </news>
+        <assets>
+            <icon>icon.png</icon>
+        </assets>
+    </extension>
+</addon>
+
 </addons>
