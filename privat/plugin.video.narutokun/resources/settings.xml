@@ -1,0 +1,5 @@
+<settings>
+	<category label="Általános">
+		<setting id="cache_minutes" type="number" label="Oldal-gyorsítótár (perc)" default="30" />
+	</category>
+</settings>
