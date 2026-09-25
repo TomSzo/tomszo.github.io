@@ -1,4 +1,11 @@
 <settings>
+	<category label="Belépés">
+		<setting id="email" type="text" label="Felhasználónév" default="" />
+		<setting id="password" type="text" label="Jelszó" option="hidden" default="" />
+		<setting id="cred_file" type="file" label="VAGY felhasználónév/jelszó txt fájl (nincs gépelés)" default="" />
+		<setting type="action" label="Munkamenet törlése (újra bejelentkezés)"
+		         action="RunPlugin(plugin://plugin.video.narutokun/?action=clearsession)" />
+	</category>
 	<category label="Általános">
 		<setting id="cache_minutes" type="number" label="Oldal-gyorsítótár (perc)" default="30" />
 	</category>

@@ -2,8 +2,10 @@
 """
 Naruto-Kun.Hu (naruto-kun.hu) - privát kliens a csapat online animéihez.
 
-Az oldal PHP-Fusion, iso-8859-2 kódolású. Az adatlapok és az online részek
-bejelentkezés nélkül is elérhetők, ezért az addon nem lép be.
+Az oldal PHP-Fusion, iso-8859-2 kódolású. Belépés (a nem nyilvános oldalakhoz):
+    POST news.php  user_name, user_pass, remember_me=y, login=Bejelentkezés
+    -> PHP-Fusion sütik, lemezre mentve. Ha egy oldal a belépő űrlapot
+    (loginpageform) adja vissza, egyszer belépünk és újratöltjük.
 
     Lista:    infusions/nkwt_adatlap/adatlap.php?page=anime&sortby=aktualis[&rowstart=12]
               <a class="album-preview" href="...page=anime&id=71"> <img src=...>
@@ -140,21 +142,279 @@ def _headers(referer=None):
     return h
 
 
-def get(path, referer=None, timeout=25):
-    """GET a naruto-kun.hu-ról; iso-8859-2 -> unicode."""
+# ---------------------------------------------------------------------------
+# Munkamenet (sütik) + belépés
+# ---------------------------------------------------------------------------
+_LOGIN_COOLDOWN = 10 * 60
+_COOKIES_LOADED = [False]
+_LOGIN_TRIED = [False]
+
+
+def _session_path():
+    return os.path.join(_profile_dir(), 'session.json')
+
+
+def save_cookies():
     if not _SESSION:
-        log('Nincs requests modul!', xbmc.LOGERROR)
-        return ''
-    url = urljoin(BASE, path)
-    log('GET %s' % url)
+        return
+    try:
+        data = [{'name': c.name, 'value': c.value, 'domain': c.domain, 'path': c.path}
+                for c in _SESSION.cookies]
+        f = xbmcvfs.File(_session_path(), 'w')
+        try:
+            f.write(json.dumps(data))
+        finally:
+            f.close()
+    except Exception as exc:  # noqa
+        log('cookie mentés hiba: %s' % exc, xbmc.LOGWARNING)
+
+
+def load_cookies():
+    if _COOKIES_LOADED[0] or not _SESSION:
+        return
+    _COOKIES_LOADED[0] = True
+    try:
+        p = _session_path()
+        if not xbmcvfs.exists(p):
+            return
+        f = xbmcvfs.File(p)
+        try:
+            raw = f.read()
+        finally:
+            f.close()
+        for c in json.loads(raw or '[]'):
+            try:
+                _SESSION.cookies.set(c['name'], c['value'], domain=c.get('domain') or
+                                     'naruto-kun.hu', path=c.get('path') or '/')
+            except Exception:  # noqa
+                pass
+    except Exception as exc:  # noqa
+        log('cookie betöltés hiba: %s' % exc, xbmc.LOGWARNING)
+
+
+def clear_cookies():
+    _set_login_failed(False)
+    if _SESSION:
+        _SESSION.cookies.clear()
+    _COOKIES_LOADED[0] = False
+    _LOGIN_TRIED[0] = False
+    try:
+        if xbmcvfs.exists(_session_path()):
+            xbmcvfs.delete(_session_path())
+    except Exception:  # noqa
+        pass
+
+
+def _login_block_path():
+    return os.path.join(_profile_dir(), 'login_failed.txt')
+
+
+def _login_blocked():
+    import time
+    try:
+        p = _login_block_path()
+        if xbmcvfs.exists(p):
+            return (time.time() - xbmcvfs.Stat(p).st_mtime()) < _LOGIN_COOLDOWN
+    except Exception:  # noqa
+        pass
+    return False
+
+
+def _set_login_failed(failed):
+    p = _login_block_path()
+    try:
+        if failed:
+            f = xbmcvfs.File(p, 'w')
+            try:
+                f.write('1')
+            finally:
+                f.close()
+        elif xbmcvfs.exists(p):
+            xbmcvfs.delete(p)
+    except Exception:  # noqa
+        pass
+
+
+def is_login_page(html):
+    return bool(html) and ("name='loginpageform'" in html or 'name="loginpageform"' in html)
+
+
+def logged_in(html):
+    return bool(html) and 'logout=yes' in html
+
+
+def _read_file(path):
+    try:
+        if path and xbmcvfs.exists(path):
+            fh = xbmcvfs.File(path)
+            try:
+                return fh.read()
+            finally:
+                fh.close()
+    except Exception as exc:  # noqa
+        log('fájl olvasási hiba (%s): %s' % (path, exc), xbmc.LOGWARNING)
+    return ''
+
+
+_CRED_KEY_RE = re.compile(
+    r'\s*(email|username|user|felhasznalonev|felhasznalo|password|jelszo|pass|pw)\s*[:=]\s*(.+?)\s*$',
+    re.IGNORECASE)
+
+
+def _parse_creds(text):
+    """Rugalmas felhasználónév/jelszó kinyerés txt-ből. Visszaad: (email, jelszó) vagy ('','')."""
+    text = (text or '').strip()
+    if not text:
+        return '', ''
+    # 1) JSON: {"email":..,"password":..} vagy {"username":..}
+    if text[:1] in '{[':
+        try:
+            d = json.loads(text)
+            if isinstance(d, list) and d:
+                d = d[0]
+            if isinstance(d, dict):
+                e = d.get('email') or d.get('username') or d.get('user') or ''
+                p = d.get('password') or d.get('pass') or d.get('pw') or ''
+                if e and p:
+                    return str(e).strip(), str(p)
+        except Exception:  # noqa
+            pass
+    lines = [l for l in re.split(r'[\r\n]+', text) if l.strip()]
+    # 2) kulcs=érték sorok (email=.., password=..)
+    kv = {}
+    for line in lines:
+        m = _CRED_KEY_RE.match(line)
+        if m:
+            kv[m.group(1).lower()] = m.group(2)
+    if kv:
+        e = (kv.get('email') or kv.get('username') or kv.get('user')
+             or kv.get('felhasznalonev') or kv.get('felhasznalo') or '')
+        p = (kv.get('password') or kv.get('jelszo') or kv.get('pass') or kv.get('pw') or '')
+        if e and p:
+            return e.strip(), p
+    # 3) egyetlen sor "email<elválasztó>jelszó"
+    if len(lines) == 1:
+        for sep in (':', '|', ';', ',', '\t'):
+            if sep in lines[0]:
+                a, _, b = lines[0].partition(sep)
+                if a.strip() and b.strip():
+                    return a.strip(), b.strip()
+    # 4) két sor: első = email, második = jelszó
+    if len(lines) >= 2:
+        return lines[0].strip(), lines[1].strip()
+    return '', ''
+
+
+def _cred_fixed_path():
+    return xbmcvfs.translatePath('special://profile/addon_data/%s/login.txt' % ADDON_ID)
+
+
+def _credentials():
+    """(email, jelszó) - előbb a beállítás-mezők, aztán a megadott txt, végül a fix login.txt."""
+    email = (ADDON.getSetting('email') or '').strip()
+    pw = (ADDON.getSetting('password') or '')
+    if email and pw:
+        return email, pw
+    for path in [(ADDON.getSetting('cred_file') or '').strip(), _cred_fixed_path()]:
+        data = _read_file(path)
+        if data:
+            e, p = _parse_creds(data)
+            if e and p:
+                return e, p
+    return email, pw
+
+
+def have_credentials():
+    e, p = _credentials()
+    return bool(e and p)
+
+
+def cred_source():
+    """Diagnosztika: honnan jön a belépés ('beállítás' / 'fájl: ...' / 'nincs')."""
+    if (ADDON.getSetting('email') or '').strip() and (ADDON.getSetting('password') or ''):
+        return 'beállítás-mezők'
+    cf = (ADDON.getSetting('cred_file') or '').strip()
+    if cf and _parse_creds(_read_file(cf))[0]:
+        return 'fájl: %s' % cf
+    if _parse_creds(_read_file(_cred_fixed_path()))[0]:
+        return 'fix fájl (login.txt)'
+    return 'nincs'
+
+
+def login():
+    """PHP-Fusion belépés. Visszaad: sikeres?"""
+    if not _SESSION:
+        return False
+    user, pw = _credentials()
+    if not user or not pw:
+        log('Nincs felhasználónév/jelszó (sem beállítás, sem txt).', xbmc.LOGWARNING)
+        return False
+    if _login_blocked():
+        log('Az előző belépés 10 percen belül sikertelen volt - most nem próbálkozunk.',
+            xbmc.LOGWARNING)
+        return False
+    data = {'user_name': user.encode(ENCODING, 'replace'),
+            'user_pass': pw.encode(ENCODING, 'replace'),
+            'remember_me': 'y', 'login': u'Bejelentkezés'.encode(ENCODING)}
     _throttle()
     _bump_request()
     try:
-        r = _SESSION.get(url, headers=_headers(referer or BASE), timeout=timeout)
-        return r.content.decode(ENCODING, 'replace')
+        r = _SESSION.post(urljoin(BASE, 'news.php'), data=data, timeout=30,
+                          headers=dict(_headers(urljoin(BASE, 'login.php')),
+                                       Origin=BASE.rstrip('/')))
+        html = r.content.decode(ENCODING, 'replace')
+    except Exception as exc:  # noqa
+        log('login hiba: %s' % exc, xbmc.LOGERROR)
+        return False
+    ok = logged_in(html) and not is_login_page(html)
+    _set_login_failed(not ok)
+    if ok:
+        save_cookies()
+        log('Bejelentkezés sikeres.')
+    else:
+        log('Bejelentkezés SIKERTELEN (felhasználónév/jelszó?).', xbmc.LOGWARNING)
+    return ok
+
+
+def _raw_get(url, referer, timeout):
+    _throttle()
+    _bump_request()
+    r = _SESSION.get(url, headers=_headers(referer or BASE), timeout=timeout)
+    return r.content.decode(ENCODING, 'replace')
+
+
+def get(path, referer=None, timeout=25):
+    """GET a naruto-kun.hu-ról (iso-8859-2 -> unicode). Ha a belépő űrlap jön vissza,
+    egyszer belép (ha van felhasználónév/jelszó) és újratölti."""
+    if not _SESSION:
+        log('Nincs requests modul!', xbmc.LOGERROR)
+        return ''
+    load_cookies()
+    url = urljoin(BASE, path)
+    log('GET %s' % url)
+    try:
+        html = _raw_get(url, referer, timeout)
     except Exception as exc:  # noqa
         log('GET hiba: %s (%s)' % (exc, url), xbmc.LOGERROR)
         return ''
+    if is_login_page(html) and not _LOGIN_TRIED[0] and have_credentials():
+        _LOGIN_TRIED[0] = True
+        log('Belépés szükséges: %s' % url)
+        if login():
+            try:
+                html = _raw_get(url, referer, timeout)
+            except Exception as exc:  # noqa
+                log('GET (újra) hiba: %s' % exc, xbmc.LOGERROR)
+    elif not is_login_page(html):
+        save_cookies()
+    return html
+
+
+def check_login():
+    """Diagnosztika: (bejelentkezve?, felhasználónév)."""
+    html = get('news.php')
+    m = re.search(r'<p class="navigation-widget-info-title">([^<]+)</p>', html or '')
+    return logged_in(html), (_txt(m.group(1)) if m else '')
 
 
 def _page_cache_path(path):
@@ -221,7 +481,8 @@ def _abs(u):
 
 
 def _is_page(html):
-    return bool(html) and 'nkwt' in html.lower()
+    """Érvényes (tárolható) oldal: az oldal saját tartalma, és nem a belépő űrlap."""
+    return bool(html) and 'nkwt' in html.lower() and not is_login_page(html)
 
 
 # ---------------------------------------------------------------------------
@@ -356,7 +617,8 @@ def anime_episodes(aid):
     eps, seen = [], set()
     for page in range(1, _MAX_VIDEO_PAGES + 1):
         html = cached_get('infusions/nkwt_adatlap/_videos.php?cat=%s&page=%d' % (aid, page), ttl,
-                          referer=BASE + '%s?page=anime&id=%s' % (ADATLAP, aid))
+                          referer=BASE + '%s?page=anime&id=%s' % (ADATLAP, aid),
+                          valid=lambda h: not is_login_page(h))
         new = [v for v in parse_videos(html) if v['id'] not in seen]
         if not new:
             break

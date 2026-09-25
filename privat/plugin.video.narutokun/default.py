@@ -110,6 +110,9 @@ def fav_toggle(p):
 
 # --------------------------------------------------------------------------
 def view_root():
+    if not nk.have_credentials():
+        add_dir('[COLOR grey]Belépés: add meg a felhasználóneved/jelszavad (ha kell)[/COLOR]',
+                build_url(action='opensettings'), folder=False)
     add_dir('[COLOR yellow]📊 Ma: %d kérés az oldalra[/COLOR]' % nk.today_requests(),
             build_url(action='diag'), folder=False)
     add_dir('[COLOR gold]★ Kedvencek[/COLOR]', build_url(action='favorites'))
@@ -124,11 +127,18 @@ def view_root():
 
 
 def view_diag():
-    lines = ['Oldal: %s (bejelentkezés nem kell)' % nk.base_url(),
+    ok, who = nk.check_login()
+    lines = ['Oldal: %s' % nk.base_url(),
+             'Belépési adat forrása: %s' % nk.cred_source(),
+             'Bejelentkezve: %s' % (('IGEN (%s)' % who) if ok else 'NEM'),
              'User-Agent (fix): %s' % nk.user_agent(),
              'Mai kérések az oldalra (helyi számláló): %d' % nk.today_requests(),
              'ResolveURL (videa/indavideo feloldás): %s'
              % ('telepítve' if nk.has_resolver() else 'NINCS – telepítsd a privát tárolóból')]
+    if not ok:
+        lines += ['', 'A nyilvános oldalak belépés nélkül is mennek. Ha valamelyik rész '
+                  'belépést kér, add meg a felhasználóneved és jelszavad a beállításokban '
+                  '(vagy login.txt-ben az addon_data mappában).']
     xbmcgui.Dialog().textviewer(ADDON.getAddonInfo('name') + ' – állapot', '\n'.join(lines))
 
 
@@ -253,6 +263,11 @@ def router(qs):
         notify('Gyorsítótár frissítve')
     elif action == 'diag':
         view_diag()
+    elif action == 'clearsession':
+        nk.clear_cookies()
+        notify('Munkamenet törölve – következő lekéréskor újra bejelentkezik')
+    elif action == 'opensettings':
+        ADDON.openSettings()
     elif action == 'play':
         play(p['v'])
     else:

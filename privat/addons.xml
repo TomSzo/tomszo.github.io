@@ -425,14 +425,18 @@ v0.1.0 (2026-09-24) - PRIVAT / BETA
     </extension>
     <extension point="xbmc.addon.metadata">
         <summary lang="hu">Naruto-Kun.Hu (naruto-kun.hu) – a csapat magyar feliratos online animéi</summary>
-        <description lang="hu">Privát, magánhasználatú videó addon a naruto-kun.hu fansub oldal online animéihez. Böngészés állapot szerint (aktuális, befejezett, felfüggesztett, archívum, tervezett, összes), keresés, a főoldal legfrissebb online részei, adatlap ismertetővel és epizódcímekkel. A videót a beágyazott lejátszó (videa, indavideo) adja, amit a ResolveURL old fel. Kedvencek, előzmények, takarékos lekérés (1 mp szünet, gyorsítótár, napi számláló). Magánhasználat, saját felelősségre.</description>
+        <description lang="hu">Privát, magánhasználatú videó addon a naruto-kun.hu fansub oldal online animéihez. Böngészés állapot szerint (aktuális, befejezett, felfüggesztett, archívum, tervezett, összes), keresés, a főoldal legfrissebb online részei, adatlap ismertetővel és epizódcímekkel. Ha egy oldal belépést kér, a megadott felhasználónévvel/jelszóval automatikusan belép. A videót a beágyazott lejátszó (videa, indavideo) adja, amit a ResolveURL old fel. Kedvencek, előzmények, takarékos lekérés (1 mp szünet, gyorsítótár, napi számláló). Magánhasználat, saját felelősségre.</description>
         <disclaimer lang="hu">Privát, magánhasználatú kiegészítő.</disclaimer>
         <language>hu</language>
         <platform>all</platform>
         <license>GPL-3.0-or-later</license>
         <news>
 v0.1.0 (2026-09-25) - PRIVAT / BETA
-- Kezdeti kiadas a naruto-kun.hu-hoz (bejelentkezes nem kell).
+- Kezdeti kiadas a naruto-kun.hu-hoz.
+- Belepes (PHP-Fusion, "emlekezzen ram"): felhasznalonev/jelszo a beallitasokban vagy
+  txt-fajlban (addon_data/.../login.txt); csak akkor lep be, ha egy oldal a belepo
+  urlapot adja vissza; munkamenet lemezre mentve; sikertelen belepes utan 10 percig
+  nincs ujabb probalkozas.
 - Menu: Legfrissebb reszek (fooldali hirek online reszei), Aktualis / Befejezett /
   Felfuggesztett / Archivum / Tervezett / Osszes anime (lapozassal), Kereses.
 - Adatlap: ismerteto, allapot, epizodcimek; online reszek a _videos.php lapjairol.
