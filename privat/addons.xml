@@ -242,6 +242,9 @@ v0.2.0 (2026-09-25) - PRIVAT / BETA
 - UJ: Kedvencek (helyi menu: Hozzaadas / Torles a kedvencekbol) es Elozmenyek
   (legutobb nezett projektek, "utoljara: resz" jelolessel). Helyben tarolva.
 - UJ menupont: Dobott projektek.
+- UJ: Opening / ending automatikus atugrasa: a lejatszo data-skip szakaszai alapjan
+  (pl. 73.97-164.02,1305.99-1395.96) a szakasz elejen a vegere teker, szakaszonkent
+  egyszer. Beallitas: Lejatszas -> "Opening / ending automatikus atugrasa".
 - A lejatszasi URL-ek valtozatlanok, a Kodi "megnezve" jelolesei megmaradnak.
 
 v0.1.1 (2026-09-24) - PRIVAT / BETA
@@ -285,6 +288,9 @@ v0.1.0 (2026-09-24) - PRIVAT / BETA
 v0.2.0 (2026-09-25) - PRIVAT / BETA
 - UJ: Kedvencek (helyi menu: Hozzaadas / Torles a kedvencekbol) es Elozmenyek
   (legutobb nezett projektek, "utoljara: resz" jelolessel). Helyben tarolva.
+- UJ: Opening / ending automatikus atugrasa: a lejatszo data-skip szakaszai alapjan
+  (pl. 73.97-164.02,1305.99-1395.96) a szakasz elejen a vegere teker, szakaszonkent
+  egyszer. Beallitas: Lejatszas -> "Opening / ending automatikus atugrasa".
 - A lejatszasi URL-ek valtozatlanok, a Kodi "megnezve" jelolesei megmaradnak.
 
 v0.1.0 (2026-09-24) - PRIVAT / BETA

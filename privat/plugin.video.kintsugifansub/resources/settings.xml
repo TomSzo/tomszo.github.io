@@ -14,6 +14,7 @@
 		<setting id="quality" type="enum" label="Videó minőség"
 		         values="Automatikus (legjobb)|Mindig kérdezzen|4K|2K|1080p|720p|480p" default="0" />
 		<setting id="subtitles" type="bool" label="Felirat automatikus betöltése" default="true" />
+		<setting id="skip_segments" type="bool" label="Opening / ending automatikus átugrása (ha az oldal megadja)" default="true" />
 	</category>
 	<category label="Egyéb">
 		<setting id="cache_minutes" type="number" label="Projekt-lista gyorsítótár (perc)" default="30" />

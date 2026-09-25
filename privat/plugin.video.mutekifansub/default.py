@@ -15,6 +15,7 @@ import xbmcaddon
 
 from resources.lib import mutekifansub as mtk
 from resources.lib import library as lib
+from resources.lib import skipper
 
 ADDON = xbmcaddon.Addon()
 HANDLE = int(sys.argv[1])
@@ -293,6 +294,10 @@ def play(ep_id):
     lib.mark_played_id(ep_id, src.get('title'))
     mtk.log('Lejátszás [%s]: %s' % (label, url))
     xbmcplugin.setResolvedUrl(HANDLE, True, li)
+    segs = skipper.parse_skip(src.get('skip'))
+    if segs and skipper.enabled():
+        mtk.log('Átugorható szakaszok: %s' % segs)
+        skipper.watch(segs, notify=lambda m: notify(m, t=2000))
 
 
 def router(qs):
