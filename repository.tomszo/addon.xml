@@ -1,5 +1,5 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<addon id="repository.tomszo" name="TomSzo Repository" version="1.0.12" provider-name="TomSzo">
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<addon id="repository.tomszo" name="TomSzo Repository" version="1.0.13" provider-name="TomSzo">
     <requires>
         <import addon="xbmc.addon" version="12.0.0"/>
     </requires>
@@ -13,47 +13,50 @@
     <extension point="xbmc.addon.metadata">
         <summary lang="en">TomSzo Kodi Repository</summary>
         <summary lang="hu">TomSzo Kodi Tároló</summary>
-        <description lang="en">
-            A personal Kodi repository by TomSzo. Contains carefully selected third-party repositories and useful modules.
+        <description lang="en">A personal Kodi repository by TomSzo: carefully selected third-party repositories and useful add-ons.
 
-            Included repositories:
-            - ElementumOrg (Elementum torrent player)
-            - jurialmunkey (TMDB Helper and skins)
-            - MovieShark (Hungarian content)
-            - Addons4Kodi (for subtitles)
-            - Don't Panic (for CoreELEC builds only, e.g. AVDV+)
-            - signde (for CoreELEC builds only, e.g. AVDV+; skins)
+Repositories:
+- ElementumOrg (Elementum torrent player)
+- jurialmunkey (TMDB Helper and skins)
+- MovieShark (Hungarian content)
+- Addons4Kodi (subtitles) - TomSzo fixed 2.2: works on Kodi 19-21
+- Don't Panic (CoreELEC builds only, e.g. AVDV+)
+- signde (CoreELEC builds only, e.g. AVDV+; skins)
 
-            Included addons:
-            - service.autosub (auto subtitle handler; mainly for anime watchers)
-            - nCore TV (video addon - FORK, not the original; original author: heg)
-            - SubVito (South Park in Hungarian, video addon)
-            - avdvplus.Estuary (skin - for AVDV release 9 builds only)
-            - Speed Tester (Internet bandwidth test)
+Add-ons:
+- Weather (Idokep + Open-Meteo) - weather provider, no API key
+- nCore TV (video - FORK, not the original; original author: heg)
+- SubVito (South Park in Hungarian, video)
+- service.autosub (automatic subtitles; mainly for anime)
+- Speed Tester (Internet bandwidth test)
+- avdvplus.Estuary (skin - AVDV release 9 builds only)
 
-            WARNING: This is a BETA repository. Use at your own risk.
-        </description>
-        <description lang="hu">
-            TomSzo személyes Kodi tárolója. Gondosan válogatott harmadik féltől származó tárolókat és hasznos modulokat tartalmaz.
+WARNING: BETA repository. Use at your own risk.</description>
+        <description lang="hu">TomSzo személyes Kodi tárolója: gondosan válogatott harmadik féltől származó tárolók és hasznos kiegészítők.
 
-            Tárolók:
-            - ElementumOrg (Elementum torrent lejátszó)
-            - jurialmunkey (TMDB Helper és skinek)
-            - MovieShark (Magyar tartalmak)
-            - Addons4Kodi (feliratokhoz)
-            - Don't Panic (csak CoreELEC-buildekhez, pl. AVDV+)
-            - signde (csak CoreELEC-buildekhez, pl. AVDV+; skinek)
+Tárolók:
+- ElementumOrg (Elementum torrent lejátszó)
+- jurialmunkey (TMDB Helper és skinek)
+- MovieShark (magyar tartalmak)
+- Addons4Kodi (feliratok) - TomSzo-javított 2.2: Kodi 19-21 alatt is működik
+- Don't Panic (csak CoreELEC-buildekhez, pl. AVDV+)
+- signde (csak CoreELEC-buildekhez, pl. AVDV+; skinek)
 
-            Addonok:
-            - service.autosub (automatikus felirat; főleg animenézőknek)
-            - nCore TV (videó addon - FORK, nem az eredeti; eredeti szerző: heg)
-            - SubVito (South Park magyarul, videó addon)
-            - avdvplus.Estuary (skin - csak AVDV release 9 buildekhez)
-            - Speed Tester (internet sebességteszt)
+Kiegészítők:
+- Időjárás (Időkép + Open-Meteo) - időjárás-szolgáltató, API-kulcs nélkül
+- nCore TV (videó - FORK, nem az eredeti; eredeti szerző: heg)
+- SubVito (South Park magyarul, videó)
+- service.autosub (automatikus felirat; főleg animenézőknek)
+- Speed Tester (internet sebességteszt)
+- avdvplus.Estuary (skin - csak AVDV release 9 buildekhez)
 
-            FIGYELEM: Ez egy BÉTA tároló. Csak saját felelősségre használd!
-        </description>
+FIGYELEM: BÉTA tároló. Csak saját felelősségre használd!</description>
         <news>
+v1.0.13 (2026-09-25) - BÉTA
+- Új ikon és háttérkép
+- Leírás frissítve: Időjárás (Időkép + Open-Meteo), Addons4Kodi 2.2 (Kodi 19-21)
+- Felesleges fájlok (default.py, index.html) kivéve a csomagból
+
 v1.0.12 (2026-09-22) - BÉTA
 - Leírás frissítve (Kodiban is látható): addon-címkék - Addons4Kodi=feliratok,
   Don't Panic/signde=csak CoreELEC-buildekhez, autosub=animenézőknek, nCore TV=FORK
@@ -105,11 +108,13 @@ v1.0.0 (2026-04-04) - BÉTA
 - Hozzáadva: repository.elementumorg
 - Hozzáadva: repository.jurialmunkey
 - Hozzáadva: repository.movieshark
-        </news>
+                </news>
         <platform>all</platform>
-        <license>GNU GENERAL PUBLIC LICENSE Version 3</license>
+        <license>GPL-3.0-or-later</license>
         <source>https://github.com/TomSzo/tomszo.github.io</source>
         <assets>
+            <icon>icon.png</icon>
+            <fanart>fanart.jpg</fanart>
         </assets>
     </extension>
 </addon>

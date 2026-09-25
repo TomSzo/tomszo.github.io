@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <addons>
-
-<addon id="repository.tomszo.private" name="TomSzo Privát Tároló" version="1.0.1" provider-name="TomSzo">
+<addon id="repository.tomszo.private" name="TomSzo Privát Tároló" version="1.0.2" provider-name="TomSzo">
     <requires>
         <import addon="xbmc.addon" version="12.0.0"/>
     </requires>
@@ -13,69 +12,42 @@
         </dir>
     </extension>
     <extension point="xbmc.addon.metadata">
-        <summary lang="hu">TomSzo privát, személyes tárolója – kizárólag a tulajdonos saját fiókjával működik.</summary>
-        <summary lang="en">TomSzo private, personal repository – works only with the owner's own account.</summary>
-        <description lang="hu">
-            FIGYELEM – EZ EGY SZEMÉLYES, PRIVÁT TÁROLÓ. NEM MÁSOKNAK KÉSZÜLT.
+        <summary lang="hu">TomSzo privát, személyes tárolója – a kiegészítők a tulajdonos saját fiókjaihoz készültek.</summary>
+        <summary lang="en">TomSzo private, personal repository – the add-ons are made for the owner's own accounts.</summary>
+        <description lang="hu">FIGYELEM – EZ EGY SZEMÉLYES, PRIVÁT TÁROLÓ. NEM MÁSOKNAK KÉSZÜLT.
 
-            Az itt található kiegészítők KIZÁRÓLAG a tulajdonos (TomSzo) saját,
-            hitelesített munkamenetével működnek. Nem tartalmaznak és nem
-            terjesztenek semmilyen belépési adatot vagy megosztott hozzáférést.
+A videós kiegészítők a tulajdonos (TomSzo) SAJÁT fiókjával / előfizetésével működnek. Belépési adatot nem tartalmaznak és nem osztanak meg: a belépés (email/jelszó vagy a saját böngészőből kimásolt munkamenet-süti) kizárólag a tulajdonos saját Kodi-példányának beállításaiban van.
 
-            Miért nem fog működni másnál (röviden, szakmailag):
-            - A cél-oldalak bejelentkezéshez kötöttek, a bejelentkezés pedig
-              Cloudflare Turnstile / reCAPTCHA védelemmel van ellátva, ami
-              automatizált (kliensoldali) belépést nem tesz lehetővé.
-            - Ezért a kiegészítők NEM felhasználónév/jelszó alapon lépnek be,
-              hanem a tulajdonos által, saját böngészőből kinyert, érvényes
-              munkamenet-sütit (session cookie) replikálnak, amelyet a
-              tulajdonos KIZÁRÓLAG a saját Kodi-példányában, az adott kiegészítő
-              beállításai közt tárol.
-            - Ez a süti a tulajdonos személyes hitelesítője. Nélküle a cél-oldal
-              minden kérésre bejelentkezési oldallal vagy HTTP 401/403 válasszal
-              felel, így a kiegészítő sem listázni, sem lejátszani nem tud.
-            - A süti a szolgáltatás session-élettartama szerint lejár; lejáratkor
-              a tulajdonosnak újra be kell lépnie a böngészőben, és frissítenie
-              kell a süti értékét a beállításokban.
+Kiegészítők:
+- MagyarAnime, Muteki Fansub, Kintsugi Fansub, Naruto-Kun.Hu - anime (saját fiók, kímélő lekérdezés)
+- Network4 / Arena4+ - sport és élő közvetítések (saját előfizetés)
+- Kedvenc mappák - mappák és almappák a Kodi Kedvencekhez (fiók nélkül is működik)
+- script.module.resolveurl - lejátszó-feloldó modul
 
-            Következmény: ha nem te vagy a tulajdonos, NE telepítsd ezt a tárolót
-            és a benne lévő kiegészítőket – nem fognak működni, mert nincs meg
-            hozzájuk a te saját fiókod és érvényes munkameneted. A tároló pusztán
-            a tulajdonos kényelmi célú, magánhasználatú kiegészítőit szállítja.
+Ha nem te vagy a tulajdonos, ne telepítsd: a videós kiegészítők a saját fiókod nélkül nem működnek.
+BÉTA / magánhasználat. Csak saját felelősségre.</description>
+        <description lang="en">NOTICE – THIS IS A PERSONAL, PRIVATE REPOSITORY. NOT INTENDED FOR OTHERS.
 
-            BÉTA / magánhasználat. Csak saját felelősségre.
-        </description>
-        <description lang="en">
-            NOTICE – THIS IS A PERSONAL, PRIVATE REPOSITORY. NOT INTENDED FOR OTHERS.
+The video add-ons work with the owner's (TomSzo) OWN accounts / subscriptions. They contain and share no credentials: sign-in (email/password or a session cookie from the owner's own browser) is stored only in the owner's own Kodi settings.
 
-            The add-ons here work ONLY with the owner's (TomSzo) own authenticated
-            session. They contain and distribute no credentials or shared access.
+Add-ons: MagyarAnime, Muteki Fansub, Kintsugi Fansub, Naruto-Kun.Hu (anime), Network4 / Arena4+ (sports, live events), Favourite folders (works without an account), script.module.resolveurl.
 
-            Why it will not work for anyone else: the target sites require login,
-            and that login is protected by Cloudflare Turnstile / reCAPTCHA, which
-            blocks automated (client-side) sign-in. Therefore the add-ons do not
-            log in with a username/password; instead they replay a valid session
-            cookie the owner extracts from their own browser and stores solely in
-            their own Kodi instance. Without that personal cookie the target site
-            returns a login page or HTTP 401/403, so nothing can be listed or
-            played. The cookie expires with the service session and must be
-            refreshed from the browser by the owner.
-
-            If you are not the owner, do NOT install this repository – it will not
-            work without your own account and valid session. Personal use only,
-            at your own risk.
-        </description>
+If you are not the owner, do not install: the video add-ons will not work without your own account. Personal use only, at your own risk.</description>
         <platform>all</platform>
         <license>GPL-3.0-or-later</license>
         <source>https://github.com/TomSzo/tomszo.github.io</source>
         <news>
+v1.0.2 (2026-09-25) - PRIVÁT
+- Leírás frissítve a mai kiegészítőkre (Network4, Naruto-Kun.Hu, Kedvenc mappák)
+- Felesleges fájlok (default.py, index.html) kivéve a csomagból
+
 v1.0.1 (2026-09-25) - PRIVÁT
 - Saját ikon (arany lakat lejátszás-jellel)
 
 v1.0.0 (2026-09-21) - PRIVÁT
 - Kezdeti kiadás: TomSzo privát tároló
 - Cookie-alapú, kizárólag a tulajdonos saját fiókjával működő kiegészítőkhöz
-        </news>
+                </news>
         <assets>
             <icon>icon.png</icon>
         </assets>
@@ -560,5 +532,4 @@ v1.0.0 (2026-09-25)
         </assets>
     </extension>
 </addon>
-
 </addons>
