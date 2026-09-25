@@ -5,42 +5,39 @@
 > tulajdonos, **ne telepítsd** – nem fog működni a saját fiókod és érvényes
 > munkameneted nélkül.
 
-## Miért nem működik másnál? (szakmai indoklás)
+## Kiegészítők
 
-A tárolóban lévő kiegészítők olyan oldalakhoz készültek, amelyek **bejelentkezéshez
-kötöttek**, és a bejelentkezés **Cloudflare Turnstile / reCAPTCHA** védelemmel van
-ellátva. Ezek a védelmek **kliensoldali, böngészőben futó kihívások**, amelyek
-megakadályozzák az automatizált (felhasználónév/jelszó alapú) belépést egy
-Kodi-kiegészítőből.
+| Addon | Mire jó? | Belépés |
+|---|---|---|
+| **plugin.video.magyaranime** | MagyarAnime | saját fiók (böngészős süti) |
+| **plugin.video.mutekifansub** | Muteki Fansub | saját fiók |
+| **plugin.video.kintsugifansub** | Kintsugi Fansub | saját fiók |
+| **plugin.video.narutokun** | Naruto-Kun.Hu | saját fiók (felhasználónév/jelszó) |
+| **plugin.video.network4** | Network4 / Arena4+ – sport, élő közvetítések | saját előfizetés (email/jelszó) |
+| **plugin.program.kedvencmappak** | Kedvenc mappák – mappák és almappák a Kodi Kedvencekhez | nem kell |
+| **script.module.resolveurl** | lejátszó-feloldó modul (függőség) | – |
 
-Ezért a kiegészítők **nem jelszóval lépnek be**, hanem:
+## Miért nem működik másnál?
 
-1. A tulajdonos **a saját böngészőjében** bejelentkezik (ő oldja meg a captchát),
-2. onnan **kinyeri a munkamenet-sütijét** (session cookie),
-3. és ezt **kizárólag a saját Kodi-példányában**, az adott kiegészítő
-   beállításai közt tárolja.
-
-A süti a tulajdonos **személyes hitelesítője**:
-
-- **Nélküle** a cél-oldal minden kérésre **login-oldallal vagy HTTP 401/403**
-  válaszol → a kiegészítő nem tud sem listázni, sem lejátszani.
-- A süti a szolgáltatás **session-élettartama** szerint **lejár**; ilyenkor a
-  tulajdonosnak újra be kell lépnie a böngészőben, és frissítenie a süti
-  értékét a beállításokban.
+A videós kiegészítők **bejelentkezéshez kötött** oldalakhoz készültek, és a tulajdonos
+**saját fiókjával / előfizetésével** működnek. A belépési adat (email/jelszó, illetve
+néhol a saját böngészőből kimásolt munkamenet-süti) **kizárólag a tulajdonos saját
+Kodi-példányának beállításaiban** van – nélküle az oldalak login-oldallal vagy
+HTTP 401/403 válasszal felelnek, így a kiegészítő nem tud listázni és lejátszani.
 
 **Semmilyen belépési adat nincs a tárolóban**, és semmilyen megosztott hozzáférés
-nincs terjesztve. A tároló pusztán a tulajdonos **magánhasználatú** kiegészítőit
-szállítja.
+nincs terjesztve. A kiegészítők kímélően kérdeznek (szünet a kérések között,
+gyorsítótár, napi számláló).
 
 ## Telepítés (csak a tulajdonosnak)
 
 1. Kodi → **Beállítások → Fájlkezelő → Forrás hozzáadása**
    URL: `https://tomszo.github.io/privat/`  · Név: `TomSzo Privát`
 2. **Kiegészítők → Telepítés ZIP fájlból → TomSzo Privát →**
-   `repository.tomszo.private-1.0.1.zip`
+   `repository.tomszo.private-1.0.2.zip`
 3. **Kiegészítők → Telepítés repository-ból → TomSzo Privát Tároló**
-4. A kiegészítő beállításaiban add meg a **saját, böngészőből kinyert
-   munkamenet-sütidet**.
+4. A kiegészítő beállításaiban add meg a **saját belépési adataidat**
+   (email/jelszó, illetve ahol kell, a böngészőből kinyert munkamenet-sütit).
 
 ## Jogi / használati megjegyzés
 
