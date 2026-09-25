@@ -19,7 +19,7 @@ egyetlen tárolóból települjenek.
 | **repository.elementumorg** | Elementum torrent-lejátszó. |
 | **repository.jurialmunkey** | TMDB Helper és a hozzá tartozó skinek. |
 | **repository.movieshark** | Magyar tartalmak (filmek, sorozatok). |
-| **repository.addons4kodi** | **Feliratok** miatt van itt – feliratszolgáltató kiegészítők forrása. |
+| **repository.addons4kodi** | **Feliratok** miatt van itt – feliratszolgáltató kiegészítők forrása. *TomSzo-javított 2.2: Kodi 19–21 (a gyári 2.0 csak Kodi 19-ig szolgál ki).* |
 | **repository.dontpanic** | Főleg **CoreELEC-buildekhez** hasznos (pl. AVDV+ stb.). |
 | **repository.signde** | Szintén csak **CoreELEC-buildekhez** jó (pl. AVDV+ stb.) – skinek forrása. |
 

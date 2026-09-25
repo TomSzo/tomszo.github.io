@@ -137,18 +137,40 @@ v1.0.0 (2026-04-04) - BÉTA
     </extension>
 </addon>
 
-<addon id="repository.addons4kodi" name="Addons4Kodi Repository" version="2.1" provider-name="A4K">
+<addon id="repository.addons4kodi" name="Addons4Kodi Repository" version="2.2" provider-name="A4K (TomSzo: Kodi 19-21 javitas)">
     <extension point="xbmc.addon.repository" name="Addons4Kodi Repository">
-        <dir>
+        <dir minversion="19.0">
             <info compressed="false">https://raw.githubusercontent.com/a4k-openproject/repository.addons4kodi/master/zips/addons.xml</info>
             <checksum>https://raw.githubusercontent.com/a4k-openproject/repository.addons4kodi/master/zips/addons.xml.md5</checksum>
             <datadir zip="true">https://raw.githubusercontent.com/a4k-openproject/repository.addons4kodi/master/zips/</datadir>
         </dir>
+        <dir minversion="19.0">
+            <info compressed="false">https://raw.githubusercontent.com/a4k-openproject/repository.openwizard/master/matrix/zips/addons.xml</info>
+            <checksum>https://raw.githubusercontent.com/a4k-openproject/repository.openwizard/master/matrix/zips/addons.xml.md5</checksum>
+            <datadir zip="true">https://raw.githubusercontent.com/a4k-openproject/repository.openwizard/master/matrix/zips/</datadir>
+        </dir>
+        <dir minversion="19.0">
+            <info>https://raw.githubusercontent.com/newt-sc/a4kStreaming/master/packages/addons.xml</info>
+            <checksum>https://raw.githubusercontent.com/newt-sc/a4kStreaming/master/packages/addons.xml.crc</checksum>
+            <datadir>https://github.com/newt-sc/a4kStreaming/archive</datadir>
+            <artdir>https://github.com/newt-sc/a4kStreaming/releases/download/v0.1.0</artdir>
+        </dir>
+        <dir minversion="19.0">
+            <info>https://raw.githubusercontent.com/newt-sc/a4kSubtitles/master/packages/addons.xml</info>
+            <checksum>https://raw.githubusercontent.com/newt-sc/a4kSubtitles/master/packages/addons.xml.crc</checksum>
+            <datadir>https://github.com/newt-sc/a4kSubtitles/archive</datadir>
+            <artdir>https://github.com/a4k-openproject/a4kSubtitles/releases/download/v0.0.13</artdir>
+        </dir>
     </extension>
     <extension point="xbmc.addon.metadata">
         <summary>Addons4Kodi Repository</summary>
-        <description>The official repo of /r/Addons4Kodi!</description>
+        <description>The official repo of /r/Addons4Kodi! - TomSzo copy: the original (2.0) limits every source to Kodi 18-19; this copy serves Kodi 19, 20 and 21 (Leia-only sources removed).</description>
+        <news>2.2 - TomSzo: Kodi 20/21 tamogatas (a gyari 2.0 maxversion=19.9.9 korlatja nelkul), csak Kodi 18-hoz valo forrasok kiveve.</news>
         <platform>all</platform>
+        <assets>
+            <icon>icon.png</icon>
+            <fanart>fanart.jpg</fanart>
+        </assets>
     </extension>
 </addon>
 
@@ -221,7 +243,7 @@ v1.0.0 (2026-04-04) - BÉTA
     </extension>
 </addon>
 
-<addon id="plugin.video.nCore_TV" name="nCore TV" version="1.2.1" provider-name="heg (fork: TomSzo)">
+<addon id="plugin.video.nCore_TV" name="nCore TV" version="1.2.2" provider-name="heg (fork: TomSzo)">
     <requires>
         <import addon="script.module.beautifulsoup4" version="4.6.2"/>
         <import addon="script.module.requests" version="2.22.0"/>
@@ -238,7 +260,7 @@ v1.0.0 (2026-04-04) - BÉTA
 
 Mit módosítottunk ebben a forkban:
 - TMDb Helper lejátszó (Auto Play + Source Select), színkódolt minőség-címkékkel (felbontás, REMUX, DV/HDR, seederek)
-- REMUX-keresés és minőség-felismerés, minőség szerinti rendezés
+- REMUX-keresés és minőség-felismerés, minőség szerinti rendezés, REMUX seed szerint
 - Widget mód: kész listák (REMUX / 4K / 1080) skin-widgetnek
 - Helyi funkciók: lokális lejátszás-követés, évadpakk-menü, gyors mód ki/be
 - Sebesség: kevesebb indításkori hálózati kérés, gyorsabb adatbázis és listák
@@ -247,7 +269,7 @@ Mit módosítottunk ebben a forkban:
 
 What this fork changes:
 - TMDb Helper player (Auto Play + Source Select) with color-coded quality labels (resolution, REMUX, DV/HDR, seeders)
-- REMUX search and quality detection, quality-based sorting
+- REMUX search and quality detection, quality-based sorting, REMUX sorted by seeders
 - Widget mode: ready-made lists (REMUX / 4K / 1080) for skin widgets
 - Local features: local playback tracking, season-pack menu, fast mode toggle
 - Speed: fewer network requests at startup, faster database and lists
@@ -255,6 +277,8 @@ What this fork changes:
         <language>hu</language>
         <platform>all</platform>
         <news>
+1.2.2 (fork: TomSzo, 2026-09-25)
+- REMUX seed szerint: Film HU/EN, Sorozat HU/EN REMUX (seed szerint) menupontok, Widgetekben is
 1.2.1 (fork: TomSzo, 2026-09-24)
 - Film/lejatszas inditasakor megszunt az auto-pause (az elejerol indulo tartalom egybol megy)
 - Leiras bovitve a fork-modositasok listajaval (Kodiban is latszik)
