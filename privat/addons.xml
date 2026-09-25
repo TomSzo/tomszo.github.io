@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <addons>
 
-<addon id="repository.tomszo.private" name="TomSzo Privát Tároló" version="1.0.0" provider-name="TomSzo">
+<addon id="repository.tomszo.private" name="TomSzo Privát Tároló" version="1.0.1" provider-name="TomSzo">
     <requires>
         <import addon="xbmc.addon" version="12.0.0"/>
     </requires>
@@ -15,16 +15,70 @@
     <extension point="xbmc.addon.metadata">
         <summary lang="hu">TomSzo privát, személyes tárolója – kizárólag a tulajdonos saját fiókjával működik.</summary>
         <summary lang="en">TomSzo private, personal repository – works only with the owner's own account.</summary>
-        <description lang="hu">FIGYELEM – SZEMÉLYES, PRIVÁT TÁROLÓ. Az itt lévő kiegészítők kizárólag a tulajdonos (TomSzo) saját, hitelesített munkamenetével (böngészőből kinyert session cookie) működnek, amit a tulajdonos csak a saját Kodijában tárol. A cél-oldalak bejelentkezéshez kötöttek, a login Cloudflare Turnstile/reCAPTCHA védett, ezért automatizált belépés nincs; a kiegészítők a tulajdonos érvényes sütijét replikálják. Süti nélkül a cél-oldal login/401/403 választ ad, így semmi nem listázható vagy játszható le. Ha nem te vagy a tulajdonos, NE telepítsd – nem fog működni a saját fiókod nélkül. Magánhasználat, saját felelősségre.</description>
-        <description lang="en">NOTICE – PERSONAL, PRIVATE REPOSITORY. The add-ons here work only with the owner's (TomSzo) own authenticated session (a browser-extracted session cookie stored solely in the owner's Kodi). The target sites require login protected by Cloudflare Turnstile/reCAPTCHA, so there is no automated sign-in; the add-ons replay the owner's valid cookie. Without it the site returns login/401/403 and nothing can be listed or played. If you are not the owner, do NOT install this – it will not work without your own account. Personal use, at your own risk.</description>
+        <description lang="hu">
+            FIGYELEM – EZ EGY SZEMÉLYES, PRIVÁT TÁROLÓ. NEM MÁSOKNAK KÉSZÜLT.
+
+            Az itt található kiegészítők KIZÁRÓLAG a tulajdonos (TomSzo) saját,
+            hitelesített munkamenetével működnek. Nem tartalmaznak és nem
+            terjesztenek semmilyen belépési adatot vagy megosztott hozzáférést.
+
+            Miért nem fog működni másnál (röviden, szakmailag):
+            - A cél-oldalak bejelentkezéshez kötöttek, a bejelentkezés pedig
+              Cloudflare Turnstile / reCAPTCHA védelemmel van ellátva, ami
+              automatizált (kliensoldali) belépést nem tesz lehetővé.
+            - Ezért a kiegészítők NEM felhasználónév/jelszó alapon lépnek be,
+              hanem a tulajdonos által, saját böngészőből kinyert, érvényes
+              munkamenet-sütit (session cookie) replikálnak, amelyet a
+              tulajdonos KIZÁRÓLAG a saját Kodi-példányában, az adott kiegészítő
+              beállításai közt tárol.
+            - Ez a süti a tulajdonos személyes hitelesítője. Nélküle a cél-oldal
+              minden kérésre bejelentkezési oldallal vagy HTTP 401/403 válasszal
+              felel, így a kiegészítő sem listázni, sem lejátszani nem tud.
+            - A süti a szolgáltatás session-élettartama szerint lejár; lejáratkor
+              a tulajdonosnak újra be kell lépnie a böngészőben, és frissítenie
+              kell a süti értékét a beállításokban.
+
+            Következmény: ha nem te vagy a tulajdonos, NE telepítsd ezt a tárolót
+            és a benne lévő kiegészítőket – nem fognak működni, mert nincs meg
+            hozzájuk a te saját fiókod és érvényes munkameneted. A tároló pusztán
+            a tulajdonos kényelmi célú, magánhasználatú kiegészítőit szállítja.
+
+            BÉTA / magánhasználat. Csak saját felelősségre.
+        </description>
+        <description lang="en">
+            NOTICE – THIS IS A PERSONAL, PRIVATE REPOSITORY. NOT INTENDED FOR OTHERS.
+
+            The add-ons here work ONLY with the owner's (TomSzo) own authenticated
+            session. They contain and distribute no credentials or shared access.
+
+            Why it will not work for anyone else: the target sites require login,
+            and that login is protected by Cloudflare Turnstile / reCAPTCHA, which
+            blocks automated (client-side) sign-in. Therefore the add-ons do not
+            log in with a username/password; instead they replay a valid session
+            cookie the owner extracts from their own browser and stores solely in
+            their own Kodi instance. Without that personal cookie the target site
+            returns a login page or HTTP 401/403, so nothing can be listed or
+            played. The cookie expires with the service session and must be
+            refreshed from the browser by the owner.
+
+            If you are not the owner, do NOT install this repository – it will not
+            work without your own account and valid session. Personal use only,
+            at your own risk.
+        </description>
         <platform>all</platform>
         <license>GPL-3.0-or-later</license>
         <source>https://github.com/TomSzo/tomszo.github.io</source>
         <news>
+v1.0.1 (2026-09-25) - PRIVÁT
+- Saját ikon (arany lakat lejátszás-jellel)
+
 v1.0.0 (2026-09-21) - PRIVÁT
 - Kezdeti kiadás: TomSzo privát tároló
 - Cookie-alapú, kizárólag a tulajdonos saját fiókjával működő kiegészítőkhöz
         </news>
+        <assets>
+            <icon>icon.png</icon>
+        </assets>
     </extension>
 </addon>
 
