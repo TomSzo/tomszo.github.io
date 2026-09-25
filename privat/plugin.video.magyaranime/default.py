@@ -14,6 +14,7 @@ import xbmcplugin
 import xbmcaddon
 
 from resources.lib import magyaranime as ma
+from resources.lib import library as lib
 
 ADDON = xbmcaddon.Addon()
 HANDLE = int(sys.argv[1])
@@ -24,8 +25,11 @@ def build_url(**kw):
     return BASE + '?' + urlencode(kw)
 
 
-def add_dir(label, url, folder=True, art=None, playable=False, plot=None, info=None):
+def add_dir(label, url, folder=True, art=None, playable=False, plot=None, info=None,
+            context=None):
     li = xbmcgui.ListItem(label=label)
+    if context:
+        li.addContextMenuItems(context)
     icon = ADDON.getAddonInfo('icon')
     li.setArt({'icon': art or icon, 'thumb': art or icon, 'poster': art,
                'fanart': ADDON.getAddonInfo('fanart')})
@@ -89,11 +93,70 @@ def view_dailylimit():
     end('files')
 
 
+# --------------------------------------------------------------------------
+# Kedvencek / Előzmények (helyi, nem fogyaszt napi limitet)
+# --------------------------------------------------------------------------
+def _anime_key(aid):
+    return 'anime:%s' % aid
+
+
+def _fav_ctx(aid, title, art):
+    key = _anime_key(aid)
+    label = ('[COLOR red]✖[/COLOR] Törlés a kedvencekből' if lib.is_favorite(key)
+             else '[COLOR gold]★[/COLOR] Hozzáadás a kedvencekhez')
+    return [(label, 'RunPlugin(%s)' % build_url(action='favtoggle', aid=aid, t=title,
+                                                art=art or ''))]
+
+
+def add_anime(title, aid, art=None, label=None):
+    """Sorozat-sor: megnyitáskor a címet/képet is továbbadjuk az előzményekhez."""
+    add_dir(label or title, build_url(action='anime', aid=aid, t=title, art=art or ''),
+            art=art, context=_fav_ctx(aid, title, art))
+
+
+def view_favorites():
+    items = lib.favorites()
+    if not items:
+        notify('Még nincs kedvenc – egy animén: helyi menü → Hozzáadás a kedvencekhez')
+    for it in items:
+        add_anime(it['title'], it['params'].get('aid'), it.get('art'))
+    end('tvshows')
+
+
+def view_history():
+    items = lib.history()
+    if not items:
+        notify('Még nincs előzmény')
+    for it in items:
+        aid = it['params'].get('aid')
+        label = it['title']
+        if it.get('last'):
+            label = '%s  [COLOR grey](utoljára: %s)[/COLOR]' % (label, it['last'])
+        add_anime(it['title'], aid, it.get('art'), label=label)
+    if items:
+        add_dir('[COLOR grey]Előzmények törlése[/COLOR]', build_url(action='histclear'),
+                folder=False)
+    end('tvshows')
+
+
+def fav_toggle(p):
+    added = lib.toggle_favorite(_anime_key(p['aid']), p.get('t'), p.get('art'),
+                                {'action': 'anime', 'aid': p['aid']})
+    notify('Hozzáadva a kedvencekhez' if added else 'Törölve a kedvencekből', t=2500)
+    xbmc.executebuiltin('Container.Refresh')
+
+
+def _instant_play():
+    return (ADDON.getSetting('ep_click') or '0') == '1'
+
+
 def view_root():
     if not _cookie_ok():
         add_dir('[COLOR red]! Nincs cookie beállítva – kattints a beállításokhoz[/COLOR]',
                 build_url(action='opensettings'), folder=False)
     add_dir(_daily_limit_label(), build_url(action='dailylimit'), folder=False)
+    add_dir('[COLOR gold]★ Kedvencek[/COLOR]', build_url(action='favorites'))
+    add_dir('Előzmények (legutóbb nézett)', build_url(action='history'))
     add_dir('Keresés', build_url(action='search'))
     add_dir('Adatlapok (böngészés)', build_url(action='catmenu'))
     add_dir('Rész megnyitása azonosítóval', build_url(action='byid'))
@@ -106,7 +169,7 @@ def view_diag():
     src, names = ma.cookie_status()
     lines = ['Cookie forrás: %s' % src,
              'Sütik (%d): %s' % (len(names), ', '.join(names) if names else '-'),
-             'User-Agent: %s' % ma.user_agent(),
+             'User-Agent (fix): %s' % ma.user_agent(),
              'Feloldó modul: %s' % (ma.has_resolver() or 'nincs (indavideo saját; videa NEM megy)')]
     if names:
         ok, length = ma.check_login()
@@ -128,7 +191,7 @@ def view_search():
     if not results:
         notify('Nincs találat (be vagy jelentkezve? cookie helyes?)')
     for r in results:
-        add_dir(r['title'], build_url(action='anime', aid=r['aid']), art=r.get('art'))
+        add_anime(r['title'], r['aid'], r.get('art'))
     end('tvshows')
 
 
@@ -183,7 +246,7 @@ def view_catalog(page, filters):
     if not items:
         notify('Nincs adatlap (vagy nincs bejelentkezve)')
     for it in items:
-        add_dir(it['title'], build_url(action='anime', aid=it['aid']), art=it.get('art'))
+        add_anime(it['title'], it['aid'], it.get('art'))
     pg, pages = data.get('page', 1), data.get('pages', 1)
     if pg < pages:
         nxt = dict(filters or {})
@@ -194,22 +257,34 @@ def view_catalog(page, filters):
     end('tvshows')
 
 
-def view_anime(aid):
+def view_anime(aid, title=None, art=None):
     data = ma.episodes_of_anime(aid)
     eps = data.get('episodes') or []
     plot = data.get('plot') or ''
+    title = data.get('title') or title or ''
+    art = art or ma._poster(aid)
+    if eps:
+        lib.add_history(_anime_key(aid), title, art, {'action': 'anime', 'aid': str(aid)})
+        lib.set_current(_anime_key(aid), {ep['vid']: ep['title'] for ep in eps})
     if not eps:
         notify('Nincs epizód (vagy nincs bejelentkezve)')
     if plot:
         add_dir('[COLOR gold]📖 Ismertető / Információ[/COLOR]',
                 build_url(action='animeinfo', aid=str(aid)), folder=False)
+    instant = _instant_play()
     for ep in eps:
         label = ep['title']
         if ep.get('filler'):
             label = '%s  [COLOR grey](%s)[/COLOR]' % (label, ep['filler'])
-        add_dir(label, build_url(action='servers', vid=ep['vid']),
-                folder=True, art=ep.get('thumb'), plot=ep.get('plot') or plot,
-                info={'mediatype': 'episode'})
+        if instant:
+            url = build_url(action='play', vid=ep['vid'])
+            ctx = [('Szerver választása', 'Container.Update(%s)'
+                    % build_url(action='servers', vid=ep['vid']))]
+        else:
+            url = build_url(action='servers', vid=ep['vid'])
+            ctx = None
+        add_dir(label, url, folder=not instant, playable=instant, art=ep.get('thumb'),
+                plot=ep.get('plot') or plot, info={'mediatype': 'episode'}, context=ctx)
     end('episodes')
 
 
@@ -295,6 +370,7 @@ def play(vid, server=None):
         li.setContentLookup(False)
     elif headers:
         li.setPath(url + '|' + headers)
+    lib.mark_played_id(vid)
     ma.log('Lejátszás: %s' % url)
     xbmcplugin.setResolvedUrl(HANDLE, True, li)
 
@@ -315,7 +391,16 @@ def router(qs):
     elif action == 'catalog':
         view_catalog(int(p.get('page', 1)), _filters_from(p))
     elif action == 'anime':
-        view_anime(p['aid'])
+        view_anime(p['aid'], p.get('t'), p.get('art'))
+    elif action == 'favorites':
+        view_favorites()
+    elif action == 'history':
+        view_history()
+    elif action == 'favtoggle':
+        fav_toggle(p)
+    elif action == 'histclear':
+        lib.clear_history()
+        xbmc.executebuiltin('Container.Refresh')
     elif action == 'animeinfo':
         view_animeinfo(p['aid'])
     elif action == 'servers':

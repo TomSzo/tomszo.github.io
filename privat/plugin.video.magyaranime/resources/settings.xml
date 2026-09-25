@@ -2,8 +2,11 @@
 	<category label="Belépés">
 		<setting id="cookie_file" type="file" label="Cookie fájl (Cookie-Editor Export - nincs gépelés)" default="" />
 		<setting id="cookie" type="text" label="VAGY Cookie szöveg (PHPSESSID=...; loginkey=...)" default="" />
-		<setting id="user_agent" type="text" label="Böngésző User-Agent (a bejelentkezett böngészőé)" default="Mozilla/5.0 (Android 16; Mobile; rv:156.0) Gecko/156.0 Firefox/156.0" />
 		<setting id="base_url" type="text" label="Alap URL (csak domainváltáskor)" default="https://magyaranime.eu/" />
 		<setting id="debug" type="bool" label="Hibakeresési naplózás" default="false" />
+	</category>
+	<category label="Lejátszás">
+		<setting id="ep_click" type="enum" label="Részre kattintva"
+		         values="Szerverlista (választás)|Azonnali lejátszás (kevesebb limit-kérés)" default="0" />
 	</category>
 </settings>

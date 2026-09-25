@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<addon id="plugin.video.mutekifansub" name="Muteki Fansub (privát)" version="0.1.1" provider-name="TomSzo">
+<addon id="plugin.video.mutekifansub" name="Muteki Fansub (privát)" version="0.2.0" provider-name="TomSzo">
     <requires>
         <import addon="xbmc.python" version="3.0.0"/>
         <import addon="script.module.requests" version="2.22.0"/>
@@ -15,6 +15,21 @@
         <platform>all</platform>
         <license>GPL-3.0-or-later</license>
         <news>
+v0.2.0 (2026-09-25) - PRIVAT / BETA
+- UJ: Kedvencek (helyi menu: Hozzaadas / Torles a kedvencekbol) es Elozmenyek
+  (legutobb nezett projektek, "utoljara: resz" jelolessel). Helyben tarolva.
+- UJ menupont: Dobott projektek.
+- UJ: Opening / ending automatikus atugrasa: a lejatszo data-skip szakaszai alapjan
+  (pl. 73.97-164.02,1305.99-1395.96) a szakasz elejen a vegere teker, szakaszonkent
+  egyszer. Beallitas: Lejatszas -> "Opening / ending automatikus atugrasa".
+- SZERVER-KIMELES (mint a MagyarAnime-nal): ket oldal-keres kozott min. 1 mp szunet;
+  projekt- es watch-oldalak gyorsitotarazva (a beallitott percig), feliratok 7 napig;
+  sikertelen belepes utan 10 percig nincs ujabb probalkozas ("Munkamenet torlese"
+  feloldja); helyi napi keres-szamlalo a fomenuben ("Ma: N keres az oldalra").
+- User-Agent MINDIG: Android 16 / Firefox 156 (fix, a beallitasokbol kikerult).
+- Legfrissebb reszek: a fooldal 10 percig gyorsitotarbol.
+- A lejatszasi URL-ek valtozatlanok, a Kodi "megnezve" jelolesei megmaradnak.
+
 v0.1.1 (2026-09-24) - PRIVAT / BETA
 - UJ: email/jelszo txt-fajlbol is megadhato (nincs gepeles). Beallitasok -> Belepes ->
   "email/jelszo txt fajl". Rugalmas formatum: 'email:jelszo', ket sor, 'email=..'/

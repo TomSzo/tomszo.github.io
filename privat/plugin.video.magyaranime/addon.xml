@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<addon id="plugin.video.magyaranime" name="MagyarAnime (privát)" version="0.6.14" provider-name="TomSzo">
+<addon id="plugin.video.magyaranime" name="MagyarAnime (privát)" version="0.7.0" provider-name="TomSzo">
     <requires>
         <import addon="xbmc.python" version="3.0.0"/>
         <import addon="script.module.requests" version="2.22.0"/>
@@ -17,6 +17,19 @@
         <platform>all</platform>
         <license>GPL-3.0-or-later</license>
         <news>
+v0.7.0 (2026-09-25) - PRIVAT / BETA
+- NAPI LIMIT FELEZESE: a szerverlista megnyitasakor kapott data_player.php valaszt
+  10 percig ujrahasznositja a lejatszas, igy egy lejatszas 2 helyett 1 forras-lekeres.
+  (Hibas / limit-valasz nem kerul a gyorsitotarba.)
+- UJ beallitas: Lejatszas -> "Reszre kattintva": Szerverlista (eddigi) vagy
+  Azonnali lejatszas (1 kattintas, 1 limit-keres; helyi menu: "Szerver valasztasa").
+- UJ: Kedvencek (helyi menu: Hozzaadas / Torles a kedvencekbol) es Elozmenyek
+  (legutobb nezett animek, "utoljara: N. resz" jelolessel). Helyben tarolva.
+- Kereses: az anime-index 6 orara gyorsitotarazva (nem tolti le minden keresesnel).
+- User-Agent MINDIG: Android 16 / Firefox 156 (fix, a beallitasokbol kikerult); a
+  ResolveURL altal visszaadott fejlecekben is ez kerul a User-Agent helyere.
+- A lejatszasi URL-ek valtozatlanok, a Kodi "megnezve" jelolesei megmaradnak.
+
 v0.6.14 (2026-09-24) - PRIVAT / BETA
 - Napi limit MOSTANTOL HELYI SZAMLALO: a magyaranime a FORRAS-LEKERDEZESEKET
   (data_player.php hivasok) szamolja a limitbe, nem a lejatszasokat. Minden forras-

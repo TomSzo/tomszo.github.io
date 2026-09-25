@@ -1,3 +1,16 @@
+v0.7.0 (2026-09-25) - PRIVAT / BETA
+- NAPI LIMIT FELEZESE: a szerverlista megnyitasakor kapott data_player.php valaszt
+  10 percig ujrahasznositja a lejatszas, igy egy lejatszas 2 helyett 1 forras-lekeres.
+  (Hibas / limit-valasz nem kerul a gyorsitotarba.)
+- UJ beallitas: Lejatszas -> "Reszre kattintva": Szerverlista (eddigi) vagy
+  Azonnali lejatszas (1 kattintas, 1 limit-keres; helyi menu: "Szerver valasztasa").
+- UJ: Kedvencek (helyi menu: Hozzaadas / Torles a kedvencekbol) es Elozmenyek
+  (legutobb nezett animek, "utoljara: N. resz" jelolessel). Helyben tarolva.
+- Kereses: az anime-index 6 orara gyorsitotarazva (nem tolti le minden keresesnel).
+- User-Agent MINDIG: Android 16 / Firefox 156 (fix, a beallitasokbol kikerult); a
+  ResolveURL altal visszaadott fejlecekben is ez kerul a User-Agent helyere.
+- A lejatszasi URL-ek valtozatlanok, a Kodi "megnezve" jelolesei megmaradnak.
+
 v0.6.14 (2026-09-24) - PRIVAT / BETA
 - Napi limit HELYI SZAMLALORA valtott: a site a FORRAS-LEKERDEZESEKET (data_player.php)
   szamolja, nem a lejatszasokat. Minden forras-lekeresnel +1, naponta nullazodik.

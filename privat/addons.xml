@@ -28,7 +28,7 @@ v1.0.0 (2026-09-21) - PRIVÁT
     </extension>
 </addon>
 
-<addon id="plugin.video.magyaranime" name="MagyarAnime (privát)" version="0.6.14" provider-name="TomSzo">
+<addon id="plugin.video.magyaranime" name="MagyarAnime (privát)" version="0.7.0" provider-name="TomSzo">
     <requires>
         <import addon="xbmc.python" version="3.0.0"/>
         <import addon="script.module.requests" version="2.22.0"/>
@@ -46,6 +46,19 @@ v1.0.0 (2026-09-21) - PRIVÁT
         <platform>all</platform>
         <license>GPL-3.0-or-later</license>
         <news>
+v0.7.0 (2026-09-25) - PRIVAT / BETA
+- NAPI LIMIT FELEZESE: a szerverlista megnyitasakor kapott data_player.php valaszt
+  10 percig ujrahasznositja a lejatszas, igy egy lejatszas 2 helyett 1 forras-lekeres.
+  (Hibas / limit-valasz nem kerul a gyorsitotarba.)
+- UJ beallitas: Lejatszas -> "Reszre kattintva": Szerverlista (eddigi) vagy
+  Azonnali lejatszas (1 kattintas, 1 limit-keres; helyi menu: "Szerver valasztasa").
+- UJ: Kedvencek (helyi menu: Hozzaadas / Torles a kedvencekbol) es Elozmenyek
+  (legutobb nezett animek, "utoljara: N. resz" jelolessel). Helyben tarolva.
+- Kereses: az anime-index 6 orara gyorsitotarazva (nem tolti le minden keresesnel).
+- User-Agent MINDIG: Android 16 / Firefox 156 (fix, a beallitasokbol kikerult); a
+  ResolveURL altal visszaadott fejlecekben is ez kerul a User-Agent helyere.
+- A lejatszasi URL-ek valtozatlanok, a Kodi "megnezve" jelolesei megmaradnak.
+
 v0.6.14 (2026-09-24) - PRIVAT / BETA
 - Napi limit MOSTANTOL HELYI SZAMLALO: a magyaranime a FORRAS-LEKERDEZESEKET
   (data_player.php hivasok) szamolja a limitbe, nem a lejatszasokat. Minden forras-
@@ -211,7 +224,7 @@ v0.1.0 (2026-09-21) - PRIVÁT / BÉTA
     </extension>
 </addon>
 
-<addon id="plugin.video.mutekifansub" name="Muteki Fansub (privát)" version="0.1.1" provider-name="TomSzo">
+<addon id="plugin.video.mutekifansub" name="Muteki Fansub (privát)" version="0.2.0" provider-name="TomSzo">
     <requires>
         <import addon="xbmc.python" version="3.0.0"/>
         <import addon="script.module.requests" version="2.22.0"/>
@@ -227,6 +240,21 @@ v0.1.0 (2026-09-21) - PRIVÁT / BÉTA
         <platform>all</platform>
         <license>GPL-3.0-or-later</license>
         <news>
+v0.2.0 (2026-09-25) - PRIVAT / BETA
+- UJ: Kedvencek (helyi menu: Hozzaadas / Torles a kedvencekbol) es Elozmenyek
+  (legutobb nezett projektek, "utoljara: resz" jelolessel). Helyben tarolva.
+- UJ menupont: Dobott projektek.
+- UJ: Opening / ending automatikus atugrasa: a lejatszo data-skip szakaszai alapjan
+  (pl. 73.97-164.02,1305.99-1395.96) a szakasz elejen a vegere teker, szakaszonkent
+  egyszer. Beallitas: Lejatszas -> "Opening / ending automatikus atugrasa".
+- SZERVER-KIMELES (mint a MagyarAnime-nal): ket oldal-keres kozott min. 1 mp szunet;
+  projekt- es watch-oldalak gyorsitotarazva (a beallitott percig), feliratok 7 napig;
+  sikertelen belepes utan 10 percig nincs ujabb probalkozas ("Munkamenet torlese"
+  feloldja); helyi napi keres-szamlalo a fomenuben ("Ma: N keres az oldalra").
+- User-Agent MINDIG: Android 16 / Firefox 156 (fix, a beallitasokbol kikerult).
+- Legfrissebb reszek: a fooldal 10 percig gyorsitotarbol.
+- A lejatszasi URL-ek valtozatlanok, a Kodi "megnezve" jelolesei megmaradnak.
+
 v0.1.1 (2026-09-24) - PRIVAT / BETA
 - UJ: email/jelszo txt-fajlbol is megadhato (nincs gepeles). Beallitasok -> Belepes ->
   "email/jelszo txt fajl". Rugalmas formatum: 'email:jelszo', ket sor, 'email=..'/
@@ -249,7 +277,7 @@ v0.1.0 (2026-09-24) - PRIVAT / BETA
     </extension>
 </addon>
 
-<addon id="plugin.video.kintsugifansub" name="Kintsugi Fansub (privát)" version="0.1.0" provider-name="TomSzo">
+<addon id="plugin.video.kintsugifansub" name="Kintsugi Fansub (privát)" version="0.2.0" provider-name="TomSzo">
     <requires>
         <import addon="xbmc.python" version="3.0.0"/>
         <import addon="script.module.requests" version="2.22.0"/>
@@ -265,6 +293,20 @@ v0.1.0 (2026-09-24) - PRIVAT / BETA
         <platform>all</platform>
         <license>GPL-3.0-or-later</license>
         <news>
+v0.2.0 (2026-09-25) - PRIVAT / BETA
+- UJ: Kedvencek (helyi menu: Hozzaadas / Torles a kedvencekbol) es Elozmenyek
+  (legutobb nezett projektek, "utoljara: resz" jelolessel). Helyben tarolva.
+- UJ: Opening / ending automatikus atugrasa: a lejatszo data-skip szakaszai alapjan
+  (pl. 73.97-164.02,1305.99-1395.96) a szakasz elejen a vegere teker, szakaszonkent
+  egyszer. Beallitas: Lejatszas -> "Opening / ending automatikus atugrasa".
+- SZERVER-KIMELES (mint a MagyarAnime-nal): ket oldal-keres kozott min. 1 mp szunet;
+  projekt- es watch-oldalak gyorsitotarazva (a beallitott percig), feliratok 7 napig;
+  sikertelen belepes utan 10 percig nincs ujabb probalkozas ("Munkamenet torlese"
+  feloldja); helyi napi keres-szamlalo a fomenuben ("Ma: N keres az oldalra").
+- User-Agent MINDIG: Android 16 / Firefox 156 (fix, a beallitasokbol kikerult).
+- Legfrissebb reszek: legfeljebb 15 aktiv projekt (eddig 25), gyorsitotarbol.
+- A lejatszasi URL-ek valtozatlanok, a Kodi "megnezve" jelolesei megmaradnak.
+
 v0.1.0 (2026-09-24) - PRIVAT / BETA
 - Kezdeti kiadas a Kintsugi Fansub (kintsugi-fansub.hu) oldalhoz. A csapat a Mutekibol
   valt ki, ugyanazzal a fiokkal lehet belepni.
@@ -313,61 +355,6 @@ v0.1.0 (2026-09-24) - PRIVAT / BETA
         <assets>
             <icon>icon.png</icon>
             <fanart>fanart.jpg</fanart>
-        </assets>
-    </extension>
-</addon>
-
-<addon id="plugin.video.network4" name="Network4 (privát)" version="0.1.2" provider-name="TomSzo">
-    <requires>
-        <import addon="xbmc.python" version="3.0.0"/>
-        <import addon="script.module.requests" version="2.22.0"/>
-        <import addon="inputstream.adaptive" version="2.6.0"/>
-        <import addon="script.module.inputstreamhelper" version="0.5.0" optional="true"/>
-    </requires>
-    <extension point="xbmc.python.pluginsource" library="default.py">
-        <provides>video</provides>
-    </extension>
-    <extension point="xbmc.addon.metadata">
-        <summary lang="hu">Network4 (network4.hu) – privát, a saját előfizetéssel, Widevine DRM-mel</summary>
-        <description lang="hu">Privát, magánhasználatú videó addon a network4.hu-hoz, KIZÁRÓLAG a tulajdonos saját előfizetésével. A /login Cloudflare-kihívás mögött van, ezért a tulajdonos böngészőjéből kimásolt sütikkel (Cookie fejléc, cookies.txt vagy JSON export) dolgozik; tartalékként email/jelszó is megadható. listázza a sport kategóriákat és gyűjteményeket, és a /sport/watch oldal Uplynk DASH manifestjét az inputstream.adaptive-val, a készülék hivatalos Widevine CDM-jével játssza le. Magánhasználat, saját felelősségre.</description>
-        <disclaimer lang="hu">Privát, magánhasználatú kiegészítő. Csak a tulajdonos saját előfizetésével működik.</disclaimer>
-        <language>hu</language>
-        <platform>all</platform>
-        <license>GPL-3.0-or-later</license>
-        <news>
-v0.1.2 (2026-09-25) - PRIVAT / BETA
-- A network4.hu /login oldala Cloudflare-kihivas ("Just a moment...") moge kerult,
-  ezert az email/jelszos auto-belepes a Kodibol nem mukodik. UJ: bongeszos suti-mod.
-  Beallitasok -> Belepes -> Bongeszos sutik (Cookie fejlec), vagy suti-fajl
-  (cookies.txt / Cookie-Editor JSON), vagy addon_data/.../cookies.txt.
-  A 'maradjak bejelentkezve' remember_web_* sutivel sokaig ervenyes.
-- Kihivas felismerese: nincs belepesi ciklus, a Kapcsolat teszt jelzi, a kihivas-oldal
-  a debug mappaba kerul. Kijelentkezeskor a bongeszos sutik ujratoltodnek.
-- cf_clearance hasznalatakor a User-Agent a bongeszoevel egyezzen (ugyanarrol az IP-rol).
-  Alapertelmezett UA: a tulajdonos Firefox for Android bongeszoje (rv:156).
-
-v0.1.1 (2026-09-25) - PRIVAT / BETA
-- A valodi oldalszerkezetre igazitva (bejelentkezett HTML alapjan):
-  /sport/collections -> kategoriak (Kiemelt sportok, Labdarugas, Motorsport, ...)
-  -> gyujtemenyek (/sport/collection/details/&lt;slug&gt;) -> adasok (/sport/watch/&lt;slug&gt;).
-- Lejatszas a /sport/watch oldalrol: a player.source Uplynk .mpd URL-je es a
-  contentProtection.widevine.licenseAcquisitionURL (content.uplynk.com/wv) kozvetlenul.
-- Cim es poszter a lejatszo konfigjabol (chromecastSource metadata / player.poster).
-- Uj menupont: Sport musorujsag (EPG). A kezi megnyitas watch-slugot / teljes linket var.
-
-v0.1.0 (2026-09-25) - PRIVAT / BETA
-- Kezdeti kiadas a network4.hu-hoz (sajat elofizetes).
-- Email/jelszo auto-belepes: GET /login (_token) -> POST /login (_token, email, password,
-  remember), munkamenet-sutik lemezre mentve; txt-fajlbol is megadhato (login.txt).
-- Sport lista a /sport oldal /sport/details/&lt;slug&gt; linkjeibol; link/slug kezi megnyitasa.
-- Lejatszas: a details oldal (vagy /user-session) alairt Uplynk .mpd URL-je, mindig frissen
-  (kb. 1 oraig ervenyes), inputstream.adaptive + Widevine (licenc: content.uplynk.com/wv,
-  a beallitasokban felulirhato). IA 21.4.4+ eseten drm_legacy, regebbin license_key.
-- Hibakereses: ha nincs manifest/belepes, az oldal az addon_data/.../debug mappaba mentve;
-  "Details oldal mentese" menupont es Kapcsolat teszt.
-        </news>
-        <assets>
-            <icon>icon.png</icon>
         </assets>
     </extension>
 </addon>

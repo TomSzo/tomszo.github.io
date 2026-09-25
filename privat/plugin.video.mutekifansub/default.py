@@ -14,6 +14,8 @@ import xbmcplugin
 import xbmcaddon
 
 from resources.lib import mutekifansub as mtk
+from resources.lib import library as lib
+from resources.lib import skipper
 
 ADDON = xbmcaddon.Addon()
 HANDLE = int(sys.argv[1])
@@ -28,8 +30,11 @@ def build_url(**kw):
     return BASE + '?' + urlencode(kw)
 
 
-def add_dir(label, url, folder=True, art=None, playable=False, plot=None, info=None):
+def add_dir(label, url, folder=True, art=None, playable=False, plot=None, info=None,
+            context=None):
     li = xbmcgui.ListItem(label=label)
+    if context:
+        li.addContextMenuItems(context)
     icon = ADDON.getAddonInfo('icon')
     li.setArt({'icon': art or icon, 'thumb': art or icon, 'poster': art,
                'fanart': ADDON.getAddonInfo('fanart')})
@@ -62,11 +67,66 @@ def _creds_ok():
 
 
 # --------------------------------------------------------------------------
+# Kedvencek / Előzmények (helyi)
+# --------------------------------------------------------------------------
+def _proj_key(slug):
+    return 'project:%s' % slug
+
+
+def _fav_ctx(slug, title, art):
+    label = ('[COLOR red]✖[/COLOR] Törlés a kedvencekből' if lib.is_favorite(_proj_key(slug))
+             else '[COLOR gold]★[/COLOR] Hozzáadás a kedvencekhez')
+    return [(label, 'RunPlugin(%s)' % build_url(action='favtoggle', slug=slug, t=title,
+                                                art=art or ''))]
+
+
+def add_project(title, slug, art=None, plot=None, label=None):
+    add_dir(label or title, build_url(action='project', slug=slug, t=title, art=art or ''),
+            art=art, plot=plot, info={'mediatype': 'tvshow'},
+            context=_fav_ctx(slug, title, art))
+
+
+def view_favorites():
+    items = lib.favorites()
+    if not items:
+        notify('Még nincs kedvenc – egy projekten: helyi menü → Hozzáadás a kedvencekhez')
+    for it in items:
+        add_project(it['title'], it['params'].get('slug'), it.get('art'))
+    end('tvshows')
+
+
+def view_history():
+    items = lib.history()
+    if not items:
+        notify('Még nincs előzmény')
+    for it in items:
+        label = it['title']
+        if it.get('last'):
+            label = '%s  [COLOR grey](utoljára: %s)[/COLOR]' % (label, it['last'])
+        add_project(it['title'], it['params'].get('slug'), it.get('art'), label=label)
+    if items:
+        add_dir('[COLOR grey]Előzmények törlése[/COLOR]', build_url(action='histclear'),
+                folder=False)
+    end('tvshows')
+
+
+def fav_toggle(p):
+    added = lib.toggle_favorite(_proj_key(p['slug']), p.get('t'), p.get('art'),
+                                {'action': 'project', 'slug': p['slug']})
+    notify('Hozzáadva a kedvencekhez' if added else 'Törölve a kedvencekből', t=2500)
+    xbmc.executebuiltin('Container.Refresh')
+
+
+# --------------------------------------------------------------------------
 def view_root():
     if not _creds_ok():
         add_dir('[COLOR red]! Add meg az email/jelszó párost a beállításokban[/COLOR]',
                 build_url(action='opensettings'), folder=False)
     add_dir('[COLOR gold]★ Legfrissebb részek[/COLOR]', build_url(action='latest'))
+    add_dir('[COLOR yellow]📊 Ma: %d kérés az oldalra[/COLOR]' % mtk.today_requests(),
+            build_url(action='diag'), folder=False)
+    add_dir('[COLOR gold]★ Kedvencek[/COLOR]', build_url(action='favorites'))
+    add_dir('Előzmények (legutóbb nézett)', build_url(action='history'))
     add_dir('Projektek (böngészés)', build_url(action='projmenu'))
     add_dir('Keresés', build_url(action='search'))
     add_dir('[COLOR yellow]Kapcsolat teszt (bejelentkezés ellenőrzése)[/COLOR]',
@@ -82,7 +142,8 @@ def view_diag():
              'Főoldal betöltve: %d byte' % length,
              'Bejelentkezve: %s' % ('IGEN' if ok else 'NEM'),
              'Felhasználó: %s' % (name or '—'),
-             'User-Agent: %s' % mtk.user_agent()]
+             'User-Agent (fix): %s' % mtk.user_agent(),
+             'Mai kérések az oldalra (helyi számláló): %d' % mtk.today_requests()]
     if not ok:
         lines.append('')
         lines.append('Ha NEM vagy bejelentkezve: ellenőrizd az email/jelszót a '
@@ -108,6 +169,7 @@ def view_projmenu():
     add_dir('Befejezett projektek', build_url(action='status', s='finished'))
     add_dir('Tervezett projektek', build_url(action='status', s='planned'))
     add_dir('Felfüggesztett projektek', build_url(action='status', s='suspended'))
+    add_dir('Dobott projektek', build_url(action='status', s='dropped'))
     add_dir('Összes projekt (A→Z)', build_url(action='allproj'))
     add_dir('Szezon szerint', build_url(action='seasons'))
     add_dir('Műfaj szerint', build_url(action='genres'))
@@ -123,9 +185,7 @@ def _list_projects(items, content='tvshows'):
         label = p['title']
         if p.get('episodes'):
             label = '%s  [COLOR grey](%s)[/COLOR]' % (label, p['episodes'])
-        add_dir(label, build_url(action='project', slug=p['slug']),
-                art=p.get('art'), plot=p.get('plot'),
-                info={'mediatype': 'tvshow'})
+        add_project(p['title'], p['slug'], p.get('art'), plot=p.get('plot'), label=label)
     end(content)
 
 
@@ -164,10 +224,14 @@ def view_genre(g):
     _list_projects(mtk.projects_by_genre(g))
 
 
-def view_project(slug):
+def view_project(slug, title=None, art=None):
     data = mtk.project_episodes(slug)
     eps = data.get('episodes') or []
     plot = data.get('plot') or ''
+    title = data.get('title') or title or slug
+    if eps:
+        lib.add_history(_proj_key(slug), title, art, {'action': 'project', 'slug': slug})
+        lib.set_current(_proj_key(slug), {ep['id']: ep['title'] for ep in eps})
     if not eps:
         notify('Nincs epizód (vagy nincs bejelentkezve)')
     for ep in eps:
@@ -230,8 +294,13 @@ def play(ep_id):
                 li.setSubtitles([sp])
         except Exception as exc:  # noqa
             mtk.log('felirat hiba: %s' % exc, xbmc.LOGWARNING)
+    lib.mark_played_id(ep_id, src.get('title'))
     mtk.log('Lejátszás [%s]: %s' % (label, url))
     xbmcplugin.setResolvedUrl(HANDLE, True, li)
+    segs = skipper.parse_skip(src.get('skip'))
+    if segs and skipper.enabled():
+        mtk.log('Átugorható szakaszok: %s' % segs)
+        skipper.watch(segs, notify=lambda m: notify(m, t=2000))
 
 
 def router(qs):
@@ -256,14 +325,24 @@ def router(qs):
     elif action == 'genre':
         view_genre(p.get('g', ''))
     elif action == 'project':
-        view_project(p['slug'])
+        view_project(p['slug'], p.get('t'), p.get('art'))
+    elif action == 'favorites':
+        view_favorites()
+    elif action == 'history':
+        view_history()
+    elif action == 'favtoggle':
+        fav_toggle(p)
+    elif action == 'histclear':
+        lib.clear_history()
+        xbmc.executebuiltin('Container.Refresh')
     elif action == 'search':
         view_search()
     elif action == 'diag':
         view_diag()
     elif action == 'refreshcache':
+        mtk.clear_page_cache()
         mtk.projects_html(force=True)
-        notify('Projekt-gyorsítótár frissítve')
+        notify('Gyorsítótár frissítve')
         end('files')
     elif action == 'clearsession':
         mtk.clear_cookies()
