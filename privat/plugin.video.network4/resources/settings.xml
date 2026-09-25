@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<settings>
+	<category label="Belépés">
+		<setting id="email" type="text" label="Email cím (Network4 / Arena4+ fiók)" default="" />
+		<setting id="password" type="text" label="Jelszó" option="hidden" default="" />
+		<setting id="api_ua" type="enum" label="API User-Agent" values="Firefox (Android 16)|Network4 mobilalkalmazás (Dart)" default="0" />
+		<setting type="action" label="Munkamenet törlése (újra bejelentkezés)"
+		         action="RunPlugin(plugin://plugin.video.network4/?action=clearsession)" />
+		<setting type="action" label="Gyorsítótár törlése (gyűjtemények, listák)"
+		         action="RunPlugin(plugin://plugin.video.network4/?action=clearcache)" />
+	</category>
+	<category label="Lejátszás">
+		<setting id="use_ia" type="bool" label="InputStream Adaptive használata (HLS / DASH)" default="true" />
+		<setting id="ask_replay" type="bool" label="Élő adásnál: kérdezze meg, élőben vagy az elejétől" default="true" />
+		<setting id="license_url" type="text" label="Widevine licenc URL (üres = Uplynk alapértelmezett)" default="" />
+	</category>
+</settings>

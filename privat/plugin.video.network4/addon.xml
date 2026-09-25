@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<addon id="plugin.video.network4" name="Network4 (privát)" version="0.2.0" provider-name="TomSzo">
+    <requires>
+        <import addon="xbmc.python" version="3.0.0"/>
+        <import addon="script.module.requests" version="2.22.0"/>
+        <import addon="inputstream.adaptive" optional="true"/>
+    </requires>
+    <extension point="xbmc.python.pluginsource" library="default.py">
+        <provides>video</provides>
+    </extension>
+    <extension point="xbmc.addon.metadata">
+        <summary lang="hu">Network4 / Arena4+ – privát, a saját előfizetéssel (mobilalkalmazás API)</summary>
+        <description lang="hu">Privát, magánhasználatú videó addon a Network4 / Arena4+ szolgáltatáshoz, a tulajdonos saját fiókjával. A hivatalos mobilalkalmazás API-ját használja (net4plus.network4.hu): élő közvetítések (élőben vagy az elejétől), videótár gyűjteményenként, keresés. A plugin.video.arena4plus (heg, vargalex) működése alapján.</description>
+        <disclaimer lang="hu">Privát, magánhasználatú kiegészítő. Csak a tulajdonos saját előfizetésével működik.</disclaimer>
+        <language>hu</language>
+        <platform>all</platform>
+        <license>GPL-3.0-or-later</license>
+        <news>
+v0.2.0 (2026-09-25) - PRIVAT / BETA
+- UJRAIRVA a hivatalos mobilalkalmazas API-jara (net4plus.network4.hu/api), a
+  plugin.video.arena4plus mukodese alapjan: email/jelszo belepes (Bearer token),
+  a weboldal Cloudflare-kihivasa nem erinti. Cloudflare-kihivast nem kerul meg.
+- Elo kozvetitesek (ELO / kezdes idopontja), elobb vagy az elejetol lejatszas.
+- Videotar gyujtemenyenkent (30-asaval lapozva), kereses.
+- Lejatszas: Uplynk HLS / DASH az InputStream Adaptive-val (DASH-nel Widevine).
+- Kimelet: 1 mp szunet, gyujtemenyek / listak 6 oraig tarolva, token lemezen,
+  401-nel egyszeri ujrabelepes, sikertelen belepes utan 10 perc szunet.
+- Fix Firefox UA; az API-hoz beallithato a mobilalkalmazas UA-ja is.
+- Kapcsolat teszt a fomenuben.
+        </news>
+        <assets>
+            <icon>icon.png</icon>
+            <fanart>fanart.jpg</fanart>
+        </assets>
+    </extension>
+</addon>
