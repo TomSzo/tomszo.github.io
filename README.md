@@ -29,7 +29,6 @@ egyetlen tárolóból települjenek.
 | **service.autosub** | Automatikus felirat-kezelő. Elsősorban azoknak jó, akik **animét néznek**. |
 | **plugin.video.nCore_TV** *(fork)* | nCore TV videó addon. **Ez egy fork** – nem az eredeti, csak TomSzo által karbantartott, módosított változat. Részletek: [plugin.video.nCore_TV/README.md](plugin.video.nCore_TV/README.md). |
 | **plugin.video.subvito** | SubVito videó addon *(South Park magyarul – subvito.eu)*. |
-| **plugin.program.kedvencmappak** | Kedvenc mappák: mappák / almappák a Kodi Kedvencekben, *Kedvenc mappába...* helyi menü mindenhol. |
 | **weather.tomszo** | Időjárás-szolgáltató *(Időkép magyar településekre + Open-Meteo, API-kulcs nélkül)*. |
 | **script.speedtester** | Internet-sebességteszt (speedtest.net) – *TomSzo v2.0.0 fork*. |
 

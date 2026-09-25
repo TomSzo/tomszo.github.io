@@ -502,4 +502,42 @@ v0.2.0 (2026-09-25) - PRIVAT / BETA
     </extension>
 </addon>
 
+<addon id="plugin.program.kedvencmappak" name="Kedvenc mappák" version="1.0.0" provider-name="TomSzo">
+    <requires>
+        <import addon="xbmc.python" version="3.0.0"/>
+    </requires>
+    <extension point="xbmc.python.pluginsource" library="default.py">
+        <provides>executable video audio image</provides>
+    </extension>
+    <extension point="kodi.context.item">
+        <menu id="kodi.core.main">
+            <item library="context.py">
+                <label>30100</label>
+                <visible>!String.IsEmpty(ListItem.Label) + !ListItem.IsParentFolder + !String.StartsWith(ListItem.FolderPath,plugin://plugin.program.kedvencmappak) + !String.StartsWith(ListItem.Path,plugin://plugin.program.kedvencmappak) + !String.StartsWith(Container.FolderPath,plugin://plugin.program.kedvencmappak)</visible>
+            </item>
+        </menu>
+    </extension>
+    <extension point="xbmc.addon.metadata">
+        <summary lang="en_GB">Favourite folders - folders and subfolders for your favourites</summary>
+        <summary lang="hu_HU">Kedvenc mappák - mappák és almappák a kedvenceidnek</summary>
+        <description lang="en_GB">Create folders and subfolders for your favourites and pin them to Kodi's Favourites. The "Add to favourite folder..." context menu entry stores anything (addon folders, videos, library items, add-ons, existing favourites) into a folder. Rename, icon, reorder, move, import Kodi favourites, backup/restore.</description>
+        <description lang="hu_HU">Mappák és almappák a kedvenceidnek, amelyek a Kodi Kedvencek közé is kitűzhetők. A "Kedvenc mappába..." helyi menüponttal bármit (addon-mappát, videót, könyvtári elemet, kiegészítőt, meglévő kedvencet) egy mappába tehetsz. Átnevezés, ikon, sorrend, áthelyezés, Kodi Kedvencek importálása, mentés/visszaállítás.</description>
+        <language>hu</language>
+        <platform>all</platform>
+        <license>GPL-3.0-or-later</license>
+        <source>https://github.com/TomSzo/tomszo.github.io</source>
+        <news>
+v1.0.0 (2026-09-25)
+- Kezdeti kiadas: mappak, almappak; kituzes a Kodi Kedvencek koze
+- "Kedvenc mappaba..." helyi menu mindenhol (a Kodi Kedvencek ablakban is)
+- Atnevezes, ikon, fel/le, athelyezes, torles; Kodi Kedvencek importalasa
+- Mentes fajlba / visszaallitas, automatikus .bak az elozo allapotrol
+        </news>
+        <assets>
+            <icon>icon.png</icon>
+            <fanart>fanart.jpg</fanart>
+        </assets>
+    </extension>
+</addon>
+
 </addons>
