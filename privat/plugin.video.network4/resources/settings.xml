@@ -3,7 +3,8 @@
 	<category label="Belépés">
 		<setting id="email" type="text" label="Email cím (Network4 / Arena4+ fiók)" default="" />
 		<setting id="password" type="text" label="Jelszó" option="hidden" default="" />
-		<setting id="api_ua" type="enum" label="API User-Agent" values="Firefox (Android 16)|Network4 mobilalkalmazás (Dart)" default="0" />
+		<setting id="api_ua2" type="enum" label="API User-Agent" values="Network4 mobilalkalmazás (Dart)|Firefox (Android 16)" default="0" />
+		<setting id="cloudscraper" type="bool" label="Cloudflare-ellenőrzés kezelése (cloudscraper, mint az Arena4Plus)" default="true" />
 		<setting type="action" label="Munkamenet törlése (újra bejelentkezés)"
 		         action="RunPlugin(plugin://plugin.video.network4/?action=clearsession)" />
 		<setting type="action" label="Gyorsítótár törlése (gyűjtemények, listák)"

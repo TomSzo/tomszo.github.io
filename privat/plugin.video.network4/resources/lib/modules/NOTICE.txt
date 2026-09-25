@@ -1,0 +1,8 @@
+Beépített (vendored) külső könyvtárak - a plugin.video.arena4plus 1.0.3 csomagjából:
+
+  cloudscraper 3.0.0     MIT License       https://github.com/VeNoMouS/cloudscraper
+  requests_toolbelt      Apache-2.0        https://github.com/requests/toolbelt
+  pyparsing              MIT License       https://github.com/pyparsing/pyparsing
+
+A Network4 (net4plus.network4.hu) API Cloudflare-ellenőrzésének kezelésére,
+a tulajdonos saját előfizetéséhez.

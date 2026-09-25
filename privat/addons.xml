@@ -466,7 +466,7 @@ v0.1.0 (2026-09-25) - PRIVAT / BETA
     </extension>
 </addon>
 
-<addon id="plugin.video.network4" name="Network4 (privát)" version="0.2.1" provider-name="TomSzo">
+<addon id="plugin.video.network4" name="Network4 (privát)" version="0.3.0" provider-name="TomSzo">
     <requires>
         <import addon="xbmc.python" version="3.0.0"/>
         <import addon="script.module.requests" version="2.22.0"/>
@@ -477,12 +477,20 @@ v0.1.0 (2026-09-25) - PRIVAT / BETA
     </extension>
     <extension point="xbmc.addon.metadata">
         <summary lang="hu">Network4 / Arena4+ – privát, a saját előfizetéssel (mobilalkalmazás API)</summary>
-        <description lang="hu">Privát, magánhasználatú videó addon a Network4 / Arena4+ szolgáltatáshoz, a tulajdonos saját fiókjával. A hivatalos mobilalkalmazás API-ját használja (net4plus.network4.hu): élő közvetítések (élőben vagy az elejétől), videótár gyűjteményenként, keresés. A plugin.video.arena4plus (heg, vargalex) működése alapján.</description>
+        <description lang="hu">Privát, magánhasználatú videó addon a Network4 / Arena4+ szolgáltatáshoz, a tulajdonos saját fiókjával. A hivatalos mobilalkalmazás API-ját használja (net4plus.network4.hu): élő közvetítések (élőben vagy az elejétől), videótár gyűjteményenként, keresés. A plugin.video.arena4plus (heg, vargalex) működése alapján; a Cloudflare-ellenőrzést a beépített cloudscraper (MIT) kezeli.</description>
         <disclaimer lang="hu">Privát, magánhasználatú kiegészítő. Csak a tulajdonos saját előfizetésével működik.</disclaimer>
         <language>hu</language>
         <platform>all</platform>
         <license>GPL-3.0-or-later</license>
         <news>
+v0.3.0 (2026-09-25) - PRIVAT / BETA
+- A tulajdonos kerésére az Arena4Plus-szal azonosan: a net4plus API Cloudflare-
+  ellenorzeset a beepitett cloudscraper kezeli (resources/lib/modules; beallitasban
+  kikapcsolhato). Hiba eseten legfeljebb 2 ujraprobalas 5 mp szunettel.
+- API User-Agent alapbol a mobilalkalmazase (Dart), mint az Arena4Plus-ban;
+  a Firefox valaszthato.
+- Kapcsolat teszt: kiirja, cloudscraper vagy sima requests fut-e.
+
 v0.2.1 (2026-09-25) - PRIVAT / BETA
 - JAVITAS: "'list' object has no attribute 'get'" - a regi (0.1.x) verzio session.json
   fajlja (suti-lista) miatt. A token mostantol token.json-ban; a profil-fajlok
