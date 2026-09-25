@@ -682,22 +682,76 @@ def latest():
 # ---------------------------------------------------------------------------
 # Lejátszás
 # ---------------------------------------------------------------------------
+_VIDEO_HOSTS = ('videa.hu', 'videakid.hu', 'indavideo.hu', 'youtube.com', 'youtu.be',
+                'dailymotion.com', 'ok.ru', 'mega.nz', 'drive.google.com', 'vk.com', 'vkvideo',
+                'streamtape', 'dood', 'mixdrop', 'voe.sx', 'filemoon', 'streamwish', 'mp4upload',
+                'sibnet', 'rumble.com', 'vimeo.com', 'mediafire.com', 'pixeldrain')
+_DIRECT_RE = re.compile(r'\.(?:mp4|m3u8|mkv|webm)(?:[?#|]|$)', re.I)
+
+
+def find_embed(h):
+    """A lejátszó forrása a watch oldalon.
+    1) <div class="stream-box-video"><iframe src=...>   (a szokásos eset)
+    2) bármely iframe (src / data-src) ismert videós tárhelyre
+    3) <video src=...> / <source src=...> közvetlen videó"""
+    fm = re.search(r'<div class="stream-box-video">\s*<iframe[^>]+?(?:data-)?src="([^"]+)"', h,
+                   re.DOTALL)
+    if fm:
+        return _abs(fm.group(1))
+    for src in re.findall(r'<iframe[^>]+?(?:data-)?src=["\']([^"\']+)["\']', h, re.I):
+        if any(host in src.lower() for host in _VIDEO_HOSTS):
+            return _abs(src)
+    vm = re.search(r'<(?:video|source)[^>]+src=["\']([^"\']+\.(?:mp4|m3u8|webm)[^"\']*)["\']',
+                   h, re.I)
+    if vm:
+        return _abs(vm.group(1))
+    return None
+
+
 def parse_watch(html):
     """Watch oldal: {'title','embed','next','anime_id','poster'}."""
     h = html or ''
-    fm = re.search(r'<div class="stream-box-video">\s*<iframe[^>]+src="([^"]+)"', h, re.DOTALL)
     tm = re.search(r'<p class="stream-box-title">(.*?)</p>', h, re.DOTALL)
     nm = re.search(r'page=watch&(?:amp;)?id=(\d+)">K[^<]*vetkez', h)
     am = re.search(r'Adatlap: <a href="[^"]*page=anime&(?:amp;)?id=(\d+)"', h)
     pm = re.search(r'<figure class="stream-box-game-image[^"]*">\s*<img src="([^"]+)"', h)
-    return {'title': _txt(tm.group(1)) if tm else '', 'embed': _abs(fm.group(1)) if fm else None,
+    return {'title': _txt(tm.group(1)) if tm else '', 'embed': find_embed(h),
             'next': nm.group(1) if nm else None, 'anime_id': am.group(1) if am else None,
             'poster': _abs(pm.group(1)) if pm else None}
 
 
+def _is_watch_page(html):
+    """Csak a lejátszót tartalmazó watch oldalt tároljuk (a "lépj be" változatot nem)."""
+    return _is_page(html) and bool(find_embed(html))
+
+
 def watch(vid):
-    return parse_watch(cached_get('%s?page=watch&id=%s' % (ADATLAP, vid), _cache_minutes() * 60,
-                                  valid=_is_page))
+    """A rész adatai + 'html' (hibakereséshez). Ha nincs lejátszó és nem vagyunk
+    belépve, egyszer belépünk és frissen újratöltjük."""
+    path = '%s?page=watch&id=%s' % (ADATLAP, vid)
+    html = cached_get(path, _cache_minutes() * 60, valid=_is_watch_page)
+    w = parse_watch(html)
+    if not w['embed'] and html and have_credentials() and not logged_in(html):
+        log('Watch %s: nincs lejátszó és nem vagyunk belépve - belépés, újratöltés' % vid)
+        if login():
+            html = cached_get(path, 0, valid=_is_watch_page)
+            w = parse_watch(html)
+    w['html'] = html or ''
+    return w
+
+
+def save_debug(name, html):
+    """Hibakereső mentés az addon_data mappába; visszaadja az útvonalat."""
+    path = os.path.join(_profile_dir(), name)
+    try:
+        f = xbmcvfs.File(path, 'w')
+        try:
+            f.write(html or '')
+        finally:
+            f.close()
+    except Exception as exc:  # noqa
+        log('debug mentés hiba: %s' % exc, xbmc.LOGWARNING)
+    return path
 
 
 def has_resolver():
@@ -708,8 +762,22 @@ def has_resolver():
         return False
 
 
+def _youtube_id(url):
+    m = re.search(r'(?:youtube(?:-nocookie)?\.com/(?:embed/|watch\?v=|v/)|youtu\.be/)'
+                  r'([\w-]{11})', url or '')
+    return m.group(1) if m else None
+
+
 def resolve_embed(url):
-    """A beágyazott lejátszó (videa, indavideo, ...) feloldása ResolveURL-lel."""
+    """A beágyazott lejátszó feloldása -> lejátszható URL (vagy None).
+    Közvetlen videó: marad; YouTube: a YouTube addon; minden más: ResolveURL."""
+    if not url:
+        return None
+    if _DIRECT_RE.search(url):
+        return url
+    yid = _youtube_id(url)
+    if yid:
+        return 'plugin://plugin.video.youtube/play/?video_id=%s' % yid
     try:
         import resolveurl
     except ImportError:
@@ -717,8 +785,13 @@ def resolve_embed(url):
         return None
     try:
         hmf = resolveurl.HostedMediaFile(url)
-        if hmf and hmf.valid_url():
-            return hmf.resolve() or None
+        if not hmf or not hmf.valid_url():
+            log('A ResolveURL nem ismeri ezt a lejátszót: %s' % url, xbmc.LOGWARNING)
+            return None
+        media = hmf.resolve()
+        if not media:
+            log('A ResolveURL nem adott videót: %s' % url, xbmc.LOGWARNING)
+        return media or None
     except Exception as exc:  # noqa
         log('ResolveURL hiba (%s): %s' % (url, exc), xbmc.LOGWARNING)
     return None
@@ -739,5 +812,7 @@ def merge_headers(extra, ours):
 
 def play_url(media):
     """A feloldott URL + fejlécek, fix User-Agenttel."""
+    if (media or '').startswith('plugin://'):
+        return media
     base, _, extra = (media or '').partition('|')
     return base + '|' + merge_headers(extra, 'User-Agent=%s' % quote(user_agent(), ''))

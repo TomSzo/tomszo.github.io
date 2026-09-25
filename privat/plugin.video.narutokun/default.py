@@ -211,13 +211,18 @@ def view_latest():
 
 def play(vid):
     w = nk.watch(vid)
+    nk.log('Watch %s: lejátszó = %s' % (vid, w.get('embed')))
     if not w.get('embed'):
-        notify('Ennél a résznél nincs online lejátszó', t=6000)
+        path = nk.save_debug('debug_watch_%s.html' % vid, w.get('html'))
+        nk.log('Nincs lejátszó a watch oldalon, mentve: %s' % path, xbmc.LOGWARNING)
+        notify('Nincs online lejátszó ennél a résznél (oldal mentve: debug_watch_%s.html)' % vid,
+               t=8000)
         xbmcplugin.setResolvedUrl(HANDLE, False, xbmcgui.ListItem())
         return
     media = nk.resolve_embed(w['embed'])
     if not media:
-        hint = '' if nk.has_resolver() else ' – telepítsd a ResolveURL-t'
+        host = w['embed'].split('/')[2] if '//' in w['embed'] else w['embed']
+        hint = ' – telepítsd a ResolveURL-t' if not nk.has_resolver() else ' (%s)' % host
         notify('Nem sikerült a videó feloldása%s' % hint, t=8000)
         xbmcplugin.setResolvedUrl(HANDLE, False, xbmcgui.ListItem())
         return
