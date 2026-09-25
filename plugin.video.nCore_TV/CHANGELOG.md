@@ -8,6 +8,14 @@ A formátum a [Keep a Changelog](https://keepachangelog.com/hu/1.1.0/) szerkezet
 
 ---
 
+## [1.2.2] – 2026-09-25 (fork: TomSzo)
+
+### Hozzáadva
+- **REMUX seed szerint** – új menüpontok a Film és a Sorozat kategóriákban, közvetlenül a sima REMUX alatt: *Film HU/EN REMUX (seed szerint)*, *Sorozat HU/EN REMUX (seed szerint)*. Az nCore saját rendezését használja (`miszerint=seeders&hogyan=DESC`), a lapozás („Következő oldal") megtartja a sorrendet.
+- A **Widgetek** menüben is elérhető mind a négy.
+
+---
+
 ## [1.2.1] – 2026-09-24 (fork: TomSzo)
 
 ### Javítva
