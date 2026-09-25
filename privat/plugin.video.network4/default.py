@@ -254,7 +254,9 @@ def play_live(slug, title):
 # Egyéb
 # ---------------------------------------------------------------------------
 def diag():
+    sess = type(api.session()).__name__
     lines = ['User-Agent (API): %s' % api.api_user_agent(),
+             'HTTP: %s' % ('cloudscraper' if 'Scraper' in sess else 'requests'),
              'Mai kérések: %d' % api.today_requests()]
     if not api.have_credentials():
         lines.append('[COLOR red]Nincs megadva email / jelszó[/COLOR]')
@@ -266,8 +268,8 @@ def diag():
                                                                'most léptünk be'))
             lines.append('Élő / közelgő közvetítés: %d' % len(events))
         except api.ChallengeError:
-            lines.append('[COLOR red]Cloudflare-kihívás[/COLOR] - próbáld a mobilalkalmazás '
-                         'User-Agentet a beállításokban')
+            lines.append('[COLOR red]Cloudflare-ellenőrzés nem sikerült[/COLOR] - nézd meg a '
+                         'beállításokat (cloudscraper be, mobilalkalmazás UA)')
         except api.ApiError as exc:
             lines.append('[COLOR red]Hiba:[/COLOR] %s' % exc)
     xbmcgui.Dialog().textviewer(NAME + ' - kapcsolat', '\n'.join(lines))

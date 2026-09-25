@@ -13,14 +13,16 @@ A plugin.video.arena4plus (heg, vargalex) alapján feltérképezve:
     GET /api/search/<szó>                      -> [{title, short_desc, vodviewer, ...}]
     VOD: a "vodviewer" oldalban: playbackUrl ... "https://...uplynk..."
 
-Nem a weboldalt (www.network4.hu) használjuk - az Cloudflare-kihívás mögött van.
-Cloudflare-kihívást NEM kerülünk meg: ha az API kihívást ad, jelezzük.
+Nem a weboldalt (www.network4.hu) használjuk. Az API is Cloudflare mögött van, ezért
+- a tulajdonos kérésére, az arena4plus-szal azonosan - a cloudscraper (MIT) kezeli a
+Cloudflare-ellenőrzést (resources/lib/modules; kikapcsolható a beállításokban).
 Kímélet: 1 mp szünet a kérések között, gyorsítótár (gyűjtemények / listák 6 óra),
 a token lemezen, 401-nél egyszeri újrabelépés, sikertelen belépés után 10 perc szünet.
 """
 import json
 import os
 import re
+import sys
 import time
 
 try:
@@ -48,8 +50,36 @@ LOGIN_COOLDOWN = 600
 TOKEN_FILE = 'token.json'     # (a 0.1.x session.json-ja süti-lista volt)
 LIST_TTL = 6 * 3600
 
-_SESSION = requests.Session() if requests else None
+CF_RETRIES = 2            # Cloudflare-hiba esetén ennyi újrapróba (5 mp szünettel)
+
+_SESSION = None
 _LAST = [0.0]
+
+
+def _use_cloudscraper():
+    return ADDON.getSetting('cloudscraper') != 'false'
+
+
+def session():
+    """Egy munkamenet a futás idejére. Alapból cloudscraper (mint a plugin.video.arena4plus:
+    a net4plus API Cloudflare mögött van); kikapcsolva / hiányzó modulnál sima requests."""
+    global _SESSION
+    if _SESSION is not None:
+        return _SESSION
+    if requests is None:
+        raise ApiError('Hiányzik a script.module.requests')
+    if _use_cloudscraper():
+        mod = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'modules')
+        if mod not in sys.path:
+            sys.path.insert(0, mod)
+        try:
+            import cloudscraper
+            _SESSION = cloudscraper.create_scraper()
+            return _SESSION
+        except Exception as exc:  # noqa
+            log('cloudscraper nem tölthető be (%s) - sima requests' % exc, xbmc.LOGWARNING)
+    _SESSION = requests.Session()
+    return _SESSION
 
 
 class ApiError(Exception):
@@ -57,7 +87,7 @@ class ApiError(Exception):
 
 
 class ChallengeError(ApiError):
-    """Cloudflare-kihívás - nem kerüljük meg."""
+    """Cloudflare-kihívás, amit a cloudscraper sem tudott teljesíteni."""
 
 
 class LoginError(ApiError):
@@ -69,7 +99,8 @@ def log(msg, level=xbmc.LOGINFO):
 
 
 def api_user_agent():
-    return APP_UA if ADDON.getSetting('api_ua') == '1' else FIREFOX_UA
+    # alapból a mobilalkalmazás UA-ja (mint az arena4plus); választható a Firefox is
+    return FIREFOX_UA if ADDON.getSetting('api_ua2') == '1' else APP_UA
 
 
 def profile(name=''):
@@ -130,19 +161,28 @@ def is_challenge(resp):
 
 
 def _http(url, headers, params=None, timeout=25):
-    if _SESSION is None:
-        raise ApiError('Hiányzik a script.module.requests')
-    gap = time.time() - _LAST[0]
-    if gap < MIN_GAP:
-        time.sleep(MIN_GAP - gap)
-    _LAST[0] = time.time()
-    _bump()
-    log('GET %s' % url.split('?')[0])
-    resp = _SESSION.get(url, params=params, headers=headers, timeout=timeout)
-    if is_challenge(resp):
-        _save_debug('challenge.html', resp.text)
-        raise ChallengeError('Cloudflare-kihívás (%s)' % resp.status_code)
-    return resp
+    sess = session()
+    for attempt in range(CF_RETRIES + 1):
+        gap = time.time() - _LAST[0]
+        if gap < MIN_GAP:
+            time.sleep(MIN_GAP - gap)
+        _LAST[0] = time.time()
+        _bump()
+        log('GET %s%s' % (url.split('?')[0], ' (újra %d.)' % attempt if attempt else ''))
+        try:
+            resp = sess.get(url, params=params, headers=headers, timeout=timeout)
+        except requests.exceptions.RequestException as exc:
+            raise ApiError('Hálózati hiba: %s' % exc)
+        except Exception as exc:  # noqa - a cloudscraper saját kivételei (pl. CloudflareChallengeError)
+            log('Cloudflare / cloudscraper hiba: %s' % exc, xbmc.LOGWARNING)
+            resp = None
+        if resp is not None and not is_challenge(resp):
+            return resp
+        if resp is not None:
+            _save_debug('challenge.html', resp.text)
+        if attempt < CF_RETRIES:
+            xbmc.sleep(5000)
+    raise ChallengeError('Cloudflare-kihívás (%d próbálkozás után)' % (CF_RETRIES + 1))
 
 
 def _save_debug(name, text):
