@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<addon id="plugin.video.subvito" name="SubVito" version="1.0.0" provider-name="TomSzo">
+<addon id="plugin.video.subvito" name="SubVito" version="1.1.0" provider-name="TomSzo">
     <requires>
         <import addon="xbmc.python" version="3.0.0"/>
         <import addon="script.module.requests" version="2.22.0"/>
@@ -20,6 +20,17 @@
         <license>GPL-3.0-or-later</license>
         <source>https://github.com/TomSzo/tomszo.github.io</source>
         <news>
+v1.1.0 (2026-09-25)
+- UJ: "Folytatas" a fomenuben - a legutobb nezett resz utani resz egy kattintassal.
+- UJ: Veletlen resz, Elozmenyek (legutobb nezett reszek).
+- Evad- es resz-szam a Kodinak (S29E01): pontosabb "megnezve" jeloles, skin-infok.
+- Kiméletesebb: a (nagy) fooldal-menu 6 oraig lemezen tarolva (eddig minden
+  menulepesnel ujra letoltodott), a reszek forrasai 7 napig; 1 mp szunet a keresek
+  kozott; napi keres-szamlalo; halozati hibanal a korabbi katalogus marad.
+- User-Agent fixen: Android 16 / Firefox 156.
+- Katalogus frissitese menupont.
+- Uj ikon es hatterkep: havas hegyek, fatabla, bojtos sapka.
+
 v1.0.0 (2026-09-21)
 - Kezdeti kiadás
 - Évadok (1-29), Filmek, P+ böngészése a subvito.eu oldalról
