@@ -503,5 +503,36 @@ v1.0.0 (2026-09-21)
     </extension>
 </addon>
 
+<addon id="weather.tomszo" name="Időjárás (Időkép + Open-Meteo)" version="1.0.0" provider-name="TomSzo">
+    <requires>
+        <import addon="xbmc.python" version="3.0.0"/>
+    </requires>
+    <extension point="xbmc.python.weather" library="default.py"/>
+    <extension point="xbmc.addon.metadata">
+        <summary lang="en_GB">Weather for Kodi - Időkép (Hungary) + Open-Meteo (worldwide)</summary>
+        <summary lang="hu_HU">Időjárás a Kodiban - Időkép (magyar települések) + Open-Meteo (az egész világ)</summary>
+        <description lang="en_GB">Weather provider for Kodi. For Hungarian towns the current weather, the 3-hourly and the 15-day forecast come from idokep.hu, completed with Open-Meteo data (humidity, wind, UV, precipitation, pressure). Anywhere else Open-Meteo is used. No API key needed. Up to 5 locations with search. Not affiliated with Időkép. Weather data by Open-Meteo.com (CC BY 4.0).</description>
+        <description lang="hu_HU">Időjárás-szolgáltató a Kodihoz. Magyar településeknél a jelenlegi idő, a 3 órás és a 15 napos előrejelzés az idokep.hu oldalról jön, az Open-Meteo méréseivel kiegészítve (páratartalom, szél, UV, csapadék, légnyomás). Külföldi helyeknél Open-Meteo. Nem kell API-kulcs. Legfeljebb 5 hely, kereséssel. Nem hivatalos, nincs kapcsolatban az Időképpel. Időjárási adatok: Open-Meteo.com (CC BY 4.0).</description>
+        <disclaimer lang="hu_HU">Az Időkép-oldalt a megszokott böngészős módon, ritkán (legfeljebb 20 percenként, helyenként egyszer) tölti le.</disclaimer>
+        <language>hu</language>
+        <platform>all</platform>
+        <license>GPL-3.0-or-later</license>
+        <source>https://github.com/TomSzo/tomszo.github.io</source>
+        <news>
+v1.0.0 (2026-09-25)
+- Kezdeti kiadas: Idokep (magyar telepulesek) + Open-Meteo (vilagszerte, kulcs nelkul)
+- Jelenlegi ido, 3 oras / oranként elorejelzes, 15-16 napos elorejelzes, napkelte/-nyugta
+- Hoerzet, harmatpont, paratartalom, szel + szellokes, UV, legnyomas, csapadek, latotavolsag
+- Idokep figyelmeztetesek (pl. Szeles nap) a napi elorejelzesben
+- 5 hely, telepuleskeresessel vagy koordinataval; alapertelmezes: Budapest
+- Kimeletes: 20 perces gyorsitotar, 1 mp szunet a keresek kozott, fix Firefox UA
+        </news>
+        <assets>
+            <icon>icon.png</icon>
+            <fanart>fanart.jpg</fanart>
+        </assets>
+    </extension>
+</addon>
+
 
 </addons>

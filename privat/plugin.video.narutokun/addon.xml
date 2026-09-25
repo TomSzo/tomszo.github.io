@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<addon id="plugin.video.narutokun" name="Naruto-Kun.Hu (privát)" version="0.1.1" provider-name="TomSzo">
+<addon id="plugin.video.narutokun" name="Naruto-Kun.Hu (privát)" version="0.1.2" provider-name="TomSzo">
     <requires>
         <import addon="xbmc.python" version="3.0.0"/>
         <import addon="script.module.requests" version="2.22.0"/>
@@ -17,6 +17,14 @@
         <platform>all</platform>
         <license>GPL-3.0-or-later</license>
         <news>
+v0.1.2 (2026-09-25) - PRIVAT / BETA
+- JAVITAS: lejatszas ("skipping unplayable item" naplobejegyzes nelkul): a watch oldalon
+  a lejatszot most tobb helyen keresi (stream-box iframe, barmely ismert videos
+  tarhely iframe-je, data-src, video/source tag), YouTube a YouTube addonnal.
+- Ha nincs lejatszo es nem vagyunk belepve: belepes + ujratoltes.
+- Lejatszo nelkuli oldalt nem tarol a gyorsitotar.
+- Reszletes naplo; ha nincs lejatszo, az oldal mentve: addon_data/.../debug_watch_ID.html
+
 v0.1.1 (2026-09-25) - PRIVAT / BETA
 - JAVITAS: a reszlista (_videos.php) valodi szerkezete szerint: a watch-link csak egy
   ikont tartalmaz, a cim (video-box-title) es a boritokep a blokkban van. Eddig a

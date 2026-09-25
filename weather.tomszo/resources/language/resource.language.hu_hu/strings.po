@@ -1,0 +1,97 @@
+# Kodi Media Center language file
+# Addon Name: Időjárás (Időkép + Open-Meteo)
+# Addon id: weather.tomszo
+# Addon Provider: TomSzo
+msgid ""
+msgstr ""
+"Project-Id-Version: weather.tomszo\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Language: hu_HU\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+
+msgctxt "#32000"
+msgid "Weather (Időkép + Open-Meteo)"
+msgstr "Időjárás (Időkép + Open-Meteo)"
+
+msgctxt "#32100"
+msgid "Locations"
+msgstr "Helyek"
+
+msgctxt "#32101"
+msgid "Location 1"
+msgstr "1. hely"
+
+msgctxt "#32102"
+msgid "Location 2"
+msgstr "2. hely"
+
+msgctxt "#32103"
+msgid "Location 3"
+msgstr "3. hely"
+
+msgctxt "#32104"
+msgid "Location 4"
+msgstr "4. hely"
+
+msgctxt "#32105"
+msgid "Location 5"
+msgstr "5. hely"
+
+msgctxt "#32106"
+msgid "Select to search for a town (or enter \"lat, lon\")"
+msgstr "Válaszd ki, és keress rá egy településre (vagy írd be: \"szél, hossz\")"
+
+msgctxt "#32110"
+msgid "Data"
+msgstr "Adatok"
+
+msgctxt "#32111"
+msgid "Use Időkép for Hungarian towns"
+msgstr "Időkép adatok magyar településeknél"
+
+msgctxt "#32112"
+msgid "Hourly forecast"
+msgstr "Óránkénti előrejelzés"
+
+msgctxt "#32113"
+msgid "Időkép (3-hourly)"
+msgstr "Időkép (3 órás)"
+
+msgctxt "#32114"
+msgid "Open-Meteo (hourly, 48 h)"
+msgstr "Open-Meteo (óránként, 48 óra)"
+
+msgctxt "#32115"
+msgid "Refresh data at most every (minutes)"
+msgstr "Adatok frissítése legfeljebb (percenként)"
+
+msgctxt "#32116"
+msgid "Clear cache / today's requests"
+msgstr "Gyorsítótár törlése / mai lekérések"
+
+msgctxt "#32200"
+msgid "Search location"
+msgstr "Hely keresése"
+
+msgctxt "#32201"
+msgid "Remove location \"%s\"?"
+msgstr "Törlöd ezt a helyet: \"%s\"?"
+
+msgctxt "#32202"
+msgid "No results for \"%s\"."
+msgstr "Nincs találat erre: \"%s\"."
+
+msgctxt "#32203"
+msgid "Weather data is not available"
+msgstr "Az időjárási adat nem érhető el"
+
+msgctxt "#32204"
+msgid "Select location"
+msgstr "Válassz helyet"
+
+msgctxt "#32205"
+msgid "Deleted cache files: %d\nRequests today: %s"
+msgstr "Törölt gyorsítótár-fájlok: %d\nMai lekérések: %s"
+
