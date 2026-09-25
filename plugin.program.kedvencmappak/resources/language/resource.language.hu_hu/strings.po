@@ -1,0 +1,31 @@
+# Kodi Media Center language file
+# Addon id: plugin.program.kedvencmappak
+msgid ""
+msgstr ""
+"Project-Id-Version: plugin.program.kedvencmappak\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Language: hu_HU\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+
+msgctxt "#30100"
+msgid "Add to favourite folder..."
+msgstr "Kedvenc mappába..."
+
+msgctxt "#30200"
+msgid "General"
+msgstr "Általános"
+
+msgctxt "#30201"
+msgid "Show \"New folder / Import\" entries in lists"
+msgstr "\"Új mappa / Importálás\" sorok a listákban"
+
+msgctxt "#30202"
+msgid "Offer to pin new top-level folders to Kodi Favourites"
+msgstr "Új főmappánál felajánlja a Kodi Kedvencek közé tűzést"
+
+msgctxt "#30203"
+msgid "Confirm removing items"
+msgstr "Elem eltávolításának megerősítése"
+

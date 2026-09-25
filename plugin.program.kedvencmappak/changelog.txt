@@ -1,0 +1,5 @@
+v1.0.0 (2026-09-25)
+- Kezdeti kiadas: mappak, almappak; kituzes a Kodi Kedvencek koze
+- "Kedvenc mappaba..." helyi menu mindenhol (a Kodi Kedvencek ablakban is)
+- Atnevezes, ikon, fel/le, athelyezes, torles; Kodi Kedvencek importalasa
+- Mentes fajlba / visszaallitas, automatikus .bak az elozo allapotrol
