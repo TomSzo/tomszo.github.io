@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<addon id="plugin.video.network4" name="Network4 (privát)" version="0.3.0" provider-name="TomSzo">
+<addon id="plugin.video.network4" name="Network4 (privát)" version="0.4.0" provider-name="TomSzo">
     <requires>
         <import addon="xbmc.python" version="3.0.0"/>
         <import addon="script.module.requests" version="2.22.0"/>
@@ -16,6 +16,14 @@
         <platform>all</platform>
         <license>GPL-3.0-or-later</license>
         <news>
+v0.4.0 (2026-09-25) - PRIVAT / BETA
+- UJ: Sportok menu a www.network4.hu/sport/collections szerint: Kiemelt sportok,
+  Dokumentumfilm, Labdarugas, Amerikaifutball, Motorsport, Amerikai sportok,
+  Kuzdosportok, Tenisz, Egyeb sportok, Studiomusorok, Magazinmusorok -&gt;
+  gyujtemenyek (logoval) -&gt; videok (a mobil API-rol).
+- A kategoria-lista naponta legfeljebb 1x frissul a weboldalrol; ha nem sikerul,
+  beepitett pillanatkep szolgal (beallitasban kikapcsolhato a webes frissites).
+
 v0.3.0 (2026-09-25) - PRIVAT / BETA
 - A tulajdonos kerésére az Arena4Plus-szal azonosan: a net4plus API Cloudflare-
   ellenorzeset a beepitett cloudscraper kezeli (resources/lib/modules; beallitasban

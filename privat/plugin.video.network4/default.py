@@ -15,6 +15,7 @@ import xbmcgui
 import xbmcplugin
 
 from resources.lib import net4api as api
+from resources.lib import sportweb
 
 URL = sys.argv[0]
 HANDLE = int(sys.argv[1]) if len(sys.argv) > 1 and sys.argv[1].lstrip('-').isdigit() else -1
@@ -81,7 +82,8 @@ def root():
         add('[COLOR yellow]Add meg az email címet és a jelszót (Beállítások)[/COLOR]',
             url(action='settings'), 'DefaultAddonService.png', folder=False)
     add('Élő közvetítések', url(action='live'), 'DefaultTVShows.png')
-    add('Videótár', url(action='collections'), 'DefaultMovies.png')
+    add('Sportok', url(action='sports'), 'DefaultGenre.png')
+    add('Videótár (összes gyűjtemény)', url(action='collections'), 'DefaultMovies.png')
     add('Keresés', url(action='search'), 'DefaultAddonsSearch.png')
     add('Kapcsolat teszt  [COLOR gray](ma %d kérés)[/COLOR]' % api.today_requests(),
         url(action='diag'), 'DefaultAddonService.png', folder=False)
@@ -144,6 +146,26 @@ def _vod_items(vods, start=0):
         label = v['title'] + ('  [COLOR gray]%s[/COLOR]' % v['desc'] if v['desc'] else '')
         add(label, url(action='playvod', u=v['url'], title=v['title']), v['thumb'],
             folder=False, plot=v['plot'] or v['desc'], playable=True)
+
+
+def sports():
+    """A www.network4.hu/sport/collections csoportjai (Kiemelt sportok, Labdarúgás, ...)."""
+    for i, cat in enumerate(sportweb.categories()):
+        thumb = cat['items'][0]['img'] if cat['items'] else ''
+        add('%s  [COLOR gray](%d)[/COLOR]' % (cat['title'], len(cat['items'])),
+            url(action='sportcat', i=i), thumb)
+    end('files')
+
+
+def sport_category(index):
+    cats = sportweb.categories()
+    if not 0 <= index < len(cats):
+        end(cache=False)
+        return
+    xbmcplugin.setPluginCategory(HANDLE, cats[index]['title'])
+    for it in cats[index]['items']:
+        add(it['name'], url(action='collection', slug=it['slug']), it['img'])
+    end('files')
 
 
 def collection(slug, start):
@@ -281,6 +303,10 @@ def router():
         root()
     elif a == 'live':
         live()
+    elif a == 'sports':
+        sports()
+    elif a == 'sportcat':
+        sport_category(int(PARAMS.get('i', -1) or -1))
     elif a == 'collections':
         collections()
     elif a == 'collection':

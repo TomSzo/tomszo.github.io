@@ -10,6 +10,9 @@
 		<setting type="action" label="Gyorsítótár törlése (gyűjtemények, listák)"
 		         action="RunPlugin(plugin://plugin.video.network4/?action=clearcache)" />
 	</category>
+	<category label="Menü">
+		<setting id="sport_web" type="bool" label="Sportok menü frissítése a weboldalról (naponta 1x; ki = beépített lista)" default="true" />
+	</category>
 	<category label="Lejátszás">
 		<setting id="use_ia" type="bool" label="InputStream Adaptive használata (HLS / DASH)" default="true" />
 		<setting id="ask_replay" type="bool" label="Élő adásnál: kérdezze meg, élőben vagy az elejétől" default="true" />
