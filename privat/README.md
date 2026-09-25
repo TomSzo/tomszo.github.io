@@ -37,7 +37,7 @@ szállítja.
 1. Kodi → **Beállítások → Fájlkezelő → Forrás hozzáadása**
    URL: `https://tomszo.github.io/privat/`  · Név: `TomSzo Privát`
 2. **Kiegészítők → Telepítés ZIP fájlból → TomSzo Privát →**
-   `repository.tomszo.private-1.0.0.zip`
+   `repository.tomszo.private-1.0.1.zip`
 3. **Kiegészítők → Telepítés repository-ból → TomSzo Privát Tároló**
 4. A kiegészítő beállításaiban add meg a **saját, böngészőből kinyert
    munkamenet-sütidet**.
