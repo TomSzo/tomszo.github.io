@@ -17,7 +17,10 @@ Egy rész oldalán a lejátszható videó közvetlen MP4-ként van beágyazva:
                 <track  src="https://subvito.eu/Feliratok/.../xxxhun.vtt" ...></video>
 Innen nyerjük ki a videót és a magyar/angol feliratot.
 """
+import json
+import os
 import re
+import time
 
 try:
     from urllib.parse import urljoin, urlparse, unquote
@@ -27,6 +30,7 @@ except ImportError:
 
 import xbmc
 import xbmcaddon
+import xbmcvfs
 
 try:
     import requests
@@ -43,11 +47,19 @@ ADDON_ID = ADDON.getAddonInfo('id')
 
 DEFAULT_BASE = 'https://subvito.eu/'
 
-USER_AGENT = ('Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 '
-              '(KHTML, like Gecko) Chrome/124.0 Safari/537.36')
+# Mindig ez a User-Agent (a tulajdonos Firefox for Android böngészője) - nem állítható.
+USER_AGENT = 'Mozilla/5.0 (Android 16; Mobile; rv:156.0) Gecko/156.0 Firefox/156.0'
 
-# Egy futáson belüli memória-gyorsítótár a katalógusnak (a homepage nagy).
+# Memória-gyorsítótár egy futáson belül + lemez-gyorsítótár futások között.
 _CATALOG_CACHE = None
+CATALOG_TTL = 6 * 3600          # a (nagy) főoldal-menü legfeljebb 6 óránként
+EPISODE_TTL = 7 * 86400         # a rész-oldalak forrásai (mp4 + felirat) 7 napig
+HISTORY_MAX = 30
+
+# Visszafogottság: szünet a kérések között, helyi napi számláló.
+_MIN_GAP = 1.0
+_LAST_REQ = [0.0]
+_SESSION = requests.Session() if HAVE_REQUESTS else None
 
 
 def log(msg, level=xbmc.LOGINFO):
@@ -76,12 +88,68 @@ def _headers(referer=None):
     return h
 
 
+def _profile_dir():
+    prof = xbmcvfs.translatePath(ADDON.getAddonInfo('profile'))
+    try:
+        if not xbmcvfs.exists(prof):
+            xbmcvfs.mkdirs(prof)
+    except Exception:  # noqa
+        pass
+    return prof
+
+
+def _read_json(name, default):
+    try:
+        p = os.path.join(_profile_dir(), name)
+        if not xbmcvfs.exists(p):
+            return default
+        f = xbmcvfs.File(p)
+        try:
+            return json.loads(f.read() or 'null') or default
+        finally:
+            f.close()
+    except Exception:  # noqa
+        return default
+
+
+def _write_json(name, data):
+    try:
+        f = xbmcvfs.File(os.path.join(_profile_dir(), name), 'w')
+        try:
+            f.write(json.dumps(data))
+        finally:
+            f.close()
+    except Exception as exc:  # noqa
+        log('mentési hiba (%s): %s' % (name, exc), xbmc.LOGWARNING)
+
+
+def today_requests():
+    import datetime
+    d = _read_json('requests.json', {})
+    return int(d.get('count', 0)) if d.get('date') == datetime.date.today().isoformat() else 0
+
+
+def _bump_request():
+    import datetime
+    _write_json('requests.json', {'date': datetime.date.today().isoformat(),
+                                  'count': today_requests() + 1})
+
+
+def _throttle():
+    gap = time.time() - _LAST_REQ[0]
+    if gap < _MIN_GAP:
+        xbmc.sleep(int((_MIN_GAP - gap) * 1000))
+    _LAST_REQ[0] = time.time()
+
+
 def fetch(url, referer=None, timeout=20):
     """Letölti az URL-t, visszaadja a szöveges tartalmat (üres string hiba esetén)."""
     log('GET %s' % url)
+    _throttle()
+    _bump_request()
     try:
         if HAVE_REQUESTS:
-            resp = requests.get(url, headers=_headers(referer), timeout=timeout)
+            resp = _SESSION.get(url, headers=_headers(referer), timeout=timeout)
             if resp.status_code != 200:
                 log('HTTP %s: %s' % (resp.status_code, url), xbmc.LOGWARNING)
             resp.encoding = resp.apparent_encoding or 'utf-8'
@@ -174,10 +242,17 @@ def _parse_navbar(html):
 
 
 def get_catalog(force=False):
-    """A teljes katalógus (kategóriák + részek). Futáson belül gyorsítótárazva."""
+    """A teljes katalógus (kategóriák + részek). Memóriában és 6 órára lemezen tárolva,
+    így a (nagy) főoldalt nem töltjük le minden menülépésnél."""
     global _CATALOG_CACHE
     if _CATALOG_CACHE is not None and not force:
         return _CATALOG_CACHE
+    if not force:
+        cached = _read_json('catalog.json', {})
+        if cached.get('cats') and time.time() - cached.get('ts', 0) < CATALOG_TTL \
+                and cached.get('base') == base_url():
+            _CATALOG_CACHE = cached['cats']
+            return _CATALOG_CACHE
 
     html = fetch(base_url())
     cats = _parse_navbar(html) if html else []
@@ -191,9 +266,81 @@ def get_catalog(force=False):
         cats = list(urls.values())
 
     cats.sort(key=_sort_key)
+    if not cats:
+        # hálózati hiba: inkább a régi (lejárt) katalógus, mint semmi
+        old = _read_json('catalog.json', {}).get('cats')
+        if old:
+            log('Katalógus letöltése sikertelen - a korábbi mentett változat.', xbmc.LOGWARNING)
+            _CATALOG_CACHE = old
+            return old
+    else:
+        _write_json('catalog.json', {'ts': time.time(), 'base': base_url(), 'cats': cats})
     _CATALOG_CACHE = cats
     log('Katalógus: %d kategória' % len(cats))
     return cats
+
+
+def season_number(cat_url):
+    m = re.search(r'/(\d{1,2})-evad', cat_url or '')
+    return int(m.group(1)) if m else None
+
+
+def all_episodes():
+    """Minden rész katalógus-sorrendben, évad/rész-számmal:
+    [{'title','url','cat','season','episode'}]  (évadok 1 -> 29, majd Filmek, P+)."""
+    out = []
+    cats = sorted(get_catalog(), key=lambda c: (season_number(c['url']) is None,
+                                                season_number(c['url']) or 0))
+    for cat in cats:
+        sn = season_number(cat['url'])
+        for i, ep in enumerate(cat.get('episodes') or []):
+            out.append({'title': ep['title'], 'url': ep['url'], 'cat': cat['label'],
+                        'season': sn, 'episode': i + 1})
+    return out
+
+
+def episode_meta(url):
+    for ep in all_episodes():
+        if ep['url'].rstrip('/') == (url or '').rstrip('/'):
+            return ep
+    return None
+
+
+# ---------------------------------------------------------------------------
+# Előzmények (helyi): a legutóbb elindított részek -> "Folytatás"
+# ---------------------------------------------------------------------------
+def history():
+    return _read_json('history.json', [])
+
+
+def add_history(url):
+    meta = episode_meta(url) or {'title': url, 'url': url, 'cat': '', 'season': None,
+                                 'episode': None}
+    items = [h for h in history() if h.get('url') != url]
+    items.insert(0, dict(meta, ts=int(time.time())))
+    _write_json('history.json', items[:HISTORY_MAX])
+
+
+def clear_history():
+    _write_json('history.json', [])
+
+
+def next_episode():
+    """A legutóbb elindított rész UTÁNI rész (katalógus-sorrendben), vagy None."""
+    h = history()
+    if not h:
+        return None
+    eps = all_episodes()
+    for i, ep in enumerate(eps):
+        if ep['url'].rstrip('/') == h[0]['url'].rstrip('/'):
+            return eps[i + 1] if i + 1 < len(eps) else None
+    return None
+
+
+def random_episode():
+    import random
+    eps = [e for e in all_episodes() if e['season']]
+    return random.choice(eps) if eps else None
 
 
 # ---------------------------------------------------------------------------
@@ -292,7 +439,14 @@ def resolve(episode_url):
     """
     Visszaad: {'media': [...], 'iframes': [...], 'subs': [...]}.
     media = közvetlenül lejátszható linkek (mp4/m3u8/mkv).
+    A sikeres eredményt 7 napig tároljuk (a rész forrásai nem változnak).
     """
+    cache = _read_json('episodes.json', {})
+    hit = cache.get(episode_url)
+    if hit and hit.get('media') and time.time() - hit.get('ts', 0) < EPISODE_TTL:
+        log('resolve(%s) gyorsítótárból' % episode_url)
+        return {'media': hit['media'], 'iframes': hit.get('iframes', []),
+                'subs': hit.get('subs', [])}
     html = fetch(episode_url)
     result = {'media': [], 'iframes': [], 'subs': []}
     if not html:
@@ -325,7 +479,19 @@ def resolve(episode_url):
     result['subs'] = _dedup(subs)
     log('resolve(%s) -> media=%s subs=%s iframes=%s'
         % (episode_url, result['media'], result['subs'], result['iframes']))
+    if result['media']:
+        now = time.time()
+        cache = {k: v for k, v in cache.items() if now - v.get('ts', 0) < EPISODE_TTL}
+        cache[episode_url] = dict(result, ts=int(now))
+        _write_json('episodes.json', cache)
     return result
+
+
+def clear_cache():
+    global _CATALOG_CACHE
+    _CATALOG_CACHE = None
+    _write_json('catalog.json', {})
+    _write_json('episodes.json', {})
 
 
 def _dedup(seq):

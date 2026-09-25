@@ -28,6 +28,30 @@ msgctxt "#30013"
 msgid "Season %d"
 msgstr "Season %d"
 
+msgctxt "#30014"
+msgid "Continue"
+msgstr ""
+
+msgctxt "#30015"
+msgid "Random episode"
+msgstr ""
+
+msgctxt "#30016"
+msgid "History (recently watched)"
+msgstr ""
+
+msgctxt "#30017"
+msgid "Today: %d requests to the site"
+msgstr ""
+
+msgctxt "#30018"
+msgid "Refresh catalogue"
+msgstr ""
+
+msgctxt "#30019"
+msgid "Clear history"
+msgstr ""
+
 msgctxt "#30020"
 msgid "No results"
 msgstr "No results"

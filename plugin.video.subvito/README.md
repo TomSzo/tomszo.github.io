@@ -46,7 +46,7 @@ A TomSzo Kodi tárolóból:
 
 vagy közvetlenül ZIP-ből:
 
-1. **Kiegészítők → Telepítés ZIP fájlból →** `plugin.video.subvito-1.0.0.zip`
+1. **Kiegészítők → Telepítés ZIP fájlból →** `plugin.video.subvito-1.1.0.zip`
 
 ## Beállítások
 

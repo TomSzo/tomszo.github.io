@@ -4,9 +4,12 @@ SubVito - Kodi videó plugin belépési pont (router).
 
 Menüszerkezet:
     Főmenü
-      ├─ Évadok            -> évad lista -> részek -> lejátszás
+      ├─ ▶ Folytatás       (a legutóbb nézett rész utáni rész)
       ├─ Legfrissebb részek
-      └─ Keresés
+      ├─ Évadok            -> évad lista -> részek -> lejátszás
+      ├─ Véletlen rész
+      ├─ Keresés
+      └─ Előzmények
 """
 import sys
 
@@ -57,9 +60,9 @@ def add_dir(label, url, thumb=None, is_folder=True, info=None, plot=None):
         li.setInfo('video', vinfo)
     except Exception:  # noqa
         pass
-    if not is_folder:
+    if is_folder is False:
         li.setProperty('IsPlayable', 'true')
-    xbmcplugin.addDirectoryItem(HANDLE, url, li, isFolder=is_folder)
+    xbmcplugin.addDirectoryItem(HANDLE, url, li, isFolder=bool(is_folder))
 
 
 def end(content='videos'):
@@ -72,13 +75,50 @@ def end(content='videos'):
 # Nézetek
 # ---------------------------------------------------------------------------
 def view_root():
-    add_dir(L(30010, 'Évadok'), build_url(action='seasons'),
-            thumb=ADDON.getAddonInfo('icon'))
-    add_dir(L(30011, 'Legfrissebb részek'), build_url(action='latest'),
-            thumb=ADDON.getAddonInfo('icon'))
-    add_dir(L(30012, 'Keresés'), build_url(action='search'),
-            thumb=ADDON.getAddonInfo('icon'))
+    icon = ADDON.getAddonInfo('icon')
+    nxt = subvito.next_episode()
+    if nxt:
+        add_dir('[COLOR gold]▶ %s: %s[/COLOR]  [COLOR grey](%s)[/COLOR]'
+                % (L(30014, 'Folytatás'), nxt['title'], nxt['cat']),
+                build_url(action='play', url=nxt['url']), thumb=icon, is_folder=False,
+                info=_ep_info(nxt))
+    add_dir(L(30011, 'Legfrissebb részek'), build_url(action='latest'), thumb=icon)
+    add_dir(L(30010, 'Évadok'), build_url(action='seasons'), thumb=icon)
+    add_dir(L(30015, 'Véletlen rész'), build_url(action='random'), thumb=icon,
+            is_folder=False)
+    add_dir(L(30012, 'Keresés'), build_url(action='search'), thumb=icon)
+    add_dir(L(30016, 'Előzmények (legutóbb nézett)'), build_url(action='history'), thumb=icon)
+    add_dir('[COLOR yellow]📊 %s[/COLOR]' % (L(30017, 'Ma: %d kérés az oldalra')
+                                            % subvito.today_requests()),
+            build_url(action='info'), thumb=icon, is_folder=None)
+    add_dir('[COLOR grey]%s[/COLOR]' % L(30018, 'Katalógus frissítése'),
+            build_url(action='refresh'), thumb=icon, is_folder=None)
     end(content='files')
+
+
+def _ep_info(ep):
+    info = {'mediatype': 'episode', 'tvshowtitle': 'South Park'}
+    if ep.get('season'):
+        info['season'] = ep['season']
+        info['episode'] = ep.get('episode')
+    return info
+
+
+def _add_episode(ep, label=None):
+    add_dir(label or ep['title'], build_url(action='play', url=ep['url']),
+            thumb=ep.get('thumb'), is_folder=False, info=_ep_info(ep))
+
+
+def view_history():
+    items = subvito.history()
+    if not items:
+        _notify(L(30020, 'Nincs találat'))
+    for ep in items:
+        _add_episode(ep, '%s  [COLOR grey](%s)[/COLOR]' % (ep['title'], ep.get('cat', '')))
+    if items:
+        add_dir('[COLOR grey]%s[/COLOR]' % L(30019, 'Előzmények törlése'),
+                build_url(action='histclear'), is_folder=None)
+    end(content='episodes')
 
 
 def view_seasons():
@@ -99,10 +139,9 @@ def view_episodes(season_url):
     episodes = subvito.list_episodes(season_url)
     if not episodes:
         _notify(L(30020, 'Nincs találat'))
-    for ep in episodes:
-        add_dir(ep['title'], build_url(action='play', url=ep['url']),
-                thumb=ep.get('thumb'), is_folder=False,
-                info={'mediatype': 'episode'})
+    sn = subvito.season_number(season_url)
+    for i, ep in enumerate(episodes):
+        _add_episode(dict(ep, season=sn, episode=i + 1))
     end(content='episodes')
 
 
@@ -111,9 +150,7 @@ def view_latest():
     if not episodes:
         _notify(L(30020, 'Nincs találat'))
     for ep in episodes:
-        add_dir(ep['title'], build_url(action='play', url=ep['url']),
-                thumb=ep.get('thumb'), is_folder=False,
-                info={'mediatype': 'episode'})
+        _add_episode(subvito.episode_meta(ep['url']) or ep)
     end(content='episodes')
 
 
@@ -131,9 +168,8 @@ def view_search():
     if not episodes:
         _notify(L(30020, 'Nincs találat'))
     for ep in episodes:
-        add_dir(ep['title'], build_url(action='play', url=ep['url']),
-                thumb=ep.get('thumb'), is_folder=False,
-                info={'mediatype': 'episode'})
+        meta = subvito.episode_meta(ep['url']) or {}
+        _add_episode(dict(meta, **ep))
     end(content='episodes')
 
 
@@ -167,6 +203,15 @@ def play(episode_url):
         stream = media[0]
         subvito.log('Lejátszás: %s' % stream)
         li = _make_play_item(stream, subs)
+        meta = subvito.episode_meta(episode_url)
+        if meta:
+            info = _ep_info(meta)
+            info['title'] = meta['title']
+            try:
+                li.setInfo('video', info)
+            except Exception:  # noqa
+                pass
+        subvito.add_history(episode_url)
         xbmcplugin.setResolvedUrl(HANDLE, True, li)
         return
 
@@ -216,6 +261,27 @@ def router(paramstring):
         view_search()
     elif action == 'play':
         play(params['url'])
+    elif action == 'random':
+        ep = subvito.random_episode()
+        if ep:
+            _notify('%s · %s' % (ep['title'], ep['cat']), time=3000)
+            play(ep['url'])
+        else:
+            xbmcplugin.setResolvedUrl(HANDLE, False, xbmcgui.ListItem())
+    elif action == 'history':
+        view_history()
+    elif action == 'histclear':
+        subvito.clear_history()
+        xbmc.executebuiltin('Container.Refresh')
+    elif action == 'refresh':
+        subvito.clear_cache()
+        subvito.get_catalog(force=True)
+        _notify(L(30018, 'Katalógus frissítése') + ' OK', time=2500)
+        xbmc.executebuiltin('Container.Refresh')
+    elif action == 'info':
+        xbmcgui.Dialog().ok(ADDON.getAddonInfo('name'),
+                            'User-Agent (fix): %s\n%s' % (subvito.USER_AGENT,
+                            L(30017, 'Ma: %d kérés az oldalra') % subvito.today_requests()))
     else:
         view_root()
 
