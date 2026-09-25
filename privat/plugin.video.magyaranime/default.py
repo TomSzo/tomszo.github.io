@@ -169,7 +169,7 @@ def view_diag():
     src, names = ma.cookie_status()
     lines = ['Cookie forrás: %s' % src,
              'Sütik (%d): %s' % (len(names), ', '.join(names) if names else '-'),
-             'User-Agent: %s' % ma.user_agent(),
+             'User-Agent (fix): %s' % ma.user_agent(),
              'Feloldó modul: %s' % (ma.has_resolver() or 'nincs (indavideo saját; videa NEM megy)')]
     if names:
         ok, length = ma.check_login()

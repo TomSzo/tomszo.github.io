@@ -22,6 +22,12 @@ v0.2.0 (2026-09-25) - PRIVAT / BETA
 - UJ: Opening / ending automatikus atugrasa: a lejatszo data-skip szakaszai alapjan
   (pl. 73.97-164.02,1305.99-1395.96) a szakasz elejen a vegere teker, szakaszonkent
   egyszer. Beallitas: Lejatszas -> "Opening / ending automatikus atugrasa".
+- SZERVER-KIMELES (mint a MagyarAnime-nal): ket oldal-keres kozott min. 1 mp szunet;
+  projekt- es watch-oldalak gyorsitotarazva (a beallitott percig), feliratok 7 napig;
+  sikertelen belepes utan 10 percig nincs ujabb probalkozas ("Munkamenet torlese"
+  feloldja); helyi napi keres-szamlalo a fomenuben ("Ma: N keres az oldalra").
+- User-Agent MINDIG: Android 16 / Firefox 156 (fix, a beallitasokbol kikerult).
+- Legfrissebb reszek: a fooldal 10 percig gyorsitotarbol.
 - A lejatszasi URL-ek valtozatlanok, a Kodi "megnezve" jelolesei megmaradnak.
 
 v0.1.1 (2026-09-24) - PRIVAT / BETA

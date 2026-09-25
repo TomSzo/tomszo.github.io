@@ -7,6 +7,8 @@ v0.7.0 (2026-09-25) - PRIVAT / BETA
 - UJ: Kedvencek (helyi menu: Hozzaadas / Torles a kedvencekbol) es Elozmenyek
   (legutobb nezett animek, "utoljara: N. resz" jelolessel). Helyben tarolva.
 - Kereses: az anime-index 6 orara gyorsitotarazva (nem tolti le minden keresesnel).
+- User-Agent MINDIG: Android 16 / Firefox 156 (fix, a beallitasokbol kikerult); a
+  ResolveURL altal visszaadott fejlecekben is ez kerul a User-Agent helyere.
 - A lejatszasi URL-ek valtozatlanok, a Kodi "megnezve" jelolesei megmaradnak.
 
 v0.6.14 (2026-09-24) - PRIVAT / BETA

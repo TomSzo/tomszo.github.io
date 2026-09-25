@@ -7,8 +7,6 @@
 		         action="RunPlugin(plugin://plugin.video.mutekifansub/?action=clearsession)" />
 		<setting id="base_url" type="text" label="Alap URL (csak domainváltáskor)"
 		         default="https://mutekifansub.hu/" />
-		<setting id="user_agent" type="text" label="Böngésző User-Agent"
-		         default="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/131.0.0.0 Safari/537.36" />
 	</category>
 	<category label="Lejátszás">
 		<setting id="quality" type="enum" label="Videó minőség"

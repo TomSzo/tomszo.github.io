@@ -44,12 +44,146 @@ ADDON = xbmcaddon.Addon()
 ADDON_ID = ADDON.getAddonInfo('id')
 DEFAULT_BASE = 'https://kintsugi-fansub.hu/'
 DEFAULT_DOMAIN = 'kintsugi-fansub.hu'
-DEFAULT_UA = ('Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 '
-              '(KHTML, like Gecko) Chrome/131.0.0.0 Safari/537.36')
+# Mindig ez a User-Agent (a tulajdonos Firefox for Android böngészője) - nem állítható.
+DEFAULT_UA = 'Mozilla/5.0 (Android 16; Mobile; rv:156.0) Gecko/156.0 Firefox/156.0'
 
 _SESSION = requests.Session() if HAVE_REQUESTS else None
 _COOKIES_LOADED = False
 _ENSURED = False
+
+# ---------------------------------------------------------------------------
+# Visszafogottság (a fansub szerverek kímélése)
+#   - két oldal-kérés között legalább _MIN_GAP mp szünet
+#   - helyi napi számláló (minden oldal-/felirat-kérés +1; a videó-stream nem)
+#   - sikertelen belépés után _LOGIN_COOLDOWN mp-ig nincs újabb próbálkozás
+#   - oldal-gyorsítótár (cached_get), felirat-gyorsítótár
+# ---------------------------------------------------------------------------
+_MIN_GAP = 1.0
+_LOGIN_COOLDOWN = 10 * 60
+_LAST_REQ = [0.0]
+
+
+def _throttle():
+    import time
+    gap = time.time() - _LAST_REQ[0]
+    if gap < _MIN_GAP:
+        xbmc.sleep(int((_MIN_GAP - gap) * 1000))
+    _LAST_REQ[0] = time.time()
+
+
+def _counter_path():
+    return os.path.join(_profile_dir(), 'requests.json')
+
+
+def today_requests():
+    import datetime
+    try:
+        f = xbmcvfs.File(_counter_path())
+        try:
+            d = json.loads(f.read() or '{}')
+        finally:
+            f.close()
+    except Exception:  # noqa
+        d = {}
+    return int(d.get('count', 0)) if d.get('date') == datetime.date.today().isoformat() else 0
+
+
+def _bump_request():
+    import datetime
+    n = today_requests() + 1
+    try:
+        f = xbmcvfs.File(_counter_path(), 'w')
+        try:
+            f.write(json.dumps({'date': datetime.date.today().isoformat(), 'count': n}))
+        finally:
+            f.close()
+    except Exception:  # noqa
+        pass
+
+
+def _req(fn, *args, **kw):
+    """Minden, az oldalra menő kérés ezen megy át: szünet + számláló."""
+    _throttle()
+    _bump_request()
+    return fn(*args, **kw)
+
+
+def _login_block_path():
+    return os.path.join(_profile_dir(), 'login_failed.txt')
+
+
+def _login_blocked():
+    import time
+    try:
+        p = _login_block_path()
+        if xbmcvfs.exists(p):
+            return (time.time() - xbmcvfs.Stat(p).st_mtime()) < _LOGIN_COOLDOWN
+    except Exception:  # noqa
+        pass
+    return False
+
+
+def _set_login_failed(failed):
+    p = _login_block_path()
+    try:
+        if failed:
+            f = xbmcvfs.File(p, 'w')
+            try:
+                f.write('1')
+            finally:
+                f.close()
+        elif xbmcvfs.exists(p):
+            xbmcvfs.delete(p)
+    except Exception:  # noqa
+        pass
+
+
+def _page_cache_path(url):
+    import hashlib
+    d = os.path.join(_profile_dir(), 'cache')
+    try:
+        if not xbmcvfs.exists(d + os.sep):
+            xbmcvfs.mkdirs(d)
+    except Exception:  # noqa
+        pass
+    return os.path.join(d, hashlib.md5(url.encode('utf-8')).hexdigest() + '.html')
+
+
+def cached_get(url, ttl, referer=None):
+    """GET gyorsítótárral: ttl mp-en belül a lemezről (csak bejelentkezett oldalt tárolunk)."""
+    import time
+    p = _page_cache_path(url)
+    if ttl > 0:
+        try:
+            if xbmcvfs.exists(p) and (time.time() - xbmcvfs.Stat(p).st_mtime()) < ttl:
+                f = xbmcvfs.File(p)
+                try:
+                    html = f.read()
+                finally:
+                    f.close()
+                if html and logged_in(html):
+                    return html
+        except Exception:  # noqa
+            pass
+    html = get(url, referer=referer)
+    if html and logged_in(html):
+        try:
+            f = xbmcvfs.File(p, 'w')
+            try:
+                f.write(html)
+            finally:
+                f.close()
+        except Exception:  # noqa
+            pass
+    return html
+
+
+def clear_page_cache():
+    import shutil
+    try:
+        shutil.rmtree(os.path.join(_profile_dir(), 'cache'), ignore_errors=True)
+    except Exception:  # noqa
+        pass
 
 
 def log(msg, level=xbmc.LOGINFO):
@@ -57,7 +191,7 @@ def log(msg, level=xbmc.LOGINFO):
 
 
 def user_agent():
-    return (ADDON.getSetting('user_agent') or '').strip() or DEFAULT_UA
+    return DEFAULT_UA
 
 
 def base_url():
@@ -129,6 +263,7 @@ def load_cookies():
 
 def clear_cookies():
     global _COOKIES_LOADED, _ENSURED
+    _set_login_failed(False)
     if _SESSION:
         _SESSION.cookies.clear()
     _COOKIES_LOADED = False
@@ -330,9 +465,14 @@ def login():
     if not email or not pw:
         log('Nincs email/jelszó (sem beállítás, sem txt).', xbmc.LOGWARNING)
         return False
+    if _login_blocked():
+        log('Az előző belépés 10 percen belül sikertelen volt - most nem próbálkozunk '
+            '(a szerver kímélése). "Munkamenet törlése" után azonnal újrapróbálja.',
+            xbmc.LOGWARNING)
+        return False
     login_url = urljoin(base_url(), 'login')
     try:
-        page = _SESSION.get(login_url, headers=_headers(base_url()), timeout=25).text
+        page = _req(_SESSION.get, login_url, headers=_headers(base_url()), timeout=25).text
     except Exception as exc:  # noqa
         log('login GET hiba: %s' % exc, xbmc.LOGERROR)
         return False
@@ -359,15 +499,16 @@ def login():
     if not (form and form.get('pwd')):
         data.setdefault('signin[password]', pw)
     try:
-        r = _SESSION.post(action, data=data, headers=_headers(login_url),
+        r = _req(_SESSION.post, action, data=data, headers=_headers(login_url),
                           timeout=30, allow_redirects=True)
         ok = logged_in(r.text)
         if not ok:
-            ok = logged_in(_SESSION.get(base_url(), headers=_headers(base_url()),
+            ok = logged_in(_req(_SESSION.get, base_url(), headers=_headers(base_url()),
                                         timeout=25).text)
     except Exception as exc:  # noqa
         log('login POST hiba: %s' % exc, xbmc.LOGERROR)
         return False
+    _set_login_failed(not ok)
     if ok:
         save_cookies()
         log('Bejelentkezés sikeres.')
@@ -400,7 +541,7 @@ def get(url, referer=None, timeout=25, ajax=False, auth=True):
     full = urljoin(base_url(), url)
     log('GET %s' % full)
     try:
-        r = _SESSION.get(full, headers=_headers(referer, ajax=ajax), timeout=timeout)
+        r = _req(_SESSION.get, full, headers=_headers(referer, ajax=ajax), timeout=timeout)
         r.encoding = 'utf-8'
         html = r.text
     except Exception as exc:  # noqa
@@ -410,7 +551,7 @@ def get(url, referer=None, timeout=25, ajax=False, auth=True):
         log('Kijelentkezve érzékelve – újrabejelentkezés.', xbmc.LOGINFO)
         if login():
             try:
-                r = _SESSION.get(full, headers=_headers(referer, ajax=ajax), timeout=timeout)
+                r = _req(_SESSION.get, full, headers=_headers(referer, ajax=ajax), timeout=timeout)
                 r.encoding = 'utf-8'
                 html = r.text
             except Exception as exc:  # noqa
@@ -613,7 +754,8 @@ def project_episodes(slug):
     """Egy projekt oldaláról az epizódok:
     {'title','plot','episodes':[{id,title,thumb,date}]}. A date az epizód kiadási
     ISO-időbélyege (rendezéshez), ha megtalálható."""
-    html = get('project/%s' % slug, referer=base_url() + 'projects')
+    html = cached_get('project/%s' % slug, _cache_minutes() * 60,
+                      referer=base_url() + 'projects')
     if not html:
         return {'title': '', 'plot': '', 'episodes': []}
     tm = re.search(r'<div class="project-title[^"]*">\s*<span>([^<]+)</span>', html)
@@ -663,7 +805,7 @@ def project_episodes(slug):
 # ---------------------------------------------------------------------------
 # Legfrissebb részek: az aktív projektek legújabb epizódjai, dátum szerint rendezve
 # ---------------------------------------------------------------------------
-def latest_episodes(limit=40, max_projects=25):
+def latest_episodes(limit=40, max_projects=15):
     """Az aktív (folyamatban lévő) projektek legfrissebb epizódjai, kiadási dátum
     szerint csökkenő sorrendben: [{'id','title','art','date'}].
 
@@ -698,7 +840,8 @@ def watch_sources(ep_id):
     """A /episode/watch/id/{id} oldalról:
     {'title','poster','skip','qualities':[(label,url)],'subtitle_url','referer'}."""
     referer = base_url() + 'episode/watch/id/%s' % ep_id
-    html = get('episode/watch/id/%s' % ep_id, referer=base_url())
+    html = cached_get('episode/watch/id/%s' % ep_id, _cache_minutes() * 60,
+                      referer=base_url())
     res = {'title': '', 'poster': None, 'skip': '', 'qualities': [],
            'subtitle_url': base_url() + 'episode/download/type/cc/id/%s' % ep_id,
            'referer': referer}
@@ -757,10 +900,18 @@ def download_subtitle(ep_id):
     """A rész feliratát letölti (bejelentkezett sütivel) és elmenti; visszaadja az elérési utat."""
     if not _SESSION:
         return None
+    import time
+    for ext in ('ass', 'srt', 'ssa', 'vtt'):
+        cp = os.path.join(_profile_dir(), 'sub_%s.%s' % (ep_id, ext))
+        try:
+            if xbmcvfs.exists(cp) and (time.time() - xbmcvfs.Stat(cp).st_mtime()) < 7 * 86400:
+                return cp
+        except Exception:  # noqa
+            pass
     ensure_login()
     url = base_url() + 'episode/download/type/cc/id/%s' % ep_id
     try:
-        r = _SESSION.get(url, headers=_headers(base_url() + 'episode/watch/id/%s' % ep_id),
+        r = _req(_SESSION.get, url, headers=_headers(base_url() + 'episode/watch/id/%s' % ep_id),
                          timeout=25, allow_redirects=True)
         data = r.content or b''
     except Exception as exc:  # noqa

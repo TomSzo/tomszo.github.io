@@ -123,6 +123,8 @@ def view_root():
         add_dir('[COLOR red]! Add meg az email/jelszó párost a beállításokban[/COLOR]',
                 build_url(action='opensettings'), folder=False)
     add_dir('[COLOR gold]★ Legfrissebb részek[/COLOR]', build_url(action='latest'))
+    add_dir('[COLOR yellow]📊 Ma: %d kérés az oldalra[/COLOR]' % mtk.today_requests(),
+            build_url(action='diag'), folder=False)
     add_dir('[COLOR gold]★ Kedvencek[/COLOR]', build_url(action='favorites'))
     add_dir('Előzmények (legutóbb nézett)', build_url(action='history'))
     add_dir('Projektek (böngészés)', build_url(action='projmenu'))
@@ -140,7 +142,8 @@ def view_diag():
              'Főoldal betöltve: %d byte' % length,
              'Bejelentkezve: %s' % ('IGEN' if ok else 'NEM'),
              'Felhasználó: %s' % (name or '—'),
-             'User-Agent: %s' % mtk.user_agent()]
+             'User-Agent (fix): %s' % mtk.user_agent(),
+             'Mai kérések az oldalra (helyi számláló): %d' % mtk.today_requests()]
     if not ok:
         lines.append('')
         lines.append('Ha NEM vagy bejelentkezve: ellenőrizd az email/jelszót a '
@@ -337,8 +340,9 @@ def router(qs):
     elif action == 'diag':
         view_diag()
     elif action == 'refreshcache':
+        mtk.clear_page_cache()
         mtk.projects_html(force=True)
-        notify('Projekt-gyorsítótár frissítve')
+        notify('Gyorsítótár frissítve')
         end('files')
     elif action == 'clearsession':
         mtk.clear_cookies()

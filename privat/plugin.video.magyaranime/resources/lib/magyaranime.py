@@ -35,14 +35,13 @@ except ImportError:
 ADDON = xbmcaddon.Addon()
 ADDON_ID = ADDON.getAddonInfo('id')
 DEFAULT_BASE = 'https://magyaranime.eu/'
-# Alapértelmezett UA: modern Android Firefox (a legtöbb felhasználó innen exportál).
-# A pontos, bejelentkezett böngésző UA-ját a beállításokban lehet megadni.
+# Mindig ez a User-Agent (a tulajdonos Firefox for Android böngészője) - nem állítható.
 DEFAULT_UA = 'Mozilla/5.0 (Android 16; Mobile; rv:156.0) Gecko/156.0 Firefox/156.0'
 USER_AGENT = DEFAULT_UA
 
 
 def user_agent():
-    return (ADDON.getSetting('user_agent') or '').strip() or DEFAULT_UA
+    return DEFAULT_UA
 
 _SESSION = requests.Session() if HAVE_REQUESTS else None
 
@@ -817,8 +816,12 @@ def resolve(vid, prefer_server=None):
             if not media:
                 media = resolve_via_module(fr)     # ResolveURL/URLResolver, ha telepítve
             if media:
+                # A feloldó a saját fejléceit '|' után adhatja vissza: a mieinkkel (fix UA)
+                # egyesítjük, különben a lejátszó két '|'-t kapna.
+                media, _, extra = media.partition('|')
                 hls = '.m3u8' in media.lower()
-                result.update({'url': media, 'hls': hls, 'headers': _hls_headers(referer)})
+                result.update({'url': media, 'hls': hls,
+                               'headers': _merge_headers(extra, _hls_headers(referer))})
                 log('resolve(%s) beágyazott feloldva: %s' % (vid, media))
                 return result
         # bármilyen m3u8 az output-ban
@@ -830,6 +833,19 @@ def resolve(vid, prefer_server=None):
     log('resolve(%s): nem sikerült forrást kinyerni. Szerverek: %s'
         % (vid, [s.get('server') for s in result['servers']]), xbmc.LOGWARNING)
     return result
+
+
+def _merge_headers(extra, ours):
+    """'a=1&b=2' fejléc-sztringek egyesítése; a mieink (User-Agent!) felülírják."""
+    out, order = {}, []
+    for chunk in (extra, ours):
+        for part in (chunk or '').split('&'):
+            k, sep, v = part.partition('=')
+            if sep and k:
+                if k.lower() not in out:
+                    order.append(k.lower())
+                out[k.lower()] = (k, v)
+    return '&'.join('%s=%s' % out[k] for k in order)
 
 
 def _hls_headers(referer):
