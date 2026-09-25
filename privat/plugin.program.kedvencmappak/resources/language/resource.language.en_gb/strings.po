@@ -1,0 +1,31 @@
+# Kodi Media Center language file
+# Addon id: plugin.program.kedvencmappak
+msgid ""
+msgstr ""
+"Project-Id-Version: plugin.program.kedvencmappak\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Language: en_GB\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+
+msgctxt "#30100"
+msgid "Add to favourite folder..."
+msgstr ""
+
+msgctxt "#30200"
+msgid "General"
+msgstr ""
+
+msgctxt "#30201"
+msgid "Show \"New folder / Import\" entries in lists"
+msgstr ""
+
+msgctxt "#30202"
+msgid "Offer to pin new top-level folders to Kodi Favourites"
+msgstr ""
+
+msgctxt "#30203"
+msgid "Confirm removing items"
+msgstr ""
+

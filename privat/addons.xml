@@ -466,4 +466,78 @@ v0.1.0 (2026-09-25) - PRIVAT / BETA
     </extension>
 </addon>
 
+<addon id="plugin.video.network4" name="Network4 (privát)" version="0.2.0" provider-name="TomSzo">
+    <requires>
+        <import addon="xbmc.python" version="3.0.0"/>
+        <import addon="script.module.requests" version="2.22.0"/>
+        <import addon="inputstream.adaptive" optional="true"/>
+    </requires>
+    <extension point="xbmc.python.pluginsource" library="default.py">
+        <provides>video</provides>
+    </extension>
+    <extension point="xbmc.addon.metadata">
+        <summary lang="hu">Network4 / Arena4+ – privát, a saját előfizetéssel (mobilalkalmazás API)</summary>
+        <description lang="hu">Privát, magánhasználatú videó addon a Network4 / Arena4+ szolgáltatáshoz, a tulajdonos saját fiókjával. A hivatalos mobilalkalmazás API-ját használja (net4plus.network4.hu): élő közvetítések (élőben vagy az elejétől), videótár gyűjteményenként, keresés. A plugin.video.arena4plus (heg, vargalex) működése alapján.</description>
+        <disclaimer lang="hu">Privát, magánhasználatú kiegészítő. Csak a tulajdonos saját előfizetésével működik.</disclaimer>
+        <language>hu</language>
+        <platform>all</platform>
+        <license>GPL-3.0-or-later</license>
+        <news>
+v0.2.0 (2026-09-25) - PRIVAT / BETA
+- UJRAIRVA a hivatalos mobilalkalmazas API-jara (net4plus.network4.hu/api), a
+  plugin.video.arena4plus mukodese alapjan: email/jelszo belepes (Bearer token),
+  a weboldal Cloudflare-kihivasa nem erinti. Cloudflare-kihivast nem kerul meg.
+- Elo kozvetitesek (ELO / kezdes idopontja), elobb vagy az elejetol lejatszas.
+- Videotar gyujtemenyenkent (30-asaval lapozva), kereses.
+- Lejatszas: Uplynk HLS / DASH az InputStream Adaptive-val (DASH-nel Widevine).
+- Kimelet: 1 mp szunet, gyujtemenyek / listak 6 oraig tarolva, token lemezen,
+  401-nel egyszeri ujrabelepes, sikertelen belepes utan 10 perc szunet.
+- Fix Firefox UA; az API-hoz beallithato a mobilalkalmazas UA-ja is.
+- Kapcsolat teszt a fomenuben.
+        </news>
+        <assets>
+            <icon>icon.png</icon>
+            <fanart>fanart.jpg</fanart>
+        </assets>
+    </extension>
+</addon>
+
+<addon id="plugin.program.kedvencmappak" name="Kedvenc mappák" version="1.0.0" provider-name="TomSzo">
+    <requires>
+        <import addon="xbmc.python" version="3.0.0"/>
+    </requires>
+    <extension point="xbmc.python.pluginsource" library="default.py">
+        <provides>executable video audio image</provides>
+    </extension>
+    <extension point="kodi.context.item">
+        <menu id="kodi.core.main">
+            <item library="context.py">
+                <label>30100</label>
+                <visible>!String.IsEmpty(ListItem.Label) + !ListItem.IsParentFolder + !String.StartsWith(ListItem.FolderPath,plugin://plugin.program.kedvencmappak) + !String.StartsWith(ListItem.Path,plugin://plugin.program.kedvencmappak) + !String.StartsWith(Container.FolderPath,plugin://plugin.program.kedvencmappak)</visible>
+            </item>
+        </menu>
+    </extension>
+    <extension point="xbmc.addon.metadata">
+        <summary lang="en_GB">Favourite folders - folders and subfolders for your favourites</summary>
+        <summary lang="hu_HU">Kedvenc mappák - mappák és almappák a kedvenceidnek</summary>
+        <description lang="en_GB">Create folders and subfolders for your favourites and pin them to Kodi's Favourites. The "Add to favourite folder..." context menu entry stores anything (addon folders, videos, library items, add-ons, existing favourites) into a folder. Rename, icon, reorder, move, import Kodi favourites, backup/restore.</description>
+        <description lang="hu_HU">Mappák és almappák a kedvenceidnek, amelyek a Kodi Kedvencek közé is kitűzhetők. A "Kedvenc mappába..." helyi menüponttal bármit (addon-mappát, videót, könyvtári elemet, kiegészítőt, meglévő kedvencet) egy mappába tehetsz. Átnevezés, ikon, sorrend, áthelyezés, Kodi Kedvencek importálása, mentés/visszaállítás.</description>
+        <language>hu</language>
+        <platform>all</platform>
+        <license>GPL-3.0-or-later</license>
+        <source>https://github.com/TomSzo/tomszo.github.io</source>
+        <news>
+v1.0.0 (2026-09-25)
+- Kezdeti kiadas: mappak, almappak; kituzes a Kodi Kedvencek koze
+- "Kedvenc mappaba..." helyi menu mindenhol (a Kodi Kedvencek ablakban is)
+- Atnevezes, ikon, fel/le, athelyezes, torles; Kodi Kedvencek importalasa
+- Mentes fajlba / visszaallitas, automatikus .bak az elozo allapotrol
+        </news>
+        <assets>
+            <icon>icon.png</icon>
+            <fanart>fanart.jpg</fanart>
+        </assets>
+    </extension>
+</addon>
+
 </addons>
