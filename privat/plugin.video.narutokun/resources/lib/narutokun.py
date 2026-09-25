@@ -552,6 +552,7 @@ def parse_info(html):
     pm = re.search(r'Ismertet[^<]*</p>.*?<p class="tab-box-item-paragraph">(.*?)</p>', h, re.DOTALL)
     sm = re.search(r'Projekt st[^<]*</p>.*?<span class="bold">(.*?)</span>', h, re.DOTALL)
     em = re.search(r'Publik[^<]*</p>.*?<span class="bold">(.*?)</span>', h, re.DOTALL)
+    vm = re.search(r'Online r[^<(]*\((\d+)\s*vide', h)
     eps = {}
     for num, title in re.findall(
             r"<p class='bullet-item-text'><strong>\s*(\d+)\.\s*r[^:<]*:\s*</strong>\s*(.*?)\s*</p>",
@@ -560,32 +561,46 @@ def parse_info(html):
     return {'title': _txt(tm.group(1)) if tm else '', 'alt': _txt(am.group(1)) if am else '',
             'plot': _txt(pm.group(1)) if pm else '', 'art': _abs(im.group(1)) if im else None,
             'status': _txt(sm.group(1)) if sm else '', 'episodes': _txt(em.group(1)) if em else '',
-            'ep_titles': eps}
+            'ep_titles': eps, 'online': int(vm.group(1)) if vm else 0}
 
 
 _WATCH_RE = re.compile(r'page=watch&(?:amp;)?id=(\d+)')
 
 
 def parse_videos(html):
-    """Watch-linkek címmel és képpel: [{'id','title','thumb'}] (oldal-sorrendben)."""
+    """Részek: [{'id','title','thumb','quality'}] (oldal-sorrendben).
+
+    A _videos.php válasza <div class="video-box small"> blokkokból áll:
+        onclick="WatchVideo(1380)"  +  <figure class="video-box-cover-image"><img src=...>
+        <img src="img/FHD.png">  +  <p class="video-box-title">Akame ga Kill! 01.</p>
+    A watch-link itt csak egy kis ikont tartalmaz, ezért a blokk egészét olvassuk."""
     out, seen = [], set()
     h = html or ''
+    blocks = re.split(r'<div class="video-box(?: small)?">', h)[1:]
+    for b in blocks:
+        im = (re.search(r'WatchVideo\((\d+)\)', b) or _WATCH_RE.search(b))
+        if not im or im.group(1) in seen:
+            continue
+        vid = im.group(1)
+        seen.add(vid)
+        tm = re.search(r'class="video-box-title">(.*?)</p>', b, re.DOTALL)
+        cm = re.search(r'<figure class="video-box-cover-image[^"]*">\s*<img src="([^"]+)"', b)
+        qm = re.search(r'<img src="[^"]*img/(FHD|UHD|4K|HD|SD)\.png"', b, re.I)
+        out.append({'id': vid, 'title': (_txt(tm.group(1)) if tm else '') or 'rész %s' % vid,
+                    'thumb': _abs(cm.group(1)) if cm else None,
+                    'quality': qm.group(1).upper() if qm else ''})
+    if out:
+        return out
+    # tartalék (más oldalszerkezet): watch-linkek, a link szövegével/képével
     for m in re.finditer(r'<a[^>]+href="[^"]*page=watch&(?:amp;)?id=(\d+)"[^>]*>(.*?)</a>',
                          h, re.DOTALL):
         vid, body = m.group(1), m.group(2)
         if vid in seen:
             continue
         seen.add(vid)
-        tm = (re.search(r'class="video-box-title">(.*?)</p>', body, re.DOTALL)
-              or re.search(r'<p[^>]*title[^>]*>(.*?)</p>', body, re.DOTALL))
         im = re.search(r'<img src="([^"]+)"', body)
-        title = _txt(tm.group(1)) if tm else _txt(body)
-        out.append({'id': vid, 'title': title or 'rész %s' % vid,
-                    'thumb': _abs(im.group(1)) if im else None})
-    for vid in _WATCH_RE.findall(h):        # tartalék: cím nélküli linkek
-        if vid not in seen:
-            seen.add(vid)
-            out.append({'id': vid, 'title': 'rész %s' % vid, 'thumb': None})
+        out.append({'id': vid, 'title': _txt(body) or 'rész %s' % vid,
+                    'thumb': _abs(im.group(1)) if im else None, 'quality': ''})
     return out
 
 
@@ -627,7 +642,11 @@ def anime_episodes(aid):
             n = _epnum(v['title'])
             if n is not None and info['ep_titles'].get(n):
                 v['title'] = '%s – %s' % (v['title'], info['ep_titles'][n])
+            if v.get('quality'):
+                v['title'] = '%s  [COLOR grey][%s][/COLOR]' % (v['title'], v['quality'])
             eps.append(v)
+        if info.get('online') and len(eps) >= info['online']:
+            break                       # megvan mind (az adatlap szerinti darabszám)
     log('anime %s: %d online rész' % (aid, len(eps)))
     info['videos'] = eps
     if info.get('title'):

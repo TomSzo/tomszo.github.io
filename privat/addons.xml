@@ -413,7 +413,7 @@ v0.1.0 (2026-09-24) - PRIVAT / BETA
     </extension>
 </addon>
 
-<addon id="plugin.video.narutokun" name="Naruto-Kun.Hu (privát)" version="0.1.0" provider-name="TomSzo">
+<addon id="plugin.video.narutokun" name="Naruto-Kun.Hu (privát)" version="0.1.1" provider-name="TomSzo">
     <requires>
         <import addon="xbmc.python" version="3.0.0"/>
         <import addon="script.module.requests" version="2.22.0"/>
@@ -431,6 +431,14 @@ v0.1.0 (2026-09-24) - PRIVAT / BETA
         <platform>all</platform>
         <license>GPL-3.0-or-later</license>
         <news>
+v0.1.1 (2026-09-25) - PRIVAT / BETA
+- JAVITAS: a reszlista (_videos.php) valodi szerkezete szerint: a watch-link csak egy
+  ikont tartalmaz, a cim (video-box-title) es a boritokep a blokkban van. Eddig a
+  reszek "resz 1380" cimet es ikon-kepet kaptak volna; most "Akame ga Kill! 01. -
+  Old meg a sotetseget!" + boritokep + minoseg ([FHD]).
+- Kevesebb keres: ha az adatlap szerinti online darabszam (pl. 24 video) megvan,
+  nem ker le tobb oldalt.
+
 v0.1.0 (2026-09-25) - PRIVAT / BETA
 - Kezdeti kiadas a naruto-kun.hu-hoz.
 - Belepes (PHP-Fusion, "emlekezzen ram"): felhasznalonev/jelszo a beallitasokban vagy
