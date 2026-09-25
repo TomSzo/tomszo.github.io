@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<addon id="plugin.video.narutokun" name="Naruto-Kun.Hu (privát)" version="0.1.0" provider-name="TomSzo">
+    <requires>
+        <import addon="xbmc.python" version="3.0.0"/>
+        <import addon="script.module.requests" version="2.22.0"/>
+        <import addon="script.module.resolveurl" version="5.1.0"/>
+        <import addon="inputstream.adaptive" optional="true"/>
+    </requires>
+    <extension point="xbmc.python.pluginsource" library="default.py">
+        <provides>video</provides>
+    </extension>
+    <extension point="xbmc.addon.metadata">
+        <summary lang="hu">Naruto-Kun.Hu (naruto-kun.hu) – a csapat magyar feliratos online animéi</summary>
+        <description lang="hu">Privát, magánhasználatú videó addon a naruto-kun.hu fansub oldal online animéihez. Böngészés állapot szerint (aktuális, befejezett, felfüggesztett, archívum, tervezett, összes), keresés, a főoldal legfrissebb online részei, adatlap ismertetővel és epizódcímekkel. Ha egy oldal belépést kér, a megadott felhasználónévvel/jelszóval automatikusan belép. A videót a beágyazott lejátszó (videa, indavideo) adja, amit a ResolveURL old fel. Kedvencek, előzmények, takarékos lekérés (1 mp szünet, gyorsítótár, napi számláló). Magánhasználat, saját felelősségre.</description>
+        <disclaimer lang="hu">Privát, magánhasználatú kiegészítő.</disclaimer>
+        <language>hu</language>
+        <platform>all</platform>
+        <license>GPL-3.0-or-later</license>
+        <news>
+v0.1.0 (2026-09-25) - PRIVAT / BETA
+- Kezdeti kiadas a naruto-kun.hu-hoz.
+- Belepes (PHP-Fusion, "emlekezzen ram"): felhasznalonev/jelszo a beallitasokban vagy
+  txt-fajlban (addon_data/.../login.txt); csak akkor lep be, ha egy oldal a belepo
+  urlapot adja vissza; munkamenet lemezre mentve; sikertelen belepes utan 10 percig
+  nincs ujabb probalkozas.
+- Menu: Legfrissebb reszek (fooldali hirek online reszei), Aktualis / Befejezett /
+  Felfuggesztett / Archivum / Tervezett / Osszes anime (lapozassal), Kereses.
+- Adatlap: ismerteto, allapot, epizodcimek; online reszek a _videos.php lapjairol.
+- Lejatszas: a watch oldal beagyazott lejatszoja (videa, indavideo) ResolveURL-lel.
+- Kedvencek, Elozmenyek; szerver-kimeles (1 mp szunet, gyorsitotar, napi szamlalo);
+  User-Agent fixen Android 16 / Firefox 156; iso-8859-2 kodolas helyesen kezelve.
+        </news>
+        <assets>
+            <icon>icon.png</icon>
+        </assets>
+    </extension>
+</addon>
