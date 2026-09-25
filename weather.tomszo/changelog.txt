@@ -1,0 +1,7 @@
+v1.0.0 (2026-09-25)
+- Kezdeti kiadas: Idokep (magyar telepulesek) + Open-Meteo (vilagszerte, kulcs nelkul)
+- Jelenlegi ido, 3 oras / orankenti elorejelzes, 15-16 napos elorejelzes, napkelte/-nyugta
+- Hoerzet, harmatpont, paratartalom, szel + szellokes, UV, legnyomas, csapadek, latotavolsag
+- Idokep figyelmeztetesek (pl. Szeles nap) a napi elorejelzesben
+- 5 hely, telepuleskeresessel vagy koordinataval; alapertelmezes: Budapest
+- Kimeletes: 20 perces gyorsitotar, 1 mp szunet a keresek kozott, fix Firefox UA
