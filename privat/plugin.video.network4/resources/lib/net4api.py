@@ -45,6 +45,7 @@ FIREFOX_UA = 'Mozilla/5.0 (Android 16; Mobile; rv:156.0) Gecko/156.0 Firefox/156
 APP_UA = 'Dart/3.6 (dart:io)'
 MIN_GAP = 1.0
 LOGIN_COOLDOWN = 600
+TOKEN_FILE = 'token.json'     # (a 0.1.x session.json-ja süti-lista volt)
 LIST_TTL = 6 * 3600
 
 _SESSION = requests.Session() if requests else None
@@ -82,11 +83,14 @@ def profile(name=''):
 
 
 def _read_json(name, default=None):
+    """JSON a profil-mappából. Csak objektumot (dict) fogad el - a régi (0.1.x)
+    verzió más szerkezetű fájljai (pl. süti-lista) így nem okoznak hibát."""
     try:
         with open(profile(name), 'r', encoding='utf-8') as f:
-            return json.load(f)
+            data = json.load(f)
     except (IOError, OSError, ValueError):
         return default
+    return data if isinstance(data, dict) else default
 
 
 def _write_json(name, data):
@@ -169,12 +173,12 @@ def have_credentials():
 
 
 def saved_token():
-    return (_read_json('session.json', {}) or {}).get('token')
+    return (_read_json(TOKEN_FILE, {}) or {}).get('token')
 
 
 def clear_token():
     try:
-        os.remove(profile('session.json'))
+        os.remove(profile(TOKEN_FILE))
     except OSError:
         pass
 
@@ -183,7 +187,7 @@ def login():
     email, password = credentials()
     if not (email and password):
         raise LoginError('Add meg az email címet és a jelszót a beállításokban')
-    last_fail = (_read_json('session.json', {}) or {}).get('failed', 0)
+    last_fail = (_read_json(TOKEN_FILE, {}) or {}).get('failed', 0)
     if time.time() - last_fail < LOGIN_COOLDOWN:
         raise LoginError('Az előző belépés nem sikerült - 10 perc múlva próbálkozom újra '
                          '(vagy: Munkamenet törlése)')
@@ -194,10 +198,10 @@ def login():
     except ValueError:
         pass
     if resp.status_code == 200 and token:
-        _write_json('session.json', {'token': token, 'ts': int(time.time())})
+        _write_json(TOKEN_FILE, {'token': token, 'ts': int(time.time())})
         log('Bejelentkezés sikeres.')
         return token
-    _write_json('session.json', {'failed': int(time.time())})
+    _write_json(TOKEN_FILE, {'failed': int(time.time())})
     log('Bejelentkezés SIKERTELEN (HTTP %s): %s' % (resp.status_code, resp.text[:200]),
         xbmc.LOGWARNING)
     raise LoginError('Sikertelen belépés (HTTP %s) - ellenőrizd az email címet / jelszót'

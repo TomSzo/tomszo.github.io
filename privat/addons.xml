@@ -466,7 +466,7 @@ v0.1.0 (2026-09-25) - PRIVAT / BETA
     </extension>
 </addon>
 
-<addon id="plugin.video.network4" name="Network4 (privát)" version="0.2.0" provider-name="TomSzo">
+<addon id="plugin.video.network4" name="Network4 (privát)" version="0.2.1" provider-name="TomSzo">
     <requires>
         <import addon="xbmc.python" version="3.0.0"/>
         <import addon="script.module.requests" version="2.22.0"/>
@@ -483,6 +483,11 @@ v0.1.0 (2026-09-25) - PRIVAT / BETA
         <platform>all</platform>
         <license>GPL-3.0-or-later</license>
         <news>
+v0.2.1 (2026-09-25) - PRIVAT / BETA
+- JAVITAS: "'list' object has no attribute 'get'" - a regi (0.1.x) verzio session.json
+  fajlja (suti-lista) miatt. A token mostantol token.json-ban; a profil-fajlok
+  beolvasasa szerkezet-ellenorzott.
+
 v0.2.0 (2026-09-25) - PRIVAT / BETA
 - UJRAIRVA a hivatalos mobilalkalmazas API-jara (net4plus.network4.hu/api), a
   plugin.video.arena4plus mukodese alapjan: email/jelszo belepes (Bearer token),
