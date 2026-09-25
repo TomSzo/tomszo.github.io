@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<addon id="plugin.video.kintsugifansub" name="Kintsugi Fansub (privát)" version="0.1.0" provider-name="TomSzo">
+<addon id="plugin.video.kintsugifansub" name="Kintsugi Fansub (privát)" version="0.2.0" provider-name="TomSzo">
     <requires>
         <import addon="xbmc.python" version="3.0.0"/>
         <import addon="script.module.requests" version="2.22.0"/>
@@ -15,6 +15,11 @@
         <platform>all</platform>
         <license>GPL-3.0-or-later</license>
         <news>
+v0.2.0 (2026-09-25) - PRIVAT / BETA
+- UJ: Kedvencek (helyi menu: Hozzaadas / Torles a kedvencekbol) es Elozmenyek
+  (legutobb nezett projektek, "utoljara: resz" jelolessel). Helyben tarolva.
+- A lejatszasi URL-ek valtozatlanok, a Kodi "megnezve" jelolesei megmaradnak.
+
 v0.1.0 (2026-09-24) - PRIVAT / BETA
 - Kezdeti kiadas a Kintsugi Fansub (kintsugi-fansub.hu) oldalhoz. A csapat a Mutekibol
   valt ki, ugyanazzal a fiokkal lehet belepni.

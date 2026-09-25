@@ -225,8 +225,29 @@ def _clean(t):
     return re.sub(r'\s+', ' ', t).strip()
 
 
+_SI_TTL = 6 * 3600
+
+
+def _search_index_path():
+    return _daily_limit_path().rsplit('/', 1)[0] + '/search_index.json'
+
+
 def _search_index():
-    """A teljes anime-index JSON-ja (ugyanaz, amit az oldal fejléc-keresője használ)."""
+    """A teljes anime-index JSON-ja (ugyanaz, amit az oldal fejléc-keresője használ).
+    6 órára lemezre mentjük, így a keresés nem tölti le minden alkalommal az egészet."""
+    import time as _time
+    p = _search_index_path()
+    try:
+        if xbmcvfs.exists(p) and (_time.time() - xbmcvfs.Stat(p).st_mtime()) < _SI_TTL:
+            f = xbmcvfs.File(p)
+            try:
+                data = json.loads(f.read() or '[]')
+            finally:
+                f.close()
+            if isinstance(data, list) and data:
+                return data
+    except Exception:  # noqa
+        pass
     txt = get('data/search/data_search.php', referer=base_url() + 'web/kereso/', ajax=True)
     if not txt:
         log('data_search.php üres válasz', xbmc.LOGWARNING)
@@ -244,6 +265,14 @@ def _search_index():
             % (len(txt), txt[:200]), xbmc.LOGWARNING)
         return []
     log('anime-index betöltve: %d elem' % len(data))
+    try:
+        f = xbmcvfs.File(p, 'w')
+        try:
+            f.write(json.dumps(data))
+        finally:
+            f.close()
+    except Exception:  # noqa
+        pass
     return data
 
 
@@ -641,7 +670,58 @@ def bump_request_count():
     return d['count']
 
 
+# A data_player.php válaszok rövid gyorsítótára: a szerverlista megnyitásakor kapott
+# választ a lejátszás újrahasznosítja, így egy lejátszás 2 helyett 1 napi-limit kérés.
+_PD_TTL = 10 * 60
+
+
+def _pd_cache_path():
+    return _daily_limit_path().rsplit('/', 1)[0] + '/player_cache.json'
+
+
+def _pd_cache_load():
+    try:
+        p = _pd_cache_path()
+        if not xbmcvfs.exists(p):
+            return {}
+        f = xbmcvfs.File(p)
+        try:
+            raw = f.read()
+        finally:
+            f.close()
+        return json.loads(raw) if raw else {}
+    except Exception:  # noqa
+        return {}
+
+
+def _pd_cache_get(server, vid):
+    import time as _time
+    ent = _pd_cache_load().get('%s|%s' % (vid, server))
+    if ent and (_time.time() - ent.get('ts', 0)) < _PD_TTL:
+        return ent.get('data')
+    return None
+
+
+def _pd_cache_put(server, vid, data):
+    import time as _time
+    now = _time.time()
+    cache = {k: v for k, v in _pd_cache_load().items() if now - v.get('ts', 0) < _PD_TTL}
+    cache['%s|%s' % (vid, server)] = {'ts': int(now), 'data': data}
+    try:
+        f = xbmcvfs.File(_pd_cache_path(), 'w')
+        try:
+            f.write(json.dumps(cache))
+        finally:
+            f.close()
+    except Exception as exc:  # noqa
+        log('player-cache mentés hiba: %s' % exc, xbmc.LOGWARNING)
+
+
 def player_data(server, vid, csrf, referer):
+    cached = _pd_cache_get(server, vid)
+    if cached is not None:
+        log('data_player.php gyorsítótárból (%s, %s) - nincs új limit-kérés' % (vid, server))
+        return cached
     txt = post('data/lejatszo/data_player.php',
                {'server': server, 'vid': vid, 'csrf_token': csrf}, referer=referer)
     if not txt:
@@ -649,10 +729,13 @@ def player_data(server, vid, csrf, referer):
     # A kérés elérte a szervert -> ez beleszámít a napi limitbe. Helyi +1.
     bump_request_count()
     try:
-        return json.loads(txt)
+        data = json.loads(txt)
     except ValueError:
         log('data_player.php nem JSON (részlet): %s' % txt[:300], xbmc.LOGWARNING)
         return None
+    if isinstance(data, dict) and not data.get('error'):
+        _pd_cache_put(server, vid, data)
+    return data
 
 
 def _extract_from_output(output):

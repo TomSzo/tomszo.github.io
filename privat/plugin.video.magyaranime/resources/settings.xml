@@ -6,4 +6,8 @@
 		<setting id="base_url" type="text" label="Alap URL (csak domainváltáskor)" default="https://magyaranime.eu/" />
 		<setting id="debug" type="bool" label="Hibakeresési naplózás" default="false" />
 	</category>
+	<category label="Lejátszás">
+		<setting id="ep_click" type="enum" label="Részre kattintva"
+		         values="Szerverlista (választás)|Azonnali lejátszás (kevesebb limit-kérés)" default="0" />
+	</category>
 </settings>

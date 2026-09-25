@@ -28,7 +28,7 @@ v1.0.0 (2026-09-21) - PRIVÁT
     </extension>
 </addon>
 
-<addon id="plugin.video.magyaranime" name="MagyarAnime (privát)" version="0.6.14" provider-name="TomSzo">
+<addon id="plugin.video.magyaranime" name="MagyarAnime (privát)" version="0.7.0" provider-name="TomSzo">
     <requires>
         <import addon="xbmc.python" version="3.0.0"/>
         <import addon="script.module.requests" version="2.22.0"/>
@@ -46,6 +46,17 @@ v1.0.0 (2026-09-21) - PRIVÁT
         <platform>all</platform>
         <license>GPL-3.0-or-later</license>
         <news>
+v0.7.0 (2026-09-25) - PRIVAT / BETA
+- NAPI LIMIT FELEZESE: a szerverlista megnyitasakor kapott data_player.php valaszt
+  10 percig ujrahasznositja a lejatszas, igy egy lejatszas 2 helyett 1 forras-lekeres.
+  (Hibas / limit-valasz nem kerul a gyorsitotarba.)
+- UJ beallitas: Lejatszas -> "Reszre kattintva": Szerverlista (eddigi) vagy
+  Azonnali lejatszas (1 kattintas, 1 limit-keres; helyi menu: "Szerver valasztasa").
+- UJ: Kedvencek (helyi menu: Hozzaadas / Torles a kedvencekbol) es Elozmenyek
+  (legutobb nezett animek, "utoljara: N. resz" jelolessel). Helyben tarolva.
+- Kereses: az anime-index 6 orara gyorsitotarazva (nem tolti le minden keresesnel).
+- A lejatszasi URL-ek valtozatlanok, a Kodi "megnezve" jelolesei megmaradnak.
+
 v0.6.14 (2026-09-24) - PRIVAT / BETA
 - Napi limit MOSTANTOL HELYI SZAMLALO: a magyaranime a FORRAS-LEKERDEZESEKET
   (data_player.php hivasok) szamolja a limitbe, nem a lejatszasokat. Minden forras-
@@ -211,7 +222,7 @@ v0.1.0 (2026-09-21) - PRIVÁT / BÉTA
     </extension>
 </addon>
 
-<addon id="plugin.video.mutekifansub" name="Muteki Fansub (privát)" version="0.1.1" provider-name="TomSzo">
+<addon id="plugin.video.mutekifansub" name="Muteki Fansub (privát)" version="0.2.0" provider-name="TomSzo">
     <requires>
         <import addon="xbmc.python" version="3.0.0"/>
         <import addon="script.module.requests" version="2.22.0"/>
@@ -227,6 +238,12 @@ v0.1.0 (2026-09-21) - PRIVÁT / BÉTA
         <platform>all</platform>
         <license>GPL-3.0-or-later</license>
         <news>
+v0.2.0 (2026-09-25) - PRIVAT / BETA
+- UJ: Kedvencek (helyi menu: Hozzaadas / Torles a kedvencekbol) es Elozmenyek
+  (legutobb nezett projektek, "utoljara: resz" jelolessel). Helyben tarolva.
+- UJ menupont: Dobott projektek.
+- A lejatszasi URL-ek valtozatlanok, a Kodi "megnezve" jelolesei megmaradnak.
+
 v0.1.1 (2026-09-24) - PRIVAT / BETA
 - UJ: email/jelszo txt-fajlbol is megadhato (nincs gepeles). Beallitasok -> Belepes ->
   "email/jelszo txt fajl". Rugalmas formatum: 'email:jelszo', ket sor, 'email=..'/
@@ -249,7 +266,7 @@ v0.1.0 (2026-09-24) - PRIVAT / BETA
     </extension>
 </addon>
 
-<addon id="plugin.video.kintsugifansub" name="Kintsugi Fansub (privát)" version="0.1.0" provider-name="TomSzo">
+<addon id="plugin.video.kintsugifansub" name="Kintsugi Fansub (privát)" version="0.2.0" provider-name="TomSzo">
     <requires>
         <import addon="xbmc.python" version="3.0.0"/>
         <import addon="script.module.requests" version="2.22.0"/>
@@ -265,6 +282,11 @@ v0.1.0 (2026-09-24) - PRIVAT / BETA
         <platform>all</platform>
         <license>GPL-3.0-or-later</license>
         <news>
+v0.2.0 (2026-09-25) - PRIVAT / BETA
+- UJ: Kedvencek (helyi menu: Hozzaadas / Torles a kedvencekbol) es Elozmenyek
+  (legutobb nezett projektek, "utoljara: resz" jelolessel). Helyben tarolva.
+- A lejatszasi URL-ek valtozatlanok, a Kodi "megnezve" jelolesei megmaradnak.
+
 v0.1.0 (2026-09-24) - PRIVAT / BETA
 - Kezdeti kiadas a Kintsugi Fansub (kintsugi-fansub.hu) oldalhoz. A csapat a Mutekibol
   valt ki, ugyanazzal a fiokkal lehet belepni.
