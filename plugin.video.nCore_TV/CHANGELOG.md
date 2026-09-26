@@ -8,6 +8,13 @@ A formátum a [Keep a Changelog](https://keepachangelog.com/hu/1.1.0/) szerkezet
 
 ---
 
+## [1.2.4] – 2026-09-26 (fork: TomSzo)
+
+### Javítva
+- **Rendezés-választó: OK után nem nyílt meg a lista.** A kategória-menüpont mappaként nyílt, és amíg a Kodi a „mappa" betöltésére várt, elnyelte a rendezett listára váltó `Container.Update` parancsot. Mostantól a menüpont futtatható elem (nem mappa, nem lejátszható), így az ablak után a lista rendben megnyílik.
+
+---
+
 ## [1.2.3] – 2026-09-26 (fork: TomSzo)
 
 ### Hozzáadva
