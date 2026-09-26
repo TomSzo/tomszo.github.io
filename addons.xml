@@ -344,7 +344,7 @@ v1.0.0 (2026-04-04) - BÉTA
 
 Mit módosítottunk ebben a forkban:
 - TMDb Helper lejátszó (Auto Play + Source Select), színkódolt minőség-címkékkel (felbontás, REMUX, DV/HDR, seederek)
-- REMUX-keresés és minőség-felismerés, minőség szerinti rendezés, REMUX seed szerint, rendezés-választó ablak
+- REMUX-keresés és minőség-felismerés, minőség szerinti rendezés, rendezés-választó ablak (feltöltés ideje, seed, méret…)
 - Widget mód: kész listák (REMUX / 4K / 1080) skin-widgetnek
 - Helyi funkciók: lokális lejátszás-követés, évadpakk-menü, gyors mód ki/be
 - Sebesség: kevesebb indításkori hálózati kérés, gyorsabb adatbázis és listák
@@ -353,7 +353,7 @@ Mit módosítottunk ebben a forkban:
 
 What this fork changes:
 - TMDb Helper player (Auto Play + Source Select) with color-coded quality labels (resolution, REMUX, DV/HDR, seeders)
-- REMUX search and quality detection, quality-based sorting, REMUX sorted by seeders, sort-order picker
+- REMUX search and quality detection, quality-based sorting, sort-order picker (upload time, seeders, size…)
 - Widget mode: ready-made lists (REMUX / 4K / 1080) for skin widgets
 - Local features: local playback tracking, season-pack menu, fast mode toggle
 - Speed: fewer network requests at startup, faster database and lists
@@ -363,6 +363,7 @@ What this fork changes:
         <news>
 1.2.3 (fork: TomSzo, 2026-09-26)
 - Rendezes-valaszto felugro ablak a Film/Sorozat kategoriaknal (feltoltes ideje, seed, letoltesek, meret, nev)
+- A kategoriakbol kivett REMUX (seed szerint) pontok - az ablak kivaltja; Widgetekben maradnak
 1.2.2 (fork: TomSzo, 2026-09-25)
 - REMUX seed szerint: Film HU/EN, Sorozat HU/EN REMUX (seed szerint) menupontok, Widgetekben is
 1.2.1 (fork: TomSzo, 2026-09-24)
