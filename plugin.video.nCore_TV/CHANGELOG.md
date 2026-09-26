@@ -8,6 +8,13 @@ A formátum a [Keep a Changelog](https://keepachangelog.com/hu/1.1.0/) szerkezet
 
 ---
 
+## [1.3.2] – 2026-09-26 (fork: TomSzo)
+
+### Változott
+- **Cím + évszám minden verzió-sorban is** (a kis, második sorban, elöl): a TMDb Helper *Source Select*, a lista-verzióválasztó és az összevont sor leírása. Remake-eknél / azonos című filmeknél így soronként látszik, melyik melyik (pl. *Dune (2021)* vs. *Dune (1984)*).
+
+---
+
 ## [1.3.1] – 2026-09-26 (fork: TomSzo)
 
 ### Változott
