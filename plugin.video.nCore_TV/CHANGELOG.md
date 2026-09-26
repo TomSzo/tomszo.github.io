@@ -8,6 +8,13 @@ A formátum a [Keep a Changelog](https://keepachangelog.com/hu/1.1.0/) szerkezet
 
 ---
 
+## [1.6.4] – 2026-09-26 (fork: TomSzo)
+
+### Változott
+- **A poszterek és a fanart alapból betöltődnek:** a *Gyors mód* alapértelmezése **ki** (korábban be volt, ezért új telepítésnél nem látszottak a borítók). Aki kifejezetten bekapcsolta, annál bekapcsolva marad; nagyon gyenge boxon továbbra is bekapcsolható (Beállítások → Helyi funkciók).
+
+---
+
 ## [1.6.3] – 2026-09-26 (fork: TomSzo)
 
 ### Hozzáadva
