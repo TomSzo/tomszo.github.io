@@ -327,7 +327,7 @@ v1.0.0 (2026-04-04) - BÉTA
     </extension>
 </addon>
 
-<addon id="plugin.video.nCore_TV" name="nCore TV" version="1.5.0" provider-name="heg (fork: TomSzo)">
+<addon id="plugin.video.nCore_TV" name="nCore TV" version="1.5.1" provider-name="heg (fork: TomSzo)">
     <requires>
         <import addon="script.module.beautifulsoup4" version="4.6.2"/>
         <import addon="script.module.requests" version="2.22.0"/>
@@ -363,6 +363,8 @@ What this fork changes:
         <language>hu</language>
         <platform>all</platform>
         <news>
+1.5.1 (fork: TomSzo, 2026-09-26)
+- Szinesz / stab: szerep szerinti szuro (szinesz, rendezo, producer, iro; filmek / sorozatok), nCore-elerhetoseggel
 1.5.0 (fork: TomSzo, 2026-09-26)
 - Ajanlok: nCore-elerhetoseg jelzese (N verzio / nincs nCore-on), leiras-panel + pontszamok, kattintasra szinkodolt verziovalaszto; menu atszervezve, Magyar streaming-kinalat
 1.4.2 (fork: TomSzo, 2026-09-26)

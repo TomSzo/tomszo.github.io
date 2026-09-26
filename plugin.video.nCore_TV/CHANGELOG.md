@@ -8,6 +8,16 @@ A formátum a [Keep a Changelog](https://keepachangelog.com/hu/1.1.0/) szerkezet
 
 ---
 
+## [1.5.1] – 2026-09-26 (fork: TomSzo)
+
+### Új – szerep szerinti szűrés (Keresés színészre, Szereplők és stáb)
+- Egy személyre kattintva **szűrő-menü** jön a darabszámokkal: *Minden szerep*, *Színészként*, *Rendezőként*, *Producerként*, *Íróként* – mindegyik **filmek** és **sorozatok** szerint külön (csak a nem üres sorok). Felül az életrajz a panelen.
+- A listák a **TMDb** személy-adataiból jönnek (egy hívás, 1 napos gyorsítótár), újabb elöl; talk show / hírműsor / „önmaga” szereplések nélkül; a munkakör magyarul a cím mellett (pl. *rendező, forgatókönyv, producer*).
+- Az Ajánlók-réteg itt is működik: **nCore-elérhetőség** (✔ N verzió / nincs nCore-on), leírás-panel, kattintásra **verzióválasztó**.
+- A régi IMDb-filmográfia a menü alján elérhető; ha a TMDb nem ismeri a személyt, automatikusan az jön. Kikapcsolható (Helyi funkciók → Ajánlók).
+
+---
+
 ## [1.5.0] – 2026-09-26 (fork: TomSzo)
 
 ### Új – Ajánlók menü
