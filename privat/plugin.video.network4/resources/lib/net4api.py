@@ -2,7 +2,8 @@
 """
 Network4 / Arena4+ - a hivatalos mobilalkalmazás API-ja (net4plus.network4.hu/api).
 
-A plugin.video.arena4plus (heg, vargalex) alapján feltérképezve:
+A plugin.video.arena4plus (szerzők: heg, vargalex; GPL-3.0) alapján feltérképezve
+(új kód, nem fork):
     GET /api/login?email=..&password=..      -> {"access_token": "..."}   (Bearer)
     GET /api/collections                       -> [{title, slug, photo_thumbnail}, ...]
     GET /api/collectionitems/<slug>/<n>        -> [{vodsavail: [{title, short_desc,

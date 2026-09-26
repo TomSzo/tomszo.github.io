@@ -13,7 +13,7 @@
 | **plugin.video.mutekifansub** | Muteki Fansub | saját fiók |
 | **plugin.video.kintsugifansub** | Kintsugi Fansub | saját fiók |
 | **plugin.video.narutokun** | Naruto-Kun.Hu | saját fiók (felhasználónév/jelszó) |
-| **plugin.video.network4** | Network4 / Arena4+ – sport, élő közvetítések | saját előfizetés (email/jelszó) |
+| **plugin.video.network4** | Network4 / Arena4+ – sport, élő közvetítések *(alap: Arena4Plus – heg, vargalex; új kód, nem fork)* | saját előfizetés (email/jelszó) |
 | **plugin.program.kedvencmappak** | Kedvenc mappák – mappák és almappák a Kodi Kedvencekhez | nem kell |
 | **script.module.resolveurl** | lejátszó-feloldó modul (függőség) | – |
 
