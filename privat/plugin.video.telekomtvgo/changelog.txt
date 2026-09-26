@@ -1,3 +1,11 @@
+v0.1.2 (2026-09-26) - PRIVAT / BETA
+- JAVITAS: a belepesi beallitas (bifrost/tenant/config) HTTP 500-at adott.
+  A keres most pontosan a bongeszo fejleceivel megy (x-tvflow START_UP /
+  x-tv-step CONFIG, requestId nelkul); 500-nal ket egyszerubb valtozattal
+  ujraprobalja.
+- A hibafajlba a valasz- es keresfejlecek is bekerulnek (tokenek nelkul).
+- Frissites utan nem kell kivarni a sikertelen belepes utani 3 percet.
+
 v0.1.1 (2026-09-26) - PRIVAT / BETA
 - JAVITAS: a belepes HTTP 404-gyel elbukott. A webes kliens nem a nativ
   logint hasznalja, hanem webes (SSO) belepest: tenant/config -> Telekom
