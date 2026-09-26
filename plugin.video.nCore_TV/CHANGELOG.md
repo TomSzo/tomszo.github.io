@@ -8,6 +8,15 @@ A formátum a [Keep a Changelog](https://keepachangelog.com/hu/1.1.0/) szerkezet
 
 ---
 
+## [1.3.0] – 2026-09-26 (fork: TomSzo)
+
+### Hozzáadva
+- **Kiadások összevonása** a Film és a Sorozat listákban: ha ugyanannak a filmnek (IMDb-azonosító, ennek híján cím + év) vagy ugyanannak a résznek / évadpakknak (IMDb + S01E05 / S01) több kiadása van az oldalon, egy sorban jelenik meg „(N verzió)" jelöléssel. A leírásban mind a verzió látszik; kattintásra **színkódolt verzióválasztó** nyílik (4K / REMUX / DV / HDR / hang, méret, seed – a lista sorrendjében), és a választott kiadás adatlapjára visz. Különböző részek nem vonódnak össze. Widgetben nincs összevonás.
+- **Halott torrentek elrejtése**: a beállított minimum seed alatti találatok nem jelennek meg (alapértelmezés: a 0 seedesek rejtve).
+- Beállítások → Helyi funkciók → *Listák*: minimum seed (0 / 1 / 3 / 5 / 10; 0 = mind látszik), összevonás ki/be.
+
+---
+
 ## [1.2.4] – 2026-09-26 (fork: TomSzo)
 
 ### Javítva
