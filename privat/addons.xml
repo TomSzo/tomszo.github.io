@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <addons>
-<addon id="repository.tomszo.private" name="TomSzo Privát Tároló" version="1.0.2" provider-name="TomSzo">
+<addon id="repository.tomszo.private" name="TomSzo Privát Tároló" version="1.0.3" provider-name="TomSzo">
     <requires>
         <import addon="xbmc.addon" version="12.0.0"/>
     </requires>
@@ -20,8 +20,6 @@ A videós kiegészítők a tulajdonos (TomSzo) SAJÁT fiókjával / előfizetés
 
 Kiegészítők:
 - MagyarAnime, Muteki Fansub, Kintsugi Fansub, Naruto-Kun.Hu - anime (saját fiók, kímélő lekérdezés)
-- Network4 / Arena4+ - sport és élő közvetítések (saját előfizetés)
-- Kedvenc mappák - mappák és almappák a Kodi Kedvencekhez (fiók nélkül is működik)
 - script.module.resolveurl - lejátszó-feloldó modul
 
 Ha nem te vagy a tulajdonos, ne telepítsd: a videós kiegészítők a saját fiókod nélkül nem működnek.
@@ -30,13 +28,16 @@ BÉTA / magánhasználat. Csak saját felelősségre.</description>
 
 The video add-ons work with the owner's (TomSzo) OWN accounts / subscriptions. They contain and share no credentials: sign-in (email/password or a session cookie from the owner's own browser) is stored only in the owner's own Kodi settings.
 
-Add-ons: MagyarAnime, Muteki Fansub, Kintsugi Fansub, Naruto-Kun.Hu (anime), Network4 / Arena4+ (sports, live events), Favourite folders (works without an account), script.module.resolveurl.
+Add-ons: MagyarAnime, Muteki Fansub, Kintsugi Fansub, Naruto-Kun.Hu (anime), script.module.resolveurl.
 
 If you are not the owner, do not install: the video add-ons will not work without your own account. Personal use only, at your own risk.</description>
         <platform>all</platform>
         <license>GPL-3.0-or-later</license>
         <source>https://github.com/TomSzo/tomszo.github.io</source>
         <news>
+v1.0.3 (2026-09-26) - PRIVÁT
+- A Network4 és a Kedvenc mappák átkerült a nyilvános TomSzo tárolóba
+
 v1.0.2 (2026-09-25) - PRIVÁT
 - Leírás frissítve a mai kiegészítőkre (Network4, Naruto-Kun.Hu, Kedvenc mappák)
 - Felesleges fájlok (default.py, index.html) kivéve a csomagból
@@ -434,105 +435,6 @@ v0.1.0 (2026-09-25) - PRIVAT / BETA
         </news>
         <assets>
             <icon>icon.png</icon>
-        </assets>
-    </extension>
-</addon>
-
-<addon id="plugin.video.network4" name="Network4 (privát)" version="0.4.1" provider-name="TomSzo (alap: Arena4Plus – heg, vargalex)">
-    <requires>
-        <import addon="xbmc.python" version="3.0.0"/>
-        <import addon="script.module.requests" version="2.22.0"/>
-        <import addon="inputstream.adaptive" optional="true"/>
-    </requires>
-    <extension point="xbmc.python.pluginsource" library="default.py">
-        <provides>video</provides>
-    </extension>
-    <extension point="xbmc.addon.metadata">
-        <summary lang="hu">Network4 / Arena4+ – privát, a saját előfizetéssel (mobilalkalmazás API)</summary>
-        <description lang="hu">Nem hivatalos kiegészítő, a plugin.video.arena4plus (szerzők: heg, vargalex) alapján, új kóddal írva (nem fork). Privát, magánhasználatú videó addon a Network4 / Arena4+ szolgáltatáshoz, a tulajdonos saját fiókjával. A hivatalos mobilalkalmazás API-ját használja (net4plus.network4.hu): élő közvetítések (élőben vagy az elejétől), videótár gyűjteményenként, keresés. A Cloudflare-ellenőrzést a beépített cloudscraper (MIT) kezeli.</description>
-        <disclaimer lang="hu">Privát, magánhasználatú kiegészítő. Csak a tulajdonos saját előfizetésével működik.</disclaimer>
-        <language>hu</language>
-        <platform>all</platform>
-        <license>GPL-3.0-or-later</license>
-        <news>
-v0.4.1 (2026-09-26) - PRIVAT / BETA
-- Szerzoseg egyertelmubben: "alap: Arena4Plus - heg, vargalex" (provider,
-  leiras, README). Nem fork: uj kod, az Arena4Plus mukodese alapjan.
-
-v0.4.0 (2026-09-25) - PRIVAT / BETA
-- UJ: Sportok menu a www.network4.hu/sport/collections szerint: Kiemelt sportok,
-  Dokumentumfilm, Labdarugas, Amerikaifutball, Motorsport, Amerikai sportok,
-  Kuzdosportok, Tenisz, Egyeb sportok, Studiomusorok, Magazinmusorok -&gt;
-  gyujtemenyek (logoval) -&gt; videok (a mobil API-rol).
-- A kategoria-lista naponta legfeljebb 1x frissul a weboldalrol; ha nem sikerul,
-  beepitett pillanatkep szolgal (beallitasban kikapcsolhato a webes frissites).
-
-v0.3.0 (2026-09-25) - PRIVAT / BETA
-- A tulajdonos kerésére az Arena4Plus-szal azonosan: a net4plus API Cloudflare-
-  ellenorzeset a beepitett cloudscraper kezeli (resources/lib/modules; beallitasban
-  kikapcsolhato). Hiba eseten legfeljebb 2 ujraprobalas 5 mp szunettel.
-- API User-Agent alapbol a mobilalkalmazase (Dart), mint az Arena4Plus-ban;
-  a Firefox valaszthato.
-- Kapcsolat teszt: kiirja, cloudscraper vagy sima requests fut-e.
-
-v0.2.1 (2026-09-25) - PRIVAT / BETA
-- JAVITAS: "'list' object has no attribute 'get'" - a regi (0.1.x) verzio session.json
-  fajlja (suti-lista) miatt. A token mostantol token.json-ban; a profil-fajlok
-  beolvasasa szerkezet-ellenorzott.
-
-v0.2.0 (2026-09-25) - PRIVAT / BETA
-- UJRAIRVA a hivatalos mobilalkalmazas API-jara (net4plus.network4.hu/api), a
-  plugin.video.arena4plus mukodese alapjan: email/jelszo belepes (Bearer token),
-  a weboldal Cloudflare-kihivasa nem erinti. Cloudflare-kihivast nem kerul meg.
-- Elo kozvetitesek (ELO / kezdes idopontja), elobb vagy az elejetol lejatszas.
-- Videotar gyujtemenyenkent (30-asaval lapozva), kereses.
-- Lejatszas: Uplynk HLS / DASH az InputStream Adaptive-val (DASH-nel Widevine).
-- Kimelet: 1 mp szunet, gyujtemenyek / listak 6 oraig tarolva, token lemezen,
-  401-nel egyszeri ujrabelepes, sikertelen belepes utan 10 perc szunet.
-- Fix Firefox UA; az API-hoz beallithato a mobilalkalmazas UA-ja is.
-- Kapcsolat teszt a fomenuben.
-        </news>
-        <assets>
-            <icon>icon.png</icon>
-            <fanart>fanart.jpg</fanart>
-        </assets>
-    </extension>
-</addon>
-
-<addon id="plugin.program.kedvencmappak" name="Kedvenc mappák" version="1.0.0" provider-name="TomSzo">
-    <requires>
-        <import addon="xbmc.python" version="3.0.0"/>
-    </requires>
-    <extension point="xbmc.python.pluginsource" library="default.py">
-        <provides>executable video audio image</provides>
-    </extension>
-    <extension point="kodi.context.item">
-        <menu id="kodi.core.main">
-            <item library="context.py">
-                <label>30100</label>
-                <visible>!String.IsEmpty(ListItem.Label) + !ListItem.IsParentFolder + !String.StartsWith(ListItem.FolderPath,plugin://plugin.program.kedvencmappak) + !String.StartsWith(ListItem.Path,plugin://plugin.program.kedvencmappak) + !String.StartsWith(Container.FolderPath,plugin://plugin.program.kedvencmappak)</visible>
-            </item>
-        </menu>
-    </extension>
-    <extension point="xbmc.addon.metadata">
-        <summary lang="en_GB">Favourite folders - folders and subfolders for your favourites</summary>
-        <summary lang="hu_HU">Kedvenc mappák - mappák és almappák a kedvenceidnek</summary>
-        <description lang="en_GB">Create folders and subfolders for your favourites and pin them to Kodi's Favourites. The "Add to favourite folder..." context menu entry stores anything (addon folders, videos, library items, add-ons, existing favourites) into a folder. Rename, icon, reorder, move, import Kodi favourites, backup/restore.</description>
-        <description lang="hu_HU">Mappák és almappák a kedvenceidnek, amelyek a Kodi Kedvencek közé is kitűzhetők. A "Kedvenc mappába..." helyi menüponttal bármit (addon-mappát, videót, könyvtári elemet, kiegészítőt, meglévő kedvencet) egy mappába tehetsz. Átnevezés, ikon, sorrend, áthelyezés, Kodi Kedvencek importálása, mentés/visszaállítás.</description>
-        <language>hu</language>
-        <platform>all</platform>
-        <license>GPL-3.0-or-later</license>
-        <source>https://github.com/TomSzo/tomszo.github.io</source>
-        <news>
-v1.0.0 (2026-09-25)
-- Kezdeti kiadas: mappak, almappak; kituzes a Kodi Kedvencek koze
-- "Kedvenc mappaba..." helyi menu mindenhol (a Kodi Kedvencek ablakban is)
-- Atnevezes, ikon, fel/le, athelyezes, torles; Kodi Kedvencek importalasa
-- Mentes fajlba / visszaallitas, automatikus .bak az elozo allapotrol
-        </news>
-        <assets>
-            <icon>icon.png</icon>
-            <fanart>fanart.jpg</fanart>
         </assets>
     </extension>
 </addon>

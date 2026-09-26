@@ -13,8 +13,6 @@
 | **plugin.video.mutekifansub** | Muteki Fansub | saját fiók |
 | **plugin.video.kintsugifansub** | Kintsugi Fansub | saját fiók |
 | **plugin.video.narutokun** | Naruto-Kun.Hu | saját fiók (felhasználónév/jelszó) |
-| **plugin.video.network4** | Network4 / Arena4+ – sport, élő közvetítések *(alap: Arena4Plus – heg, vargalex; új kód, nem fork)* | saját előfizetés (email/jelszó) |
-| **plugin.program.kedvencmappak** | Kedvenc mappák – mappák és almappák a Kodi Kedvencekhez | nem kell |
 | **script.module.resolveurl** | lejátszó-feloldó modul (függőség) | – |
 
 ## Miért nem működik másnál?
@@ -34,7 +32,7 @@ gyorsítótár, napi számláló).
 1. Kodi → **Beállítások → Fájlkezelő → Forrás hozzáadása**
    URL: `https://tomszo.github.io/privat/`  · Név: `TomSzo Privát`
 2. **Kiegészítők → Telepítés ZIP fájlból → TomSzo Privát →**
-   `repository.tomszo.private-1.0.2.zip`
+   `repository.tomszo.private-1.0.3.zip`
 3. **Kiegészítők → Telepítés repository-ból → TomSzo Privát Tároló**
 4. A kiegészítő beállításaiban add meg a **saját belépési adataidat**
    (email/jelszó, illetve ahol kell, a böngészőből kinyert munkamenet-sütit).

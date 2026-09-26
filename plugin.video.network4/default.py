@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-"""Network4 / Arena4+ (privát) - menük és lejátszás."""
+"""Network4 / Arena4+ - menük és lejátszás."""
 import calendar
 import sys
 import time
