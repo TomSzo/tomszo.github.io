@@ -439,7 +439,7 @@ v0.1.0 (2026-09-25) - PRIVAT / BETA
     </extension>
 </addon>
 
-<addon id="plugin.video.telekomtvgo" name="Telekom TV GO (privát)" version="0.1.4" provider-name="TomSzo">
+<addon id="plugin.video.telekomtvgo" name="Telekom TV GO (privát)" version="0.1.5" provider-name="TomSzo">
     <requires>
         <import addon="xbmc.python" version="3.0.0"/>
         <import addon="script.module.requests" version="2.22.0"/>
@@ -457,6 +457,13 @@ v0.1.0 (2026-09-25) - PRIVAT / BETA
         <platform>all</platform>
         <license>GPL-3.0-or-later</license>
         <news>
+v0.1.5 (2026-09-26) - BETA
+- JAVÍTÁS: a Telekom API minden kérésre HTTP 500-at adott, mert az addon saját,
+  véletlen eszköz-azonosítót küldött. A webes kliens a player.telekomtvgo.hu
+  oldalából kapja (APP_CONSTANTS.DEVICE_ID); az addon most ugyanonnan kéri le,
+  és megjegyzi (a Kapcsolat teszt kiírja a forrását).
+- A belépési URL-ben a tenant neve: hu001.
+
 v0.1.4 (2026-09-26) - BETA
 - A tenant/config 500-as hibájára további fejléc-változatok: X-Channel-Map-Id
   (null / vendég csatornatérkép), a böngésző sec-fetch / sec-ch-ua fejlécei és

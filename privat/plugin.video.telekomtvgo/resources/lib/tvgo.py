@@ -163,14 +163,57 @@ def _cache_set(key, value):
 # ---------------------------------------------------------------------------
 # Eszköz-azonosító (állandó, hogy a Telekom-fiókban egy eszköznek látsszon)
 # ---------------------------------------------------------------------------
+WEB_PAGE = ORIGIN + '/'
+WEB_ID_RETRY = 600
+
+
+def _web_device_id():
+    """A webes kliens eszköz-azonosítója a player.telekomtvgo.hu HTML-jéből
+    (APP_CONSTANTS.DEVICE_ID) - ezt a szerver adja és ismeri; egy saját, véletlen
+    azonosítóra a bifrost üres HTTP 500-zal felel."""
+    import re
+    if requests is None:
+        return None
+    try:
+        resp = requests.get(WEB_PAGE, timeout=20, headers={
+            'User-Agent': UA, 'Accept-Language': 'hu-HU,hu;q=0.9',
+            'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8'})
+    except requests.exceptions.RequestException as exc:
+        log('A webes eszköz-azonosító nem kérhető le: %s' % exc, xbmc.LOGWARNING)
+        return None
+    m = re.search(r'"DEVICE_ID"\s*:\s*"([0-9A-Za-z-]{8,64})"', resp.text or '')
+    if not m:
+        save_error('web_device_id', resp, 'nincs DEVICE_ID az oldalban')
+        return None
+    return m.group(1)
+
+
 def device_id():
     dev = _read_json('device.json', {}) or {}
+    changed = False
+    if not dev.get('web') and time.time() - dev.get('web_try', 0) > WEB_ID_RETRY:
+        dev['web_try'] = time.time()
+        changed = True
+        wid = _web_device_id()
+        if wid:
+            log('Webes eszköz-azonosító: %s' % wid)
+            dev['id'] = wid
+            dev['web'] = True
+            dev.pop('registered', None)
     if not dev.get('id'):
         dev['id'] = str(uuid.uuid4())
+        changed = True
+    if not dev.get('mk_uuid'):
         # MediaKind eszköz-UUID: getUUID().replace('-', '') - csak az első kötőjelet cseréli
         dev['mk_uuid'] = str(uuid.uuid4()).replace('-', '', 1)
+        changed = True
+    if changed:
         _write_json('device.json', dev)
     return dev['id']
+
+
+def device_id_source():
+    return 'weboldal' if (_read_json('device.json', {}) or {}).get('web') else 'saját (véletlen)'
 
 
 def _mk_uuid():
@@ -548,7 +591,7 @@ def _tenant_login_url():
     redirect = quote('%s/?redirectUrl=/?end=1' % ORIGIN, safe='')
     url = url.replace('${redirectUri}', redirect)
     for k, v in (('${deviceId}', device_id()), ('${deviceType}', DEVICE_TYPE),
-                 ('${deviceTypeV2}', DEVICE_TYPE), ('${tenantName}', 'hu')):
+                 ('${deviceTypeV2}', DEVICE_TYPE), ('${tenantName}', 'hu001')):
         url = url.replace(k, quote(v, safe=''))
     return url
 

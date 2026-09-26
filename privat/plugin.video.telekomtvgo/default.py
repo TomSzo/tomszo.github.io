@@ -303,7 +303,7 @@ def play_catchup(pid, station, start, stop, title):
 # Egyéb
 # ---------------------------------------------------------------------------
 def diag():
-    lines = ['Eszköz-azonosító: %s' % api.device_id(),
+    lines = ['Eszköz-azonosító: %s (%s)' % (api.device_id(), api.device_id_source()),
              'Mai kérések: %d' % api.today_requests()]
     if not api.have_credentials():
         lines.append('[COLOR red]Nincs megadva email / jelszó[/COLOR]')
