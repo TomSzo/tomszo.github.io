@@ -8,6 +8,16 @@ A formátum a [Keep a Changelog](https://keepachangelog.com/hu/1.1.0/) szerkezet
 
 ---
 
+## [1.4.1] – 2026-09-26 (fork: TomSzo)
+
+### Változott – film / sorozat adatlap
+- **Rövid, ikonos sorok** a torrent teljes neve helyett: *▶ Lejátszás* + színkódolt minőség (és *Folytatás N%*, ha félbehagytad), *▶ Előzetes*, *Szereplők és stáb*, *Más verziók*, *Hasonló tartalmak*, *A film többi része*, *Fájllista*; a mintaképek a lista végén.
+- **Előzetes előre került**, és ha a Simklnél nincs, a **TMDb**-ről keres (magyar, majd angol; a hivatalos trailer az első).
+- **Panel:** IMDb / RT / Metacritic / TMDb pontszám és műfaj a leírás fölött, alul a kiadás (tiszta cím, forrás, seed, csapat, nyelv). A panel címe marad a torrent teljes neve.
+- Javítva: a *Más verziók* sor ikon-paramétere rossz helyre került (eredeti hiba).
+
+---
+
 ## [1.4.0] – 2026-09-26 (fork: TomSzo)
 
 ### Új
