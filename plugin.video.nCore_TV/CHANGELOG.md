@@ -8,6 +8,16 @@ A formátum a [Keep a Changelog](https://keepachangelog.com/hu/1.1.0/) szerkezet
 
 ---
 
+## [1.6.5] – 2026-09-26 (fork: TomSzo)
+
+### Gyorsítás (teljes kódátnézés)
+- **Nincs többé helyi kép-proxy alapból.** Az nCore-borítók miatt minden egyes kattintásnál elindult egy helyi HTTP-szerver külön szálon; a Kodi minden lista végén erre a szálra várt (a naplóban: `waiting on thread …`). Helyette a kép URL-je a Kodi saját fejléc-szintaxisával kéri a képet (`kép.jpg|Referer=https://ncore.pro/`). A régi proxy a beállításokban visszakapcsolható, ha valahol nem jelenne meg a borító.
+- **Párhuzamos lekérés:** a lista leírása / posztere (TMDb) és a többi oldal verzióinak keresése (nCore) eddig egymás után futott – most egyszerre. Ugyanígy az Ajánlókban (TMDb + nCore-elérhetőség) és az adatlapon (leírás + előzetes).
+- **Címelemzés gyorsítótárral:** a kiadásnév-elemzés (PTN, gyenge boxon hívásonként több ms) egy listán belül ugyanarra a névre többször is lefutott (sor, verziósorok, leírás) – most egyszer.
+- Az előzetes-keresés (Simkl / TMDb) időkorlátja 25 mp helyett (3, 6) mp.
+
+---
+
 ## [1.6.4] – 2026-09-26 (fork: TomSzo)
 
 ### Változott
