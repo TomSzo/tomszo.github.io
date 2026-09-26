@@ -8,6 +8,13 @@ A formátum a [Keep a Changelog](https://keepachangelog.com/hu/1.1.0/) szerkezet
 
 ---
 
+## [1.6.7] – 2026-09-26 (fork: TomSzo)
+
+### Változott
+- **Nincs „(N verzió)” a sorokon**: a lista csak a címet és az évszámot mutatja; a verziók kattintásra jönnek (a választóban a többi oldal verzióival együtt), a bal oldali leírásban pedig továbbra is látszanak.
+
+---
+
 ## [1.6.6] – 2026-09-26 (fork: TomSzo)
 
 ### Változott – verziók lekérése kattintáskor
