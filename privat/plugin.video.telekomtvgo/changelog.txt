@@ -1,3 +1,10 @@
+v0.1.5 (2026-09-26) - PRIVAT / BETA
+- JAVITAS: a Telekom API minden keresre HTTP 500-at adott, mert az addon sajat,
+  veletlen eszkoz-azonositot kuldott. A webes kliens a player.telekomtvgo.hu
+  oldalabol kapja (APP_CONSTANTS.DEVICE_ID); az addon most onnan keri le es
+  megjegyzi (a Kapcsolat teszt kiirja a forrasat).
+- A belepesi URL-ben a tenant neve: hu001.
+
 v0.1.4 (2026-09-26) - PRIVAT / BETA
 - A tenant/config 500-as hibajara tovabbi fejlec-valtozatok: X-Channel-Map-Id
   (null / vendeg csatornaterkep), a bongeszo sec-fetch / sec-ch-ua fejlecei es
