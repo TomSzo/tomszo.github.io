@@ -8,6 +8,17 @@ A formátum a [Keep a Changelog](https://keepachangelog.com/hu/1.1.0/) szerkezet
 
 ---
 
+## [1.6.0] – 2026-09-26 (fork: TomSzo)
+
+### Új
+- **Magyar címek a listákban** (TMDb): pl. *Dűne (2021)*, *A kis herceg (2015)*; sorozatnál a rész is (*… – S02E03*). **Csak kijelzés** – a keresés, a verziók összevonása, a TMDb Helper és a lejátszás továbbra is az eredeti (angol) kiadásnevet használja. A panel alján az eredeti kiadásnév megmarad. Ha nincs magyar fordítás, az eredeti cím látszik.
+- **Magyar, jó minőségű poszter** (TMDb, `w780`): magyar nyelvű poszter előnyben (több közül a legjobbra értékelt), ha nincs: angol, majd felirat nélküli. **Fanart** (`w1280`, felirat nélküli háttér előnyben). A film / sorozat listákban, az Ajánlókban és az adatlapon.
+- **Fekete-fehér / színes változat jelzése** a színkódos listákban (pl. *Spider-Noir*): **FEKETE-FEHÉR** (`Black.and.White`, `B&W`, `BW`, `Monochrome`) és **SZÍNES** (`Color`, `Colour`, `Full.Color`, `True-Hue`). Csak a cím utáni részben (évszám / `S01` után) keres, így a címben lévő szó (pl. *The Color Purple*) nem ad hamis jelzést.
+- A régi gyorsítótár-bejegyzések (cím / poszter nélkül) automatikusan frissülnek.
+- Beállítások → Helyi funkciók: *Magyar címek*, *Magyar poszter és fanart* (mindkettő a *Leírás + pontszámok* bekapcsolt állapotában működik). A posztereket a **Gyors mód** kikapcsolásakor tölti be.
+
+---
+
 ## [1.5.2] – 2026-09-26 (fork: TomSzo)
 
 ### Javítva (kódátnézés)
