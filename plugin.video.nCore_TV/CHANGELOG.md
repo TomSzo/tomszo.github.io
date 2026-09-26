@@ -8,6 +8,17 @@ A formátum a [Keep a Changelog](https://keepachangelog.com/hu/1.1.0/) szerkezet
 
 ---
 
+## [1.4.0] – 2026-09-26 (fork: TomSzo)
+
+### Új
+- **Bal oldali leírás-panel a film / sorozat listákban.** A listák valódi `movies` / `tvshows` tartalomtípust kapnak (eddig érvénytelen `series`, ezért a skin nem mutatta a panelt), és automatikusan **Lista nézetre** (Estuary: 50) váltanak. Kikapcsolható, a nézet azonosítója állítható.
+- **Leírás és pontszámok a panelen:** TMDb leírás (magyar, ha nincs: angol), műfaj, **IMDb** (szavazatszámmal), **Rotten Tomatoes**, **Metacritic**, TMDb pontszám. Az IMDb pontszám a skin értékelés-körébe is bekerül.
+  - A Rotten Tomatoes / Metacritic értékhez **OMDb** vagy **MDBList** API-kulcs kell (ingyenes). Ha a saját mező üres, a **TMDb Helper** beállításaiban megadott kulcsot használja.
+  - Gyorsítótár: `infocache.json` (7 nap); párhuzamos lekérés, legfeljebb ~8 mp oldalanként; hálózati hibánál nem ment üres adatot.
+- A torrent teljes neve és a nCore-adatok (méret, seed, feltöltés) a leírás alján, elválasztó után.
+
+---
+
 ## [1.3.2] – 2026-09-26 (fork: TomSzo)
 
 ### Változott

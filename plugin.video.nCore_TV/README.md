@@ -21,6 +21,7 @@ A teljes, részletes lista: **[CHANGELOG.md](CHANGELOG.md)**. Röviden:
 
 - **TMDb Helper player** – az addon lejátszóként használható a TMDb Helperből (*Auto Play* és *Source Select*), színkódolt, rövid verzió-címkékkel (felbontás, REMUX, DV/HDR, kiadás, hang, forrás, seeder).
 - **REMUX-keresés és minőség-felismerés** – REMUX szűrő és kategóriák, DV-profil, HDR10+, BD50, TC/TS/CAM jelzés, kiadás-címkék (Extended, Director's Cut, …), minőség szerinti rendezés. **Rendezés-választó ablak** a kategóriák megnyitásakor (feltöltés ideje, seed, letöltések, méret, név); a Widgetek között REMUX seed szerint is. **Kiadások összevonása** („N verzió”, színkódolt verzióválasztóval) és **halott torrentek elrejtése** (minimum seed).
+- **Bal oldali leírás-panel** a film / sorozat listákban (Lista nézet): TMDb leírás, **IMDb**, **Rotten Tomatoes**, **Metacritic** és TMDb pontszám. Az RT / Metacritic értékhez ingyenes **OMDb** vagy **MDBList** API-kulcs kell (Beállítások → Helyi funkciók); ha üres, a TMDb Helperben megadott kulcsot használja.
 - **Widget mód** – skin-widgetnek választható, dialógusmentes listák (Widgetek menü).
 - **Helyi funkciók** (Beállítások) – lokális lejátszás-követés, évadpakk-menü és gyors mód ki/be kapcsolható; a felhő-szinkron (Trakt/Plex/Simkl) ettől függetlenül működik.
 - **Sebesség** – kevesebb indításkori hálózati kérés, gyorsabb adatbázis és listaépítés, timeout minden hálózati hívásra (az időmérések tájékoztató jellegűek, lásd a CHANGELOG-ot).
@@ -50,6 +51,7 @@ A teljes, részletes lista: **[CHANGELOG.md](CHANGELOG.md)**. Röviden:
 Az addon a következő külső szolgáltatásokkal kommunikál (a kód alapján):
 
 - **ncore.pro** – tartalom, bejelentkezés (a Kodi-beállításokban megadott adatokkal).
+- **OMDb (`omdbapi.com`) / MDBList (`mdblist.com`)** – pontszámok a leírás-panelhez, csak ha van API-kulcs (saját vagy a TMDb Helperé). Csak az IMDb-azonosító megy el.
 - **TMDb, IMDb, Simkl, Trakt, Plex, JustWatch, TheTVDB** – metaadatok, ill. a felhő-szinkron (csak ha bekapcsolod).
 - **GitHub (raw.githubusercontent.com, `sk8ordi3/update` repó)** – két külső segédfájl (színész-keresés hash-ei, egy menü-jelző). Az eredeti addon ezeket minden indításkor letöltötte; a fork **legfeljebb 12 óránként** tölti, és lokálisan gyorsítótárazza.
 - **Telemetria (az eredeti addon része, változatlanul):** sikeres bejelentkezéskor/hitelesítéskor (nCore, Trakt, Simkl, Plex) az addon egy esemény-üzenetet küld a **LogSnag** szolgáltatásnak (`api.logsnag.com`), az eseményben szerepel az esemény neve, az időpont és egy 12 karakteres azonosító. Ez az azonosító a (kisbetűsített) felhasználónév és egy, a forráskódban rögzített állandó SHA-256 hash-ének első 12 karaktere. Mivel az állandó a kódban megtalálható, ez **álnevesített, nem valóban névtelen** azonosító. A küldés háttérszálon fut, hiba esetén csendben kimarad. *(Ezt a viselkedést a fork nem változtatta meg.)*

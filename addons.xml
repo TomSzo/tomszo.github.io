@@ -327,7 +327,7 @@ v1.0.0 (2026-04-04) - BÉTA
     </extension>
 </addon>
 
-<addon id="plugin.video.nCore_TV" name="nCore TV" version="1.3.2" provider-name="heg (fork: TomSzo)">
+<addon id="plugin.video.nCore_TV" name="nCore TV" version="1.4.0" provider-name="heg (fork: TomSzo)">
     <requires>
         <import addon="script.module.beautifulsoup4" version="4.6.2"/>
         <import addon="script.module.requests" version="2.22.0"/>
@@ -345,6 +345,7 @@ v1.0.0 (2026-04-04) - BÉTA
 Mit módosítottunk ebben a forkban:
 - TMDb Helper lejátszó (Auto Play + Source Select), színkódolt minőség-címkékkel (felbontás, REMUX, DV/HDR, seederek)
 - REMUX-keresés és minőség-felismerés, minőség szerinti rendezés, rendezés-választó ablak (feltöltés ideje, seed, méret…), kiadások összevonása, halott torrentek elrejtése
+- Bal oldali leírás-panel a listákban: TMDb leírás + IMDb / Rotten Tomatoes / Metacritic pontszám
 - Widget mód: kész listák (REMUX / 4K / 1080) skin-widgetnek
 - Helyi funkciók: lokális lejátszás-követés, évadpakk-menü, gyors mód ki/be
 - Sebesség: kevesebb indításkori hálózati kérés, gyorsabb adatbázis és listák
@@ -361,6 +362,8 @@ What this fork changes:
         <language>hu</language>
         <platform>all</platform>
         <news>
+1.4.0 (fork: TomSzo, 2026-09-26)
+- Bal oldali leiras-panel a film/sorozat listakban (Lista nezet); TMDb leiras + IMDb / Rotten Tomatoes / Metacritic pontszam
 1.3.2 (fork: TomSzo, 2026-09-26)
 - Cim + evszam minden verzio-sorban is (remake-ek megkulonboztetese); egyedulallo sorok is: Cim (Evszam) + minoseg
 1.3.1 (fork: TomSzo, 2026-09-26)
