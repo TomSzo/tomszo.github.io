@@ -8,6 +8,14 @@ A formátum a [Keep a Changelog](https://keepachangelog.com/hu/1.1.0/) szerkezet
 
 ---
 
+## [1.3.1] – 2026-09-26 (fork: TomSzo)
+
+### Változott
+- **Tiszta cím a színkódos verzióválasztókban**: a TMDb Helper *Source Select* és a lista-verzióválasztó fejlécében a film címe és évszáma áll (pl. *Dune Part Two (2024) – 3 verzió*), sorozatnál a cím és a rész (*The Last of Us – S02E05*) – a teljes torrentnév helyett. Ugyanez az összevont listasorban és a lejátszás-értesítésben.
+- **Halott torrentek szűrése a TMDb Helperben is** (Auto Play és Source Select): a minimum seed beállítás itt is érvényes; ha csak halott találat van, értesítés jelzi.
+
+---
+
 ## [1.3.0] – 2026-09-26 (fork: TomSzo)
 
 ### Hozzáadva
