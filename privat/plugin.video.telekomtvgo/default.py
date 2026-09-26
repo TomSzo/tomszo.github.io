@@ -320,9 +320,13 @@ def diag():
             lines.append('Csatornák: %d' % len(chans))
         except api.ApiError as exc:
             lines.append('[COLOR red]Hiba:[/COLOR] %s' % exc)
-    if api.ADDON.getSetting('debug_dump') == 'true':
+    import os
+    saved = sorted(f for f in os.listdir(api.profile())
+                   if f.startswith(('error_', 'debug_', 'login_steps', 'login_page')))
+    if saved:
         lines.append('')
-        lines.append('Nyers válaszok mentése BE: %s' % api.profile())
+        lines.append('Hibakereső fájlok (%s):' % api.profile())
+        lines.extend('  ' + f for f in saved)
     xbmcgui.Dialog().textviewer(NAME + ' - kapcsolat', '\n'.join(lines))
 
 

@@ -14,7 +14,15 @@ Nem hivatalos Kodi-kiegészítő a Magyar Telekom **TV GO** szolgáltatásához
 1. Telepítés a TomSzo Privát tárolóból.
 2. Beállítások → **Belépés**: a Telekom-fiókod email címe és jelszava
    (ugyanaz, mint a player.telekomtvgo.hu-n).
-3. Kell hozzá az **InputStream Adaptive** és a **Widevine** (ha az InputStream Helper
+3. Ha az automatikus belépés nem sikerül: jelentkezz be a böngészőben a
+   player.telekomtvgo.hu-n, és a `refreshToken` nevű süti értékét (vagy a belépés utáni
+   visszairányítási URL-t, amiben `refresh_token=` van) illeszd be a
+   **Belépés → Refresh token** mezőbe – vagy (távirányítóval kényelmesebb) tedd egy
+   `refresh_token.txt` fájlba az addon adatmappájába
+   (`userdata/addon_data/plugin.video.telekomtvgo/`).
+   Az automatikus belépés akkor nem megy, ha a Telekom belépőoldala robotellenőrzést
+   (reCAPTCHA) kér – az addon ezt kiírja, és nem kerüli meg.
+4. Kell hozzá az **InputStream Adaptive** és a **Widevine** (ha az InputStream Helper
    telepítve van, az addon szükség esetén felajánlja a Widevine telepítését).
 
 ## Hogyan működik?
@@ -23,8 +31,8 @@ A webes lejátszó (W02.0.1470) működése alapján, új kóddal:
 
 | Lépés | Végpont |
 |---|---|
-| Belépés | `external-gateway.oa.yo-digital.com/centralauth-prod/hu/P/onboarding/login` (jelszó RSA-OAEP-pel titkosítva) |
-| Tokenfrissítés | `…/onboarding/refreshtoken` |
+| Belépés | `bifrost/tenant/config` → MediaKind STS → Telekom belépőoldal (email + jelszó) → token |
+| Tokenfrissítés | `bifrost/oauth/token` (`grant_type=refresh_token`) |
 | Fiók, csatornák, műsorújság, lejátszási adatok | `tv-hu-prod.yo-digital.com/bifrost/…` (`bff_token` fejléc) |
 | Stream | MediaKind: `/v1/client/registrations`, `/v1/client/roll` → DASH (`livetv.cdn.telekomtvgo.hu`) |
 | Licenc | MediaKind: `/v1/client/get-widevine-license` |
@@ -35,8 +43,9 @@ nem hoz létre újat minden indításkor).
 
 ## Ha valami nem megy
 
-Beállítások → **Hibakeresés → Nyers API-válaszok mentése**, majd próbáld újra. A
-`debug_*.json` fájlok a Kodi profil-mappájában
+A hibás válaszok mindig mentődnek (`error_*.json`, belépésnél `login_steps.json` és
+`login_page.html`). Részletesebb mentéshez: Beállítások → **Hibakeresés → Nyers
+API-válaszok mentése**, majd próbáld újra. A fájlok a Kodi profil-mappájában
 (`userdata/addon_data/plugin.video.telekomtvgo/`) lesznek – ezekből a hiba javítható.
 A token-mezők a mentésben ki vannak takarva.
 
