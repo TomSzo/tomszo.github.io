@@ -20,7 +20,7 @@ Kodi videó-addon, amellyel az [ncore.pro](https://ncore.pro/) tartalmait lehet 
 A teljes, részletes lista: **[CHANGELOG.md](CHANGELOG.md)**. Röviden:
 
 - **TMDb Helper player** – az addon lejátszóként használható a TMDb Helperből (*Auto Play* és *Source Select*), színkódolt, rövid verzió-címkékkel (felbontás, REMUX, DV/HDR, kiadás, hang, forrás, seeder).
-- **REMUX-keresés és minőség-felismerés** – REMUX szűrő és kategóriák, DV-profil, HDR10+, BD50, TC/TS/CAM jelzés, kiadás-címkék (Extended, Director's Cut, …), minőség szerinti rendezés. **REMUX seed szerint** menüpontok (Film/Sorozat HU/EN) – a legtöbbet seedelt REMUX-ok elöl.
+- **REMUX-keresés és minőség-felismerés** – REMUX szűrő és kategóriák, DV-profil, HDR10+, BD50, TC/TS/CAM jelzés, kiadás-címkék (Extended, Director's Cut, …), minőség szerinti rendezés. **Rendezés-választó ablak** a kategóriák megnyitásakor (feltöltés ideje, seed, letöltések, méret, név); a Widgetek között REMUX seed szerint is.
 - **Widget mód** – skin-widgetnek választható, dialógusmentes listák (Widgetek menü).
 - **Helyi funkciók** (Beállítások) – lokális lejátszás-követés, évadpakk-menü és gyors mód ki/be kapcsolható; a felhő-szinkron (Trakt/Plex/Simkl) ettől függetlenül működik.
 - **Sebesség** – kevesebb indításkori hálózati kérés, gyorsabb adatbázis és listaépítés, timeout minden hálózati hívásra (az időmérések tájékoztató jellegűek, lásd a CHANGELOG-ot).
