@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<addon id="plugin.video.telekomtvgo" name="Telekom TV GO (privát)" version="0.1.5" provider-name="TomSzo">
+<addon id="plugin.video.telekomtvgo" name="Telekom TV GO (privát)" version="0.1.6" provider-name="TomSzo">
     <requires>
         <import addon="xbmc.python" version="3.0.0"/>
         <import addon="script.module.requests" version="2.22.0"/>
@@ -17,6 +17,12 @@
         <platform>all</platform>
         <license>GPL-3.0-or-later</license>
         <news>
+v0.1.6 (2026-09-26) - BETA
+- ÚJ beállítás: Eszköz-azonosító (üres = automatikus). Megadható pl. a böngésző
+  DEVICE_ID-ja, amelyet a Telekom szervere ismer.
+- Ha a weboldalról nem sikerül lekérni az azonosítót (hálózati / TLS hiba),
+  az ok az error_web_device_id.json-ba kerül.
+
 v0.1.5 (2026-09-26) - BETA
 - JAVÍTÁS: a Telekom API minden kérésre HTTP 500-at adott, mert az addon saját,
   véletlen eszköz-azonosítót küldött. A webes kliens a player.telekomtvgo.hu

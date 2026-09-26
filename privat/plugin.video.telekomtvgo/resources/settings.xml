@@ -5,6 +5,7 @@
 		<setting id="password" type="text" label="Jelszó" option="hidden" default="" />
 		<setting type="lsep" label="Tartalék: refresh token a böngészőből (ha az automatikus belépés nem megy)" />
 		<setting id="refresh_token" type="text" label="Refresh token / visszairányítási URL (vagy: refresh_token.txt az adatmappában)" default="" />
+		<setting id="device_id" type="text" label="Eszköz-azonosító (üres = automatikus; pl. a böngésző DEVICE_ID-ja)" default="" />
 		<setting type="action" label="Munkamenet törlése (újra bejelentkezés)"
 		         action="RunPlugin(plugin://plugin.video.telekomtvgo/?action=clearsession)" />
 	</category>
