@@ -12,6 +12,7 @@ A formátum a [Keep a Changelog](https://keepachangelog.com/hu/1.1.0/) szerkezet
 
 ### Változott
 - **Cím + évszám minden verzió-sorban is** (a kis, második sorban, elöl): a TMDb Helper *Source Select*, a lista-verzióválasztó és az összevont sor leírása. Remake-eknél / azonos című filmeknél így soronként látszik, melyik melyik (pl. *Dune (2021)* vs. *Dune (1984)*).
+- **Egyedülálló sorok is tiszta címet kapnak**: a torrent teljes neve helyett *Cím (Évszám)* + színkódolt minőség (4K · DV · HDR · HEVC · hang). A teljes kiadásnév a leírás elejére került.
 
 ---
 
