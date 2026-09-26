@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<addon id="repository.tomszo" name="TomSzo Repository" version="1.0.15" provider-name="TomSzo">
+<addon id="repository.tomszo" name="TomSzo Repository" version="1.0.16" provider-name="TomSzo">
     <requires>
         <import addon="xbmc.addon" version="12.0.0"/>
     </requires>
@@ -54,6 +54,9 @@ Kiegészítők:
 
 FIGYELEM: BÉTA tároló. Csak saját felelősségre használd!</description>
         <news>
+v1.0.16 (2026-09-26) - BÉTA
+- Frissítve: script.speedtester 2.0.0 - a hivatalos Kodi repóba mergelt, javított kiadás (Greptile-fixek + maintainer mezők)
+
 v1.0.15 (2026-09-26) - BÉTA
 - Eltávolítva: plugin.video.nCore_TV (fork) - az eredeti szerző kérésére
 

@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <addons>
-<addon id="repository.tomszo" name="TomSzo Repository" version="1.0.15" provider-name="TomSzo">
+<addon id="repository.tomszo" name="TomSzo Repository" version="1.0.16" provider-name="TomSzo">
     <requires>
         <import addon="xbmc.addon" version="12.0.0"/>
     </requires>
@@ -55,6 +55,9 @@ Kiegészítők:
 
 FIGYELEM: BÉTA tároló. Csak saját felelősségre használd!</description>
         <news>
+v1.0.16 (2026-09-26) - BÉTA
+- Frissítve: script.speedtester 2.0.0 - a hivatalos Kodi repóba mergelt, javított kiadás (Greptile-fixek + maintainer mezők)
+
 v1.0.15 (2026-09-26) - BÉTA
 - Eltávolítva: plugin.video.nCore_TV (fork) - az eredeti szerző kérésére
 
@@ -531,9 +534,8 @@ Servers are selected automatically based on your location, or you can pick a cit
     <disclaimer lang="en_GB">Speed Tester is powered by speedtest.net</disclaimer>
     <language>en de es fr hu it nl pl pt ru zh</language>
     <license>Apache-2.0</license>
-    <email>dag@wieers.com</email>
     <website>https://kodi.wiki/view/Add-on:Speed_Tester</website>
-    <source>https://github.com/add-ons/script.speedtester</source>
+    <source>https://github.com/TomSzo/script.speedtester</source>
     <news>
 v2.0.0 (2026-07-26)
 - Modern Ookla server discovery (api/js/servers) replacing the deprecated servers-static.php list (@TomSzo_HUN)
