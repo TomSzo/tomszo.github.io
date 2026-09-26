@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<addon id="plugin.video.network4" name="Network4 (privát)" version="0.4.0" provider-name="TomSzo">
+<addon id="plugin.video.network4" name="Network4 (privát)" version="0.4.1" provider-name="TomSzo (alap: Arena4Plus – heg, vargalex)">
     <requires>
         <import addon="xbmc.python" version="3.0.0"/>
         <import addon="script.module.requests" version="2.22.0"/>
@@ -10,12 +10,16 @@
     </extension>
     <extension point="xbmc.addon.metadata">
         <summary lang="hu">Network4 / Arena4+ – privát, a saját előfizetéssel (mobilalkalmazás API)</summary>
-        <description lang="hu">Privát, magánhasználatú videó addon a Network4 / Arena4+ szolgáltatáshoz, a tulajdonos saját fiókjával. A hivatalos mobilalkalmazás API-ját használja (net4plus.network4.hu): élő közvetítések (élőben vagy az elejétől), videótár gyűjteményenként, keresés. A plugin.video.arena4plus (heg, vargalex) működése alapján; a Cloudflare-ellenőrzést a beépített cloudscraper (MIT) kezeli.</description>
+        <description lang="hu">Nem hivatalos kiegészítő, a plugin.video.arena4plus (szerzők: heg, vargalex) alapján, új kóddal írva (nem fork). Privát, magánhasználatú videó addon a Network4 / Arena4+ szolgáltatáshoz, a tulajdonos saját fiókjával. A hivatalos mobilalkalmazás API-ját használja (net4plus.network4.hu): élő közvetítések (élőben vagy az elejétől), videótár gyűjteményenként, keresés. A Cloudflare-ellenőrzést a beépített cloudscraper (MIT) kezeli.</description>
         <disclaimer lang="hu">Privát, magánhasználatú kiegészítő. Csak a tulajdonos saját előfizetésével működik.</disclaimer>
         <language>hu</language>
         <platform>all</platform>
         <license>GPL-3.0-or-later</license>
         <news>
+v0.4.1 (2026-09-26) - PRIVAT / BETA
+- Szerzoseg egyertelmubben: "alap: Arena4Plus - heg, vargalex" (provider,
+  leiras, README). Nem fork: uj kod, az Arena4Plus mukodese alapjan.
+
 v0.4.0 (2026-09-25) - PRIVAT / BETA
 - UJ: Sportok menu a www.network4.hu/sport/collections szerint: Kiemelt sportok,
   Dokumentumfilm, Labdarugas, Amerikaifutball, Motorsport, Amerikai sportok,

@@ -1,4 +1,5 @@
 Network4 (privát) - Kodi video add-on
+Based on plugin.video.arena4plus by heg and vargalex (GPL-3.0); new code, not a fork.
 Copyright (C) 2026 TomSzo
 
 This program is free software: you can redistribute it and/or modify
