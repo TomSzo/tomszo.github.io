@@ -4,17 +4,13 @@ Telekom TV GO (Magyar Telekom) - a player.telekomtvgo.hu webes kliens API-ja.
 
 A webes kliens (W02.0.1470) kódjából feltérképezve (új kód):
 
-Bejelentkezés (natív login, "centralauth"):
-    POST {NL}/onboarding/login           body: alap + device + telekomLogin{username,
-                                          password = base64(RSA-OAEP-SHA1(jelszó))}
-                                          -> {accessToken, refreshToken, accessExpiresIn,
-                                              deviceLimitExceed, tvAccountIds}
-    POST {NL}/onboarding/authenticate?legacyFlow=false   (ha több TV-előfizetés van;
-                                          fejléc: ms_access_token, body: tvAccountId)
-    POST {NL}/onboarding/refreshtoken    fejléc: refresh_token, channel: Tv
-    NL = https://external-gateway.oa.yo-digital.com/centralauth-prod/hu/P
+Bejelentkezés (webes / SSO mód, mint a böngésző):
+    GET  {BFF}/tenant/config?is_sso_enabled=true -> login_url (MediaKind STS) -> Telekom
+         belépőoldal (email + jelszó) -> visszairányítás access_token + refresh_token-nel
+    POST {BFF}/oauth/token?is_sso_enabled=true   grant_type=refresh_token (frissítés)
+    Tartalék: a böngészőből kimásolt refreshToken a beállításokban.
 
-Tartalom (bifrost, fejléc: bff_token = accessToken):
+Tartalom (bifrost, fejléc: bff_token = access_token):
     GET {BFF}/user/account               -> channelMap_id, request_url (MediaKind szerver)
     GET {BFF}/epg/channel                -> csatornák
     GET {BFF}/epg/channel/schedules      -> műsorújság (3 órás sávok)
@@ -32,7 +28,7 @@ Lejátszás (MediaKind "Azuki" szerver = user/account request_url):
     (= service_collection_id), DeviceProfile (base64 JSON).
 
 Kímélet: 0,5 mp szünet a kérések között, csatornalista / műsorújság gyorsítótár,
-token lemezen (lejárat előtt frissítés), sikertelen belépés után 10 perc szünet.
+token lemezen (lejárat előtt frissítés), sikertelen belépés után 3 perc szünet.
 """
 import base64
 import hashlib
@@ -52,12 +48,9 @@ try:
 except ImportError:  # noqa
     requests = None
 
-from resources.lib import rsa_oaep
-
 ADDON_ID = 'plugin.video.telekomtvgo'
 ADDON = xbmcaddon.Addon(ADDON_ID)
 
-NL_BASE = 'https://external-gateway.oa.yo-digital.com/centralauth-prod/hu/P'
 BFF = 'https://tv-hu-prod.yo-digital.com/bifrost'
 IMG = 'https://ottapp-akamai-client-a.proda.dtp.tv3cloud.com/images/images'
 ORIGIN = 'https://player.telekomtvgo.hu'
@@ -68,12 +61,6 @@ APP_VERSION = '02.0.1470'
 COUNTRY = 'hu'
 LANG = 'hu'
 DEVICE_TYPE = 'WEB'
-# modules.auth.rsaPublicKey a webes CMS-konfigurációból
-RSA_KEY = ('MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAxOnrC7x6UFJ1Z0HGDRUI4qWfCaid33Xgqal9'
-           '/aSHc9RxmwgS8F65VDp3BGNmdm+6MO2/PhO6Khg90YQUHaUxtlseqKQP8Kc0w1IhdDHt6B+wabXZpi'
-           '/zjI+b9JJFvOo6f1GwuTA6+aO9jxEGbGU2XPHSe/6x7FkEAa/83T1QIfdJZlHY3Cz9eWrQEUL4Unc'
-           'GMLonufNj4LfUMCE6BO84Oo53YM1BrUmzJt4xDCNm+8hTkEklK8ZWrYrYQM2rxY1uYgQmf8rvfhWci'
-           'k2R8reD5vDOSfvcYYwEAB+BRhl0pw9KzUhoaDe0SI5RQ2TeLiomdGHwy+8lfDwbo0wDRWA7vQIDAQAB')
 AZUKI_IMC = 'IMC7.6.0_XX_Dx.x.x_Sx'
 
 UA = ('Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) '
@@ -82,7 +69,7 @@ OS_NAME = 'Windows'
 BROWSER = 'Chrome'
 
 MIN_GAP = 0.5
-LOGIN_COOLDOWN = 600
+LOGIN_COOLDOWN = 180
 TOKEN_FILE = 'token.json'
 CHANNEL_TTL = 6 * 3600
 SCHEDULE_TTL = 3600
@@ -98,10 +85,6 @@ class ApiError(Exception):
 
 
 class LoginError(ApiError):
-    pass
-
-
-class DeviceLimitError(LoginError):
     pass
 
 
@@ -153,7 +136,7 @@ def _debug_dump(name, data):
 def clear_cache():
     n = 0
     for fn in os.listdir(profile()):
-        if fn.startswith('cache_') or fn.startswith('debug_'):
+        if fn.startswith(('cache_', 'debug_', 'error_', 'login_steps', 'login_page')):
             try:
                 os.remove(profile(fn))
                 n += 1
@@ -284,10 +267,30 @@ def _common_headers():
 
 
 # ---------------------------------------------------------------------------
-# Bejelentkezés
+# Bejelentkezés - webes (SSO) mód, mint a player.telekomtvgo.hu (LOGIN_TYPE = "web")
+#
+#   1. GET  {BFF}/tenant/config?is_sso_enabled=true      -> login_url (MediaKind STS)
+#   2. a login_url átirányít a Telekom belépőoldalára; email + jelszó beküldése után a
+#      visszairányítás a player.telekomtvgo.hu-ra megy, access_token + refresh_token
+#      paraméterekkel (a böngészőben ezek lesznek a "bffToken" / "refreshToken" sütik)
+#   3. POST {BFF}/oauth/token?is_sso_enabled=true   grant_type=refresh_token (frissítés)
+#
+# Tartalék: a böngészőből kimásolt refreshToken beilleszthető a beállításokba.
 # ---------------------------------------------------------------------------
+LOGIN_STEPS = 14
+USER_FIELD_HINTS = ('email', 'user', 'login', 'name', 'identifier', 'msisdn', 'account',
+                    'azonosito', 'felhasznalo')
+
+
 def have_credentials():
-    return bool(ADDON.getSetting('email') and ADDON.getSetting('password'))
+    return bool((ADDON.getSetting('email') and ADDON.getSetting('password')) or
+                ADDON.getSetting('refresh_token').strip())
+
+
+def _cred_key():
+    raw = '\n'.join((ADDON.getSetting('email').strip(), ADDON.getSetting('password'),
+                     ADDON.getSetting('refresh_token').strip()))
+    return hashlib.sha1(raw.encode('utf-8')).hexdigest()
 
 
 def saved_token():
@@ -295,133 +298,353 @@ def saved_token():
 
 
 def clear_token():
-    try:
-        os.remove(profile(TOKEN_FILE))
-    except OSError:
-        pass
-    for fn in ('cache_account.json',):
+    for fn in (TOKEN_FILE, 'cache_account.json', 'login_state.json'):
         try:
             os.remove(profile(fn))
         except OSError:
             pass
 
 
-def _device_body():
-    return {'id': device_id(), 'model': DEVICE_TYPE, 'os': OS_NAME, 'deviceName': DEVICE_TYPE,
-            'manageDevice': False, 'deviceType': DEVICE_TYPE, 'deviceOS': OS_NAME,
-            'deviceModel': '', 'deviceManufacturer': '%s 10' % OS_NAME,
-            'concurrencyLimitParam': None, 'broadcastingStreamLimitationApplies': False}
+def save_error(name, resp=None, note=''):
+    """Hibás válasz mentése (mindig, titkok nélkül): error_<név>.json a profil-mappában."""
+    data = {'time': time.strftime('%Y-%m-%d %H:%M:%S'), 'note': note}
+    if resp is not None:
+        data.update({'url': resp.url.split('?')[0], 'status': resp.status_code,
+                     'content_type': resp.headers.get('content-type', ''),
+                     'body': _redact(resp.text[:6000])})
+    _write_json('error_%s.json' % name, data)
 
 
-def _base_body():
-    return {'appVersion': APP_VERSION, 'channel': {'id': 'Tv'}, 'natco': COUNTRY,
-            'type': 'telekom', 'forceRegister': False, 'context': 'login'}
+def _redact(text):
+    import re
+    return re.sub(r'((?:access|refresh|id)_?[Tt]oken["\'=:\s]+)[A-Za-z0-9._\-]{12,}',
+                  r'\1***', text or '')
 
 
-def _nl_post(path, body, extra_headers=None):
-    h = _common_headers()
-    h['Content-Type'] = 'application/json'
-    h['X-Call-Type'] = 'GUEST_USER'
-    if extra_headers:
-        h.update(extra_headers)
-    return _request('POST', NL_BASE + path, headers=h, data=json.dumps(body))
-
-
-def _save_tokens(data, extra=None):
+def _save_tokens(access, refresh_tok, expires_in=None, extra=None):
     tok = saved_token()
-    if data.get('accessToken'):
-        tok['access'] = data['accessToken']
-    if data.get('refreshToken'):
-        tok['refresh'] = data['refreshToken']
+    if access:
+        tok['access'] = access
+    if refresh_tok:
+        tok['refresh'] = refresh_tok
     try:
-        exp = int(data.get('accessExpiresIn') or 0)
+        exp = int(expires_in or 0)
     except (TypeError, ValueError):
         exp = 0
-    # accessExpiresIn: másodperc (ha ezredmásodpercnek tűnik, átváltjuk)
-    if exp > 10 ** 7:
+    if exp > 10 ** 7:          # ezredmásodperc
         exp //= 1000
     tok['expires'] = time.time() + (exp or 3600) - 120
+    tok['cred'] = _cred_key()
     if extra:
         tok.update(extra)
     _write_json(TOKEN_FILE, tok)
     return tok
 
 
-def login():
-    """Email + jelszó belépés. Siker esetén a tokent menti és visszaadja."""
-    if not have_credentials():
-        raise LoginError('Add meg a Telekom-fiókod email címét és jelszavát a beállításokban.')
-    state = _read_json('login_state.json', {}) or {}
-    if time.time() - state.get('failed', 0) < LOGIN_COOLDOWN:
-        raise LoginError('Az előző belépés nem sikerült (%s). Várj pár percet, vagy ellenőrizd '
-                         'az adataidat.' % state.get('reason', ''))
-    body = _base_body()
-    body['device'] = _device_body()
-    body['telekomLogin'] = {'username': ADDON.getSetting('email').strip(),
-                            'password': rsa_oaep.encrypt(ADDON.getSetting('password'), RSA_KEY)}
-    resp = _nl_post('/onboarding/login', body, {'x-tvflow': 'USERNAME_PASSWORD_LOGIN',
-                                                'x-tv-step': 'GET_ACCESS_TOKEN'})
-    if resp.status_code >= 400:
-        reason = _err_text(resp)
-        _write_json('login_state.json', {'failed': time.time(), 'reason': reason})
-        raise LoginError('Sikertelen belépés (%s). Ellenőrizd az email címet és a jelszót.'
-                         % reason)
-    data = _json(resp, 'Belépés')
-    _debug_dump('login', {k: ('***' if 'oken' in k else v) for k, v in data.items()}
-                if isinstance(data, dict) else data)
-    if data.get('deviceLimitExceed'):
-        raise DeviceLimitError('Elérted a Telekom-fiókhoz tartozó eszközök számának '
-                               'korlátját. Távolíts el egy eszközt (telekomtvgo.hu -> '
-                               'Beállítások -> Eszközök), majd próbáld újra.')
-    accounts = data.get('tvAccountIds') or []
-    if len(accounts) > 1:
-        data = _choose_account(data, accounts)
-    if not data.get('accessToken'):
-        raise LoginError('A belépés nem adott vissza tokent.')
-    _write_json('login_state.json', {})
-    log('Belépés sikeres')
-    return _save_tokens(data, {'email': ADDON.getSetting('email').strip()})
+def _tokens_from(obj):
+    """access/refresh token + lejárat JSON-ból vagy URL-ből (query és # rész)."""
+    if isinstance(obj, dict):
+        acc = _first(obj, 'access_token', 'accessToken', 'bff_token', 'bffToken')
+        ref = _first(obj, 'refresh_token', 'refreshToken')
+        exp = _first(obj, 'expires_in', 'accessExpiresIn', 'expiresIn')
+        if not acc:
+            for v in obj.values():
+                if isinstance(v, dict):
+                    r = _tokens_from(v)
+                    if r[0]:
+                        return r
+        return acc, ref, exp
+    if isinstance(obj, str) and obj:
+        from urllib.parse import urlsplit, parse_qs
+        parts = urlsplit(obj.strip())
+        q = {}
+        for chunk in (parts.query, parts.fragment):
+            for k, v in parse_qs(chunk).items():
+                q[k] = v[0]
+            if '?' in chunk:      # pl. "#/?access_token=..."
+                for k, v in parse_qs(chunk.split('?', 1)[1]).items():
+                    q[k] = v[0]
+        return (_first(q, 'access_token', 'accessToken', 'bffToken'),
+                _first(q, 'refresh_token', 'refreshToken'), _first(q, 'expires_in'))
+    return None, None, None
 
 
-def _choose_account(data, accounts):
-    """Több TV-előfizetés: a beállításban megadott sorszámú (vagy az első)."""
-    try:
-        idx = max(0, int(ADDON.getSetting('account_index') or 1) - 1)
-    except ValueError:
-        idx = 0
-    acc = accounts[min(idx, len(accounts) - 1)]
-    acc_id = acc.get('id') if isinstance(acc, dict) else acc
-    body = _base_body()
-    body.update({'tvAccountId': acc_id, 'concurrencyLimitParam': None})
-    body['device'] = _device_body()
-    resp = _nl_post('/onboarding/authenticate?legacyFlow=false', body,
-                    {'ms_access_token': data.get('accessToken', '')})
-    if resp.status_code >= 400:
-        raise LoginError('TV-előfizetés kiválasztása sikertelen (%s)' % _err_text(resp))
-    return _json(resp, 'Előfizetés kiválasztása')
+def _guest_headers():
+    h = _common_headers()
+    h['X-Call-Type'] = 'GUEST_USER'
+    h['DeviceDensity'] = 'xhdpi'
+    return h
 
 
 def refresh():
     tok = saved_token()
     if not tok.get('refresh'):
         return None
-    body = {'clientVersion': APP_VERSION, 'deviceId': device_id(), 'concurrencyLimitParam': None}
-    resp = _nl_post('/onboarding/refreshtoken', body,
-                    {'refresh_token': tok['refresh'], 'channel': 'Tv'})
+    h = _common_headers()
+    h['bff_token'] = tok.get('access', '')
+    h['X-Call-Type'] = 'AUTH_USER' if tok.get('access') else 'GUEST_USER'
+    h['DeviceDensity'] = 'xhdpi'
+    h['Content-Type'] = 'application/x-www-form-urlencoded'
+    params = {'is_sso_enabled': 'true', 'app_language': LANG, 'natco_code': COUNTRY}
+    from urllib.parse import urlencode
+    resp = _request('POST', BFF + '/oauth/token', params=params, headers=h,
+                    data=urlencode({'grant_type': 'refresh_token',
+                                    'refresh_token': tok['refresh']}))
     if resp.status_code >= 400:
+        save_error('refresh', resp)
         log('Tokenfrissítés sikertelen: %s' % _err_text(resp), xbmc.LOGWARNING)
         return None
-    data = _json(resp, 'Tokenfrissítés')
-    if not data.get('accessToken'):
+    try:
+        data = resp.json()
+    except ValueError:
+        save_error('refresh', resp, 'nem JSON')
+        return None
+    acc, ref, exp = _tokens_from(data)
+    if not acc:
+        save_error('refresh', resp, 'nincs access_token')
         return None
     log('Token frissítve')
-    return _save_tokens(data)
+    return _save_tokens(acc, ref, exp)
+
+
+def _import_manual_token():
+    """A beállításokba beillesztett refreshToken (vagy a teljes visszairányítási URL)."""
+    raw = ADDON.getSetting('refresh_token').strip()
+    if not raw:
+        return None
+    acc, ref, exp = _tokens_from(raw) if ('=' in raw or '://' in raw) else (None, raw, None)
+    if not ref and not acc:
+        raise LoginError('A beillesztett szövegben nem találtam refresh tokent.')
+    tok = saved_token()
+    if tok.get('manual') == hashlib.sha1(raw.encode()).hexdigest():
+        return None            # ezt már felhasználtuk (és azóta lejárt)
+    _write_json(TOKEN_FILE, {'refresh': ref, 'access': acc or '', 'expires': 0,
+                             'manual': hashlib.sha1(raw.encode()).hexdigest(),
+                             'cred': _cred_key()})
+    new = refresh()
+    if new and new.get('access'):
+        new['manual'] = hashlib.sha1(raw.encode()).hexdigest()
+        _write_json(TOKEN_FILE, new)
+        return new
+    if acc:
+        return _save_tokens(acc, ref, exp, {'manual': hashlib.sha1(raw.encode()).hexdigest()})
+    raise LoginError('A beillesztett refresh token nem érvényes (lejárt vagy hibás). '
+                     'Részletek: error_refresh.json a profil-mappában.')
+
+
+# --- automatikus webes belépés ------------------------------------------------
+def _tenant_login_url():
+    q = {'is_sso_enabled': 'true', 'app_language': LANG, 'natco_code': COUNTRY}
+    resp = _request('GET', BFF + '/tenant/config', params=q, headers=_guest_headers())
+    if resp.status_code >= 400:
+        save_error('tenant_config', resp)
+        raise LoginError('A belépési beállítás nem tölthető le (%s)' % _err_text(resp))
+    data = _json(resp, 'Belépési beállítás')
+    _debug_dump('tenant_config', data)
+    d = _find_dict(data, 'login_url') or {}
+    url = (d.get('login_url') or '').replace('%s&amp;', '&').replace('&amp;', '&')
+    if not url:
+        save_error('tenant_config', resp, 'nincs login_url')
+        raise LoginError('A belépési beállításban nincs login_url')
+    redirect = quote('%s/?redirectUrl=/?end=1' % ORIGIN, safe='')
+    url = url.replace('${redirectUri}', redirect)
+    for k, v in (('${deviceId}', device_id()), ('${deviceType}', DEVICE_TYPE),
+                 ('${deviceTypeV2}', DEVICE_TYPE), ('${tenantName}', 'hu')):
+        url = url.replace(k, quote(v, safe=''))
+    return url
+
+
+class _FormParser(object):
+    """Egyszerű <form>/<input> gyűjtő (html.parser alapon)."""
+
+    def __init__(self, html):
+        from html.parser import HTMLParser
+        forms = self.forms = []
+        meta = self.meta = []
+
+        class P(HTMLParser):
+            def handle_starttag(self, tag, attrs):
+                a = dict((k.lower(), v or '') for k, v in attrs)
+                if tag == 'form':
+                    forms.append({'action': a.get('action', ''),
+                                  'method': (a.get('method') or 'post').lower(),
+                                  'id': a.get('id', ''), 'inputs': []})
+                elif tag in ('input', 'button', 'select') and forms and a.get('name'):
+                    forms[-1]['inputs'].append({'name': a['name'],
+                                                'type': (a.get('type') or 'text').lower(),
+                                                'value': a.get('value', ''),
+                                                'id': a.get('id', ''),
+                                                'tag': tag})
+                elif tag == 'meta' and a.get('http-equiv', '').lower() == 'refresh':
+                    meta.append(a.get('content', ''))
+        p = P()
+        try:
+            p.feed(html or '')
+        except Exception:  # noqa - hibás HTML
+            pass
+
+
+def _pick_form(forms):
+    def has(form, types):
+        return any(i['type'] in types for i in form['inputs'])
+    for types in (('password',), ('email', 'text', 'tel')):
+        for f in forms:
+            if has(f, types):
+                return f
+    return forms[0] if forms else None
+
+
+def _fill_form(form, email, password):
+    data = {}
+    used_user = used_pw = False
+    for i in form['inputs']:
+        t, name = i['type'], i['name']
+        low = (name + ' ' + i['id']).lower()
+        if t == 'password':
+            data[name] = password
+            used_pw = True
+        elif t in ('email', 'text', 'tel') and not i['value'] and \
+                any(h in low for h in USER_FIELD_HINTS):
+            data[name] = email
+            used_user = True
+        elif t in ('checkbox', 'radio'):
+            if 'remember' in low or 'stay' in low:
+                data[name] = i['value'] or 'on'
+        elif t in ('submit', 'button', 'image', 'reset'):
+            continue
+        else:
+            data[name] = i['value']
+    if not used_user and not used_pw:
+        # nincs felismert mező: az első üres szövegmezőbe az email
+        for i in form['inputs']:
+            if i['type'] in ('email', 'text') and not i['value']:
+                data[i['name']] = email
+                used_user = True
+                break
+    return data, used_user, used_pw
+
+
+def _sts_login():
+    import re
+    from urllib.parse import urljoin
+    email = ADDON.getSetting('email').strip()
+    password = ADDON.getSetting('password')
+    url = _tenant_login_url()
+    s = requests.Session()
+    s.headers.update({'User-Agent': UA, 'Accept-Language': 'hu-HU,hu;q=0.9',
+                      'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,'
+                                '*/*;q=0.8'})
+    method, data, referer = 'GET', None, ORIGIN + '/'
+    steps = []
+    pw_sent = 0
+    for step in range(LOGIN_STEPS):
+        _LAST[0] = time.time()
+        _bump()
+        try:
+            resp = s.request(method, url, data=data, allow_redirects=False, timeout=25,
+                             headers={'Referer': referer})
+        except requests.exceptions.RequestException as exc:
+            raise LoginError('Hálózati hiba a belépésnél: %s' % exc)
+        loc = resp.headers.get('Location', '')
+        steps.append({'n': step, 'method': method, 'url': url.split('?')[0],
+                      'status': resp.status_code, 'location': _redact(loc.split('?')[0]),
+                      'fields': sorted((data or {}).keys())})
+        log('belépés %d: %s %s -> %d' % (step, method, url.split('?')[0], resp.status_code))
+        for cand in (loc, resp.url):
+            acc, ref, exp = _tokens_from(cand) if cand else (None, None, None)
+            if acc:
+                _write_json('login_steps.json', {'steps': steps, 'result': 'ok'})
+                return acc, ref, exp
+        if loc:
+            referer, url = url, urljoin(url, loc)
+            method, data = 'GET', None
+            continue
+        html = resp.text or ''
+        m = re.search(r'[?&#](access_token=[^"\'\s<>]+)', html)
+        if m:
+            acc, ref, exp = _tokens_from('https://x/?' + m.group(1).replace('&amp;', '&'))
+            if acc:
+                _write_json('login_steps.json', {'steps': steps, 'result': 'ok (html)'})
+                return acc, ref, exp
+        fp = _FormParser(html)
+        if resp.status_code >= 400 and not fp.forms:
+            break
+        nxt = None
+        for c in fp.meta:
+            if 'url=' in c.lower():
+                nxt = c.split('=', 1)[1].strip(' \'"')
+        if not nxt:
+            m = re.search(r'(?:window\.)?location(?:\.href)?\s*=\s*["\']([^"\']+)["\']', html)
+            if m and not fp.forms:
+                nxt = m.group(1)
+        if nxt:
+            referer, url = url, urljoin(url, nxt)
+            method, data = 'GET', None
+            continue
+        form = _pick_form(fp.forms)
+        if not form:
+            break
+        fields, used_user, used_pw = _fill_form(form, email, password)
+        if used_pw:
+            pw_sent += 1
+            if pw_sent > 1:
+                steps[-1]['note'] = 'a jelszóűrlap újra megjelent'
+                _write_json('login_steps.json', {'steps': steps, 'result': 'hibás adatok?'})
+                with open(profile('login_page.html'), 'w', encoding='utf-8') as f:
+                    f.write(_redact(html))
+                raise LoginError('A Telekom belépőoldala nem fogadta el az email címet / '
+                                 'jelszót. Ellenőrizd őket (ugyanazok, mint a '
+                                 'player.telekomtvgo.hu-n).')
+        referer = url
+        url = urljoin(url, form['action'] or url)
+        method = 'POST' if form['method'] != 'get' else 'GET'
+        data = fields
+        if method == 'GET':
+            from urllib.parse import urlencode
+            url = url.split('?')[0] + '?' + urlencode(fields)
+            data = None
+    _write_json('login_steps.json', {'steps': steps, 'result': 'sikertelen'})
+    try:
+        with open(profile('login_page.html'), 'w', encoding='utf-8') as f:
+            f.write(_redact(resp.text or ''))
+    except (IOError, OSError, NameError):
+        pass
+    raise LoginError('Az automatikus belépés nem sikerült. Küldd el a login_steps.json és '
+                     'login_page.html fájlt, vagy használd a beállításokban a refresh token '
+                     'beillesztését.')
+
+
+def login():
+    """Belépés: kézi refresh token, különben automatikus webes (SSO) belépés."""
+    if not have_credentials():
+        raise LoginError('Add meg a Telekom-fiókod email címét és jelszavát a beállításokban '
+                         '(vagy illeszd be a böngészőből a refresh tokent).')
+    manual = _import_manual_token()
+    if manual:
+        return manual
+    if not (ADDON.getSetting('email') and ADDON.getSetting('password')):
+        raise LoginError('A beillesztett refresh token lejárt. Illessz be újat, vagy add meg '
+                         'az email címet és a jelszót.')
+    state = _read_json('login_state.json', {}) or {}
+    if state.get('cred') == _cred_key() and \
+            time.time() - state.get('failed', 0) < LOGIN_COOLDOWN:
+        raise LoginError('Az előző belépés nem sikerült (%s). Várj pár percet, vagy módosítsd '
+                         'az adataidat.' % state.get('reason', ''))
+    try:
+        acc, ref, exp = _sts_login()
+    except LoginError as exc:
+        _write_json('login_state.json', {'failed': time.time(), 'reason': str(exc)[:120],
+                                         'cred': _cred_key()})
+        raise
+    _write_json('login_state.json', {})
+    log('Belépés sikeres')
+    return _save_tokens(acc, ref, exp)
 
 
 def access_token(force=False):
     tok = saved_token()
-    if tok.get('email') and tok.get('email') != ADDON.getSetting('email').strip():
-        clear_token()
+    if tok.get('cred') and tok.get('cred') != _cred_key():
+        clear_token()          # megváltoztak a belépési adatok
         tok = {}
     if not force and tok.get('access') and time.time() < tok.get('expires', 0):
         return tok['access']

@@ -439,7 +439,7 @@ v0.1.0 (2026-09-25) - PRIVAT / BETA
     </extension>
 </addon>
 
-<addon id="plugin.video.telekomtvgo" name="Telekom TV GO (privát)" version="0.1.0" provider-name="TomSzo">
+<addon id="plugin.video.telekomtvgo" name="Telekom TV GO (privát)" version="0.1.1" provider-name="TomSzo">
     <requires>
         <import addon="xbmc.python" version="3.0.0"/>
         <import addon="script.module.requests" version="2.22.0"/>
@@ -451,12 +451,22 @@ v0.1.0 (2026-09-25) - PRIVAT / BETA
     </extension>
     <extension point="xbmc.addon.metadata">
         <summary lang="hu">Telekom TV GO – élő TV és visszanézés a saját Telekom-előfizetéseddel</summary>
-        <description lang="hu">Nem hivatalos kiegészítő a Magyar Telekom TV GO szolgáltatásához (player.telekomtvgo.hu), a saját Telekom-fiókoddal / TV-előfizetéseddel. A webes lejátszó API-ját használja: bejelentkezés email címmel és jelszóval, élő csatornák, műsorújság, visszanézés (catch-up). A lejátszás DASH + Widevine, az InputStream Adaptive-val.</description>
+        <description lang="hu">Nem hivatalos kiegészítő a Magyar Telekom TV GO szolgáltatásához (player.telekomtvgo.hu), a saját Telekom-fiókoddal / TV-előfizetéseddel. A webes lejátszó API-ját használja: bejelentkezés email címmel és jelszóval (a böngészővel azonos webes belépés; tartalékként a böngészőből kimásolt refresh token), élő csatornák, műsorújság, visszanézés (catch-up). A lejátszás DASH + Widevine, az InputStream Adaptive-val.</description>
         <disclaimer lang="hu">Nem hivatalos kiegészítő, nincs kapcsolatban a Magyar Telekommal. Saját, érvényes Telekom TV / TV GO előfizetés kell hozzá; belépési adatot nem tartalmaz. A kiegészítő eszközként regisztrál a Telekom-fiókodban. BÉTA – saját felelősségre.</disclaimer>
         <language>hu</language>
         <platform>all</platform>
         <license>GPL-3.0-or-later</license>
         <news>
+v0.1.1 (2026-09-26) - BETA
+- JAVÍTÁS: a belépés HTTP 404-gyel elbukott - a webes kliens nem a natív
+  logint használja, hanem webes (SSO) belépést: tenant/config -> Telekom
+  belépőoldal -> token. Az addon most ezt járja végig automatikusan.
+- Tartalék: a böngészőből kimásolt refreshToken (vagy a teljes visszairányítási
+  URL) beilleszthető a beállításokba; frissítés a webes /oauth/token-nel.
+- Hiba esetén a szerver válasza mindig mentésre kerül (error_*.json,
+  login_steps.json, login_page.html) - a Kapcsolat teszt kilistázza őket.
+- Sikertelen belépés után 3 perc szünet (az adatok módosításakor azonnal újra).
+
 v0.1.0 (2026-09-26) - BETA
 - Kezdeti kiadás: belépés email/jelszóval (a webes kliens natív loginja, RSA-OAEP
   titkosított jelszó), tokenfrissítés, élő TV (most futó műsorral), műsorújság
