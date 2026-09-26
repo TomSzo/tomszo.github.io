@@ -8,6 +8,13 @@ A formátum a [Keep a Changelog](https://keepachangelog.com/hu/1.1.0/) szerkezet
 
 ---
 
+## [1.6.3] – 2026-09-26 (fork: TomSzo)
+
+### Hozzáadva
+- **Egyszeri figyelmeztetés** a főmenü első megnyitásakor: az addont csak **nCore-előfizetéssel** érdemes használni – lejátszáskor a film csak a nézés ideje alatt osztódik, előfizetés nélkül hit'n'run keletkezik. „Megértettem” után nem jelenik meg többet, „Később” esetén a következő indításkor újra. Widgetből nem ugrik fel.
+
+---
+
 ## [1.6.2] – 2026-09-26 (fork: TomSzo)
 
 ### Javítva (Kodi-log alapján)
