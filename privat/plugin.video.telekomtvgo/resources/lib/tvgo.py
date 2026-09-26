@@ -67,6 +67,10 @@ UA = ('Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like
       'Chrome/140.0.0.0 Safari/537.36')
 OS_NAME = 'Windows'
 BROWSER = 'Chrome'
+BROWSER_MAJOR = '140'
+# a webes kliens induláskor így tölti ki (react-device-detect: browserName-browserVersion);
+# üresen a bifrost (AWS ELB) üres HTTP 500-zal válaszol
+X_USER_AGENT = 'web|web|%s-%s|%s|1' % (BROWSER, BROWSER_MAJOR, APP_VERSION)
 
 MIN_GAP = 0.5
 LOGIN_COOLDOWN = 180
@@ -254,7 +258,7 @@ def _common_headers():
         'DeviceId': device_id(),
         'app_key': APP_KEY,
         'app_version': APP_VERSION,
-        'X-User-Agent': '',
+        'X-User-Agent': X_USER_AGENT,
         'x-request-trackingid': tracking,
         'x-txn-id': txn,
         'x-call-time': call_time,
@@ -466,7 +470,7 @@ def _tenant_variants():
     web = _guest_headers()
     web['x-tvflow'] = 'START_UP'
     web['x-tv-step'] = 'CONFIG'
-    lite = dict((k, web[k]) for k in ('DeviceId', 'app_key', 'app_version', 'tenant',
+    lite = dict((k, web[k]) for k in ('DeviceId', 'app_key', 'app_version', 'tenant', 'X-User-Agent',
                                       'X-Call-Type', 'DeviceDensity'))
     return (('web', web), ('lite', lite), ('bare', {}))
 
@@ -574,10 +578,10 @@ def _fill_form(form, email, password):
         elif t in ('submit', 'button', 'image', 'reset') or i['tag'] == 'button':
             # a "Belépés" gomb értéke (button=default) kell; a "vissza" / SMS / egyszer
             # használatos kód gombokat nem nyomjuk meg
-            if i['value'] == 'default' or (submit is None and i['value'] and
+            if i['value'] in ('default', 'stayLoggedIn') or (submit is None and i['value'] and
                                            i['value'].lower() not in ('back',) and
                                            not i['value'].lower().startswith('loginwith')):
-                if submit is None or i['value'] == 'default':
+                if submit is None or i['value'] in ('default', 'stayLoggedIn'):
                     submit = (name, i['value'])
             continue
         elif t == 'hidden' and name.lower() == 'logintype' and not i['value']:
@@ -591,7 +595,7 @@ def _fill_form(form, email, password):
                 data[i['name']] = email
                 used_user = True
                 break
-    if submit and (used_pw or submit[1] == 'default'):
+    if submit and (used_pw or submit[1] in ('default', 'stayLoggedIn')):
         data[submit[0]] = submit[1]
     return data, used_user, used_pw
 

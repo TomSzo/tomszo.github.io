@@ -439,7 +439,7 @@ v0.1.0 (2026-09-25) - PRIVAT / BETA
     </extension>
 </addon>
 
-<addon id="plugin.video.telekomtvgo" name="Telekom TV GO (privát)" version="0.1.2" provider-name="TomSzo">
+<addon id="plugin.video.telekomtvgo" name="Telekom TV GO (privát)" version="0.1.3" provider-name="TomSzo">
     <requires>
         <import addon="xbmc.python" version="3.0.0"/>
         <import addon="script.module.requests" version="2.22.0"/>
@@ -457,6 +457,13 @@ v0.1.0 (2026-09-25) - PRIVAT / BETA
         <platform>all</platform>
         <license>GPL-3.0-or-later</license>
         <news>
+v0.1.3 (2026-09-26) - BETA
+- JAVÍTÁS (a HTTP 500 valódi oka): az X-User-Agent fejléc üres volt. A webes
+  kliens induláskor tölti ki ("web|web|Chrome-140|02.0.1470|1"); nélküle a
+  Telekom API (AWS ELB) üres HTTP 500-zal válaszol - minden kérésre.
+- A "Már be vagy lépve egy Telekom Fiókkal" oldalon az "Ezzel folytatom"
+  gombot nyomja meg.
+
 v0.1.2 (2026-09-26) - BETA
 - JAVÍTÁS: a belépési beállítás (bifrost/tenant/config) HTTP 500-at adott.
   A kérés most pontosan a böngésző fejléceivel megy (x-tvflow START_UP /
