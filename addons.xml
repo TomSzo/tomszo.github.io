@@ -327,7 +327,7 @@ v1.0.0 (2026-04-04) - BÉTA
     </extension>
 </addon>
 
-<addon id="plugin.video.nCore_TV" name="nCore TV" version="1.2.3" provider-name="heg (fork: TomSzo)">
+<addon id="plugin.video.nCore_TV" name="nCore TV" version="1.2.4" provider-name="heg (fork: TomSzo)">
     <requires>
         <import addon="script.module.beautifulsoup4" version="4.6.2"/>
         <import addon="script.module.requests" version="2.22.0"/>
@@ -361,6 +361,8 @@ What this fork changes:
         <language>hu</language>
         <platform>all</platform>
         <news>
+1.2.4 (fork: TomSzo, 2026-09-26)
+- JAVITAS: rendezes-valaszto - OK utan nem nyilt meg a lista
 1.2.3 (fork: TomSzo, 2026-09-26)
 - Rendezes-valaszto felugro ablak a Film/Sorozat kategoriaknal (feltoltes ideje, seed, letoltesek, meret, nev)
 - A kategoriakbol kivett REMUX (seed szerint) pontok - az ablak kivaltja; Widgetekben maradnak
