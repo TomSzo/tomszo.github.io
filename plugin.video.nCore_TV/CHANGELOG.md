@@ -8,6 +8,23 @@ A formátum a [Keep a Changelog](https://keepachangelog.com/hu/1.1.0/) szerkezet
 
 ---
 
+## [1.5.0] – 2026-09-26 (fork: TomSzo)
+
+### Új – Ajánlók menü
+- **nCore-elérhetőség minden ajánlott címnél:** `✔ 3 verzió  4K 1080p HU` (sorozatnál `✔ N torrent`), ami nincs fent (vagy csak halott feltöltése van), az szürke „nincs nCore-on” jelzést kap; beállítással el is rejthető. Egy IMDb-keresés címenként (film + sorozat kategóriák), párhuzamosan, 1 óra gyorsítótár. A TMDb-azonosítós listákhoz az IMDb-azonosítót a TMDb adja (tartós gyorsítótár: `idmap.json`).
+- **Kattintásra egyből a színkódolt verzióválasztó** (filmeknél): egy verzió esetén rögtön az adatlap. Magyar kategória elöl, azon belül a több seed elöl. A régi találati lista a helyi menüből érhető el („Összes nCore-találat”).
+- **Leírás-panel az ajánlólistákban is:** valódi `movies` / `tvshows` tartalomtípus, Lista nézet, pontszámok (IMDb / RT / Metacritic / TMDb), műfaj, és a nCore-elérhetőség a leírás tetején.
+- Érintett listák: TMDb Felfedezés (+ témák, streaming, franchise), TMDb Filmek / Sorozatok (+ szolgáltatók), Simkl, Trakt listák, JustWatch, TheTVDB.
+- Új beállítások (Helyi funkciók → Ajánlók); mindhárom kikapcsolható.
+
+### Változott – Ajánlók menü átszervezése
+- **Kevesebb, átlátható menüpont**, minden lista a **TMDb API**-ból: *Filmek – most népszerű*, *Sorozatok – most népszerű*, **Magyar streaming-kínálat**, *Mozis és digitális újdonságok*, *Legjobbra értékelt filmek*, *Böngészés témák szerint*, *Sorozat-naptár és premierek*, *További források*.
+- **Magyar streaming-kínálat** (új): Netflix, HBO Max, Disney+, Amazon Prime Video, Apple TV+, SkyShowtime – **magyar régió** szerint, előfizetéses kínálat; szolgáltatónként *Új filmek*, *Népszerű filmek*, *Friss részek / évadok*, *Új sorozatok*, *Népszerű sorozatok*. Kiváltja a korábbi két, főleg amerikai (US régiós, Hulu / Peacock / Starz…) streaming menüt.
+- A törékeny **themoviedb.org weboldal-kiolvasás** („Filmek | Sorozatok (themoviedb.org)” + a hat szolgáltatós sorozatlista) kikerült a menüből – helyette az API-s listák (filmek is, nem csak sorozatok, köztes oldal nélkül). A régi útvonalak a kódban maradtak (meglévő kedvencek miatt).
+- **További források** almenü: JustWatch, Simkl, Trakt, TheTVDB.
+
+---
+
 ## [1.4.2] – 2026-09-26 (fork: TomSzo)
 
 ### Javítva
