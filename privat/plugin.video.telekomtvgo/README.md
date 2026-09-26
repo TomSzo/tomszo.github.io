@@ -17,7 +17,11 @@ Nem hivatalos Kodi-kiegészítő a Magyar Telekom **TV GO** szolgáltatásához
 3. Ha az automatikus belépés nem sikerül: jelentkezz be a böngészőben a
    player.telekomtvgo.hu-n, és a `refreshToken` nevű süti értékét (vagy a belépés utáni
    visszairányítási URL-t, amiben `refresh_token=` van) illeszd be a
-   **Belépés → Refresh token** mezőbe.
+   **Belépés → Refresh token** mezőbe – vagy (távirányítóval kényelmesebb) tedd egy
+   `refresh_token.txt` fájlba az addon adatmappájába
+   (`userdata/addon_data/plugin.video.telekomtvgo/`).
+   Az automatikus belépés akkor nem megy, ha a Telekom belépőoldala robotellenőrzést
+   (reCAPTCHA) kér – az addon ezt kiírja, és nem kerüli meg.
 4. Kell hozzá az **InputStream Adaptive** és a **Widevine** (ha az InputStream Helper
    telepítve van, az addon szükség esetén felajánlja a Widevine telepítését).
 

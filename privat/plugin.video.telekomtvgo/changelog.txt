@@ -2,9 +2,12 @@ v0.1.1 (2026-09-26) - PRIVAT / BETA
 - JAVITAS: a belepes HTTP 404-gyel elbukott. A webes kliens nem a nativ
   logint hasznalja, hanem webes (SSO) belepest: tenant/config -> Telekom
   belepooldal -> token. Az addon most ezt jarja vegig automatikusan.
+  A Telekom belepooldal (telekom.hu/ssologin) ket lepese: azonosito
+  (loginId + loginType), majd jelszo (button=default).
+- Ha a belepooldal reCAPTCHA-t ker, az addon ezt jelzi (nem keruli meg).
 - Tartalek: a bongeszobol kimasolt refreshToken (vagy a teljes
-  visszairanyitasi URL) beillesztheto a beallitasokba; frissites a webes
-  /oauth/token vegponttal. A nativ login (es az RSA modul) kikerult.
+  visszairanyitasi URL) a beallitasokba, vagy refresh_token.txt fajlba az
+  addon adatmappajaban; frissites a webes /oauth/token vegponttal. A nativ login (es az RSA modul) kikerult.
 - Hiba eseten a szerver valasza mindig mentesre kerul (error_*.json,
   login_steps.json, login_page.html); a Kapcsolat teszt kilistazza oket.
 - Sikertelen belepes utan 3 perc szunet (adatmodositaskor azonnal ujra).

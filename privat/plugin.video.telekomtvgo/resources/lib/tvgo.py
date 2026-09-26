@@ -284,7 +284,8 @@ USER_FIELD_HINTS = ('email', 'user', 'login', 'name', 'identifier', 'msisdn', 'a
 
 def have_credentials():
     return bool((ADDON.getSetting('email') and ADDON.getSetting('password')) or
-                ADDON.getSetting('refresh_token').strip())
+                ADDON.getSetting('refresh_token').strip() or
+                os.path.exists(profile('refresh_token.txt')))
 
 
 def _cred_key():
@@ -408,8 +409,15 @@ def refresh():
 
 
 def _import_manual_token():
-    """A beállításokba beillesztett refreshToken (vagy a teljes visszairányítási URL)."""
+    """A beállításokba beillesztett refreshToken (vagy a teljes visszairányítási URL).
+    Távirányítóval kényelmetlen, ezért a profil-mappába tett refresh_token.txt is jó."""
     raw = ADDON.getSetting('refresh_token').strip()
+    if not raw:
+        try:
+            with open(profile('refresh_token.txt'), 'r', encoding='utf-8-sig') as f:
+                raw = ''.join(f.read().split())
+        except (IOError, OSError):
+            raw = ''
     if not raw:
         return None
     acc, ref, exp = _tokens_from(raw) if ('=' in raw or '://' in raw) else (None, raw, None)
@@ -487,6 +495,10 @@ class _FormParser(object):
 def _pick_form(forms):
     def has(form, types):
         return any(i['type'] in types for i in form['inputs'])
+    # a Telekom belépőoldalán: <form id="login-form"> (mellette egy "vissza" űrlap is van)
+    for f in forms:
+        if f['id'] == 'login-form':
+            return f
     for types in (('password',), ('email', 'text', 'tel')):
         for f in forms:
             if has(f, types):
@@ -494,9 +506,19 @@ def _pick_form(forms):
     return forms[0] if forms else None
 
 
+def _login_type(ident):
+    """A belépőoldal getLoginType()-ja: email / telefonszám -> "TF", különben "MTID"."""
+    import re
+    x = ident.replace(' ', '')
+    if '@' in x or re.match(r'^(\+?36|06)?(20|30|31|50|70)\d{7}$', x):
+        return 'TF'
+    return 'MTID'
+
+
 def _fill_form(form, email, password):
     data = {}
     used_user = used_pw = False
+    submit = None
     for i in form['inputs']:
         t, name = i['type'], i['name']
         low = (name + ' ' + i['id']).lower()
@@ -510,8 +532,17 @@ def _fill_form(form, email, password):
         elif t in ('checkbox', 'radio'):
             if 'remember' in low or 'stay' in low:
                 data[name] = i['value'] or 'on'
-        elif t in ('submit', 'button', 'image', 'reset'):
+        elif t in ('submit', 'button', 'image', 'reset') or i['tag'] == 'button':
+            # a "Belépés" gomb értéke (button=default) kell; a "vissza" / SMS / egyszer
+            # használatos kód gombokat nem nyomjuk meg
+            if i['value'] == 'default' or (submit is None and i['value'] and
+                                           i['value'].lower() not in ('back',) and
+                                           not i['value'].lower().startswith('loginwith')):
+                if submit is None or i['value'] == 'default':
+                    submit = (name, i['value'])
             continue
+        elif t == 'hidden' and name.lower() == 'logintype' and not i['value']:
+            data[name] = _login_type(email)
         else:
             data[name] = i['value']
     if not used_user and not used_pw:
@@ -521,6 +552,8 @@ def _fill_form(form, email, password):
                 data[i['name']] = email
                 used_user = True
                 break
+    if submit and (used_pw or submit[1] == 'default'):
+        data[submit[0]] = submit[1]
     return data, used_user, used_pw
 
 
@@ -536,7 +569,8 @@ def _sts_login():
                                 '*/*;q=0.8'})
     method, data, referer = 'GET', None, ORIGIN + '/'
     steps = []
-    pw_sent = 0
+    pw_sent = user_sent = 0
+    captcha = False
     for step in range(LOGIN_STEPS):
         _LAST[0] = time.time()
         _bump()
@@ -585,6 +619,21 @@ def _sts_login():
         if not form:
             break
         fields, used_user, used_pw = _fill_form(form, email, password)
+        if used_user and not used_pw:
+            user_sent += 1
+            if user_sent > 1:
+                # az azonosító-oldal újra megjelent: a láthatatlan reCAPTCHA nélkül nem enged
+                steps[-1]['note'] = 'az azonosító-oldal újra megjelent' + (
+                    ' (reCAPTCHA)' if captcha else '')
+                _write_json('login_steps.json', {'steps': steps, 'result': 'captcha?'})
+                with open(profile('login_page.html'), 'w', encoding='utf-8') as f:
+                    f.write(_redact(html))
+                raise LoginError(
+                    'A Telekom belépőoldala robotellenőrzést (reCAPTCHA) kér, ezért az '
+                    'automatikus belépés nem megy. Jelentkezz be egyszer böngészőben a '
+                    'player.telekomtvgo.hu-n, és a "refreshToken" süti értékét illeszd be: '
+                    'Beállítások -> Belépés -> Refresh token.')
+            captcha = captcha or 'g-recaptcha' in html
         if used_pw:
             pw_sent += 1
             if pw_sent > 1:

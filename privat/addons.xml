@@ -461,8 +461,12 @@ v0.1.1 (2026-09-26) - BETA
 - JAVÍTÁS: a belépés HTTP 404-gyel elbukott - a webes kliens nem a natív
   logint használja, hanem webes (SSO) belépést: tenant/config -> Telekom
   belépőoldal -> token. Az addon most ezt járja végig automatikusan.
+  A Telekom belépőoldal (telekom.hu/ssologin) két lépése: azonosító
+  (loginId + loginType) majd jelszó (button=default).
+- Ha a belépőoldal reCAPTCHA-t kér, az addon ezt jelzi (nem kerüli meg).
 - Tartalék: a böngészőből kimásolt refreshToken (vagy a teljes visszairányítási
-  URL) beilleszthető a beállításokba; frissítés a webes /oauth/token-nel.
+  URL) a beállításokba, vagy refresh_token.txt fájlba az addon adatmappájában;
+  frissítés a webes /oauth/token-nel.
 - Hiba esetén a szerver válasza mindig mentésre kerül (error_*.json,
   login_steps.json, login_page.html) - a Kapcsolat teszt kilistázza őket.
 - Sikertelen belépés után 3 perc szünet (az adatok módosításakor azonnal újra).

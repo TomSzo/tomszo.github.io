@@ -4,7 +4,7 @@
 		<setting id="email" type="text" label="Email cím (Telekom-fiók)" default="" />
 		<setting id="password" type="text" label="Jelszó" option="hidden" default="" />
 		<setting type="lsep" label="Tartalék: refresh token a böngészőből (ha az automatikus belépés nem megy)" />
-		<setting id="refresh_token" type="text" label="Refresh token (vagy a teljes visszairányítási URL)" default="" />
+		<setting id="refresh_token" type="text" label="Refresh token / visszairányítási URL (vagy: refresh_token.txt az adatmappában)" default="" />
 		<setting type="action" label="Munkamenet törlése (újra bejelentkezés)"
 		         action="RunPlugin(plugin://plugin.video.telekomtvgo/?action=clearsession)" />
 	</category>
