@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<addon id="plugin.video.network4" name="Network4 (privát)" version="0.4.1" provider-name="TomSzo (alap: Arena4Plus – heg, vargalex)">
+<addon id="plugin.video.network4" name="Network4" version="0.5.0" provider-name="TomSzo (alap: Arena4Plus – heg, vargalex)">
     <requires>
         <import addon="xbmc.python" version="3.0.0"/>
         <import addon="script.module.requests" version="2.22.0"/>
@@ -9,18 +9,21 @@
         <provides>video</provides>
     </extension>
     <extension point="xbmc.addon.metadata">
-        <summary lang="hu">Network4 / Arena4+ – privát, a saját előfizetéssel (mobilalkalmazás API)</summary>
-        <description lang="hu">Nem hivatalos kiegészítő, a plugin.video.arena4plus (szerzők: heg, vargalex) alapján, új kóddal írva (nem fork). Privát, magánhasználatú videó addon a Network4 / Arena4+ szolgáltatáshoz, a tulajdonos saját fiókjával. A hivatalos mobilalkalmazás API-ját használja (net4plus.network4.hu): élő közvetítések (élőben vagy az elejétől), videótár gyűjteményenként, keresés. A Cloudflare-ellenőrzést a beépített cloudscraper (MIT) kezeli.</description>
-        <disclaimer lang="hu">Privát, magánhasználatú kiegészítő. Csak a tulajdonos saját előfizetésével működik.</disclaimer>
+        <summary lang="hu">Network4 / Arena4+ – sport és élő közvetítések a saját előfizetéseddel</summary>
+        <description lang="hu">Nem hivatalos kiegészítő, a plugin.video.arena4plus (szerzők: heg, vargalex) alapján, új kóddal írva (nem fork). Videó addon a Network4 / Arena4+ szolgáltatáshoz, a saját Network4-fiókoddal / előfizetéseddel. A hivatalos mobilalkalmazás API-ját használja (net4plus.network4.hu): élő közvetítések (élőben vagy az elejétől), videótár gyűjteményenként, keresés. A Cloudflare-ellenőrzést a beépített cloudscraper (MIT) kezeli.</description>
+        <disclaimer lang="hu">Nem hivatalos kiegészítő, nincs kapcsolatban a Network4-gyel. Saját, érvényes Network4 / Arena4+ előfizetés kell hozzá; belépési adatot nem tartalmaz. Saját felelősségre.</disclaimer>
         <language>hu</language>
         <platform>all</platform>
         <license>GPL-3.0-or-later</license>
         <news>
-v0.4.1 (2026-09-26) - PRIVAT / BETA
+v0.5.0 (2026-09-26)
+- Atkerult a nyilvanos TomSzo taroloba (nev: Network4). A beallitasok maradnak.
+
+v0.4.1 (2026-09-26) - BETA
 - Szerzoseg egyertelmubben: "alap: Arena4Plus - heg, vargalex" (provider,
   leiras, README). Nem fork: uj kod, az Arena4Plus mukodese alapjan.
 
-v0.4.0 (2026-09-25) - PRIVAT / BETA
+v0.4.0 (2026-09-25) - BETA
 - UJ: Sportok menu a www.network4.hu/sport/collections szerint: Kiemelt sportok,
   Dokumentumfilm, Labdarugas, Amerikaifutball, Motorsport, Amerikai sportok,
   Kuzdosportok, Tenisz, Egyeb sportok, Studiomusorok, Magazinmusorok -&gt;
@@ -28,20 +31,20 @@ v0.4.0 (2026-09-25) - PRIVAT / BETA
 - A kategoria-lista naponta legfeljebb 1x frissul a weboldalrol; ha nem sikerul,
   beepitett pillanatkep szolgal (beallitasban kikapcsolhato a webes frissites).
 
-v0.3.0 (2026-09-25) - PRIVAT / BETA
-- A tulajdonos kerésére az Arena4Plus-szal azonosan: a net4plus API Cloudflare-
+v0.3.0 (2026-09-25) - BETA
+- Az Arena4Plus-szal azonosan: a net4plus API Cloudflare-
   ellenorzeset a beepitett cloudscraper kezeli (resources/lib/modules; beallitasban
   kikapcsolhato). Hiba eseten legfeljebb 2 ujraprobalas 5 mp szunettel.
 - API User-Agent alapbol a mobilalkalmazase (Dart), mint az Arena4Plus-ban;
   a Firefox valaszthato.
 - Kapcsolat teszt: kiirja, cloudscraper vagy sima requests fut-e.
 
-v0.2.1 (2026-09-25) - PRIVAT / BETA
+v0.2.1 (2026-09-25) - BETA
 - JAVITAS: "'list' object has no attribute 'get'" - a regi (0.1.x) verzio session.json
   fajlja (suti-lista) miatt. A token mostantol token.json-ban; a profil-fajlok
   beolvasasa szerkezet-ellenorzott.
 
-v0.2.0 (2026-09-25) - PRIVAT / BETA
+v0.2.0 (2026-09-25) - BETA
 - UJRAIRVA a hivatalos mobilalkalmazas API-jara (net4plus.network4.hu/api), a
   plugin.video.arena4plus mukodese alapjan: email/jelszo belepes (Bearer token),
   a weboldal Cloudflare-kihivasa nem erinti. Cloudflare-kihivast nem kerul meg.

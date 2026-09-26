@@ -29,6 +29,8 @@ egyetlen tárolóból települjenek.
 | **service.autosub** | Automatikus felirat-kezelő. Elsősorban azoknak jó, akik **animét néznek**. |
 | **plugin.video.nCore_TV** *(fork)* | nCore TV videó addon. **Ez egy fork** – nem az eredeti, csak TomSzo által karbantartott, módosított változat. Részletek: [plugin.video.nCore_TV/README.md](plugin.video.nCore_TV/README.md). |
 | **plugin.video.subvito** | SubVito videó addon *(South Park magyarul – subvito.eu)*. |
+| **plugin.video.network4** | Network4 / Arena4+ – sport, élő közvetítések a **saját előfizetéseddel** *(alap: Arena4Plus – heg, vargalex; új kód, nem fork)*. |
+| **plugin.program.kedvencmappak** | Kedvenc mappák: mappák és almappák a Kodi Kedvencekhez, *Kedvenc mappába…* helyi menü mindenhol. |
 | **weather.tomszo** | Időjárás-szolgáltató *(Időkép magyar településekre + Open-Meteo, API-kulcs nélkül)*. |
 | **script.speedtester** | Internet-sebességteszt (speedtest.net) – *TomSzo v2.0.0 fork*. |
 
@@ -49,7 +51,7 @@ egyetlen tárolóból települjenek.
 
 **2. lépés — Repository telepítése:**
 - **Kiegészítők** → **Telepítés ZIP fájlból** → `TomSzo Repo`
-- Válaszd: `repository.tomszo-1.0.13.zip`
+- Válaszd: `repository.tomszo-1.0.14.zip`
 - Várj 5-10 másodpercet
 
 **3. lépés — Addonok telepítése:**

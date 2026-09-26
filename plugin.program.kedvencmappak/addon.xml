@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<addon id="plugin.program.kedvencmappak" name="Kedvenc mappák" version="1.0.0" provider-name="TomSzo">
+<addon id="plugin.program.kedvencmappak" name="Kedvenc mappák" version="1.0.1" provider-name="TomSzo">
     <requires>
         <import addon="xbmc.python" version="3.0.0"/>
     </requires>
@@ -24,6 +24,9 @@
         <license>GPL-3.0-or-later</license>
         <source>https://github.com/TomSzo/tomszo.github.io</source>
         <news>
+v1.0.1 (2026-09-26)
+- Atkerult a nyilvanos TomSzo taroloba. A mappak es beallitasok maradnak.
+
 v1.0.0 (2026-09-25)
 - Kezdeti kiadas: mappak, almappak; kituzes a Kodi Kedvencek koze
 - "Kedvenc mappaba..." helyi menu mindenhol (a Kodi Kedvencek ablakban is)

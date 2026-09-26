@@ -1,7 +1,7 @@
-# Network4 (privát) – `plugin.video.network4`
+# Network4 – `plugin.video.network4`
 
-Nem hivatalos Kodi-kiegészítő a **Network4 / Arena4+** szolgáltatáshoz, a tulajdonos
-**saját előfizetésével**.
+Nem hivatalos Kodi-kiegészítő a **Network4 / Arena4+** szolgáltatáshoz, a **saját
+előfizetéseddel**. Belépési adatot nem tartalmaz; nincs kapcsolatban a Network4-gyel.
 
 ## Szerzőség
 
@@ -23,4 +23,4 @@ Nem hivatalos Kodi-kiegészítő a **Network4 / Arena4+** szolgáltatáshoz, a t
 ## Beállítás
 Beállítások → Belépés: a saját Network4 / Arena4+ email címed és jelszavad.
 
-Magánhasználat, saját felelősségre.
+Saját felelősségre.

@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<addon id="repository.tomszo.private" name="TomSzo Privát Tároló" version="1.0.2" provider-name="TomSzo">
+<addon id="repository.tomszo.private" name="TomSzo Privát Tároló" version="1.0.3" provider-name="TomSzo">
     <requires>
         <import addon="xbmc.addon" version="12.0.0"/>
     </requires>
@@ -19,8 +19,6 @@ A videós kiegészítők a tulajdonos (TomSzo) SAJÁT fiókjával / előfizetés
 
 Kiegészítők:
 - MagyarAnime, Muteki Fansub, Kintsugi Fansub, Naruto-Kun.Hu - anime (saját fiók, kímélő lekérdezés)
-- Network4 / Arena4+ - sport és élő közvetítések (saját előfizetés)
-- Kedvenc mappák - mappák és almappák a Kodi Kedvencekhez (fiók nélkül is működik)
 - script.module.resolveurl - lejátszó-feloldó modul
 
 Ha nem te vagy a tulajdonos, ne telepítsd: a videós kiegészítők a saját fiókod nélkül nem működnek.
@@ -29,13 +27,16 @@ BÉTA / magánhasználat. Csak saját felelősségre.</description>
 
 The video add-ons work with the owner's (TomSzo) OWN accounts / subscriptions. They contain and share no credentials: sign-in (email/password or a session cookie from the owner's own browser) is stored only in the owner's own Kodi settings.
 
-Add-ons: MagyarAnime, Muteki Fansub, Kintsugi Fansub, Naruto-Kun.Hu (anime), Network4 / Arena4+ (sports, live events), Favourite folders (works without an account), script.module.resolveurl.
+Add-ons: MagyarAnime, Muteki Fansub, Kintsugi Fansub, Naruto-Kun.Hu (anime), script.module.resolveurl.
 
 If you are not the owner, do not install: the video add-ons will not work without your own account. Personal use only, at your own risk.</description>
         <platform>all</platform>
         <license>GPL-3.0-or-later</license>
         <source>https://github.com/TomSzo/tomszo.github.io</source>
         <news>
+v1.0.3 (2026-09-26) - PRIVÁT
+- A Network4 és a Kedvenc mappák átkerült a nyilvános TomSzo tárolóba
+
 v1.0.2 (2026-09-25) - PRIVÁT
 - Leírás frissítve a mai kiegészítőkre (Network4, Naruto-Kun.Hu, Kedvenc mappák)
 - Felesleges fájlok (default.py, index.html) kivéve a csomagból
