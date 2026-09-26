@@ -8,6 +8,14 @@ A formátum a [Keep a Changelog](https://keepachangelog.com/hu/1.1.0/) szerkezet
 
 ---
 
+## [1.4.2] – 2026-09-26 (fork: TomSzo)
+
+### Javítva
+- **Összevonás a többi oldal verzióival is.** Eddig csak az aktuális oldalon belül vont össze (pl. a *Film HU 1080* listában a Scary Movie régebbi 1080p-s REMUX-a egy későbbi oldalon volt, ezért nem látszott „2 verzió”). Most minden IMDb-azonosítós címhez lekéri ugyanabból a kategóriából a többi feltöltést, a lista kulcsszavára szűrve (pl. csak 1080p / csak REMUX), halottak nélkül. Párhuzamos lekérés, 1 óra gyorsítótár (`extra_versions.json`); kikapcsolható.
+- **Egyedülálló sorokban csak a cím és az évszám** (a színkódolt minőség lekerült a sorról; a verzióválasztóban és a panelen megmaradt).
+
+---
+
 ## [1.4.1] – 2026-09-26 (fork: TomSzo)
 
 ### Változott – film / sorozat adatlap
