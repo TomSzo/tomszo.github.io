@@ -8,6 +8,16 @@ A formátum a [Keep a Changelog](https://keepachangelog.com/hu/1.1.0/) szerkezet
 
 ---
 
+## [1.2.3] – 2026-09-26 (fork: TomSzo)
+
+### Hozzáadva
+- **Rendezés-választó felugró ablak** a Film és a Sorozat kategóriák megnyitásakor (4K, Dolby Vision, REMUX, 1080, 720, SD – HU és EN): *Feltöltés ideje (legújabb / legrégebbi elöl)*, *Seed szerint*, *Letöltések száma*, *Méret (legnagyobb / legkisebb elöl)*, *Név szerint*. Az nCore saját rendezését használja (`miszerint` / `hogyan`), a lapozás megtartja a sorrendet.
+- Az ablak az előző választást jelöli ki előre. A lista a rendezett címmel nyílik, így a *Vissza* gomb és a frissítés nem kérdez újra; *Mégse* esetén a kategória-menü marad.
+- Beállítások → Helyi funkciók → *Rendezés*: a felugró ablak kikapcsolható, ilyenkor az *Alapértelmezett rendezés* érvényes.
+- A „REMUX (seed szerint)" menüpontok és a Widgetek változatlanok (ablak nélkül nyílnak).
+
+---
+
 ## [1.2.2] – 2026-09-25 (fork: TomSzo)
 
 ### Hozzáadva
