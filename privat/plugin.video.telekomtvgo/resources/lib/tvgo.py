@@ -397,6 +397,7 @@ def _guest_headers():
     h = _common_headers()
     h['X-Call-Type'] = 'GUEST_USER'
     h['DeviceDensity'] = 'xhdpi'
+    h.update(_extra())
     return h
 
 
@@ -405,6 +406,7 @@ def refresh():
     if not tok.get('refresh'):
         return None
     h = _common_headers()
+    h.update(_extra())
     h['bff_token'] = tok.get('access', '')
     h['X-Call-Type'] = 'AUTH_USER' if tok.get('access') else 'GUEST_USER'
     h['DeviceDensity'] = 'xhdpi'
@@ -464,15 +466,57 @@ def _import_manual_token():
 
 
 # --- automatikus webes belépés ------------------------------------------------
+SEC_HEADERS = {
+    'sec-ch-ua': '"Chromium";v="%s", "Google Chrome";v="%s", "Not.A/Brand";v="99"' % (
+        BROWSER_MAJOR, BROWSER_MAJOR),
+    'sec-ch-ua-mobile': '?0', 'sec-ch-ua-platform': '"%s"' % OS_NAME,
+    'sec-fetch-site': 'cross-site', 'sec-fetch-mode': 'cors', 'sec-fetch-dest': 'empty',
+    'priority': 'u=1, i'}
+# A webes kliens fejléceihez adható, a szervertől függően szükséges kiegészítések.
+# (Vendégként a böngésző "X-Channel-Map-Id: null"-t küldhet - régi axios.)
+EXTRA_SETS = (
+    ('web', {}),
+    ('map_null', {'X-Channel-Map-Id': 'null'}),
+    ('map_guest', {'X-Channel-Map-Id': '18956'}),
+    ('sec', SEC_HEADERS),
+    ('sec_map_null', dict(SEC_HEADERS, **{'X-Channel-Map-Id': 'null'})),
+    ('sec_map_guest', dict(SEC_HEADERS, **{'X-Channel-Map-Id': '18956'})),
+)
+
+
+def _extra():
+    """A bevált kiegészítő fejlécek (a tenant/config próbálkozásaiból megjegyezve)."""
+    name = (_read_json('bff_extra.json', {}) or {}).get('name', 'web')
+    return dict(dict(EXTRA_SETS).get(name, {}))
+
+
 def _tenant_variants():
-    """A webes kliens fejlécei (token nélkül, START_UP / CONFIG lépés), majd egyszerűbb
-    változatok - ha a szerver egy fejlécre 500-zal felel."""
-    web = _guest_headers()
-    web['x-tvflow'] = 'START_UP'
-    web['x-tv-step'] = 'CONFIG'
-    lite = dict((k, web[k]) for k in ('DeviceId', 'app_key', 'app_version', 'tenant', 'X-User-Agent',
-                                      'X-Call-Type', 'DeviceDensity'))
-    return (('web', web), ('lite', lite), ('bare', {}))
+    """A webes kliens fejlécei (token nélkül, START_UP / CONFIG lépés) a kiegészítő
+    változatokkal, végül egyszerűbbek - ha a szerver egy fejléc hiányára 500-zal felel."""
+    web = _common_headers()
+    web.update({'X-Call-Type': 'GUEST_USER', 'DeviceDensity': 'xhdpi',
+                'x-tvflow': 'START_UP', 'x-tv-step': 'CONFIG'})
+    out = []
+    for name, extra in EXTRA_SETS:
+        h = dict(web)
+        h.update(extra)
+        out.append((name, h))
+    lite = dict((k, web[k]) for k in ('DeviceId', 'app_key', 'app_version', 'tenant',
+                                      'X-User-Agent', 'X-Call-Type', 'DeviceDensity'))
+    out += [('lite', lite), ('bare', {})]
+    return out
+
+
+def _probe_guest(extra):
+    """Összehasonlításként egy vendégként is működő végpont (a HAR szerint 200)."""
+    h = _guest_headers()
+    h.update(extra)
+    q = {'natco_key': NATCO_KEY, 'app_language': LANG, 'natco_code': COUNTRY}
+    try:
+        resp = _request('GET', BFF + '/epg/channel/order', params=q, headers=h)
+    except ApiError as exc:
+        return {'variant': 'probe_channel_order', 'error': str(exc)}
+    return dict(_resp_info(resp), variant='probe_channel_order')
 
 
 def _tenant_login_url():
@@ -485,8 +529,12 @@ def _tenant_login_url():
         if resp.status_code < 400:
             if name != 'web':
                 log('tenant/config csak "%s" fejlécekkel ment' % name, xbmc.LOGWARNING)
+            if name in dict(EXTRA_SETS):
+                _write_json('bff_extra.json', {'name': name})
             break
     if resp.status_code >= 400:
+        attempts.append(_probe_guest({}))
+        attempts.append(_probe_guest({'X-Channel-Map-Id': 'null'}))
         save_error('tenant_config', note='minden változat sikertelen', attempts=attempts)
         raise LoginError('A belépési beállítás nem tölthető le (%s). Részletek: '
                          'error_tenant_config.json' % _err_text(resp))
@@ -752,6 +800,7 @@ def access_token(force=False):
 # ---------------------------------------------------------------------------
 def _bff_headers(token, account=None):
     h = _common_headers()
+    h.update(_extra())
     h['bff_token'] = token
     h['DeviceDensity'] = 'xhdpi'
     h['X-Call-Type'] = 'AUTH_USER'

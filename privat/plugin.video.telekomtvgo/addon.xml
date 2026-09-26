@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<addon id="plugin.video.telekomtvgo" name="Telekom TV GO (privát)" version="0.1.3" provider-name="TomSzo">
+<addon id="plugin.video.telekomtvgo" name="Telekom TV GO (privát)" version="0.1.4" provider-name="TomSzo">
     <requires>
         <import addon="xbmc.python" version="3.0.0"/>
         <import addon="script.module.requests" version="2.22.0"/>
@@ -17,6 +17,13 @@
         <platform>all</platform>
         <license>GPL-3.0-or-later</license>
         <news>
+v0.1.4 (2026-09-26) - BETA
+- A tenant/config 500-as hibájára további fejléc-változatok: X-Channel-Map-Id
+  (null / vendég csatornatérkép), a böngésző sec-fetch / sec-ch-ua fejlécei és
+  ezek kombinációi. A bevált változatot megjegyzi, és minden kérésnél használja.
+- Ha minden változat elbukik, összehasonlításként egy vendégként is elérhető
+  végpontot is lekérdez; minden eredmény az error_tenant_config.json-ba kerül.
+
 v0.1.3 (2026-09-26) - BETA
 - JAVÍTÁS (a HTTP 500 valódi oka): az X-User-Agent fejléc üres volt. A webes
   kliens induláskor tölti ki ("web|web|Chrome-140|02.0.1470|1"); nélküle a

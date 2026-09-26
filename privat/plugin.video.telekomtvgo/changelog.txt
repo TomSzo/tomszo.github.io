@@ -1,3 +1,10 @@
+v0.1.4 (2026-09-26) - PRIVAT / BETA
+- A tenant/config 500-as hibajara tovabbi fejlec-valtozatok: X-Channel-Map-Id
+  (null / vendeg csatornaterkep), a bongeszo sec-fetch / sec-ch-ua fejlecei es
+  ezek kombinacioi. A bevalt valtozatot megjegyzi, minden keresnel hasznalja.
+- Ha minden valtozat elbukik, osszehasonlitaskent egy vendegkent is elerheto
+  vegpontot is lekerdez; minden eredmeny az error_tenant_config.json-ba kerul.
+
 v0.1.3 (2026-09-26) - PRIVAT / BETA
 - JAVITAS (a HTTP 500 valodi oka): az X-User-Agent fejlec ures volt. A webes
   kliens indulaskor tolti ki ("web|web|Chrome-140|02.0.1470|1"); nelkule a
