@@ -262,7 +262,6 @@ def _common_headers():
         'Device-Name': '%s - %s' % (OS_NAME, BROWSER),
         'Pragma': 'akamai-x-cache-on,akamai-x-checkcacheable,akamai-x-get-cache-key',
         'tenant': 'tv',
-        'requestId': str(uuid.uuid4()),
     }
 
 
@@ -294,6 +293,13 @@ def _cred_key():
     return hashlib.sha1(raw.encode('utf-8')).hexdigest()
 
 
+def _version():
+    try:
+        return ADDON.getAddonInfo('version')
+    except Exception:  # noqa
+        return ''
+
+
 def saved_token():
     return _read_json(TOKEN_FILE, {}) or {}
 
@@ -306,14 +312,27 @@ def clear_token():
             pass
 
 
-def save_error(name, resp=None, note=''):
+def save_error(name, resp=None, note='', attempts=None):
     """Hibás válasz mentése (mindig, titkok nélkül): error_<név>.json a profil-mappában."""
     data = {'time': time.strftime('%Y-%m-%d %H:%M:%S'), 'note': note}
     if resp is not None:
-        data.update({'url': resp.url.split('?')[0], 'status': resp.status_code,
-                     'content_type': resp.headers.get('content-type', ''),
-                     'body': _redact(resp.text[:6000])})
+        data.update(_resp_info(resp))
+    if attempts:
+        data['attempts'] = attempts
     _write_json('error_%s.json' % name, data)
+
+
+def _resp_info(resp):
+    secret = ('bff_token', 'authorizationtoken', 'refresh_token', 'cookie', 'set-cookie',
+              'ms_access_token')
+    req = getattr(resp, 'request', None)
+    return {'url': resp.url.split('?')[0], 'status': resp.status_code,
+            'content_type': resp.headers.get('content-type', ''),
+            'response_headers': dict((k, v) for k, v in resp.headers.items()
+                                     if k.lower() not in secret),
+            'request_headers': dict((k, v) for k, v in (req.headers.items() if req else [])
+                                    if k.lower() not in secret),
+            'body': _redact((resp.text or '')[:6000])}
 
 
 def _redact(text):
@@ -441,12 +460,32 @@ def _import_manual_token():
 
 
 # --- automatikus webes belépés ------------------------------------------------
+def _tenant_variants():
+    """A webes kliens fejlécei (token nélkül, START_UP / CONFIG lépés), majd egyszerűbb
+    változatok - ha a szerver egy fejlécre 500-zal felel."""
+    web = _guest_headers()
+    web['x-tvflow'] = 'START_UP'
+    web['x-tv-step'] = 'CONFIG'
+    lite = dict((k, web[k]) for k in ('DeviceId', 'app_key', 'app_version', 'tenant',
+                                      'X-Call-Type', 'DeviceDensity'))
+    return (('web', web), ('lite', lite), ('bare', {}))
+
+
 def _tenant_login_url():
     q = {'is_sso_enabled': 'true', 'app_language': LANG, 'natco_code': COUNTRY}
-    resp = _request('GET', BFF + '/tenant/config', params=q, headers=_guest_headers())
+    attempts = []
+    resp = None
+    for name, headers in _tenant_variants():
+        resp = _request('GET', BFF + '/tenant/config', params=q, headers=headers)
+        attempts.append(dict(_resp_info(resp), variant=name))
+        if resp.status_code < 400:
+            if name != 'web':
+                log('tenant/config csak "%s" fejlécekkel ment' % name, xbmc.LOGWARNING)
+            break
     if resp.status_code >= 400:
-        save_error('tenant_config', resp)
-        raise LoginError('A belépési beállítás nem tölthető le (%s)' % _err_text(resp))
+        save_error('tenant_config', note='minden változat sikertelen', attempts=attempts)
+        raise LoginError('A belépési beállítás nem tölthető le (%s). Részletek: '
+                         'error_tenant_config.json' % _err_text(resp))
     data = _json(resp, 'Belépési beállítás')
     _debug_dump('tenant_config', data)
     d = _find_dict(data, 'login_url') or {}
@@ -675,7 +714,7 @@ def login():
         raise LoginError('A beillesztett refresh token lejárt. Illessz be újat, vagy add meg '
                          'az email címet és a jelszót.')
     state = _read_json('login_state.json', {}) or {}
-    if state.get('cred') == _cred_key() and \
+    if state.get('cred') == _cred_key() and state.get('ver') == _version() and \
             time.time() - state.get('failed', 0) < LOGIN_COOLDOWN:
         raise LoginError('Az előző belépés nem sikerült (%s). Várj pár percet, vagy módosítsd '
                          'az adataidat.' % state.get('reason', ''))
@@ -683,7 +722,7 @@ def login():
         acc, ref, exp = _sts_login()
     except LoginError as exc:
         _write_json('login_state.json', {'failed': time.time(), 'reason': str(exc)[:120],
-                                         'cred': _cred_key()})
+                                         'cred': _cred_key(), 'ver': _version()})
         raise
     _write_json('login_state.json', {})
     log('Belépés sikeres')
