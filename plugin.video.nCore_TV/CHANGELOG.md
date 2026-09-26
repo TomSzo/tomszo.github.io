@@ -8,6 +8,14 @@ A formátum a [Keep a Changelog](https://keepachangelog.com/hu/1.1.0/) szerkezet
 
 ---
 
+## [1.6.1] – 2026-09-26 (fork: TomSzo)
+
+### Változott
+- **SZÍNES jelzés a jelöletlen verzióknál is**, ha ugyanabban a verziólistában van fekete-fehér kiadás (a színes az alapváltozat, a nevében nincs jelölés – pl. *Spider-Noir* TRiNiTY). A verzióválasztóban, az összevont sor leírásában és a TMDb Helper Source Select listájában. Ahol nincs fekete-fehér változat, ott nem jelenik meg.
+- A **SZÍNES** felirat élénk szivárványszínekkel (betűnként piros, narancs, sárga, zöld, kék, lila) – a korábbi pasztell árnyalatok a tévén egyszínűnek tűnhettek.
+
+---
+
 ## [1.6.0] – 2026-09-26 (fork: TomSzo)
 
 ### Új
