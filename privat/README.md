@@ -13,6 +13,7 @@
 | **plugin.video.mutekifansub** | Muteki Fansub | saját fiók |
 | **plugin.video.kintsugifansub** | Kintsugi Fansub | saját fiók |
 | **plugin.video.narutokun** | Naruto-Kun.Hu | saját fiók (felhasználónév/jelszó) |
+| **plugin.video.telekomtvgo** | Telekom TV GO – élő TV, műsorújság, visszanézés *(BÉTA)* | saját Telekom-fiók (email/jelszó) + TV-előfizetés |
 | **script.module.resolveurl** | lejátszó-feloldó modul (függőség) | – |
 
 ## Miért nem működik másnál?

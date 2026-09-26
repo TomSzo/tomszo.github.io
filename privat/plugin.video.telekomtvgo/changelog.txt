@@ -1,0 +1,10 @@
+v0.1.0 (2026-09-26) - PRIVAT / BETA
+- Kezdeti kiadas: Telekom TV GO (player.telekomtvgo.hu) a sajat Telekom-fiokkal.
+- Belepes email/jelszoval (a webes kliens nativ loginja; a jelszo RSA-OAEP-pel
+  titkositva megy, mint a bongeszoben), tokenfrissites, tobb TV-elofizetesnel
+  valaszthato sorszam.
+- Elo TV (a most futo musorral), musorujsag 3 nap vissza / 3 nap elore,
+  visszanezes a mar lement musorokra.
+- Lejatszas: MediaKind (regisztracio + roll) -> DASH + Widevine az InputStream
+  Adaptive-val; eletjel (beacon) lejatszas kozben, lezaras a vegen.
+- Kapcsolat teszt; hibakereseshez a nyers API-valaszok menthetok (debug_*.json).
