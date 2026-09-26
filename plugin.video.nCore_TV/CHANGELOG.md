@@ -8,6 +8,15 @@ A formátum a [Keep a Changelog](https://keepachangelog.com/hu/1.1.0/) szerkezet
 
 ---
 
+## [1.6.2] – 2026-09-26 (fork: TomSzo)
+
+### Javítva (Kodi-log alapján)
+- **Lassú lista újranyitáskor is.** A „többi oldal verziói” keresés (listánként ~8–9 mp) csak 1 óráig jegyezte meg az eredményt, és 7 mp után abbahagyta, így nagyobb listánál a következő megnyitás is keresett. Most **12 óra** a gyorsítótár, a lejárt bejegyzések régi adata addig is használható (a hiányzók előbb kerülnek sorra), 6 párhuzamos kérés, 4 mp keret; a naplóban látszik, hány keresés ment ki.
+- **Beragadó háttérszálak:** a lekérések időkorlátja 8 mp helyett (3, 6) mp (TMDb: (3, 5) mp) – a Kodi a lista bezárása után nem vár tovább rájuk.
+- **„skipping unplayable item … action=”**: művelet nélküli sorok (pl. a *Widgetek* fejléce) nem próbálnak lejátszódni; az adatlap **mintaképei** kattintásra megnyílnak a képnézőben.
+
+---
+
 ## [1.6.1] – 2026-09-26 (fork: TomSzo)
 
 ### Változott
