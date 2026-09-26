@@ -8,6 +8,19 @@ A formátum a [Keep a Changelog](https://keepachangelog.com/hu/1.1.0/) szerkezet
 
 ---
 
+## [1.5.2] – 2026-09-26 (fork: TomSzo)
+
+### Javítva (kódátnézés)
+- **Vesszős / különleges karakteres cím a verzióválasztóban:** a választott verzió adatlapja `Container.Update(...)`-tel nyílt, a paraméterek kódolása nélkül – a Kodi a vesszőnél szétvágta a parancsot (pl. *„Hé, haver!”*), így csonka adatokkal nyílt meg. Most újrakódolt, idézőjeles URL megy (verzióválasztó, Ajánlók kattintás, „Összes nCore-találat”); a más oldalakról összegyűjtött verziók paraméterei is kódolva.
+- **Átmeneti TMDb-hiba nem ragad be:** hibakódnál (pl. 429 – túl sok kérés) a leírás/pontszám üres eredménye eddig 1 napra gyorsítótárba került, a személy-adatlap pedig „0 szerep”-pel 1 napig. Most ilyenkor nincs mentés, a következő megnyitás újrapróbálja.
+- **Új filmek IMDb-azonosítója:** a TMDb→IMDb azonosító-tár az üres eredményt is véglegesen eltárolta (friss címeknél a TMDb csak később pótolja) – most az üreset nem menti; a tár mérete korlátozva.
+- **Atomi mentés** minden új gyorsítótárnál (ideiglenes fájl + csere): ha a Kodi írás közben leállítja az addont, a fájl nem sérül meg.
+
+### Hozzáadva
+- **Beállítások → Fájlok Karbantartása → „Lista-gyorsítótárak törlése”**: `infocache.json`, `extra_versions.json`, `idmap.json`, `person_cache.json`, `versions.json`, `remote_cache.json` (a régi takarítás ezeket nem ismerte).
+
+---
+
 ## [1.5.1] – 2026-09-26 (fork: TomSzo)
 
 ### Új – szerep szerinti szűrés (Keresés színészre, Szereplők és stáb)
