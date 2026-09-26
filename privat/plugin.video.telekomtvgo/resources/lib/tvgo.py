@@ -178,8 +178,9 @@ def _web_device_id():
         resp = requests.get(WEB_PAGE, timeout=20, headers={
             'User-Agent': UA, 'Accept-Language': 'hu-HU,hu;q=0.9',
             'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8'})
-    except requests.exceptions.RequestException as exc:
+    except Exception as exc:  # noqa - hálózati / TLS hiba: mentjük, nem állunk meg
         log('A webes eszköz-azonosító nem kérhető le: %s' % exc, xbmc.LOGWARNING)
+        save_error('web_device_id', note='%s: %s' % (type(exc).__name__, exc))
         return None
     m = re.search(r'"DEVICE_ID"\s*:\s*"([0-9A-Za-z-]{8,64})"', resp.text or '')
     if not m:
@@ -188,7 +189,17 @@ def _web_device_id():
     return m.group(1)
 
 
+def _override_id():
+    import re
+    v = ADDON.getSetting('device_id').strip().lower()
+    return v if re.match(r'^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$', v) \
+        else ''
+
+
 def device_id():
+    ov = _override_id()
+    if ov:
+        return ov                  # a beállításokban megadott (pl. a böngésző) azonosítója
     dev = _read_json('device.json', {}) or {}
     changed = False
     if not dev.get('web') and time.time() - dev.get('web_try', 0) > WEB_ID_RETRY:
@@ -213,6 +224,8 @@ def device_id():
 
 
 def device_id_source():
+    if _override_id():
+        return 'beállításokból'
     return 'weboldal' if (_read_json('device.json', {}) or {}).get('web') else 'saját (véletlen)'
 
 

@@ -1,3 +1,9 @@
+v0.1.6 (2026-09-26) - PRIVAT / BETA
+- UJ beallitas: Eszkoz-azonosito (ures = automatikus). Megadhato pl. a bongeszo
+  DEVICE_ID-ja, amelyet a Telekom szervere ismer.
+- Ha a weboldalrol nem sikerul lekerni az azonositot (halozati / TLS hiba),
+  az ok az error_web_device_id.json-ba kerul.
+
 v0.1.5 (2026-09-26) - PRIVAT / BETA
 - JAVITAS: a Telekom API minden keresre HTTP 500-at adott, mert az addon sajat,
   veletlen eszkoz-azonositot kuldott. A webes kliens a player.telekomtvgo.hu
