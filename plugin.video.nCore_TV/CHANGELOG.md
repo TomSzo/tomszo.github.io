@@ -8,6 +8,16 @@ A formátum a [Keep a Changelog](https://keepachangelog.com/hu/1.1.0/) szerkezet
 
 ---
 
+## [1.6.6] – 2026-09-26 (fork: TomSzo)
+
+### Változott – verziók lekérése kattintáskor
+- **A lista nem keres előre** a többi oldal verziói után (eddig listánként címenként egy nCore-keresés, időkorláttal – lassított, és a keret miatt sok cím kimaradt). A lista most csak az adott oldal adataiból épül.
+- **Kattintáskor** egyetlen keresés arra az egy címre (időkorlát nélkül kimaradás, 12 óra gyorsítótár): ha csak **egy** verzió van → rögtön az **adatlap**, ha több → a színkódolt **verzióválasztó**.
+- **A lista minőségére szűr:** a *Film HU 1080* listából csak a 1080p-s, a *REMUX* listából csak a REMUX, a *4K* listából csak a 4K verziók jönnek (ugyanaz a kategória, halottak nélkül).
+- A sorokon a „(N verzió)” csak az adott oldalon látható kiadásokat számolja; a választóban a többi oldal verziói is ott vannak.
+
+---
+
 ## [1.6.5] – 2026-09-26 (fork: TomSzo)
 
 ### Gyorsítás (teljes kódátnézés)
