@@ -8,6 +8,17 @@ A formátum a [Keep a Changelog](https://keepachangelog.com/hu/1.1.0/) szerkezet
 
 ---
 
+## [1.5.0] – 2026-09-26 (fork: TomSzo)
+
+### Új – Ajánlók menü
+- **nCore-elérhetőség minden ajánlott címnél:** `✔ 3 verzió  4K 1080p HU` (sorozatnál `✔ N torrent`), ami nincs fent (vagy csak halott feltöltése van), az szürke „nincs nCore-on” jelzést kap; beállítással el is rejthető. Egy IMDb-keresés címenként (film + sorozat kategóriák), párhuzamosan, 1 óra gyorsítótár. A TMDb-azonosítós listákhoz az IMDb-azonosítót a TMDb adja (tartós gyorsítótár: `idmap.json`).
+- **Kattintásra egyből a színkódolt verzióválasztó** (filmeknél): egy verzió esetén rögtön az adatlap. Magyar kategória elöl, azon belül a több seed elöl. A régi találati lista a helyi menüből érhető el („Összes nCore-találat”).
+- **Leírás-panel az ajánlólistákban is:** valódi `movies` / `tvshows` tartalomtípus, Lista nézet, pontszámok (IMDb / RT / Metacritic / TMDb), műfaj, és a nCore-elérhetőség a leírás tetején.
+- Érintett listák: TMDb Felfedezés (+ témák, streaming, franchise), TMDb Filmek / Sorozatok (+ szolgáltatók), Simkl, Trakt listák, JustWatch, TheTVDB.
+- Új beállítások (Helyi funkciók → Ajánlók); mindhárom kikapcsolható.
+
+---
+
 ## [1.4.2] – 2026-09-26 (fork: TomSzo)
 
 ### Javítva
