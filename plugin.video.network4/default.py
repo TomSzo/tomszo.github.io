@@ -190,7 +190,7 @@ def collection(slug, start):
         end(cache=False)
         return
     if not vods:
-        notify('Ebben a gyűjteményben nincs videó')
+        notify('Nincs lejátszható videó (részletek: kodi.log, last_collection.json)')
     _vod_items(vods, start)
     if start + PAGE < len(vods):
         add('[B]Tovább >>[/B]  (%d-%d / %d)' % (start + PAGE + 1,

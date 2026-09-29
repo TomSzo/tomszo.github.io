@@ -383,7 +383,27 @@ def collection_items(slug):
     data = _first(cached('items_' + slug, LIST_TTL,
                          lambda: api_get('/collectionitems/%s/11' % quote(slug, ''),
                                          auth=False)))
-    return _vods(data.get('vodsavail')) or _series_vods(data.get('series'))
+    vods = _vods(data.get('vodsavail')) or _series_vods(data.get('series'))
+    if not vods:
+        _explain_empty(slug, data)
+    return vods
+
+
+def _explain_empty(slug, data):
+    """Üres lista esetén a kodi.log-ba írja, mi jött valójában, és elmenti a nyers
+    választ (last_collection.json) - ebből látszik, ha a szerver átnevezett egy mezőt."""
+    items = data.get('vodsavail')
+    first = _dicts(items)[:1]
+    series = data.get('series')
+    log('"%s": nincs lejátszható videó. Kulcsok: %s | vodsavail: %s db (%s) | '
+        'első elem mezői: %s | series: %s'
+        % (slug, sorted(data.keys()), len(items) if isinstance(items, list) else '-',
+           type(items).__name__, sorted(first[0].keys()) if first else '-',
+           ', '.join('%r:%s' % (k, type(v).__name__) for k, v in series.items())
+           if isinstance(series, dict) else type(series).__name__), xbmc.LOGWARNING)
+    if first:
+        log('első elem: %s' % json.dumps(first[0], ensure_ascii=False)[:1500], xbmc.LOGWARNING)
+    _write_json('last_collection.json', {'slug': slug, 'data': data})
 
 
 def search(term):

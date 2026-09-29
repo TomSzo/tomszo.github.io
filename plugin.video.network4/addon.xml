@@ -23,6 +23,9 @@ v0.5.1 (2026-09-29)
   dict erteku hibas bejegyzes kimarad.
 - Varatlan hiba eseten is lezarul a konyvtar (nincs tobb "waiting on thread" /
   "GetDirectory failed"); a teljes hiba a kodi.log-ba kerul.
+- Ha egy gyujtemenyben nincs lejatszhato video, a kodi.log-ba kerul a valasz
+  szerkezete (kulcsok, az elso elem mezoi), a nyers valasz pedig a
+  last_collection.json-ba (addon_data/plugin.video.network4).
 
 v0.5.0 (2026-09-26)
 - Atkerult a nyilvanos TomSzo taroloba (nev: Network4). A beallitasok maradnak.
