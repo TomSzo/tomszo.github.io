@@ -230,6 +230,22 @@ def _kodi_major():
         return 21
 
 
+QUALITY_MAX = {'0': '1080p', '1': '720p'}   # '2' = automatikus
+
+
+def _quality(li):
+    """Fix minőség: az Uplynk 234p-1080p50 között 6 változatot kínál, és az IA a
+    sávszélesség szerint váltogat köztük - minden váltásnál újraindul a dekóder
+    (mikroszaggatás). "fixed-res" módban a legjobb, a korlátnál nem nagyobb
+    felbontáson marad (inputstream.adaptive 21+)."""
+    limit = QUALITY_MAX.get(api.ADDON.getSetting('quality') or '0')
+    if not limit:
+        return
+    li.setProperty('inputstream.adaptive.stream_selection_type', 'fixed-res')
+    li.setProperty('inputstream.adaptive.chooser_resolution_max', limit)
+    li.setProperty('inputstream.adaptive.chooser_resolution_secure_max', limit)
+
+
 def resolve(stream, title):
     li = xbmcgui.ListItem(path=stream + '|User-Agent=%s' % quote(api.FIREFOX_UA, ''))
     _info(li, title)
@@ -241,6 +257,7 @@ def resolve(stream, title):
         headers = 'User-Agent=%s' % quote(api.FIREFOX_UA, '')
         li.setProperty('inputstream.adaptive.stream_headers', headers)
         li.setProperty('inputstream.adaptive.manifest_headers', headers)
+        _quality(li)
         if low.endswith('.mpd'):
             if _kodi_major() < 21:
                 li.setProperty('inputstream.adaptive.manifest_type', 'mpd')
@@ -254,7 +271,8 @@ def resolve(stream, title):
                 li.setProperty('inputstream.adaptive.manifest_type', 'hls')
             li.setMimeType('application/vnd.apple.mpegurl')
         li.setContentLookup(False)
-    api.log('Lejátszás: %s' % stream.split('?')[0])
+    api.log('Lejátszás: %s (minőség: %s)' % (stream.split('?')[0], li.getProperty(
+        'inputstream.adaptive.chooser_resolution_max') or 'automatikus'))
     xbmcplugin.setResolvedUrl(HANDLE, True, li)
     _DONE[0] = True
 

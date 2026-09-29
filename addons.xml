@@ -646,7 +646,7 @@ v1.0.0 (2026-09-25)
     </extension>
 </addon>
 
-<addon id="plugin.video.network4" name="Network4" version="0.5.2" provider-name="TomSzo (alap: Arena4Plus – heg, vargalex)">
+<addon id="plugin.video.network4" name="Network4" version="0.5.3" provider-name="TomSzo (alap: Arena4Plus – heg, vargalex)">
     <requires>
         <import addon="xbmc.python" version="3.0.0"/>
         <import addon="script.module.requests" version="2.22.0"/>
@@ -663,6 +663,11 @@ v1.0.0 (2026-09-25)
         <platform>all</platform>
         <license>GPL-3.0-or-later</license>
         <news>
+v0.5.3 (2026-09-29)
+- Mikroszaggatas ellen: fix minoseg (Beallitasok > Lejatszas > Minoseg). Alapbol
+  a legjobb (1080p) valtozaton marad, nem valtogat 720p es 1080p kozott (minden
+  valtas ujrainditja a dekodert). Valaszthato: legfeljebb 720p vagy automatikus.
+
 v0.5.2 (2026-09-29)
 - JAVITVA: ures videotar. A Network4 API 2026 szeptembere ota nem adja a "vodviewer"
   linket; a videok most kozvetlenul az Uplynk HLS-cimrol ("verizon_id") jatszodnak.
