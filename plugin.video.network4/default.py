@@ -149,7 +149,11 @@ PAGE = 30
 def _vod_items(vods, start=0):
     for v in vods[start:start + PAGE]:
         label = v['title'] + ('  [COLOR gray]%s[/COLOR]' % v['desc'] if v['desc'] else '')
-        add(label, url(action='playvod', u=v['url'], title=v['title']), v['thumb'],
+        params = {'action': 'playvod', 'u': v['url'], 'title': v['title']}
+        if v.get('locked'):
+            label = '[COLOR gray]%s  (zárolt)[/COLOR]' % label
+            params['locked'] = '1'
+        add(label, url(**params), v['thumb'],
             folder=False, plot=v['plot'] or v['desc'], playable=True)
 
 
@@ -255,7 +259,16 @@ def resolve(stream, title):
     _DONE[0] = True
 
 
-def play_vod(viewer, title):
+def play_vod(viewer, title, locked=False):
+    if locked:
+        xbmcgui.Dialog().ok(NAME, 'Ez a videó aláírt lejátszást igényel (token), amit a '
+                                  'Network4 API most nem ad meg - egyelőre nem játszható.')
+        xbmcplugin.setResolvedUrl(HANDLE, False, xbmcgui.ListItem())
+        _DONE[0] = True
+        return
+    if api.is_direct(viewer):
+        resolve(viewer, title)
+        return
     try:
         stream = api.vod_stream(viewer)
     except api.ApiError as exc:
@@ -329,7 +342,7 @@ def router():
     elif a == 'search':
         search(PARAMS.get('q'))
     elif a == 'playvod':
-        play_vod(PARAMS.get('u', ''), PARAMS.get('title', ''))
+        play_vod(PARAMS.get('u', ''), PARAMS.get('title', ''), PARAMS.get('locked') == '1')
     elif a == 'playlive':
         play_live(PARAMS.get('slug', ''), PARAMS.get('title', ''))
     elif a == 'diag':

@@ -12,7 +12,8 @@ A plugin.video.arena4plus (szerzők: heg, vargalex; GPL-3.0) alapján feltérké
                                                    (live/pre), expected_start, ...}]}]
     GET /api/watch/<slug>/live                 -> {src, replaysrc}
     GET /api/search/<szó>                      -> [{title, short_desc, vodviewer, ...}]
-    VOD: a "vodviewer" oldalban: playbackUrl ... "https://...uplynk..."
+    VOD: a "vodviewer" oldalban: playbackUrl ... "https://...uplynk..."; 2026-09 óta nincs
+         vodviewer - helyette https://content.uplynk.com/<verizon_id>.m3u8 (token: 0 esetén)
 
 Nem a weboldalt (www.network4.hu) használjuk. Az API is Cloudflare mögött van, ezért
 - a tulajdonos kérésére, az arena4plus-szal azonosan - a cloudscraper (MIT) kezeli a
@@ -349,16 +350,37 @@ def collections():
     return out
 
 
+UPLYNK_HLS = 'https://content.uplynk.com/%s.m3u8'
+_ASSET_RE = re.compile(r'^[0-9a-f]{32}$')
+
+
 def _vod(item):
+    """A lejátszási cím: a régi "vodviewer" oldal, ha van; 2026-09 óta az API nem adja,
+    ekkor a "verizon_id" (Uplynk asset) HLS-címe. A "token": 1 elemekhez aláírt
+    lejátszás kellene (a kulcs 403-at ad), ezeket "locked"-nak jelöljük."""
+    viewer = _s(item.get('vodviewer'))
+    asset = _s(item.get('verizon_id')).lower()
+    url = viewer or (UPLYNK_HLS % asset if _ASSET_RE.match(asset) else '')
     return {'title': _s(item.get('title')), 'desc': _s(item.get('short_desc')),
-            'thumb': image(item), 'url': _s(item.get('vodviewer')),
+            'thumb': image(item), 'url': url,
+            'locked': not viewer and _s(item.get('token')) not in ('', '0'),
             'plot': (_s(item.get('long_desc')) or _s(item.get('description')) or
                      _s(item.get('short_desc')))}
 
 
 def _vods(items):
-    """Lejátszható videók; a nem dict / vodviewer nélküli elemek kimaradnak."""
-    return [v for v in (_vod(i) for i in _dicts(items)) if v['url']]
+    """Lejátszható videók (a "subvods" összefoglalók a meccs után); a nem dict /
+    lejátszási cím nélküli elemek kimaradnak."""
+    out = []
+    for i in _dicts(items):
+        out.append(_vod(i))
+        out.extend(_vod(sub) for sub in _dicts(i.get('subvods')))
+    return [v for v in out if v['url']]
+
+
+def is_direct(url):
+    """Közvetlenül lejátszható (Uplynk HLS) cím - nem kell a vodviewer oldal."""
+    return url.startswith('https://content.uplynk.com/') and url.endswith('.m3u8')
 
 
 def _series_vods(series):
