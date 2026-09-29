@@ -3,6 +3,7 @@
 import calendar
 import sys
 import time
+import traceback
 
 try:
     from urllib.parse import parse_qsl, urlencode, quote
@@ -22,6 +23,9 @@ HANDLE = int(sys.argv[1]) if len(sys.argv) > 1 and sys.argv[1].lstrip('-').isdig
 PARAMS = dict(parse_qsl(sys.argv[2][1:])) if len(sys.argv) > 2 else {}
 NAME = 'Network4'
 DEFAULT_LICENSE = 'https://content.uplynk.com/wv'
+# ezek az akciók könyvtárat listáznak - hiba esetén is le kell zárni (endOfDirectory)
+DIR_ACTIONS = ('', 'live', 'sports', 'sportcat', 'collections', 'collection', 'search')
+_DONE = [False]   # lezártuk-e már a könyvtárat / feloldottuk-e a lejátszást
 
 
 def url(**kw):
@@ -59,6 +63,7 @@ def add(label, target, thumb='', folder=True, plot='', playable=False, ctx=None)
 def end(content='videos', cache=True):
     xbmcplugin.setContent(HANDLE, content)
     xbmcplugin.endOfDirectory(HANDLE, cacheToDisc=cache)
+    _DONE[0] = True
 
 
 def fail(exc):
@@ -151,19 +156,28 @@ def _vod_items(vods, start=0):
 def sports():
     """A www.network4.hu/sport/collections csoportjai (Kiemelt sportok, Labdarúgás, ...)."""
     for i, cat in enumerate(sportweb.categories()):
-        thumb = cat['items'][0]['img'] if cat['items'] else ''
-        add('%s  [COLOR gray](%d)[/COLOR]' % (cat['title'], len(cat['items'])),
+        items = _sport_items(cat)
+        thumb = items[0]['img'] if items else ''
+        add('%s  [COLOR gray](%d)[/COLOR]' % (cat.get('title') or '?', len(items)),
             url(action='sportcat', i=i), thumb)
     end('files')
 
 
+def _sport_items(cat):
+    """A kategória érvényes (slug-os) elemei; a sérült cache / pillanatkép ne borítson."""
+    items = cat.get('items') if isinstance(cat, dict) else None
+    return [{'slug': it['slug'], 'name': it.get('name') or it['slug'], 'img': it.get('img') or ''}
+            for it in (items if isinstance(items, list) else [])
+            if isinstance(it, dict) and it.get('slug')]
+
+
 def sport_category(index):
     cats = sportweb.categories()
-    if not 0 <= index < len(cats):
+    if not 0 <= index < len(cats) or not isinstance(cats[index], dict):
         end(cache=False)
         return
-    xbmcplugin.setPluginCategory(HANDLE, cats[index]['title'])
-    for it in cats[index]['items']:
+    xbmcplugin.setPluginCategory(HANDLE, cats[index].get('title') or '')
+    for it in _sport_items(cats[index]):
         add(it['name'], url(action='collection', slug=it['slug']), it['img'])
     end('files')
 
@@ -238,6 +252,7 @@ def resolve(stream, title):
         li.setContentLookup(False)
     api.log('Lejátszás: %s' % stream.split('?')[0])
     xbmcplugin.setResolvedUrl(HANDLE, True, li)
+    _DONE[0] = True
 
 
 def play_vod(viewer, title):
@@ -328,5 +343,23 @@ def router():
         notify('%d gyorsítótár-fájl törölve' % api.clear_cache())
 
 
+def main():
+    """A router védőhálóval: váratlan hiba (pl. a szerver furcsa JSON-ja) esetén is
+    lezárja a könyvtárat / a lejátszást, különben a Kodi "waiting on thread" után
+    "GetDirectory failed"-del akad el."""
+    try:
+        router()
+    except Exception as exc:  # noqa
+        api.log('váratlan hiba:\n%s' % traceback.format_exc(), xbmc.LOGERROR)
+        notify('Hiba: %s' % exc, 6000)
+        if _DONE[0]:
+            return
+        a = PARAMS.get('action') or ''
+        if a in ('playvod', 'playlive'):
+            xbmcplugin.setResolvedUrl(HANDLE, False, xbmcgui.ListItem())
+        elif a in DIR_ACTIONS:
+            xbmcplugin.endOfDirectory(HANDLE, succeeded=False, cacheToDisc=False)
+
+
 if __name__ == '__main__':
-    router()
+    main()

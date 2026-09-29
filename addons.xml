@@ -646,7 +646,7 @@ v1.0.0 (2026-09-25)
     </extension>
 </addon>
 
-<addon id="plugin.video.network4" name="Network4" version="0.5.0" provider-name="TomSzo (alap: Arena4Plus – heg, vargalex)">
+<addon id="plugin.video.network4" name="Network4" version="0.5.1" provider-name="TomSzo (alap: Arena4Plus – heg, vargalex)">
     <requires>
         <import addon="xbmc.python" version="3.0.0"/>
         <import addon="script.module.requests" version="2.22.0"/>
@@ -663,6 +663,14 @@ v1.0.0 (2026-09-25)
         <platform>all</platform>
         <license>GPL-3.0-or-later</license>
         <news>
+v0.5.1 (2026-09-29)
+- Hibaturo valasz-feldolgozas: a szerver null / "null" / szam / lista mezoi
+  (duration, meta, cast_crew, short_desc) es a nem dict elemek nem boritjak a listat.
+- Ha a "vodsavail" ures, a videok a "series" evadlistaibol jonnek; az ures kulcsu,
+  dict erteku hibas bejegyzes kimarad.
+- Varatlan hiba eseten is lezarul a konyvtar (nincs tobb "waiting on thread" /
+  "GetDirectory failed"); a teljes hiba a kodi.log-ba kerul.
+
 v0.5.0 (2026-09-26)
 - Atkerult a nyilvanos TomSzo taroloba (nev: Network4). A beallitasok maradnak.
 

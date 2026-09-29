@@ -307,63 +307,105 @@ EXCLUDED = ('Élő közvetítések', 'Előzmények', 'Kedvenceim', 'Leading Arti
             'Opinion Articles', 'Podcasts')
 
 
+def _s(value):
+    """Szöveg a JSON-mezőből. A szerver néha null-t, "null"-t, számot vagy listát ad
+    (pl. cast_crew, meta, duration) - ezekből üres vagy egyszerű szöveg lesz."""
+    if value is None or isinstance(value, (dict, list)):
+        return ''
+    value = value if isinstance(value, str) else str(value)
+    value = value.strip()
+    return '' if value.lower() == 'null' else value
+
+
+def _first(data):
+    """A lista-gyökerű válasz első objektuma ([{...}] -> {...}); egyébként {}."""
+    if isinstance(data, list):
+        data = data[0] if data else {}
+    return data if isinstance(data, dict) else {}
+
+
+def _dicts(value):
+    """Csak a dict elemek egy listából (egyébként üres lista)."""
+    return [i for i in value if isinstance(i, dict)] if isinstance(value, list) else []
+
+
 def image(item):
-    if item.get('poster_remote'):
-        return item['poster_remote']
-    if item.get('thumbnail_remote'):
-        return item['thumbnail_remote']
-    if item.get('photo_thumbnail'):
-        return STORAGE + item['photo_thumbnail']
+    if _s(item.get('poster_remote')):
+        return _s(item['poster_remote'])
+    if _s(item.get('thumbnail_remote')):
+        return _s(item['thumbnail_remote'])
+    if _s(item.get('photo_thumbnail')):
+        return STORAGE + _s(item['photo_thumbnail'])
     return ''
 
 
 def collections():
     data = cached('collections', LIST_TTL, lambda: api_get('/collections'))
     out = []
-    for c in data if isinstance(data, list) else []:
-        if c.get('title') and c.get('slug') and c['title'] not in EXCLUDED:
-            out.append({'title': c['title'], 'slug': c['slug'], 'thumb': image(c)})
+    for c in _dicts(data):
+        title, slug = _s(c.get('title')), _s(c.get('slug'))
+        if title and slug and title not in EXCLUDED:
+            out.append({'title': title, 'slug': slug, 'thumb': image(c)})
     return out
 
 
 def _vod(item):
-    return {'title': item.get('title') or '', 'desc': (item.get('short_desc') or '').strip(),
-            'thumb': image(item), 'url': item.get('vodviewer') or '',
-            'plot': (item.get('long_desc') or item.get('description') or
-                     item.get('short_desc') or '').strip()}
+    return {'title': _s(item.get('title')), 'desc': _s(item.get('short_desc')),
+            'thumb': image(item), 'url': _s(item.get('vodviewer')),
+            'plot': (_s(item.get('long_desc')) or _s(item.get('description')) or
+                     _s(item.get('short_desc')))}
+
+
+def _vods(items):
+    """Lejátszható videók; a nem dict / vodviewer nélküli elemek kimaradnak."""
+    return [v for v in (_vod(i) for i in _dicts(items)) if v['url']]
+
+
+def _series_vods(series):
+    """A "series" objektum évadlistáiból (pl. {"1": [...], "22": [...]}). Csak a
+    listaértékűeket vesszük: a szerver időnként egy üres kulcsú, dict értékű
+    szemetet is küld ("": {"series": {...}}), az kimarad."""
+    out, seen = [], set()
+    if not isinstance(series, dict):
+        return out
+    for season, eps in series.items():
+        if not season or not isinstance(eps, list):
+            continue
+        for v in _vods(eps):
+            if v['url'] not in seen:
+                seen.add(v['url'])
+                out.append(v)
+    return out
 
 
 def collection_items(slug):
     # az alkalmazás a 11-es "oldal" paraméterrel kéri le a teljes listát
-    data = cached('items_' + slug, LIST_TTL,
-                  lambda: api_get('/collectionitems/%s/11' % quote(slug, ''), auth=False))
-    if not isinstance(data, list) or not data:
-        return []
-    return [v for v in (_vod(i) for i in data[0].get('vodsavail') or []) if v['url']]
+    data = _first(cached('items_' + slug, LIST_TTL,
+                         lambda: api_get('/collectionitems/%s/11' % quote(slug, ''),
+                                         auth=False)))
+    return _vods(data.get('vodsavail')) or _series_vods(data.get('series'))
 
 
 def search(term):
     data = api_get('/search/%s' % quote(term, ''), auth=False)
-    return [v for v in (_vod(i) for i in (data if isinstance(data, list) else [])) if v['url']]
+    return _vods(data)
 
 
 def live_events():
-    data = api_get('/collectionitemslive/live/0')
-    if not isinstance(data, list) or not data:
-        return []
+    data = _first(api_get('/collectionitemslive/live/0'))
     out = []
-    for e in data[0].get('liveeventsavail') or []:
-        if e.get('slug'):
-            out.append({'title': e.get('title') or '', 'desc': (e.get('short_desc') or '').strip(),
-                        'slug': e['slug'], 'status': e.get('status') or '',
-                        'start': e.get('expected_start') or '', 'stop': e.get('expected_stop') or '',
+    for e in _dicts(data.get('liveeventsavail')):
+        if _s(e.get('slug')):
+            out.append({'title': _s(e.get('title')), 'desc': _s(e.get('short_desc')),
+                        'slug': _s(e['slug']), 'status': _s(e.get('status')),
+                        'start': _s(e.get('expected_start')), 'stop': _s(e.get('expected_stop')),
                         'thumb': image(e)})
     return out
 
 
 def live_sources(slug):
-    data = api_get('/watch/%s/live' % quote(slug, ''))
-    return {'live': data.get('src'), 'replay': data.get('replaysrc')}
+    data = _first(api_get('/watch/%s/live' % quote(slug, '')))
+    return {'live': _s(data.get('src')), 'replay': _s(data.get('replaysrc'))}
 
 
 _PLAYBACK_RE = re.compile(r'playbackUrl.{0,40}?(https:[^"\'\s<>]*uplynk[^"\'\s<>]*)', re.S)
