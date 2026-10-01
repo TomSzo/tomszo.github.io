@@ -30,8 +30,8 @@
 	var CF_RETRIES = 2;
 	var UPLYNK_HLS = 'https://content.uplynk.com/%s.m3u8';
 	var ASSET_RE = /^[0-9a-f]{32}$/;
-	var EXCLUDED = ['Élő közvetítések', 'Előzmények', 'Kedvenceim', 'Leading Articles',
-		'Opinion Articles', 'Podcasts'];
+	var EXCLUDED = ['Élő közvetítések', 'Előzmények', 'Kedvenceim', 'Folytasd itt',
+		'Leading Articles', 'Opinion Articles', 'Podcasts'];
 
 	function ApiError(message, kind) {
 		this.name = 'ApiError';
@@ -153,9 +153,16 @@
 		});
 	}
 
+	var pendingLogin = null;   // egyszerre csak egy belépés fusson
+
 	function token() {
 		var t = Store.get('token', {}) || {};
-		return t.token ? Promise.resolve(t.token) : login();
+		if (t.token) return Promise.resolve(t.token);
+		if (!pendingLogin) {
+			pendingLogin = login();
+			pendingLogin.then(function () { pendingLogin = null; }, function () { pendingLogin = null; });
+		}
+		return pendingLogin;
 	}
 
 	function parseJson(resp, path) {
@@ -223,6 +230,27 @@
 		}) : [];
 	}
 
+	// Cloudflare Images: kisebb méret a kártyákhoz (a "public" változat 1920 px és ~600 KB)
+	function sized(url, width) {
+		if (!url || url.indexOf('https://imagedelivery.net/') !== 0) return url;
+		return url.replace(/\/[^\/]+$/, '/w=' + width);
+	}
+
+	function storage(value) {
+		value = s(value);
+		if (!value) return '';
+		return /^https?:/.test(value) ? value : STORAGE + value;
+	}
+
+	// a gyűjtemény / videó képei: kártya (16:9 kulcskép), háttér (szöveg nélkül), logó
+	function art(item) {
+		var card = s(item.poster_remote) || storage(item.photo) || s(item.thumbnail_remote) ||
+			storage(item.photo_thumbnail);
+		var backdrop = s(item.collection_poster) || s(item.heroimage) || card;
+		return {card: sized(card, 480), cardLarge: sized(card, 800),
+			backdrop: sized(backdrop, 1920), logo: sized(s(item.logoimage), 800)};
+	}
+
 	function image(item) {
 		if (s(item.poster_remote)) return s(item.poster_remote);
 		if (s(item.thumbnail_remote)) return s(item.thumbnail_remote);
@@ -230,16 +258,36 @@
 		return '';
 	}
 
-	function collections() {
+	function collectionInfo(c) {
+		return {title: s(c.title), slug: s(c.slug), thumb: image(c), art: art(c),
+			desc: s(c.short_desc) || s(c.description), count: parseInt(c.vodsavail_count, 10) || 0,
+			order: parseInt(c.sort_order, 10) || 0, mainpage: s(c.mainpage) === '1'};
+	}
+
+	function allCollections() {
+		// a lista belépés nélkül is elérhető; ha van token, azzal kérjük
 		return cached('collections', LIST_TTL, function () {
-			return apiGet('/collections', true);
+			return apiGet('/collections', haveCredentials());
 		}).then(function (data) {
-			return dicts(data).map(function (c) {
-				return {title: s(c.title), slug: s(c.slug), thumb: image(c)};
-			}).filter(function (c) {
-				return c.title && c.slug && EXCLUDED.indexOf(c.title) < 0;
-			});
+			return dicts(data).map(collectionInfo).filter(function (c) { return c.title && c.slug; });
 		});
+	}
+
+	function isListed(c) {
+		return EXCLUDED.indexOf(c.title) < 0;
+	}
+
+	function collections() {
+		return allCollections().then(function (list) { return list.filter(isListed); });
+	}
+
+	// slug -> gyűjtemény-adat (képek, leírás) a Sportok soraihoz; hiba esetén üres
+	function collectionMap() {
+		return allCollections().then(function (list) {
+			var map = {};
+			list.forEach(function (c) { map[c.slug] = c; });
+			return map;
+		}, function () { return {}; });
 	}
 
 	function vod(item) {
@@ -248,6 +296,8 @@
 		var url = viewer || (ASSET_RE.test(asset) ? UPLYNK_HLS.replace('%s', asset) : '');
 		var tok = s(item.token);
 		return {title: s(item.title), desc: s(item.short_desc), thumb: image(item), url: url,
+			art: art(item), duration: parseInt(item.duration, 10) || 0,
+			date: s(item.publish_at),   // a releasedate évadkód (pl. 202627), nem dátum
 			locked: !viewer && tok !== '' && tok !== '0',
 			plot: s(item.long_desc) || s(item.description) || s(item.short_desc)};
 	}
@@ -277,14 +327,22 @@
 		return out;
 	}
 
-	function collectionItems(slug) {
+	// a gyűjtemény adatlapja: fejléc-adatok (képek, leírás) + a lejátszható videók
+	function collectionDetail(slug) {
 		return cached('items_' + slug, LIST_TTL, function () {
 			return apiGet('/collectionitems/' + encodeURIComponent(slug) + '/11', false);
 		}).then(function (raw) {
 			var data = first(raw);
 			var list = vods(data.vodsavail);
-			return list.length ? list : seriesVods(data.series);
+			var info = collectionInfo(data);
+			info.slug = info.slug || slug;
+			info.vods = list.length ? list : seriesVods(data.series);
+			return info;
 		});
+	}
+
+	function collectionItems(slug) {
+		return collectionDetail(slug).then(function (d) { return d.vods; });
 	}
 
 	function search(term) {
@@ -292,13 +350,16 @@
 	}
 
 	function liveEvents() {
-		return apiGet('/collectionitemslive/live/0', true).then(function (raw) {
+		// rövid gyorsítótár: a főoldalra visszalépve ne kérdezzen újra azonnal
+		return cached('live', 60 * 1000, function () {
+			return apiGet('/collectionitemslive/live/0', true);
+		}).then(function (raw) {
 			return dicts(first(raw).liveeventsavail).filter(function (e) {
 				return s(e.slug);
 			}).map(function (e) {
 				return {title: s(e.title), desc: s(e.short_desc), slug: s(e.slug),
 					status: s(e.status), start: s(e.expected_start), stop: s(e.expected_stop),
-					thumb: image(e)};
+					thumb: image(e), art: art(e)};
 			});
 		});
 	}
@@ -397,7 +458,8 @@
 	global.N4Api = {
 		ApiError: ApiError, haveCredentials: haveCredentials, login: login,
 		clearToken: clearToken, clearCache: clearCache, todayRequests: todayRequests,
-		collections: collections, collectionItems: collectionItems, search: search,
+		collections: collections, collectionMap: collectionMap, isListed: isListed, collectionDetail: collectionDetail,
+		collectionItems: collectionItems, search: search, sized: sized,
 		liveEvents: liveEvents, liveSources: liveSources, vodStream: vodStream,
 		sportCategories: sportCategories, parseSports: parseSports, isDirect: isDirect,
 		FIREFOX_UA: FIREFOX_UA
