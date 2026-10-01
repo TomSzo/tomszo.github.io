@@ -1,3 +1,12 @@
+[B]1.4.0[/B] (2026-10-01)
+• Új mobilos videó-OSD Érintés módban (egy ablakban, YouTube / Netflix appok mintájára):
+  - fent: vissza, cím + alcím, óra, feliratok/hangsávok, beállítások, leállítás
+  - középen: nagy 10 mp vissza · lejátszás/szünet · 30 mp előre (a szám az ikonban)
+  - alul: eltelt idő / teljes hossz, vékony idősáv pufferrel, ujjal húzható kerek fogó
+  - ÉLŐ jelzés, ha az adás nem tekerhető; sötét átmenetek fent és lent
+• Érintés módban a régi idősáv és felső sáv rejtve, amíg az OSD látszik
+• TV / Box módban marad az eredeti OSD
+
 [B]1.3.0[/B] (2026-10-01)
 • Új nézetek Érintés módban (a Nézettípus menüben választható, alapból ezek állnak elöl):
   - Mobil lista: sorok kis poszterrel, évszám · műfaj · hossz, egysoros leírás, értékelés, haladásjelző

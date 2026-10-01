@@ -5,6 +5,7 @@
 	<visible>Window.IsActive(seekbar) | Window.IsActive(pvrosdchannels) | Window.IsActive(pvrchannelguide)</visible>
 	<depth>DepthOSD</depth>
 	<include>Animation_TopSlide</include>
+	<include condition="!Skin.HasSetting(remotemode)">TS_HideWhenTouchOSD</include>
 	<zorder>0</zorder>
 	<controls>
 		<control type="group">

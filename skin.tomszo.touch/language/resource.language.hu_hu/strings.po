@@ -949,6 +949,10 @@ msgctxt "#31983"
 msgid "episodes"
 msgstr "rész"
 
+msgctxt "#31984"
+msgid "LIVE"
+msgstr "ÉLŐ"
+
 #~ msgctxt "#31025"
 #~ msgid "No favourites found. You can add any item from media views to this list by using the context menu."
 #~ msgstr "Nem találhatóak kedvencek. Bármely elemet hozzáadhat ehhez a listához a média nézetekből, a környezeti menü használatával."
