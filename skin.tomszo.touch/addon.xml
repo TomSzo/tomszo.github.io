@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<addon id="skin.tomszo.touch" version="1.1.0" name="TomSzo Touch" provider-name="TomSzo (alap: Estuary – phil65, Ichabod Fletchman)">
+<addon id="skin.tomszo.touch" version="1.1.1" name="TomSzo Touch" provider-name="TomSzo (alap: Estuary – phil65, Ichabod Fletchman)">
 	<requires>
 		<import addon="xbmc.gui" version="5.18.0"/>
 	</requires>
@@ -28,7 +28,7 @@
 
 - Two modes: on first start a pop-up asks whether you use Touch or TV / Box (remote)
 - Minimal, flat dark look: solid background without pattern, dark dialogs
-- Touch mode: on-screen back, settings, volume and favourites buttons, scrollbars on home widgets
+- Touch mode: lists scroll with a finger swipe (kinetic scrolling); on-screen back, settings, volume and favourites buttons, scrollbars on home widgets
 - Big on-screen playback controls in the video OSD (-10 s, play/pause, +30 s)
 - Larger list rows, menu items and setting buttons for easier tapping
 - Lightweight: slide animations are OFF by default (fade only)
@@ -40,7 +40,7 @@ Based on Estuary by phil65 and Ichabod Fletchman (Team Kodi).</description>
 
 - Két mód: első indításkor felugró ablak kérdezi meg, hogy Érintéssel vagy TV / Box-ként (távirányítóval) használod
 - Minimalista, sötét „flat” megjelenés: egyszínű háttér minta nélkül, sötét dialógusok
-- Érintés mód: képernyőn lévő vissza, beállítások, hangerő és kedvencek gombok, görgetősáv a kezdőlap-sorokon
+- Érintés mód: a listák ujjal húzva, lendülettel görgethetők; képernyőn lévő vissza, beállítások, hangerő és kedvencek gombok, görgetősáv a kezdőlap-sorokon
 - Nagy lejátszásvezérlő gombok a videó OSD közepén (-10 mp, lejátszás/szünet, +30 mp)
 - Nagyobb listasorok, menüpontok és beállítás-gombok a könnyebb koppintáshoz
 - Könnyű: a dia animációk alapból KI vannak kapcsolva (csak áttűnés)
@@ -49,6 +49,10 @@ Based on Estuary by phil65 and Ichabod Fletchman (Team Kodi).</description>
 
 Alap: Estuary – phil65 és Ichabod Fletchman (Team Kodi).</description>
 		<news>
+v1.1.1 (2026-10-01)
+- Javítás: Érintés módban a listák ujjal húzva, lendülettel görgethetők (fixedlist helyett list)
+- TV / Box módban a listák változatlanok
+
 v1.1.0 (2026-10-01)
 - Új: kezelési mód választó (Érintés / TV-Box) felugró kártyákkal első indításkor
 - Új: minimalista sötét megjelenés (egyszínű háttér, minta nélkül)

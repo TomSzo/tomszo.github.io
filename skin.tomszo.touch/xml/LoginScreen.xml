@@ -33,69 +33,8 @@
 		</control>
 		<control type="group">
 			<include>Animation_BottomSlide</include>
-			<control type="fixedlist" id="52">
-				<left>0</left>
-				<right>0</right>
-				<top>500</top>
-				<height>300</height>
-				<onleft>52</onleft>
-				<onright>52</onright>
-				<onup>20</onup>
-				<ondown>20</ondown>
-				<focusposition>2</focusposition>
-				<orientation>horizontal</orientation>
-				<scrolltime tween="cubic" easing="out">500</scrolltime>
-				<itemlayout width="384" height="300">
-					<control type="image">
-						<centerleft>50%</centerleft>
-						<top>20</top>
-						<height>200</height>
-						<width>200</width>
-						<texture diffuse="icons/profiles/profile-diffuse.png">$INFO[ListItem.Icon]</texture>
-						<aspectratio scalediffuse="false">scale</aspectratio>
-					</control>
-					<control type="textbox">
-						<left>60</left>
-						<right>60</right>
-						<top>220</top>
-						<height>80</height>
-						<label>$INFO[ListItem.label]</label>
-						<font>font27</font>
-						<align>center</align>
-						<aligny>center</aligny>
-						<textcolor>99FFFFFF</textcolor>
-					</control>
-				</itemlayout>
-				<focusedlayout width="384" height="300">
-					<control type="image">
-						<left>30</left>
-						<top>-20</top>
-						<right>30</right>
-						<bottom>-20</bottom>
-						<texture border="30" colordiffuse="button_focus">buttons/dialogbutton-fo.png</texture>
-						<visible>Control.HasFocus(52)</visible>
-						<animation reversible="false" effect="fade" start="20" end="75" time="200">Focus</animation>
-					</control>
-					<control type="image">
-						<centerleft>50%</centerleft>
-						<top>20</top>
-						<height>200</height>
-						<width>200</width>
-						<texture diffuse="icons/profiles/profile-diffuse.png">$INFO[ListItem.Icon]</texture>
-						<aspectratio scalediffuse="false">scale</aspectratio>
-					</control>
-					<control type="textbox">
-						<left>60</left>
-						<right>60</right>
-						<top>220</top>
-						<height>80</height>
-						<label>[B]$INFO[ListItem.label][/B]</label>
-						<font>font27</font>
-						<align>center</align>
-						<aligny>center</aligny>
-					</control>
-				</focusedlayout>
-			</control>
+			<include condition="Skin.HasSetting(remotemode)">TS_List10_LoginScreen_Fixed</include>
+			<include condition="!Skin.HasSetting(remotemode)">TS_List10_LoginScreen_Touch</include>
 			<control type="label">
 				<left>0</left>
 				<right>0</right>

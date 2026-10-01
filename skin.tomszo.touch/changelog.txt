@@ -1,3 +1,7 @@
+[B]1.1.1[/B] (2026-10-01)
+• Javítás: Érintés módban minden lista ujjal húzva, lendülettel görgethető
+  (a fix fókuszú „fixedlist” helyett sima „list” – TV / Box módban marad a régi)
+
 [B]1.1.0[/B] (2026-10-01)
 • Kezelési mód választó: első indításkor felugró ablak két nagy kártyával – Érintés vagy TV / Box
 • A mód bármikor váltható: Felszín beállítása → Általános → Kezelési mód
