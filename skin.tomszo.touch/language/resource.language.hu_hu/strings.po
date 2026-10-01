@@ -853,6 +853,86 @@ msgctxt "#31959"
 msgid "Control mode"
 msgstr "Kezelési mód"
 
+msgctxt "#31960"
+msgid "Continue watching"
+msgstr "Folytatás"
+
+msgctxt "#31961"
+msgid "Continue shows"
+msgstr "Sorozatok folytatása"
+
+msgctxt "#31962"
+msgid "New movies"
+msgstr "Új filmek"
+
+msgctxt "#31963"
+msgid "New episodes"
+msgstr "Új részek"
+
+msgctxt "#31964"
+msgid "All"
+msgstr "Összes"
+
+msgctxt "#31965"
+msgid "Unwatched"
+msgstr "Nem látott"
+
+msgctxt "#31966"
+msgid "Collections"
+msgstr "Gyűjtemények"
+
+msgctxt "#31967"
+msgid "In progress"
+msgstr "Folyamatban"
+
+msgctxt "#31968"
+msgid "Video"
+msgstr "Videó"
+
+msgctxt "#31969"
+msgid "Programs"
+msgstr "Programok"
+
+msgctxt "#31970"
+msgid "Music"
+msgstr "Zene"
+
+msgctxt "#31971"
+msgid "Nothing here yet"
+msgstr "Itt még nincs semmi"
+
+msgctxt "#31972"
+msgid "Add a media source or an add-on and it will show up here."
+msgstr "Adj hozzá médiaforrást vagy kiegészítőt, és itt megjelenik."
+
+msgctxt "#31973"
+msgid "Home"
+msgstr "Kezdőlap"
+
+msgctxt "#31974"
+msgid "Movies"
+msgstr "Filmek"
+
+msgctxt "#31975"
+msgid "TV shows"
+msgstr "Sorozatok"
+
+msgctxt "#31976"
+msgid "Add-ons"
+msgstr "Kiegészítők"
+
+msgctxt "#31977"
+msgid "Favourites"
+msgstr "Kedvencek"
+
+msgctxt "#31978"
+msgid "Settings"
+msgstr "Beállítások"
+
+msgctxt "#31979"
+msgid "Now playing"
+msgstr "Most megy"
+
 #~ msgctxt "#31025"
 #~ msgid "No favourites found. You can add any item from media views to this list by using the context menu."
 #~ msgstr "Nem találhatóak kedvencek. Bármely elemet hozzáadhat ehhez a listához a média nézetekből, a környezeti menü használatával."

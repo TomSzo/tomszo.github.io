@@ -1,3 +1,10 @@
+[B]1.2.0[/B] (2026-10-01)
+• Érintés módban új, app-szerű kezdőképernyő:
+  - alul fix menüsáv: Kezdőlap, Filmek, Sorozatok, Kiegészítők, Kedvencek, Beállítások
+  - fent cím, óra, keresés, kikapcsolás és szűrőgombok (pl. Folytatás, Új filmek, Új részek)
+  - középen ujjal görgethető poszterrács, lekerekített kártyák, haladásjelző sáv
+• TV / Box módban marad az eredeti Estuary kezdőképernyő
+
 [B]1.1.1[/B] (2026-10-01)
 • Javítás: Érintés módban minden lista ujjal húzva, lendülettel görgethető
   (a fix fókuszú „fixedlist” helyett sima „list” – TV / Box módban marad a régi)
