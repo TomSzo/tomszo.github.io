@@ -1,3 +1,8 @@
+[B]1.1.0[/B] (2026-10-01)
+• Kezelési mód választó: első indításkor felugró ablak két nagy kártyával – Érintés vagy TV / Box
+• A mód bármikor váltható: Felszín beállítása → Általános → Kezelési mód
+• Minimalista sötét megjelenés: egyszínű háttér, alapból nincs háttérminta, sötét dialógusok
+
 [B]1.0.0[/B] (2026-10-01)
 • Első kiadás – alap: Estuary 4.1.0 (Kodi 22 „Piers”, xbmc.gui 5.18.0)
 • Érintős mód alapból BE (a távirányítós mód a Felszín beállításaiban kapcsolható)

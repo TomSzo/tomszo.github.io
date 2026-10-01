@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<addon id="skin.tomszo.touch" version="1.0.0" name="TomSzo Touch" provider-name="TomSzo (alap: Estuary – phil65, Ichabod Fletchman)">
+<addon id="skin.tomszo.touch" version="1.1.0" name="TomSzo Touch" provider-name="TomSzo (alap: Estuary – phil65, Ichabod Fletchman)">
 	<requires>
 		<import addon="xbmc.gui" version="5.18.0"/>
 	</requires>
@@ -20,30 +20,40 @@
 		<assets>
 			<icon>resources/icon.png</icon>
 			<fanart>resources/fanart.jpg</fanart>
+			<screenshot>resources/screenshot-01.jpg</screenshot>
 		</assets>
-		<summary lang="en_GB">Touch-first, lightweight Estuary fork for Kodi 22 on Android</summary>
-		<summary lang="hu_HU">Érintésre optimalizált, könnyű Estuary-fork Kodi 22-höz, Androidra</summary>
+		<summary lang="en_GB">Minimal Estuary fork for Kodi 22 with two modes: Touch and TV / Box</summary>
+		<summary lang="hu_HU">Minimalista Estuary-fork Kodi 22-höz két móddal: Érintés és TV / Box</summary>
 		<description lang="en_GB">TomSzo Touch is a fork of Kodi's default Estuary skin, tuned for Android phones, tablets and touchscreen TV boxes running Kodi 22 "Piers".
 
-- Touch mode is ON by default: on-screen back, settings, volume and favourites buttons, scrollbars on home widgets
+- Two modes: on first start a pop-up asks whether you use Touch or TV / Box (remote)
+- Minimal, flat dark look: solid background without pattern, dark dialogs
+- Touch mode: on-screen back, settings, volume and favourites buttons, scrollbars on home widgets
 - Big on-screen playback controls in the video OSD (-10 s, play/pause, +30 s)
 - Larger list rows, menu items and setting buttons for easier tapping
 - Lightweight: slide animations are OFF by default (fade only)
 - New default accent colour
-- Remote control users: Settings - Skin - General - turn off "Touch mode"
+- Change mode any time: Settings - Skin - Configure skin - General - Control mode
 
 Based on Estuary by phil65 and Ichabod Fletchman (Team Kodi).</description>
 		<description lang="hu_HU">A TomSzo Touch a Kodi alap Estuary felszínének forkja, Kodi 22 „Piers” alatt futó androidos telefonokra, tabletekre és érintőképernyős TV-boxokra hangolva.
 
-- Az érintős mód alapból BE van kapcsolva: képernyőn lévő vissza, beállítások, hangerő és kedvencek gombok, görgetősáv a kezdőlap-sorokon
+- Két mód: első indításkor felugró ablak kérdezi meg, hogy Érintéssel vagy TV / Box-ként (távirányítóval) használod
+- Minimalista, sötét „flat” megjelenés: egyszínű háttér minta nélkül, sötét dialógusok
+- Érintés mód: képernyőn lévő vissza, beállítások, hangerő és kedvencek gombok, görgetősáv a kezdőlap-sorokon
 - Nagy lejátszásvezérlő gombok a videó OSD közepén (-10 mp, lejátszás/szünet, +30 mp)
 - Nagyobb listasorok, menüpontok és beállítás-gombok a könnyebb koppintáshoz
 - Könnyű: a dia animációk alapból KI vannak kapcsolva (csak áttűnés)
 - Új alap kiemelőszín
-- Távirányítóval: Beállítások - Felszín - Általános - „Érintős mód” kikapcsolása
+- A mód bármikor váltható: Beállítások - Felszín - Felszín beállítása - Általános - Kezelési mód
 
 Alap: Estuary – phil65 és Ichabod Fletchman (Team Kodi).</description>
 		<news>
+v1.1.0 (2026-10-01)
+- Új: kezelési mód választó (Érintés / TV-Box) felugró kártyákkal első indításkor
+- Új: minimalista sötét megjelenés (egyszínű háttér, minta nélkül)
+- A Felszín beállításaiban „Kezelési mód” gomb a választóhoz
+
 v1.0.0 (2026-10-01)
 - Első kiadás: Estuary 4.1.0 (Kodi 22) alapon
 - Érintős mód alapból bekapcsolva, nagy OSD-gombok, nagyobb listasorok

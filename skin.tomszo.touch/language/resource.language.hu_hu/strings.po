@@ -817,6 +817,42 @@ msgctxt "#31950"
 msgid "sec"
 msgstr "mp"
 
+msgctxt "#31951"
+msgid "Choose how you use Kodi"
+msgstr "Hogyan használod a Kodit?"
+
+msgctxt "#31952"
+msgid "The skin adapts to your device"
+msgstr "A felszín az eszközödhöz igazodik"
+
+msgctxt "#31953"
+msgid "Touch"
+msgstr "Érintés"
+
+msgctxt "#31954"
+msgid "Phone, tablet, touchscreen. Big buttons, on-screen back and playback controls."
+msgstr "Telefon, tablet, érintőképernyő. Nagy gombok, képernyőn lévő vissza- és lejátszásgombok."
+
+msgctxt "#31955"
+msgid "TV / Box"
+msgstr "TV / Box"
+
+msgctxt "#31956"
+msgid "Remote control. Clean screen without touch buttons, light and fast."
+msgstr "Távirányító. Tiszta képernyő érintőgombok nélkül, könnyű és gyors."
+
+msgctxt "#31957"
+msgid "You can change this later: Settings - Skin - Configure skin - General"
+msgstr "Később módosítható: Beállítások - Felszín - Felszín beállítása - Általános"
+
+msgctxt "#31958"
+msgid "ACTIVE"
+msgstr "AKTÍV"
+
+msgctxt "#31959"
+msgid "Control mode"
+msgstr "Kezelési mód"
+
 #~ msgctxt "#31025"
 #~ msgid "No favourites found. You can add any item from media views to this list by using the context menu."
 #~ msgstr "Nem találhatóak kedvencek. Bármely elemet hozzáadhat ehhez a listához a média nézetekből, a környezeti menü használatával."

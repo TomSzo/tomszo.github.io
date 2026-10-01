@@ -1268,7 +1268,7 @@
 			<include>FullScreenDimensions</include>
 			<aspectratio>scale</aspectratio>
 			<texture colordiffuse="secondary_background" fallback="special://skin/extras/backgrounds/pattern1.png">$INFO[Skin.String(background_overlay),special://skin/extras/backgrounds/pattern,.png]</texture>
-			<visible>!String.IsEqual(Skin.String(background_overlay),0)</visible>
+			<visible>!String.IsEmpty(Skin.String(background_overlay)) + !String.IsEqual(Skin.String(background_overlay),0)</visible>
 		</control>
 	</include>
 	<include name="DefaultBackground">
@@ -1621,6 +1621,82 @@
 			<textureradiooffnofocus colordiffuse="grey">icons/back.png</textureradiooffnofocus>
 			<include>Animation_TopSlide</include>
 		</control>
+	</include>
+	<include name="ModeSelectCard">
+		<definition>
+			<control type="button" id="$PARAM[id]">
+				<width>560</width>
+				<height>560</height>
+				<label></label>
+				<onleft>$PARAM[other]</onleft>
+				<onright>$PARAM[other]</onright>
+				<onup>noop</onup>
+				<ondown>noop</ondown>
+				<onclick>$PARAM[onclick]</onclick>
+				<onclick>Skin.SetString(ui_mode,$PARAM[mode])</onclick>
+				<onclick>Dialog.Close(1120,true)</onclick>
+				<onclick>ReloadSkin()</onclick>
+				<texturenofocus border="30" colordiffuse="FF161B22">tomszo/card.png</texturenofocus>
+				<texturefocus border="30" colordiffuse="FF1C2A2A">tomszo/card.png</texturefocus>
+				<animation effect="zoom" start="100" end="104" center="auto" time="150" tween="sine">Focus</animation>
+				<animation effect="zoom" start="104" end="100" center="auto" time="150" tween="sine">Unfocus</animation>
+			</control>
+			<control type="group">
+				<animation effect="zoom" start="100" end="104" center="280,280" time="150" tween="sine" condition="Control.HasFocus($PARAM[id])">Conditional</animation>
+				<control type="image">
+					<width>560</width>
+					<height>560</height>
+					<texture border="30" colordiffuse="button_focus">tomszo/card-ring.png</texture>
+					<visible>Control.HasFocus($PARAM[id])</visible>
+				</control>
+				<control type="image">
+					<centerleft>50%</centerleft>
+					<top>80</top>
+					<width>180</width>
+					<height>180</height>
+					<texture colordiffuse="button_focus">$PARAM[icon]</texture>
+					<visible>Control.HasFocus($PARAM[id])</visible>
+				</control>
+				<control type="image">
+					<centerleft>50%</centerleft>
+					<top>80</top>
+					<width>180</width>
+					<height>180</height>
+					<texture colordiffuse="FFB0B8C0">$PARAM[icon]</texture>
+					<visible>!Control.HasFocus($PARAM[id])</visible>
+				</control>
+				<control type="label">
+					<left>40</left>
+					<right>40</right>
+					<top>300</top>
+					<height>60</height>
+					<align>center</align>
+					<font>font37</font>
+					<label>$PARAM[title]</label>
+				</control>
+				<control type="textbox">
+					<left>50</left>
+					<right>50</right>
+					<top>375</top>
+					<height>120</height>
+					<align>center</align>
+					<font>font12</font>
+					<textcolor>grey</textcolor>
+					<label>$PARAM[text]</label>
+				</control>
+				<control type="label">
+					<left>0</left>
+					<right>0</right>
+					<top>500</top>
+					<height>36</height>
+					<align>center</align>
+					<font>font12</font>
+					<textcolor>button_focus</textcolor>
+					<label>$LOCALIZE[31958]</label>
+					<visible>$PARAM[active]</visible>
+				</control>
+			</control>
+		</definition>
 	</include>
 	<include name="TouchOSDCenterButton">
 		<param name="size">170</param>

@@ -2,7 +2,7 @@
 <window>
 	<defaultcontrol>9000</defaultcontrol>
 	<backgroundcolor>background</backgroundcolor>
-	<onload condition="String.IsEmpty(Skin.String(background_overlay))">Skin.SetString(background_overlay,1)</onload>
+	<onload condition="String.IsEmpty(Skin.String(background_overlay))">Skin.SetString(background_overlay,0)</onload>
 	<controls>
 		<include>DefaultBackground</include>
 		<control type="multiimage">
@@ -42,11 +42,11 @@
 					<onclick>Skin.ToggleSetting(autoscroll)</onclick>
 					<selected>Skin.HasSetting(autoscroll)</selected>
 				</control>
-				<control type="radiobutton" id="703">
-					<label>$LOCALIZE[31158]</label>
+				<control type="button" id="703">
+					<label>$LOCALIZE[31959]</label>
+					<label2>$VAR[UIModeLabel2Var]</label2>
 					<include>DefaultSettingButton</include>
-					<onclick>Skin.ToggleSetting(remotemode)</onclick>
-					<selected>!Skin.HasSetting(remotemode)</selected>
+					<onclick>ActivateWindow(1120)</onclick>
 				</control>
 				<control type="radiobutton" id="704">
 					<label>$LOCALIZE[31093]</label>

@@ -2,6 +2,7 @@
 <window>
 	<defaultcontrol>9000</defaultcontrol>
 	<backgroundcolor>background</backgroundcolor>
+	<onload condition="String.IsEmpty(Skin.String(ui_mode))">ActivateWindow(1120)</onload>
 	<controls>
 		<control type="button" id="20000">
 			<include>HiddenObject</include>

@@ -1010,3 +1010,39 @@ msgstr ""
 msgctxt "#31950"
 msgid "sec"
 msgstr ""
+
+msgctxt "#31951"
+msgid "Choose how you use Kodi"
+msgstr ""
+
+msgctxt "#31952"
+msgid "The skin adapts to your device"
+msgstr ""
+
+msgctxt "#31953"
+msgid "Touch"
+msgstr ""
+
+msgctxt "#31954"
+msgid "Phone, tablet, touchscreen. Big buttons, on-screen back and playback controls."
+msgstr ""
+
+msgctxt "#31955"
+msgid "TV / Box"
+msgstr ""
+
+msgctxt "#31956"
+msgid "Remote control. Clean screen without touch buttons, light and fast."
+msgstr ""
+
+msgctxt "#31957"
+msgid "You can change this later: Settings - Skin - Configure skin - General"
+msgstr ""
+
+msgctxt "#31958"
+msgid "ACTIVE"
+msgstr ""
+
+msgctxt "#31959"
+msgid "Control mode"
+msgstr ""

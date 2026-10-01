@@ -4,15 +4,29 @@
 (telefon, tablet, érintőképernyős TV-box). A Kodi gyári **Estuary** skinjének (4.1.0) forkja,
 ezért minden ablak és funkció ugyanúgy működik, mint a gyári felszínen.
 
+## Két mód: Érintés vagy TV / Box
+
+Első indításkor egy felugró ablak két nagy kártyával megkérdezi, hogyan használod a Kodit:
+
+| Mód | Mire való? |
+|-----|------------|
+| **Érintés** | Telefon, tablet, érintőképernyő – nagy gombok, képernyőn lévő vissza- és lejátszásgombok |
+| **TV / Box** | Távirányító – tiszta képernyő érintőgombok nélkül, könnyű és gyors |
+
+Később bármikor váltható: *Beállítások → Felszín → Felszín beállítása → Általános → Kezelési mód*.
+
+![Mód választó](resources/screenshot-01.jpg)
+
 ## Mi más, mint az Estuary?
 
 | Terület | Változás |
 |---------|----------|
-| Érintős mód | **Alapból bekapcsolva** – képernyőn lévő *Vissza*, *Beállítások*, *Hangerő*, *Kedvencek* gombok, görgetősáv a kezdőlap-sorokon |
+| Kinézet | Minimalista, sötét „flat” stílus: egyszínű háttér minta nélkül, sötét dialógusok |
+| Érintés mód | Képernyőn lévő *Vissza*, *Beállítások*, *Hangerő*, *Kedvencek* gombok, görgetősáv a kezdőlap-sorokon |
 | Videó OSD | Nagy, középre helyezett gombok: **-10 mp · lejátszás/szünet · +30 mp** |
 | Méretek | Listasorok 75 → 100 px, oldalmenü 80 → 96 px, beállítás-gombok 70 → 86 px |
 | Sebesség | Dia animációk **alapból kikapcsolva** (csak áttűnés) |
-| Kinézet | Új zöldeskék kiemelőszín, saját ikon és háttérkép |
+| Színek | Zöldeskék kiemelőszín, saját ikon és háttérkép |
 | Méret | Csak angol + magyar nyelvi fájl |
 
 ## Érintés-gesztusok (Kodi alapértelmezés)
@@ -29,7 +43,7 @@ ezért minden ablak és funkció ugyanúgy működik, mint a gyári felszínen.
 
 ## Beállítás
 
-- **Távirányítóval használod?** *Beállítások → Felszín → Felszín beállítása → Általános* → kapcsold ki az **Érintős mód**-ot.
+- **Mód váltása:** *Beállítások → Felszín → Felszín beállítása → Általános → Kezelési mód*.
 - **Animációk vissza:** ugyanitt a **Dia animációk használata**.
 - **Kis kijelzőn (telefon) minden túl apró?** *Beállítások → Felszín → Nagyítás* (pl. +6 … +10 %).
 
