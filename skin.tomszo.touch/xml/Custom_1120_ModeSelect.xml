@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- TomSzo Touch: kezelési mód választó (Érintés / TV-box). Első indításkor és a Felszín beállításaiból nyílik. -->
+<window type="dialog" id="1120">
+	<defaultcontrol>11</defaultcontrol>
+	<depth>DepthMax</depth>
+	<animation effect="fade" start="0" end="100" time="250">WindowOpen</animation>
+	<animation effect="fade" start="100" end="0" time="200">WindowClose</animation>
+	<controls>
+		<control type="image">
+			<include>FullScreenDimensions</include>
+			<texture colordiffuse="F20B0E12">colors/white.png</texture>
+		</control>
+		<control type="label">
+			<left>0</left>
+			<right>0</right>
+			<top>150</top>
+			<height>70</height>
+			<align>center</align>
+			<font>font45_title</font>
+			<label>$LOCALIZE[31951]</label>
+		</control>
+		<control type="label">
+			<left>0</left>
+			<right>0</right>
+			<top>225</top>
+			<height>50</height>
+			<align>center</align>
+			<font>font27</font>
+			<textcolor>grey</textcolor>
+			<label>$LOCALIZE[31952]</label>
+		</control>
+		<control type="group">
+			<centerleft>50%</centerleft>
+			<top>320</top>
+			<width>1180</width>
+			<height>560</height>
+			<control type="group">
+				<left>0</left>
+				<include content="ModeSelectCard">
+					<param name="id" value="11" />
+					<param name="other" value="12" />
+					<param name="icon" value="tomszo/mode-touch.png" />
+					<param name="title" value="$LOCALIZE[31953]" />
+					<param name="text" value="$LOCALIZE[31954]" />
+					<param name="active" value="!Skin.HasSetting(remotemode) + !String.IsEmpty(Skin.String(ui_mode))" />
+					<param name="onclick" value="Skin.Reset(remotemode)" />
+					<param name="mode" value="touch" />
+				</include>
+			</control>
+			<control type="group">
+				<left>620</left>
+				<include content="ModeSelectCard">
+					<param name="id" value="12" />
+					<param name="other" value="11" />
+					<param name="icon" value="tomszo/mode-tv.png" />
+					<param name="title" value="$LOCALIZE[31955]" />
+					<param name="text" value="$LOCALIZE[31956]" />
+					<param name="active" value="Skin.HasSetting(remotemode) + !String.IsEmpty(Skin.String(ui_mode))" />
+					<param name="onclick" value="Skin.SetBool(remotemode)" />
+					<param name="mode" value="tv" />
+				</include>
+			</control>
+		</control>
+		<control type="label">
+			<left>0</left>
+			<right>0</right>
+			<bottom>70</bottom>
+			<height>40</height>
+			<align>center</align>
+			<font>font12</font>
+			<textcolor>grey</textcolor>
+			<label>$LOCALIZE[31957]</label>
+		</control>
+	</controls>
+</window>

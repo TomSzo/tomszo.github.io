@@ -1,0 +1,13 @@
+[B]1.1.0[/B] (2026-10-01)
+• Kezelési mód választó: első indításkor felugró ablak két nagy kártyával – Érintés vagy TV / Box
+• A mód bármikor váltható: Felszín beállítása → Általános → Kezelési mód
+• Minimalista sötét megjelenés: egyszínű háttér, alapból nincs háttérminta, sötét dialógusok
+
+[B]1.0.0[/B] (2026-10-01)
+• Első kiadás – alap: Estuary 4.1.0 (Kodi 22 „Piers”, xbmc.gui 5.18.0)
+• Érintős mód alapból BE (a távirányítós mód a Felszín beállításaiban kapcsolható)
+• Nagy, középre helyezett lejátszásvezérlők a videó OSD-ben: -10 mp, lejátszás/szünet, +30 mp
+• Nagyobb listasorok (100 px), oldalmenü-pontok (96 px) és beállítás-gombok (86 px)
+• Dia animációk alapból KI (könnyebb, gyorsabb gyenge eszközökön is)
+• Új alap kiemelőszín (zöldeskék), új ikon és háttérkép
+• Csak angol és magyar nyelvi fájlok (kisebb csomag)
