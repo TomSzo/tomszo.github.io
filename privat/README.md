@@ -14,6 +14,7 @@
 | **plugin.video.kintsugifansub** | Kintsugi Fansub | saját fiók |
 | **plugin.video.narutokun** | Naruto-Kun.Hu | saját fiók (felhasználónév/jelszó) |
 | **script.module.resolveurl** | lejátszó-feloldó modul (függőség) | – |
+| **Network4 (LG webOS TV)** | Network4 / Arena4+ a TV-n, fejlesztői módban – lásd [webos/README.md](webos/README.md) | saját fiók (email/jelszó) |
 
 ## Miért nem működik másnál?
 
