@@ -1,0 +1,7 @@
+{
+  "name": "hu.tomszo.magyaranime.service",
+  "version": "0.1.0",
+  "description": "MagyarAnime (webOS) - HTTP, süti-párosítás és videó-továbbító szolgáltatás",
+  "main": "service.js",
+  "license": "GPL-3.0-or-later"
+}
