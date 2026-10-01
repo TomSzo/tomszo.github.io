@@ -13,23 +13,24 @@
 </head>
 <body>
 <div id="app">
-	<header>
-		<img class="logo" src="largeIcon.png" alt="">
-		<div class="crumbs"></div>
-	</header>
+	<nav id="rail"></nav>
 	<main id="content"></main>
 </div>
 <div id="modal"></div>
 <div id="toast"></div>
 <div id="player">
 	<video></video>
+	<div class="p-center"></div>
 	<div class="p-status"></div>
-	<div class="p-osd">
+	<div class="p-top">
 		<div class="p-title"></div>
-		<div class="p-bar"><div class="p-fill"></div></div>
+	</div>
+	<div class="p-osd">
+		<div class="p-bar"><div class="p-fill"><div class="p-knob"></div></div></div>
 		<div class="p-row">
 			<span class="p-time"></span>
-			<span class="p-help">OK: szünet · ◀ ▶: tekerés · Vissza: kilépés</span>
+			<span class="p-help">OK szünet · ◀ ▶ tekerés · Vissza kilépés</span>
+			<span class="p-left"></span>
 		</div>
 	</div>
 </div>

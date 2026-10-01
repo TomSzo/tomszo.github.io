@@ -9,10 +9,14 @@ Network4-gyel; a **saját Network4 / Arena4+ előfizetéseddel** működik.
 
 - **Alap:** `plugin.video.arena4plus` – szerzők: **heg** és **vargalex** (GPL-3.0).
 - **Lejátszó:** [shaka-player](https://github.com/shaka-project/shaka-player) (Apache-2.0).
+- **Betűtípus:** [Inter](https://rsms.me/inter/) (SIL Open Font License 1.1).
 - Licenc: **GPL-3.0-or-later**.
 
 ## Funkciók
 
+- Streaming-stílusú felület (0.2.0-tól): bal oldali menüsáv, nagy hero-kép a kijelölt
+  elem háttérképével és logójával, vízszintes sorok, gyűjtemény-adatlap „Lejátszás”
+  gombbal
 - Élő közvetítések (élőben vagy az elejétől)
 - Sportok: Kiemelt sportok + sportágak → gyűjtemények → videók
 - Videótár (összes gyűjtemény), keresés
@@ -36,7 +40,7 @@ Network4-gyel; a **saját Network4 / Arena4+ előfizetéseddel** működik.
 A legegyszerűbb a **webOS Dev Manager** (Windows / macOS / Linux):
 <https://github.com/webosbrew/dev-manager-desktop/releases>
 
-1. Töltsd le az IPK-t: **[hu.tomszo.network4_0.1.1_all.ipk](hu.tomszo.network4_0.1.1_all.ipk)**
+1. Töltsd le az IPK-t: **[hu.tomszo.network4_0.2.0_all.ipk](hu.tomszo.network4_0.2.0_all.ipk)**
 2. Dev Manager → **Add device** → add meg a TV IP-címét és a Passphrase-t.
 3. **Apps** → **Install** → válaszd ki a letöltött IPK-t.
 4. A TV alkalmazáslistájában megjelenik a **Network4**.
@@ -46,7 +50,7 @@ Parancssorból (ha a webOS CLI telepítve van: `npm install -g @webos-tools/cli`
 ```sh
 ares-setup-device            # TV hozzáadása (IP, port 9922, felhasználó: prisoner)
 ares-novacom --device tv --getkey    # a Passphrase-t kéri
-ares-install --device tv hu.tomszo.network4_0.1.1_all.ipk
+ares-install --device tv hu.tomszo.network4_0.2.0_all.ipk
 ```
 
 ### 3. Első indítás

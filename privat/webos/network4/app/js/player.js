@@ -11,7 +11,7 @@
 	var KEY = {OK: 13, LEFT: 37, UP: 38, RIGHT: 39, DOWN: 40, BACK: 461, ESC: 27,
 		BACKSPACE: 8, PLAY: 415, PAUSE: 19, STOP: 413, FF: 417, RW: 412};
 
-	var root, video, title, fill, timeEl, statusEl;
+	var root, video, title, fill, timeEl, leftEl, statusEl;
 	var player = null;
 	var onClose = null;
 	var hideTimer = null;
@@ -37,13 +37,15 @@
 
 	function update() {
 		if (isLive) {
-			timeEl.textContent = 'ÉLŐ';
+			timeEl.textContent = '● ÉLŐ';
+			leftEl.textContent = '';
 			fill.style.width = '100%';
 			return;
 		}
 		var d = video.duration;
 		fill.style.width = isFinite(d) && d > 0 ? (video.currentTime / d * 100) + '%' : '0%';
-		timeEl.textContent = fmt(video.currentTime) + ' / ' + fmt(d);
+		timeEl.textContent = fmt(video.currentTime);
+		leftEl.textContent = isFinite(d) && d > 0 ? '-' + fmt(d - video.currentTime) : '';
 	}
 
 	function status(msg) {
@@ -67,7 +69,7 @@
 
 	function close() {
 		clearTimeout(hideTimer);
-		root.classList.remove('open', 'osd');
+		root.classList.remove('open', 'osd', 'paused');
 		var p = player;
 		player = null;
 		var done = p ? p.destroy() : Promise.resolve();
@@ -167,9 +169,14 @@
 		title = root.querySelector('.p-title');
 		fill = root.querySelector('.p-fill');
 		timeEl = root.querySelector('.p-time');
+		leftEl = root.querySelector('.p-left');
 		statusEl = root.querySelector('.p-status');
 		video.addEventListener('timeupdate', update);
-		video.addEventListener('pause', showOsd);
+		video.addEventListener('pause', function () {
+			if (root.classList.contains('open')) root.classList.add('paused');
+			showOsd();
+		});
+		video.addEventListener('play', function () { root.classList.remove('paused'); });
 		video.addEventListener('ended', close);
 		video.addEventListener('playing', function () { status(''); });
 		video.addEventListener('waiting', function () { if (!player) status('Pufferelés…'); });
