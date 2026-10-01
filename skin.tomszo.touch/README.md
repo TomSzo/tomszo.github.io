@@ -17,6 +17,22 @@ Később bármikor váltható: *Beállítások → Felszín → Felszín beáll�
 
 ![Mód választó](resources/screenshot-01.jpg)
 
+## App-szerű kezdőképernyő (Érintés mód)
+
+Érintés módban a kezdőképernyő úgy működik, mint egy telefonos app:
+
+- **alul fix menüsáv:** Kezdőlap · Filmek · Sorozatok · Kiegészítők · Kedvencek · Beállítások
+- **fent:** a fül címe, óra, keresés, kikapcsolás és szűrőgombok
+  - Kezdőlap: Folytatás · Sorozatok folytatása · Új filmek · Új részek
+  - Filmek: Összes · Nem látott · Új filmek · Gyűjtemények
+  - Sorozatok: Összes · Folyamatban · Új részek · Nem látott
+  - Kiegészítők: Videó · Programok · Zene
+- **középen:** csak függőlegesen görgethető poszterrács. Egy görgetési irány van, ezért a húzás nem akad.
+
+TV / Box módban az eredeti Estuary kezdőképernyő marad.
+
+![App-szerű kezdőképernyő](resources/screenshot-02.jpg)
+
 ## Mi más, mint az Estuary?
 
 | Terület | Változás |

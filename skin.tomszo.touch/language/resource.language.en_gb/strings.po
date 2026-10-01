@@ -1046,3 +1046,83 @@ msgstr ""
 msgctxt "#31959"
 msgid "Control mode"
 msgstr ""
+
+msgctxt "#31960"
+msgid "Continue watching"
+msgstr ""
+
+msgctxt "#31961"
+msgid "Continue shows"
+msgstr ""
+
+msgctxt "#31962"
+msgid "New movies"
+msgstr ""
+
+msgctxt "#31963"
+msgid "New episodes"
+msgstr ""
+
+msgctxt "#31964"
+msgid "All"
+msgstr ""
+
+msgctxt "#31965"
+msgid "Unwatched"
+msgstr ""
+
+msgctxt "#31966"
+msgid "Collections"
+msgstr ""
+
+msgctxt "#31967"
+msgid "In progress"
+msgstr ""
+
+msgctxt "#31968"
+msgid "Video"
+msgstr ""
+
+msgctxt "#31969"
+msgid "Programs"
+msgstr ""
+
+msgctxt "#31970"
+msgid "Music"
+msgstr ""
+
+msgctxt "#31971"
+msgid "Nothing here yet"
+msgstr ""
+
+msgctxt "#31972"
+msgid "Add a media source or an add-on and it will show up here."
+msgstr ""
+
+msgctxt "#31973"
+msgid "Home"
+msgstr ""
+
+msgctxt "#31974"
+msgid "Movies"
+msgstr ""
+
+msgctxt "#31975"
+msgid "TV shows"
+msgstr ""
+
+msgctxt "#31976"
+msgid "Add-ons"
+msgstr ""
+
+msgctxt "#31977"
+msgid "Favourites"
+msgstr ""
+
+msgctxt "#31978"
+msgid "Settings"
+msgstr ""
+
+msgctxt "#31979"
+msgid "Now playing"
+msgstr ""

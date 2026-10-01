@@ -1,0 +1,704 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- TomSzo Touch: app-szerű kezdőképernyő Érintés módhoz.
+     Generálva (homeapp.py). Fent cím + szűrőgombok, középen függőlegesen görgethető
+     kártyarács (egy görgetési irány = akadásmentes húzás), alul fix menüsáv. -->
+<includes>
+	<variable name="AppTitleVar">
+		<value condition="String.IsEqual(Window(home).Property(app_tab),movies)">$LOCALIZE[31974]</value>
+		<value condition="String.IsEqual(Window(home).Property(app_tab),tvshows)">$LOCALIZE[31975]</value>
+		<value condition="String.IsEqual(Window(home).Property(app_tab),addons)">$LOCALIZE[31976]</value>
+		<value condition="String.IsEqual(Window(home).Property(app_tab),favourites)">$LOCALIZE[31977]</value>
+		<value>$LOCALIZE[31973]</value>
+	</variable>
+	<variable name="AppFeedPath5000">
+		<value condition="[String.IsEmpty(Window(home).Property(app_tab)) | String.IsEqual(Window(home).Property(app_tab),home)] + [String.IsEmpty(Window(home).Property(app_chip)) | String.IsEqual(Window(home).Property(app_chip),1)]">special://skin/playlists/inprogress_movies.xsp</value>
+		<value condition="[String.IsEmpty(Window(home).Property(app_tab)) | String.IsEqual(Window(home).Property(app_tab),home)] + String.IsEqual(Window(home).Property(app_chip),2)">videodb://inprogresstvshows/</value>
+		<value condition="[String.IsEmpty(Window(home).Property(app_tab)) | String.IsEqual(Window(home).Property(app_tab),home)] + String.IsEqual(Window(home).Property(app_chip),3)">videodb://recentlyaddedmovies/</value>
+		<value condition="[String.IsEmpty(Window(home).Property(app_tab)) | String.IsEqual(Window(home).Property(app_tab),home)] + String.IsEqual(Window(home).Property(app_chip),4)">videodb://recentlyaddedepisodes/</value>
+		<value condition="String.IsEqual(Window(home).Property(app_tab),movies) + [String.IsEmpty(Window(home).Property(app_chip)) | String.IsEqual(Window(home).Property(app_chip),1)]">videodb://movies/titles/</value>
+		<value condition="String.IsEqual(Window(home).Property(app_tab),movies) + String.IsEqual(Window(home).Property(app_chip),2)">special://skin/playlists/unwatched_movies.xsp</value>
+		<value condition="String.IsEqual(Window(home).Property(app_tab),movies) + String.IsEqual(Window(home).Property(app_chip),3)">videodb://recentlyaddedmovies/</value>
+		<value condition="String.IsEqual(Window(home).Property(app_tab),movies) + String.IsEqual(Window(home).Property(app_chip),4)">videodb://movies/sets/</value>
+		<value condition="String.IsEqual(Window(home).Property(app_tab),tvshows) + [String.IsEmpty(Window(home).Property(app_chip)) | String.IsEqual(Window(home).Property(app_chip),1)]">videodb://tvshows/titles/</value>
+		<value condition="String.IsEqual(Window(home).Property(app_tab),tvshows) + String.IsEqual(Window(home).Property(app_chip),2)">videodb://inprogresstvshows/</value>
+		<value condition="String.IsEqual(Window(home).Property(app_tab),tvshows) + String.IsEqual(Window(home).Property(app_chip),3)">videodb://recentlyaddedepisodes/</value>
+		<value condition="String.IsEqual(Window(home).Property(app_tab),tvshows) + String.IsEqual(Window(home).Property(app_chip),4)">special://skin/playlists/unwatched_tvshows.xsp</value>
+		<value condition="String.IsEqual(Window(home).Property(app_tab),addons) + [String.IsEmpty(Window(home).Property(app_chip)) | String.IsEqual(Window(home).Property(app_chip),1)]">addons://sources/video/</value>
+		<value condition="String.IsEqual(Window(home).Property(app_tab),favourites) + [String.IsEmpty(Window(home).Property(app_chip)) | String.IsEqual(Window(home).Property(app_chip),1)]">favourites://</value>
+	</variable>
+	<variable name="AppFeedPath5001">
+		<value condition="String.IsEqual(Window(home).Property(app_tab),addons) + String.IsEqual(Window(home).Property(app_chip),2)">addons://sources/executable/</value>
+	</variable>
+	<variable name="AppFeedPath5002">
+		<value condition="String.IsEqual(Window(home).Property(app_tab),addons) + String.IsEqual(Window(home).Property(app_chip),3)">addons://sources/audio/</value>
+	</variable>
+	<variable name="AppCardArtVar">
+		<value condition="!String.IsEmpty(ListItem.Art(poster))">$INFO[ListItem.Art(poster)]</value>
+		<value condition="!String.IsEmpty(ListItem.Art(tvshow.poster))">$INFO[ListItem.Art(tvshow.poster)]</value>
+		<value condition="!String.IsEmpty(ListItem.Art(thumb))">$INFO[ListItem.Art(thumb)]</value>
+		<value>$INFO[ListItem.Icon]</value>
+	</variable>
+	<variable name="AppCardLabelVar">
+		<value condition="!String.IsEmpty(ListItem.TVShowTitle) + String.IsEqual(ListItem.DBType,episode)">$INFO[ListItem.TVShowTitle]</value>
+		<value>$INFO[ListItem.Label]</value>
+	</variable>
+	<variable name="AppCardLabel2Var">
+		<value condition="String.IsEqual(ListItem.DBType,episode)">$INFO[ListItem.Season,S,]$INFO[ListItem.Episode,E,]$INFO[ListItem.Title, · ,]</value>
+		<value condition="String.IsEqual(ListItem.DBType,tvshow)">$INFO[ListItem.Year]$INFO[ListItem.Property(UnWatchedEpisodes), · ,]</value>
+		<value>$INFO[ListItem.Year]</value>
+	</variable>
+	<include name="HomeApp">
+		<include>DefaultBackground</include>
+		<control type="label">
+			<left>60</left>
+			<top>34</top>
+			<width>1000</width>
+			<height>70</height>
+			<font>font52_title</font>
+			<label>$VAR[AppTitleVar]</label>
+		</control>
+		<control type="grouplist" id="200">
+			<right>30</right>
+			<top>14</top>
+			<width>900</width>
+			<height>110</height>
+			<orientation>horizontal</orientation>
+			<align>right</align>
+			<itemgap>0</itemgap>
+			<usecontrolcoords>true</usecontrolcoords>
+			<onleft>200</onleft>
+			<onright>200</onright>
+			<ondown>300</ondown>
+			<control type="label">
+				<width>auto</width>
+				<height>110</height>
+				<aligny>center</aligny>
+				<font>font37</font>
+				<textcolor>grey</textcolor>
+				<label>$INFO[System.Time]   </label>
+			</control>
+			<include content="IconButton">
+				<param name="control_id" value="201" />
+				<param name="height" value="110" />
+				<param name="onclick" value="ActivateWindow(fullscreenvideo)" />
+				<param name="icon" value="osd/fullscreen/buttons/play.png" />
+				<param name="label" value="$LOCALIZE[31979]" />
+				<param name="visible" value="Player.HasMedia" />
+			</include>
+			<include content="IconButton">
+				<param name="control_id" value="202" />
+				<param name="height" value="110" />
+				<param name="onclick" value="ActivateWindow(1107)" />
+				<param name="icon" value="icons/search.png" />
+				<param name="label" value="$LOCALIZE[137]" />
+			</include>
+			<include content="IconButton">
+				<param name="control_id" value="203" />
+				<param name="height" value="110" />
+				<param name="onclick" value="ActivateWindow(shutdownmenu)" />
+				<param name="icon" value="icons/power.png" />
+				<param name="label" value="$LOCALIZE[33060]" />
+			</include>
+		</control>
+		<control type="grouplist" id="300">
+			<left>60</left>
+			<right>60</right>
+			<top>134</top>
+			<height>64</height>
+			<orientation>horizontal</orientation>
+			<itemgap>16</itemgap>
+			<usecontrolcoords>true</usecontrolcoords>
+			<onup>200</onup>
+			<ondown>5100</ondown>
+			<control type="togglebutton" id="310">
+				<width>auto</width>
+				<height>64</height>
+				<textoffsetx>32</textoffsetx>
+				<align>center</align>
+				<aligny>center</aligny>
+				<font>font27</font>
+				<label>$LOCALIZE[31960]</label>
+				<altlabel>$LOCALIZE[31960]</altlabel>
+				<texturenofocus border="32" colordiffuse="FF1C222B">tomszo/pill.png</texturenofocus>
+				<texturefocus border="32" colordiffuse="FF2A3440">tomszo/pill.png</texturefocus>
+				<alttexturenofocus border="32" colordiffuse="button_focus">tomszo/pill.png</alttexturenofocus>
+				<alttexturefocus border="32" colordiffuse="button_focus">tomszo/pill.png</alttexturefocus>
+				<usealttexture>[String.IsEmpty(Window(home).Property(app_chip)) | String.IsEqual(Window(home).Property(app_chip),1)]</usealttexture>
+				<onclick>SetProperty(app_chip,1,home)</onclick>
+				<visible>[String.IsEmpty(Window(home).Property(app_tab)) | String.IsEqual(Window(home).Property(app_tab),home)]</visible>
+			</control>
+			<control type="togglebutton" id="311">
+				<width>auto</width>
+				<height>64</height>
+				<textoffsetx>32</textoffsetx>
+				<align>center</align>
+				<aligny>center</aligny>
+				<font>font27</font>
+				<label>$LOCALIZE[31961]</label>
+				<altlabel>$LOCALIZE[31961]</altlabel>
+				<texturenofocus border="32" colordiffuse="FF1C222B">tomszo/pill.png</texturenofocus>
+				<texturefocus border="32" colordiffuse="FF2A3440">tomszo/pill.png</texturefocus>
+				<alttexturenofocus border="32" colordiffuse="button_focus">tomszo/pill.png</alttexturenofocus>
+				<alttexturefocus border="32" colordiffuse="button_focus">tomszo/pill.png</alttexturefocus>
+				<usealttexture>String.IsEqual(Window(home).Property(app_chip),2)</usealttexture>
+				<onclick>SetProperty(app_chip,2,home)</onclick>
+				<visible>[String.IsEmpty(Window(home).Property(app_tab)) | String.IsEqual(Window(home).Property(app_tab),home)]</visible>
+			</control>
+			<control type="togglebutton" id="312">
+				<width>auto</width>
+				<height>64</height>
+				<textoffsetx>32</textoffsetx>
+				<align>center</align>
+				<aligny>center</aligny>
+				<font>font27</font>
+				<label>$LOCALIZE[31962]</label>
+				<altlabel>$LOCALIZE[31962]</altlabel>
+				<texturenofocus border="32" colordiffuse="FF1C222B">tomszo/pill.png</texturenofocus>
+				<texturefocus border="32" colordiffuse="FF2A3440">tomszo/pill.png</texturefocus>
+				<alttexturenofocus border="32" colordiffuse="button_focus">tomszo/pill.png</alttexturenofocus>
+				<alttexturefocus border="32" colordiffuse="button_focus">tomszo/pill.png</alttexturefocus>
+				<usealttexture>String.IsEqual(Window(home).Property(app_chip),3)</usealttexture>
+				<onclick>SetProperty(app_chip,3,home)</onclick>
+				<visible>[String.IsEmpty(Window(home).Property(app_tab)) | String.IsEqual(Window(home).Property(app_tab),home)]</visible>
+			</control>
+			<control type="togglebutton" id="313">
+				<width>auto</width>
+				<height>64</height>
+				<textoffsetx>32</textoffsetx>
+				<align>center</align>
+				<aligny>center</aligny>
+				<font>font27</font>
+				<label>$LOCALIZE[31963]</label>
+				<altlabel>$LOCALIZE[31963]</altlabel>
+				<texturenofocus border="32" colordiffuse="FF1C222B">tomszo/pill.png</texturenofocus>
+				<texturefocus border="32" colordiffuse="FF2A3440">tomszo/pill.png</texturefocus>
+				<alttexturenofocus border="32" colordiffuse="button_focus">tomszo/pill.png</alttexturenofocus>
+				<alttexturefocus border="32" colordiffuse="button_focus">tomszo/pill.png</alttexturefocus>
+				<usealttexture>String.IsEqual(Window(home).Property(app_chip),4)</usealttexture>
+				<onclick>SetProperty(app_chip,4,home)</onclick>
+				<visible>[String.IsEmpty(Window(home).Property(app_tab)) | String.IsEqual(Window(home).Property(app_tab),home)]</visible>
+			</control>
+			<control type="togglebutton" id="314">
+				<width>auto</width>
+				<height>64</height>
+				<textoffsetx>32</textoffsetx>
+				<align>center</align>
+				<aligny>center</aligny>
+				<font>font27</font>
+				<label>$LOCALIZE[31964]</label>
+				<altlabel>$LOCALIZE[31964]</altlabel>
+				<texturenofocus border="32" colordiffuse="FF1C222B">tomszo/pill.png</texturenofocus>
+				<texturefocus border="32" colordiffuse="FF2A3440">tomszo/pill.png</texturefocus>
+				<alttexturenofocus border="32" colordiffuse="button_focus">tomszo/pill.png</alttexturenofocus>
+				<alttexturefocus border="32" colordiffuse="button_focus">tomszo/pill.png</alttexturefocus>
+				<usealttexture>[String.IsEmpty(Window(home).Property(app_chip)) | String.IsEqual(Window(home).Property(app_chip),1)]</usealttexture>
+				<onclick>SetProperty(app_chip,1,home)</onclick>
+				<visible>String.IsEqual(Window(home).Property(app_tab),movies)</visible>
+			</control>
+			<control type="togglebutton" id="315">
+				<width>auto</width>
+				<height>64</height>
+				<textoffsetx>32</textoffsetx>
+				<align>center</align>
+				<aligny>center</aligny>
+				<font>font27</font>
+				<label>$LOCALIZE[31965]</label>
+				<altlabel>$LOCALIZE[31965]</altlabel>
+				<texturenofocus border="32" colordiffuse="FF1C222B">tomszo/pill.png</texturenofocus>
+				<texturefocus border="32" colordiffuse="FF2A3440">tomszo/pill.png</texturefocus>
+				<alttexturenofocus border="32" colordiffuse="button_focus">tomszo/pill.png</alttexturenofocus>
+				<alttexturefocus border="32" colordiffuse="button_focus">tomszo/pill.png</alttexturefocus>
+				<usealttexture>String.IsEqual(Window(home).Property(app_chip),2)</usealttexture>
+				<onclick>SetProperty(app_chip,2,home)</onclick>
+				<visible>String.IsEqual(Window(home).Property(app_tab),movies)</visible>
+			</control>
+			<control type="togglebutton" id="316">
+				<width>auto</width>
+				<height>64</height>
+				<textoffsetx>32</textoffsetx>
+				<align>center</align>
+				<aligny>center</aligny>
+				<font>font27</font>
+				<label>$LOCALIZE[31962]</label>
+				<altlabel>$LOCALIZE[31962]</altlabel>
+				<texturenofocus border="32" colordiffuse="FF1C222B">tomszo/pill.png</texturenofocus>
+				<texturefocus border="32" colordiffuse="FF2A3440">tomszo/pill.png</texturefocus>
+				<alttexturenofocus border="32" colordiffuse="button_focus">tomszo/pill.png</alttexturenofocus>
+				<alttexturefocus border="32" colordiffuse="button_focus">tomszo/pill.png</alttexturefocus>
+				<usealttexture>String.IsEqual(Window(home).Property(app_chip),3)</usealttexture>
+				<onclick>SetProperty(app_chip,3,home)</onclick>
+				<visible>String.IsEqual(Window(home).Property(app_tab),movies)</visible>
+			</control>
+			<control type="togglebutton" id="317">
+				<width>auto</width>
+				<height>64</height>
+				<textoffsetx>32</textoffsetx>
+				<align>center</align>
+				<aligny>center</aligny>
+				<font>font27</font>
+				<label>$LOCALIZE[31966]</label>
+				<altlabel>$LOCALIZE[31966]</altlabel>
+				<texturenofocus border="32" colordiffuse="FF1C222B">tomszo/pill.png</texturenofocus>
+				<texturefocus border="32" colordiffuse="FF2A3440">tomszo/pill.png</texturefocus>
+				<alttexturenofocus border="32" colordiffuse="button_focus">tomszo/pill.png</alttexturenofocus>
+				<alttexturefocus border="32" colordiffuse="button_focus">tomszo/pill.png</alttexturefocus>
+				<usealttexture>String.IsEqual(Window(home).Property(app_chip),4)</usealttexture>
+				<onclick>SetProperty(app_chip,4,home)</onclick>
+				<visible>String.IsEqual(Window(home).Property(app_tab),movies)</visible>
+			</control>
+			<control type="togglebutton" id="318">
+				<width>auto</width>
+				<height>64</height>
+				<textoffsetx>32</textoffsetx>
+				<align>center</align>
+				<aligny>center</aligny>
+				<font>font27</font>
+				<label>$LOCALIZE[31964]</label>
+				<altlabel>$LOCALIZE[31964]</altlabel>
+				<texturenofocus border="32" colordiffuse="FF1C222B">tomszo/pill.png</texturenofocus>
+				<texturefocus border="32" colordiffuse="FF2A3440">tomszo/pill.png</texturefocus>
+				<alttexturenofocus border="32" colordiffuse="button_focus">tomszo/pill.png</alttexturenofocus>
+				<alttexturefocus border="32" colordiffuse="button_focus">tomszo/pill.png</alttexturefocus>
+				<usealttexture>[String.IsEmpty(Window(home).Property(app_chip)) | String.IsEqual(Window(home).Property(app_chip),1)]</usealttexture>
+				<onclick>SetProperty(app_chip,1,home)</onclick>
+				<visible>String.IsEqual(Window(home).Property(app_tab),tvshows)</visible>
+			</control>
+			<control type="togglebutton" id="319">
+				<width>auto</width>
+				<height>64</height>
+				<textoffsetx>32</textoffsetx>
+				<align>center</align>
+				<aligny>center</aligny>
+				<font>font27</font>
+				<label>$LOCALIZE[31967]</label>
+				<altlabel>$LOCALIZE[31967]</altlabel>
+				<texturenofocus border="32" colordiffuse="FF1C222B">tomszo/pill.png</texturenofocus>
+				<texturefocus border="32" colordiffuse="FF2A3440">tomszo/pill.png</texturefocus>
+				<alttexturenofocus border="32" colordiffuse="button_focus">tomszo/pill.png</alttexturenofocus>
+				<alttexturefocus border="32" colordiffuse="button_focus">tomszo/pill.png</alttexturefocus>
+				<usealttexture>String.IsEqual(Window(home).Property(app_chip),2)</usealttexture>
+				<onclick>SetProperty(app_chip,2,home)</onclick>
+				<visible>String.IsEqual(Window(home).Property(app_tab),tvshows)</visible>
+			</control>
+			<control type="togglebutton" id="320">
+				<width>auto</width>
+				<height>64</height>
+				<textoffsetx>32</textoffsetx>
+				<align>center</align>
+				<aligny>center</aligny>
+				<font>font27</font>
+				<label>$LOCALIZE[31963]</label>
+				<altlabel>$LOCALIZE[31963]</altlabel>
+				<texturenofocus border="32" colordiffuse="FF1C222B">tomszo/pill.png</texturenofocus>
+				<texturefocus border="32" colordiffuse="FF2A3440">tomszo/pill.png</texturefocus>
+				<alttexturenofocus border="32" colordiffuse="button_focus">tomszo/pill.png</alttexturenofocus>
+				<alttexturefocus border="32" colordiffuse="button_focus">tomszo/pill.png</alttexturefocus>
+				<usealttexture>String.IsEqual(Window(home).Property(app_chip),3)</usealttexture>
+				<onclick>SetProperty(app_chip,3,home)</onclick>
+				<visible>String.IsEqual(Window(home).Property(app_tab),tvshows)</visible>
+			</control>
+			<control type="togglebutton" id="321">
+				<width>auto</width>
+				<height>64</height>
+				<textoffsetx>32</textoffsetx>
+				<align>center</align>
+				<aligny>center</aligny>
+				<font>font27</font>
+				<label>$LOCALIZE[31965]</label>
+				<altlabel>$LOCALIZE[31965]</altlabel>
+				<texturenofocus border="32" colordiffuse="FF1C222B">tomszo/pill.png</texturenofocus>
+				<texturefocus border="32" colordiffuse="FF2A3440">tomszo/pill.png</texturefocus>
+				<alttexturenofocus border="32" colordiffuse="button_focus">tomszo/pill.png</alttexturenofocus>
+				<alttexturefocus border="32" colordiffuse="button_focus">tomszo/pill.png</alttexturefocus>
+				<usealttexture>String.IsEqual(Window(home).Property(app_chip),4)</usealttexture>
+				<onclick>SetProperty(app_chip,4,home)</onclick>
+				<visible>String.IsEqual(Window(home).Property(app_tab),tvshows)</visible>
+			</control>
+			<control type="togglebutton" id="322">
+				<width>auto</width>
+				<height>64</height>
+				<textoffsetx>32</textoffsetx>
+				<align>center</align>
+				<aligny>center</aligny>
+				<font>font27</font>
+				<label>$LOCALIZE[31968]</label>
+				<altlabel>$LOCALIZE[31968]</altlabel>
+				<texturenofocus border="32" colordiffuse="FF1C222B">tomszo/pill.png</texturenofocus>
+				<texturefocus border="32" colordiffuse="FF2A3440">tomszo/pill.png</texturefocus>
+				<alttexturenofocus border="32" colordiffuse="button_focus">tomszo/pill.png</alttexturenofocus>
+				<alttexturefocus border="32" colordiffuse="button_focus">tomszo/pill.png</alttexturefocus>
+				<usealttexture>[String.IsEmpty(Window(home).Property(app_chip)) | String.IsEqual(Window(home).Property(app_chip),1)]</usealttexture>
+				<onclick>SetProperty(app_chip,1,home)</onclick>
+				<visible>String.IsEqual(Window(home).Property(app_tab),addons)</visible>
+			</control>
+			<control type="togglebutton" id="323">
+				<width>auto</width>
+				<height>64</height>
+				<textoffsetx>32</textoffsetx>
+				<align>center</align>
+				<aligny>center</aligny>
+				<font>font27</font>
+				<label>$LOCALIZE[31969]</label>
+				<altlabel>$LOCALIZE[31969]</altlabel>
+				<texturenofocus border="32" colordiffuse="FF1C222B">tomszo/pill.png</texturenofocus>
+				<texturefocus border="32" colordiffuse="FF2A3440">tomszo/pill.png</texturefocus>
+				<alttexturenofocus border="32" colordiffuse="button_focus">tomszo/pill.png</alttexturenofocus>
+				<alttexturefocus border="32" colordiffuse="button_focus">tomszo/pill.png</alttexturefocus>
+				<usealttexture>String.IsEqual(Window(home).Property(app_chip),2)</usealttexture>
+				<onclick>SetProperty(app_chip,2,home)</onclick>
+				<visible>String.IsEqual(Window(home).Property(app_tab),addons)</visible>
+			</control>
+			<control type="togglebutton" id="324">
+				<width>auto</width>
+				<height>64</height>
+				<textoffsetx>32</textoffsetx>
+				<align>center</align>
+				<aligny>center</aligny>
+				<font>font27</font>
+				<label>$LOCALIZE[31970]</label>
+				<altlabel>$LOCALIZE[31970]</altlabel>
+				<texturenofocus border="32" colordiffuse="FF1C222B">tomszo/pill.png</texturenofocus>
+				<texturefocus border="32" colordiffuse="FF2A3440">tomszo/pill.png</texturefocus>
+				<alttexturenofocus border="32" colordiffuse="button_focus">tomszo/pill.png</alttexturenofocus>
+				<alttexturefocus border="32" colordiffuse="button_focus">tomszo/pill.png</alttexturefocus>
+				<usealttexture>String.IsEqual(Window(home).Property(app_chip),3)</usealttexture>
+				<onclick>SetProperty(app_chip,3,home)</onclick>
+				<visible>String.IsEqual(Window(home).Property(app_tab),addons)</visible>
+			</control>
+		</control>
+		<control type="group" id="5100">
+			<centerleft>50%</centerleft>
+			<width>1680</width>
+			<top>214</top>
+			<bottom>150</bottom>
+			<control type="panel" id="5000">
+				<left>0</left>
+				<top>0</top>
+				<right>0</right>
+				<bottom>0</bottom>
+				<orientation>vertical</orientation>
+				<onup>300</onup>
+				<ondown>9000</ondown>
+				<onleft>5000</onleft>
+				<onright>5000</onright>
+				<onback>9000</onback>
+				<preloaditems>1</preloaditems>
+				<scrolltime tween="quadratic" easing="out">300</scrolltime>
+				<visible>![String.IsEqual(Window(home).Property(app_tab),addons) + [String.IsEqual(Window(home).Property(app_chip),2) | String.IsEqual(Window(home).Property(app_chip),3)]]</visible>
+				<itemlayout width="280" height="460" condition="![String.IsEqual(Window(home).Property(app_tab),addons) | String.IsEqual(Window(home).Property(app_tab),favourites)]">
+					<control type="image"><left>20</left><top>10</top><width>240</width><height>360</height><texture colordiffuse="FF1C222B">tomszo/mask-poster.png</texture></control>
+					<control type="image"><left>20</left><top>10</top><width>240</width><height>360</height><aspectratio>scale</aspectratio><texture diffuse="tomszo/mask-poster.png" fallback="DefaultVideo.png" background="true">$VAR[AppCardArtVar]</texture></control>
+					<control type="progress"><left>36</left><top>350</top><width>208</width><height>6</height><texturebg colordiffuse="60000000">colors/white.png</texturebg><midtexture colordiffuse="button_focus">colors/white.png</midtexture><info>ListItem.PercentPlayed</info><visible>Integer.IsGreater(ListItem.PercentPlayed,0)</visible></control>
+					<control type="label"><left>20</left><top>380</top><width>240</width><height>36</height><font>font12</font><label>$VAR[AppCardLabelVar]</label></control>
+					<control type="label"><left>20</left><top>414</top><width>240</width><height>32</height><font>font10</font><textcolor>grey</textcolor><label>$VAR[AppCardLabel2Var]</label></control>
+				</itemlayout>
+				<focusedlayout width="280" height="460" condition="![String.IsEqual(Window(home).Property(app_tab),addons) | String.IsEqual(Window(home).Property(app_tab),favourites)]">
+					<control type="image"><left>20</left><top>10</top><width>240</width><height>360</height><texture colordiffuse="FF1C222B">tomszo/mask-poster.png</texture></control>
+					<control type="image"><left>20</left><top>10</top><width>240</width><height>360</height><aspectratio>scale</aspectratio><texture diffuse="tomszo/mask-poster.png" fallback="DefaultVideo.png" background="true">$VAR[AppCardArtVar]</texture></control>
+					<control type="image"><left>12</left><top>2</top><width>256</width><height>376</height><texture border="22" colordiffuse="button_focus">tomszo/ring-small.png</texture><visible>Control.HasFocus(5000)</visible></control>
+					<control type="progress"><left>36</left><top>350</top><width>208</width><height>6</height><texturebg colordiffuse="60000000">colors/white.png</texturebg><midtexture colordiffuse="button_focus">colors/white.png</midtexture><info>ListItem.PercentPlayed</info><visible>Integer.IsGreater(ListItem.PercentPlayed,0)</visible></control>
+					<control type="label"><left>20</left><top>380</top><width>240</width><height>36</height><font>font12</font><label>$VAR[AppCardLabelVar]</label><scroll>true</scroll></control>
+					<control type="label"><left>20</left><top>414</top><width>240</width><height>32</height><font>font10</font><textcolor>grey</textcolor><label>$VAR[AppCardLabel2Var]</label></control>
+				</focusedlayout>
+				<itemlayout width="280" height="320" condition="[String.IsEqual(Window(home).Property(app_tab),addons) | String.IsEqual(Window(home).Property(app_tab),favourites)]">
+					<control type="image"><left>20</left><top>10</top><width>240</width><height>240</height><texture colordiffuse="FF1C222B">tomszo/mask-square.png</texture></control>
+					<control type="image"><left>55</left><top>45</top><width>170</width><height>170</height><aspectratio>keep</aspectratio><texture fallback="DefaultAddon.png" background="true">$INFO[ListItem.Icon]</texture></control>
+					<control type="label"><left>20</left><top>262</top><width>240</width><height>36</height><align>center</align><font>font12</font><label>$INFO[ListItem.Label]</label></control>
+				</itemlayout>
+				<focusedlayout width="280" height="320" condition="[String.IsEqual(Window(home).Property(app_tab),addons) | String.IsEqual(Window(home).Property(app_tab),favourites)]">
+					<control type="image"><left>20</left><top>10</top><width>240</width><height>240</height><texture colordiffuse="FF1C222B">tomszo/mask-square.png</texture></control>
+					<control type="image"><left>12</left><top>2</top><width>256</width><height>256</height><texture border="22" colordiffuse="button_focus">tomszo/ring-small.png</texture><visible>Control.HasFocus(5000)</visible></control>
+					<control type="image"><left>55</left><top>45</top><width>170</width><height>170</height><aspectratio>keep</aspectratio><texture fallback="DefaultAddon.png" background="true">$INFO[ListItem.Icon]</texture></control>
+					<control type="label"><left>20</left><top>262</top><width>240</width><height>36</height><align>center</align><font>font12</font><label>$INFO[ListItem.Label]</label><scroll>true</scroll></control>
+				</focusedlayout>
+				<content target="videos">$VAR[AppFeedPath5000]</content>
+			</control>
+			<control type="panel" id="5001">
+				<left>0</left>
+				<top>0</top>
+				<right>0</right>
+				<bottom>0</bottom>
+				<orientation>vertical</orientation>
+				<onup>300</onup>
+				<ondown>9000</ondown>
+				<onleft>5001</onleft>
+				<onright>5001</onright>
+				<onback>9000</onback>
+				<preloaditems>1</preloaditems>
+				<scrolltime tween="quadratic" easing="out">300</scrolltime>
+				<visible>String.IsEqual(Window(home).Property(app_tab),addons) + String.IsEqual(Window(home).Property(app_chip),2)</visible>
+				<itemlayout width="280" height="460" condition="![String.IsEqual(Window(home).Property(app_tab),addons) | String.IsEqual(Window(home).Property(app_tab),favourites)]">
+					<control type="image"><left>20</left><top>10</top><width>240</width><height>360</height><texture colordiffuse="FF1C222B">tomszo/mask-poster.png</texture></control>
+					<control type="image"><left>20</left><top>10</top><width>240</width><height>360</height><aspectratio>scale</aspectratio><texture diffuse="tomszo/mask-poster.png" fallback="DefaultVideo.png" background="true">$VAR[AppCardArtVar]</texture></control>
+					<control type="progress"><left>36</left><top>350</top><width>208</width><height>6</height><texturebg colordiffuse="60000000">colors/white.png</texturebg><midtexture colordiffuse="button_focus">colors/white.png</midtexture><info>ListItem.PercentPlayed</info><visible>Integer.IsGreater(ListItem.PercentPlayed,0)</visible></control>
+					<control type="label"><left>20</left><top>380</top><width>240</width><height>36</height><font>font12</font><label>$VAR[AppCardLabelVar]</label></control>
+					<control type="label"><left>20</left><top>414</top><width>240</width><height>32</height><font>font10</font><textcolor>grey</textcolor><label>$VAR[AppCardLabel2Var]</label></control>
+				</itemlayout>
+				<focusedlayout width="280" height="460" condition="![String.IsEqual(Window(home).Property(app_tab),addons) | String.IsEqual(Window(home).Property(app_tab),favourites)]">
+					<control type="image"><left>20</left><top>10</top><width>240</width><height>360</height><texture colordiffuse="FF1C222B">tomszo/mask-poster.png</texture></control>
+					<control type="image"><left>20</left><top>10</top><width>240</width><height>360</height><aspectratio>scale</aspectratio><texture diffuse="tomszo/mask-poster.png" fallback="DefaultVideo.png" background="true">$VAR[AppCardArtVar]</texture></control>
+					<control type="image"><left>12</left><top>2</top><width>256</width><height>376</height><texture border="22" colordiffuse="button_focus">tomszo/ring-small.png</texture><visible>Control.HasFocus(5001)</visible></control>
+					<control type="progress"><left>36</left><top>350</top><width>208</width><height>6</height><texturebg colordiffuse="60000000">colors/white.png</texturebg><midtexture colordiffuse="button_focus">colors/white.png</midtexture><info>ListItem.PercentPlayed</info><visible>Integer.IsGreater(ListItem.PercentPlayed,0)</visible></control>
+					<control type="label"><left>20</left><top>380</top><width>240</width><height>36</height><font>font12</font><label>$VAR[AppCardLabelVar]</label><scroll>true</scroll></control>
+					<control type="label"><left>20</left><top>414</top><width>240</width><height>32</height><font>font10</font><textcolor>grey</textcolor><label>$VAR[AppCardLabel2Var]</label></control>
+				</focusedlayout>
+				<itemlayout width="280" height="320" condition="[String.IsEqual(Window(home).Property(app_tab),addons) | String.IsEqual(Window(home).Property(app_tab),favourites)]">
+					<control type="image"><left>20</left><top>10</top><width>240</width><height>240</height><texture colordiffuse="FF1C222B">tomszo/mask-square.png</texture></control>
+					<control type="image"><left>55</left><top>45</top><width>170</width><height>170</height><aspectratio>keep</aspectratio><texture fallback="DefaultAddon.png" background="true">$INFO[ListItem.Icon]</texture></control>
+					<control type="label"><left>20</left><top>262</top><width>240</width><height>36</height><align>center</align><font>font12</font><label>$INFO[ListItem.Label]</label></control>
+				</itemlayout>
+				<focusedlayout width="280" height="320" condition="[String.IsEqual(Window(home).Property(app_tab),addons) | String.IsEqual(Window(home).Property(app_tab),favourites)]">
+					<control type="image"><left>20</left><top>10</top><width>240</width><height>240</height><texture colordiffuse="FF1C222B">tomszo/mask-square.png</texture></control>
+					<control type="image"><left>12</left><top>2</top><width>256</width><height>256</height><texture border="22" colordiffuse="button_focus">tomszo/ring-small.png</texture><visible>Control.HasFocus(5001)</visible></control>
+					<control type="image"><left>55</left><top>45</top><width>170</width><height>170</height><aspectratio>keep</aspectratio><texture fallback="DefaultAddon.png" background="true">$INFO[ListItem.Icon]</texture></control>
+					<control type="label"><left>20</left><top>262</top><width>240</width><height>36</height><align>center</align><font>font12</font><label>$INFO[ListItem.Label]</label><scroll>true</scroll></control>
+				</focusedlayout>
+				<content target="programs">$VAR[AppFeedPath5001]</content>
+			</control>
+			<control type="panel" id="5002">
+				<left>0</left>
+				<top>0</top>
+				<right>0</right>
+				<bottom>0</bottom>
+				<orientation>vertical</orientation>
+				<onup>300</onup>
+				<ondown>9000</ondown>
+				<onleft>5002</onleft>
+				<onright>5002</onright>
+				<onback>9000</onback>
+				<preloaditems>1</preloaditems>
+				<scrolltime tween="quadratic" easing="out">300</scrolltime>
+				<visible>String.IsEqual(Window(home).Property(app_tab),addons) + String.IsEqual(Window(home).Property(app_chip),3)</visible>
+				<itemlayout width="280" height="460" condition="![String.IsEqual(Window(home).Property(app_tab),addons) | String.IsEqual(Window(home).Property(app_tab),favourites)]">
+					<control type="image"><left>20</left><top>10</top><width>240</width><height>360</height><texture colordiffuse="FF1C222B">tomszo/mask-poster.png</texture></control>
+					<control type="image"><left>20</left><top>10</top><width>240</width><height>360</height><aspectratio>scale</aspectratio><texture diffuse="tomszo/mask-poster.png" fallback="DefaultVideo.png" background="true">$VAR[AppCardArtVar]</texture></control>
+					<control type="progress"><left>36</left><top>350</top><width>208</width><height>6</height><texturebg colordiffuse="60000000">colors/white.png</texturebg><midtexture colordiffuse="button_focus">colors/white.png</midtexture><info>ListItem.PercentPlayed</info><visible>Integer.IsGreater(ListItem.PercentPlayed,0)</visible></control>
+					<control type="label"><left>20</left><top>380</top><width>240</width><height>36</height><font>font12</font><label>$VAR[AppCardLabelVar]</label></control>
+					<control type="label"><left>20</left><top>414</top><width>240</width><height>32</height><font>font10</font><textcolor>grey</textcolor><label>$VAR[AppCardLabel2Var]</label></control>
+				</itemlayout>
+				<focusedlayout width="280" height="460" condition="![String.IsEqual(Window(home).Property(app_tab),addons) | String.IsEqual(Window(home).Property(app_tab),favourites)]">
+					<control type="image"><left>20</left><top>10</top><width>240</width><height>360</height><texture colordiffuse="FF1C222B">tomszo/mask-poster.png</texture></control>
+					<control type="image"><left>20</left><top>10</top><width>240</width><height>360</height><aspectratio>scale</aspectratio><texture diffuse="tomszo/mask-poster.png" fallback="DefaultVideo.png" background="true">$VAR[AppCardArtVar]</texture></control>
+					<control type="image"><left>12</left><top>2</top><width>256</width><height>376</height><texture border="22" colordiffuse="button_focus">tomszo/ring-small.png</texture><visible>Control.HasFocus(5002)</visible></control>
+					<control type="progress"><left>36</left><top>350</top><width>208</width><height>6</height><texturebg colordiffuse="60000000">colors/white.png</texturebg><midtexture colordiffuse="button_focus">colors/white.png</midtexture><info>ListItem.PercentPlayed</info><visible>Integer.IsGreater(ListItem.PercentPlayed,0)</visible></control>
+					<control type="label"><left>20</left><top>380</top><width>240</width><height>36</height><font>font12</font><label>$VAR[AppCardLabelVar]</label><scroll>true</scroll></control>
+					<control type="label"><left>20</left><top>414</top><width>240</width><height>32</height><font>font10</font><textcolor>grey</textcolor><label>$VAR[AppCardLabel2Var]</label></control>
+				</focusedlayout>
+				<itemlayout width="280" height="320" condition="[String.IsEqual(Window(home).Property(app_tab),addons) | String.IsEqual(Window(home).Property(app_tab),favourites)]">
+					<control type="image"><left>20</left><top>10</top><width>240</width><height>240</height><texture colordiffuse="FF1C222B">tomszo/mask-square.png</texture></control>
+					<control type="image"><left>55</left><top>45</top><width>170</width><height>170</height><aspectratio>keep</aspectratio><texture fallback="DefaultAddon.png" background="true">$INFO[ListItem.Icon]</texture></control>
+					<control type="label"><left>20</left><top>262</top><width>240</width><height>36</height><align>center</align><font>font12</font><label>$INFO[ListItem.Label]</label></control>
+				</itemlayout>
+				<focusedlayout width="280" height="320" condition="[String.IsEqual(Window(home).Property(app_tab),addons) | String.IsEqual(Window(home).Property(app_tab),favourites)]">
+					<control type="image"><left>20</left><top>10</top><width>240</width><height>240</height><texture colordiffuse="FF1C222B">tomszo/mask-square.png</texture></control>
+					<control type="image"><left>12</left><top>2</top><width>256</width><height>256</height><texture border="22" colordiffuse="button_focus">tomszo/ring-small.png</texture><visible>Control.HasFocus(5002)</visible></control>
+					<control type="image"><left>55</left><top>45</top><width>170</width><height>170</height><aspectratio>keep</aspectratio><texture fallback="DefaultAddon.png" background="true">$INFO[ListItem.Icon]</texture></control>
+					<control type="label"><left>20</left><top>262</top><width>240</width><height>36</height><align>center</align><font>font12</font><label>$INFO[ListItem.Label]</label><scroll>true</scroll></control>
+				</focusedlayout>
+				<content target="music">$VAR[AppFeedPath5002]</content>
+			</control>
+			<control type="group">
+				<visible>[Control.IsVisible(5000) + Integer.IsEqual(Container(5000).NumItems,0) + !Container(5000).IsUpdating] | [Control.IsVisible(5001) + Integer.IsEqual(Container(5001).NumItems,0) + !Container(5001).IsUpdating] | [Control.IsVisible(5002) + Integer.IsEqual(Container(5002).NumItems,0) + !Container(5002).IsUpdating]</visible>
+				<control type="label">
+					<left>0</left>
+					<right>0</right>
+					<top>220</top>
+					<height>60</height>
+					<align>center</align>
+					<font>font37</font>
+					<label>$LOCALIZE[31971]</label>
+				</control>
+				<control type="label">
+					<left>0</left>
+					<right>0</right>
+					<top>290</top>
+					<height>40</height>
+					<align>center</align>
+					<font>font27</font>
+					<textcolor>grey</textcolor>
+					<label>$LOCALIZE[31972]</label>
+				</control>
+			</control>
+		</control>
+		<control type="image">
+			<left>0</left>
+			<right>0</right>
+			<bottom>0</bottom>
+			<height>140</height>
+			<texture colordiffuse="FF0E1217">colors/white.png</texture>
+		</control>
+		<control type="image">
+			<left>0</left>
+			<right>0</right>
+			<bottom>140</bottom>
+			<height>2</height>
+			<texture colordiffuse="FF1E252E">colors/white.png</texture>
+		</control>
+		<control type="list" id="9000">
+			<centerleft>50%</centerleft>
+			<width>1800</width>
+			<bottom>0</bottom>
+			<height>140</height>
+			<orientation>horizontal</orientation>
+			<onup>5100</onup>
+			<ondown>noop</ondown>
+			<onleft>9000</onleft>
+			<onright>9000</onright>
+			<scrolltime>0</scrolltime>
+			<itemlayout width="300" height="140">
+				<control type="image">
+					<centerleft>50%</centerleft>
+					<top>16</top>
+					<width>120</width>
+					<height>64</height>
+					<texture border="32" colordiffuse="550F9D76">tomszo/pill.png</texture>
+					<visible>[String.IsEqual(ListItem.Property(id),Window(home).Property(app_tab)) | [String.IsEqual(ListItem.Property(id),home) + String.IsEmpty(Window(home).Property(app_tab))]]</visible>
+				</control>
+				<control type="image">
+					<centerleft>50%</centerleft>
+					<top>22</top>
+					<width>52</width>
+					<height>52</height>
+					<aspectratio>keep</aspectratio>
+					<texture colordiffuse="FFF0F0F0">$INFO[ListItem.Icon]</texture>
+					<visible>[String.IsEqual(ListItem.Property(id),Window(home).Property(app_tab)) | [String.IsEqual(ListItem.Property(id),home) + String.IsEmpty(Window(home).Property(app_tab))]]</visible>
+				</control>
+				<control type="image">
+					<centerleft>50%</centerleft>
+					<top>22</top>
+					<width>52</width>
+					<height>52</height>
+					<aspectratio>keep</aspectratio>
+					<texture colordiffuse="FF8A939C">$INFO[ListItem.Icon]</texture>
+					<visible>![String.IsEqual(ListItem.Property(id),Window(home).Property(app_tab)) | [String.IsEqual(ListItem.Property(id),home) + String.IsEmpty(Window(home).Property(app_tab))]]</visible>
+				</control>
+				<control type="label">
+					<left>0</left>
+					<right>0</right>
+					<top>86</top>
+					<height>36</height>
+					<align>center</align>
+					<font>font12</font>
+					<textcolor>FFF0F0F0</textcolor>
+					<label>$INFO[ListItem.Label]</label>
+					<visible>[String.IsEqual(ListItem.Property(id),Window(home).Property(app_tab)) | [String.IsEqual(ListItem.Property(id),home) + String.IsEmpty(Window(home).Property(app_tab))]]</visible>
+				</control>
+				<control type="label">
+					<left>0</left>
+					<right>0</right>
+					<top>86</top>
+					<height>36</height>
+					<align>center</align>
+					<font>font12</font>
+					<textcolor>FF8A939C</textcolor>
+					<label>$INFO[ListItem.Label]</label>
+					<visible>![String.IsEqual(ListItem.Property(id),Window(home).Property(app_tab)) | [String.IsEqual(ListItem.Property(id),home) + String.IsEmpty(Window(home).Property(app_tab))]]</visible>
+				</control>
+			</itemlayout>
+			<focusedlayout width="300" height="140">
+				<control type="image">
+					<centerleft>50%</centerleft>
+					<top>16</top>
+					<width>120</width>
+					<height>64</height>
+					<texture border="32" colordiffuse="550F9D76">tomszo/pill.png</texture>
+					<visible>[String.IsEqual(ListItem.Property(id),Window(home).Property(app_tab)) | [String.IsEqual(ListItem.Property(id),home) + String.IsEmpty(Window(home).Property(app_tab))]]</visible>
+				</control>
+				<control type="image">
+					<centerleft>50%</centerleft>
+					<top>22</top>
+					<width>52</width>
+					<height>52</height>
+					<aspectratio>keep</aspectratio>
+					<texture colordiffuse="FFF0F0F0">$INFO[ListItem.Icon]</texture>
+					<visible>[String.IsEqual(ListItem.Property(id),Window(home).Property(app_tab)) | [String.IsEqual(ListItem.Property(id),home) + String.IsEmpty(Window(home).Property(app_tab))]]</visible>
+				</control>
+				<control type="image">
+					<centerleft>50%</centerleft>
+					<top>22</top>
+					<width>52</width>
+					<height>52</height>
+					<aspectratio>keep</aspectratio>
+					<texture colordiffuse="FF8A939C">$INFO[ListItem.Icon]</texture>
+					<visible>![String.IsEqual(ListItem.Property(id),Window(home).Property(app_tab)) | [String.IsEqual(ListItem.Property(id),home) + String.IsEmpty(Window(home).Property(app_tab))]]</visible>
+				</control>
+				<control type="label">
+					<left>0</left>
+					<right>0</right>
+					<top>86</top>
+					<height>36</height>
+					<align>center</align>
+					<font>font12</font>
+					<textcolor>button_focus</textcolor>
+					<label>$INFO[ListItem.Label]</label>
+					<visible>Control.HasFocus(9000)</visible>
+				</control>
+				<control type="label">
+					<left>0</left>
+					<right>0</right>
+					<top>86</top>
+					<height>36</height>
+					<align>center</align>
+					<font>font12</font>
+					<textcolor>FFF0F0F0</textcolor>
+					<label>$INFO[ListItem.Label]</label>
+					<visible>[String.IsEqual(ListItem.Property(id),Window(home).Property(app_tab)) | [String.IsEqual(ListItem.Property(id),home) + String.IsEmpty(Window(home).Property(app_tab))]] + !Control.HasFocus(9000)</visible>
+				</control>
+				<control type="label">
+					<left>0</left>
+					<right>0</right>
+					<top>86</top>
+					<height>36</height>
+					<align>center</align>
+					<font>font12</font>
+					<textcolor>FF8A939C</textcolor>
+					<label>$INFO[ListItem.Label]</label>
+					<visible>![String.IsEqual(ListItem.Property(id),Window(home).Property(app_tab)) | [String.IsEqual(ListItem.Property(id),home) + String.IsEmpty(Window(home).Property(app_tab))]] + !Control.HasFocus(9000)</visible>
+				</control>
+			</focusedlayout>
+			<content>
+				<item>
+					<label>$LOCALIZE[31973]</label>
+					<icon>tomszo/tab-home.png</icon>
+					<property name="id">home</property>
+					<onclick>ClearProperty(app_chip,home)</onclick>
+					<onclick>SetProperty(app_tab,home,home)</onclick>
+				</item>
+				<item>
+					<label>$LOCALIZE[31974]</label>
+					<icon>tomszo/tab-movies.png</icon>
+					<property name="id">movies</property>
+					<onclick>ClearProperty(app_chip,home)</onclick>
+					<onclick>SetProperty(app_tab,movies,home)</onclick>
+				</item>
+				<item>
+					<label>$LOCALIZE[31975]</label>
+					<icon>tomszo/tab-tvshows.png</icon>
+					<property name="id">tvshows</property>
+					<onclick>ClearProperty(app_chip,home)</onclick>
+					<onclick>SetProperty(app_tab,tvshows,home)</onclick>
+				</item>
+				<item>
+					<label>$LOCALIZE[31976]</label>
+					<icon>tomszo/tab-addons.png</icon>
+					<property name="id">addons</property>
+					<onclick>ClearProperty(app_chip,home)</onclick>
+					<onclick>SetProperty(app_tab,addons,home)</onclick>
+				</item>
+				<item>
+					<label>$LOCALIZE[31977]</label>
+					<icon>tomszo/tab-favourites.png</icon>
+					<property name="id">favourites</property>
+					<onclick>ClearProperty(app_chip,home)</onclick>
+					<onclick>SetProperty(app_tab,favourites,home)</onclick>
+				</item>
+				<item>
+					<label>$LOCALIZE[31978]</label>
+					<icon>tomszo/tab-settings.png</icon>
+					<property name="id">settings</property>
+					<onclick>ActivateWindow(settings)</onclick>
+				</item>
+			</content>
+		</control>
+	</include>
+</includes>
