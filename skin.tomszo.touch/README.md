@@ -22,7 +22,7 @@ Később bármikor váltható: *Beállítások → Felszín → Felszín beáll�
 | Terület | Változás |
 |---------|----------|
 | Kinézet | Minimalista, sötét „flat” stílus: egyszínű háttér minta nélkül, sötét dialógusok |
-| Érintés mód | Képernyőn lévő *Vissza*, *Beállítások*, *Hangerő*, *Kedvencek* gombok, görgetősáv a kezdőlap-sorokon |
+| Érintés mód | Ujjal húzva, lendülettel görgethető listák; képernyőn lévő *Vissza*, *Beállítások*, *Hangerő*, *Kedvencek* gombok, görgetősáv a kezdőlap-sorokon |
 | Videó OSD | Nagy, középre helyezett gombok: **-10 mp · lejátszás/szünet · +30 mp** |
 | Méretek | Listasorok 75 → 100 px, oldalmenü 80 → 96 px, beállítás-gombok 70 → 86 px |
 | Sebesség | Dia animációk **alapból kikapcsolva** (csak áttűnés) |

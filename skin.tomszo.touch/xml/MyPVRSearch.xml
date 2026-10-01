@@ -12,26 +12,8 @@
 				<visible>Control.IsVisible(50)</visible>
 				<include>OpenClose_Left</include>
 				<include>Visible_Left</include>
-				<control type="fixedlist" id="50">
-					<left>0</left>
-					<top>list_top_offset</top>
-					<right>918</right>
-					<bottom>list_bottom_offset</bottom>
-					<onleft>9000</onleft>
-					<onright>73</onright>
-					<onup>50</onup>
-					<ondown>50</ondown>
-					<movement>4</movement>
-					<focusposition>4</focusposition>
-					<pagecontrol>73</pagecontrol>
-					<scrolltime tween="cubic" easing="out">500</scrolltime>
-					<include content="PVRListItemLayouts">
-						<param name="list_id" value="50" />
-						<param name="only_label_condition" value="String.IsEmpty(ListItem.Date)" />
-						<param name="label1" value="$VAR[PVRMySearchLabel1Var]" />
-						<param name="label2" value="$INFO[ListItem.Date]" />
-					</include>
-				</control>
+				<include condition="Skin.HasSetting(remotemode)">TS_List16_MyPVRSearch_Fixed</include>
+				<include condition="!Skin.HasSetting(remotemode)">TS_List16_MyPVRSearch_Touch</include>
 			</control>
 			<control type="group">
 				<depth>DepthContentPanel</depth>

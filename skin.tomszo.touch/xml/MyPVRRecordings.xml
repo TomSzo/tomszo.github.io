@@ -10,27 +10,8 @@
 			<animation effect="fade" start="100" end="0" time="200" tween="sine" condition="$EXP[infodialog_active]">Conditional</animation>
 			<control type="group">
 				<include>OpenClose_Left</include>
-				<control type="fixedlist" id="50">
-					<left>0</left>
-					<top>list_top_offset</top>
-					<right>918</right>
-					<bottom>list_bottom_offset</bottom>
-					<onleft>9000</onleft>
-					<onright>73</onright>
-					<onup>50</onup>
-					<ondown>50</ondown>
-					<movement>4</movement>
-					<focusposition>4</focusposition>
-					<pagecontrol>73</pagecontrol>
-					<scrolltime tween="cubic" easing="out">500</scrolltime>
-					<include content="PVRListItemLayouts">
-						<param name="list_id" value="50" />
-						<param name="info_icon" value="$VAR[ListPVRRecordingsIconVar]" />
-						<param name="has_info_icon" value="true" />
-						<param name="label1" value="$INFO[ListItem.Label]" />
-						<param name="label2" value="$VAR[ListLabel2Var]" />
-					</include>
-				</control>
+				<include condition="Skin.HasSetting(remotemode)">TS_List15_MyPVRRecordings_Fixed</include>
+				<include condition="!Skin.HasSetting(remotemode)">TS_List15_MyPVRRecordings_Touch</include>
 			</control>
 			<control type="group">
 				<depth>DepthContentPanel</depth>
