@@ -96,7 +96,7 @@
 					if (!isChallenge(resp)) return resp;
 					if (attempt++ < maxRetries) return sleep(5000).then(tryOnce);
 					throw new ApiError('A Network4 szervere (Cloudflare) elutasította a kérést. ' +
-						'Próbáld újra később.', 'challenge');
+						'Próbáld újra később, vagy Beállítások → Kapcsolat: másik mód.', 'challenge');
 				}, function (err) {
 					throw new ApiError('Hálózati hiba: ' + err.message, 'network');
 				});

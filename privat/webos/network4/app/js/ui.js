@@ -421,7 +421,10 @@
 			[[true, 'Igen'], [false, 'Nem (mindig élő)']]));
 		form.appendChild(choice('Sportok menü frissítése a weboldalról (naponta 1x)', 'sportWeb',
 			[[true, 'Igen'], [false, 'Nem (beépített lista)']]));
-		form.appendChild(choice('API User-Agent', 'apiUa',
+		form.appendChild(choice('Kapcsolat a Network4 felé', 'connection',
+			[['auto', 'Automatikus (TV böngésző, ha kell: szolgáltatás)'],
+				['browser', 'Csak TV böngésző'], ['service', 'Csak háttérszolgáltatás']]));
+		form.appendChild(choice('API User-Agent (csak szolgáltatásnál)', 'apiUa',
 			[['app', 'Network4 mobilalkalmazás (Dart)'], ['firefox', 'Firefox (Android)']]));
 
 		var row = el('div', 'buttons');
@@ -438,9 +441,11 @@
 			Api.clearToken();
 			toast('Belépés…', 2000);
 			Api.login().then(function () {
-				alertBox('Kapcsolat teszt', 'Sikeres belépés. Ma ' + Api.todayRequests() + ' kérés.');
+				alertBox('Kapcsolat teszt', 'Sikeres belépés (út: ' + global.N4Bridge.state.lastVia +
+					'). Ma ' + Api.todayRequests() + ' kérés.');
 			}, function (err) {
-				alertBox('Kapcsolat teszt', errMsg(err));
+				alertBox('Kapcsolat teszt', errMsg(err) + ' (utolsó út: ' +
+					(global.N4Bridge.state.lastVia || '-') + ')');
 			});
 		}));
 		row.appendChild(button('Munkamenet törlése', function () {

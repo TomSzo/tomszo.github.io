@@ -50,7 +50,8 @@
 	}
 
 	var DEFAULTS = {email: '', password: '', apiUa: 'app', quality: '1080', askReplay: true,
-		sportWeb: true, licenseUrl: '', engine: 'shaka'};
+		sportWeb: true, licenseUrl: '', engine: 'shaka',
+		connection: 'auto'};
 
 	function setting(name) {
 		var s = get('settings', {}) || {};
