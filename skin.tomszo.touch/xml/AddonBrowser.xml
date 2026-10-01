@@ -2,13 +2,15 @@
 <window>
 	<defaultcontrol always="true">50</defaultcontrol>
 	<backgroundcolor>background</backgroundcolor>
-	<views>50,52,55</views>
+	<include condition="Skin.HasSetting(remotemode)">TS_Views_AddonBrowser_Remote</include>
+	<include condition="!Skin.HasSetting(remotemode)">TS_Views_AddonBrowser_Touch</include>
 	<menucontrol>9000</menucontrol>
 	<controls>
 		<include>DefaultBackground</include>
 		<control type="group">
 			<animation effect="fade" start="100" end="0" time="200" tween="sine" condition="$EXP[infodialog_active]">Conditional</animation>
 			<include>View_50_List</include>
+			<include condition="!Skin.HasSetting(remotemode)">View_56_MobileList</include>
 			<include>View_52_IconWall</include>
 			<include content="View_55_WideList">
 				<param name="bottom_offset">list_bottom</param>

@@ -933,6 +933,22 @@ msgctxt "#31979"
 msgid "Now playing"
 msgstr "Most megy"
 
+msgctxt "#31980"
+msgid "Mobile list"
+msgstr "Mobil lista"
+
+msgctxt "#31981"
+msgid "Cards"
+msgstr "Kártyák"
+
+msgctxt "#31982"
+msgid "min"
+msgstr "perc"
+
+msgctxt "#31983"
+msgid "episodes"
+msgstr "rész"
+
 #~ msgctxt "#31025"
 #~ msgid "No favourites found. You can add any item from media views to this list by using the context menu."
 #~ msgstr "Nem találhatóak kedvencek. Bármely elemet hozzáadhat ehhez a listához a média nézetekből, a környezeti menü használatával."

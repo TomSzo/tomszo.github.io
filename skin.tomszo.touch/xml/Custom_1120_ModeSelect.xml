@@ -36,6 +36,9 @@
 			<height>560</height>
 			<control type="group">
 				<left>0</left>
+				<top>0</top>
+				<width>560</width>
+				<height>560</height>
 				<include content="ModeSelectCard">
 					<param name="id" value="11" />
 					<param name="other" value="12" />
@@ -49,6 +52,9 @@
 			</control>
 			<control type="group">
 				<left>620</left>
+				<top>0</top>
+				<width>560</width>
+				<height>560</height>
 				<include content="ModeSelectCard">
 					<param name="id" value="12" />
 					<param name="other" value="11" />
