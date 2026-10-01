@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<addon id="skin.tomszo.touch" version="1.2.0" name="TomSzo Touch" provider-name="TomSzo (alap: Estuary – phil65, Ichabod Fletchman)">
+<addon id="skin.tomszo.touch" version="1.3.0" name="TomSzo Touch" provider-name="TomSzo (alap: Estuary – phil65, Ichabod Fletchman)">
 	<requires>
 		<import addon="xbmc.gui" version="5.18.0"/>
 	</requires>
@@ -22,6 +22,7 @@
 			<fanart>resources/fanart.jpg</fanart>
 			<screenshot>resources/screenshot-01.jpg</screenshot>
 			<screenshot>resources/screenshot-02.jpg</screenshot>
+			<screenshot>resources/screenshot-03.jpg</screenshot>
 		</assets>
 		<summary lang="en_GB">Minimal Estuary fork for Kodi 22 with two modes: Touch and TV / Box</summary>
 		<summary lang="hu_HU">Minimalista Estuary-fork Kodi 22-höz két móddal: Érintés és TV / Box</summary>
@@ -29,6 +30,7 @@
 
 - Two modes: on first start a pop-up asks whether you use Touch or TV / Box (remote)
 - Touch mode has an app-like home screen: title and filter chips on top, a vertically scrolling card grid, and a fixed bottom tab bar (Home, Movies, TV shows, Add-ons, Favourites, Settings)
+- Touch mode has mobile-style views for lists: "Mobile list" (rows with poster, year, genre, runtime, plot, rating) and "Cards" (poster grid)
 - Minimal, flat dark look: solid background without pattern, dark dialogs
 - Touch mode: lists scroll with a finger swipe (kinetic scrolling); on-screen back, settings, volume and favourites buttons, scrollbars on home widgets
 - Big on-screen playback controls in the video OSD (-10 s, play/pause, +30 s)
@@ -42,6 +44,7 @@ Based on Estuary by phil65 and Ichabod Fletchman (Team Kodi).</description>
 
 - Két mód: első indításkor felugró ablak kérdezi meg, hogy Érintéssel vagy TV / Box-ként (távirányítóval) használod
 - Érintés módban app-szerű kezdőképernyő: fent cím és szűrőgombok, középen függőlegesen görgethető kártyarács, alul fix menüsáv (Kezdőlap, Filmek, Sorozatok, Kiegészítők, Kedvencek, Beállítások)
+- Érintés módban mobilos nézetek a listákhoz: „Mobil lista” (sorok poszterrel, évvel, műfajjal, hosszal, leírással, értékeléssel) és „Kártyák” (poszterrács)
 - Minimalista, sötét „flat” megjelenés: egyszínű háttér minta nélkül, sötét dialógusok
 - Érintés mód: a listák ujjal húzva, lendülettel görgethetők; képernyőn lévő vissza, beállítások, hangerő és kedvencek gombok, görgetősáv a kezdőlap-sorokon
 - Nagy lejátszásvezérlő gombok a videó OSD közepén (-10 mp, lejátszás/szünet, +30 mp)
@@ -52,6 +55,10 @@ Based on Estuary by phil65 and Ichabod Fletchman (Team Kodi).</description>
 
 Alap: Estuary – phil65 és Ichabod Fletchman (Team Kodi).</description>
 		<news>
+v1.3.0 (2026-10-01)
+- Új: „Mobil lista” és „Kártyák” nézet Érintés módban (filmek, sorozatok, kiegészítők, programok)
+- Javítás: a módválasztó bal kártyájának tartalma elcsúszott
+
 v1.2.0 (2026-10-01)
 - Új: app-szerű kezdőképernyő Érintés módban (alsó menüsáv, szűrőgombok, görgethető kártyarács)
 - TV / Box módban marad az eredeti Estuary kezdőképernyő

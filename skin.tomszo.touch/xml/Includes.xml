@@ -4,6 +4,9 @@
 	<include file="Includes_TouchLists.xml" />
 	<include file="Includes_HomeClassic.xml" />
 	<include file="Includes_HomeApp.xml" />
+	<include file="Includes_TouchViews.xml" />
+	<include file="View_56_MobileList.xml" />
+	<include file="View_57_Cards.xml" />
 	<include file="Includes_Home.xml" />
 	<include file="Includes_Animations.xml" />
 	<include file="Includes_Games.xml" />
@@ -1576,7 +1579,11 @@
 				<animation effect="zoom" start="104" end="100" center="auto" time="150" tween="sine">Unfocus</animation>
 			</control>
 			<control type="group">
-				<animation effect="zoom" start="100" end="104" center="280,280" time="150" tween="sine" condition="Control.HasFocus($PARAM[id])">Conditional</animation>
+				<left>0</left>
+				<top>0</top>
+				<width>560</width>
+				<height>560</height>
+				<animation effect="zoom" start="100" end="104" center="auto" time="150" tween="sine" condition="Control.HasFocus($PARAM[id])">Conditional</animation>
 				<control type="image">
 					<width>560</width>
 					<height>560</height>

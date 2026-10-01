@@ -1,0 +1,237 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- TomSzo Touch: Mobil lista nézet (generálva: _tools/views.py) -->
+<includes>
+	<variable name="MobileMetaVar">
+		<value condition="String.IsEqual(ListItem.DBType,episode)">$INFO[ListItem.Season,S,]$INFO[ListItem.Episode,E,]$INFO[ListItem.Premiered, · ,]$INFO[ListItem.Duration(mins), · , $LOCALIZE[31982]]</value>
+		<value condition="String.IsEqual(ListItem.DBType,tvshow)">$INFO[ListItem.Year]$INFO[ListItem.Genre, · ,]$INFO[ListItem.Property(TotalEpisodes), · , $LOCALIZE[31983]]</value>
+		<value condition="!String.IsEmpty(ListItem.Duration)">$INFO[ListItem.Year]$INFO[ListItem.Genre, · ,]$INFO[ListItem.Duration(mins), · , $LOCALIZE[31982]]</value>
+		<value condition="!String.IsEmpty(ListItem.Year) | !String.IsEmpty(ListItem.Genre)">$INFO[ListItem.Year]$INFO[ListItem.Genre, · ,]</value>
+		<value>$INFO[ListItem.Label2]</value>
+	</variable>
+	<variable name="MobileTitleVar">
+		<value condition="String.IsEqual(ListItem.DBType,episode) + !String.IsEmpty(ListItem.Title)">$INFO[ListItem.Title]</value>
+		<value>$INFO[ListItem.Label]</value>
+	</variable>
+	<variable name="MobilePosterVar">
+		<value condition="!String.IsEmpty(ListItem.Art(poster))">$INFO[ListItem.Art(poster)]</value>
+		<value condition="!String.IsEmpty(ListItem.Art(tvshow.poster))">$INFO[ListItem.Art(tvshow.poster)]</value>
+	</variable>
+	<include name="View_56_MobileList">
+		<control type="group">
+			<visible>Control.IsVisible(56)</visible>
+			<include>Visible_Fade</include>
+			<control type="list" id="56">
+				<left>20</left>
+				<right>20</right>
+				<top>110</top>
+				<bottom>60</bottom>
+				<orientation>vertical</orientation>
+				<onleft>9000</onleft>
+				<onright>9000</onright>
+				<onup>56</onup>
+				<ondown>56</ondown>
+				<preloaditems>2</preloaditems>
+				<scrolltime tween="quadratic" easing="out">250</scrolltime>
+				<viewtype label="$LOCALIZE[31980]">list</viewtype>
+				<itemlayout height="170">
+				<control type="image">
+					<left>24</left>
+					<top>15</top>
+					<width>93</width>
+					<height>140</height>
+					<texture colordiffuse="FF1C222B">tomszo/mask-poster.png</texture>
+				</control>
+				<control type="image">
+					<left>24</left>
+					<top>15</top>
+					<width>93</width>
+					<height>140</height>
+					<aspectratio>scale</aspectratio>
+					<texture diffuse="tomszo/mask-poster.png" background="true">$VAR[MobilePosterVar]</texture>
+					<visible>!String.IsEmpty(ListItem.Art(poster)) | !String.IsEmpty(ListItem.Art(tvshow.poster))</visible>
+				</control>
+				<control type="image">
+					<left>34</left>
+					<top>40</top>
+					<width>73</width>
+					<height>90</height>
+					<aspectratio>keep</aspectratio>
+					<texture fallback="DefaultFolder.png" background="true">$INFO[ListItem.Icon]</texture>
+					<visible>![!String.IsEmpty(ListItem.Art(poster)) | !String.IsEmpty(ListItem.Art(tvshow.poster))]</visible>
+				</control>
+				<control type="label">
+					<left>145</left>
+					<right>200</right>
+					<top>20</top>
+					<height>46</height>
+					<aligny>center</aligny>
+					<font>font32</font>
+					<label>$VAR[MobileTitleVar]</label>
+				</control>
+				<control type="label">
+					<left>145</left>
+					<right>200</right>
+					<top>66</top>
+					<height>34</height>
+					<aligny>center</aligny>
+					<font>font12</font>
+					<textcolor>FFA8B0B8</textcolor>
+					<label>$VAR[MobileMetaVar]</label>
+				</control>
+				<control type="label">
+					<left>145</left>
+					<right>200</right>
+					<top>100</top>
+					<height>32</height>
+					<aligny>center</aligny>
+					<font>font10</font>
+					<textcolor>FF7D868F</textcolor>
+					<label>$INFO[ListItem.Plot]</label>
+				</control>
+				<control type="progress">
+					<left>145</left>
+					<top>142</top>
+					<width>320</width>
+					<height>5</height>
+					<texturebg colordiffuse="30FFFFFF">colors/white.png</texturebg>
+					<midtexture colordiffuse="button_focus">colors/white.png</midtexture>
+					<info>ListItem.PercentPlayed</info>
+					<visible>Integer.IsGreater(ListItem.PercentPlayed,0)</visible>
+				</control>
+				<control type="image">
+					<right>110</right>
+					<top>27</top>
+					<width>30</width>
+					<height>30</height>
+					<texture colordiffuse="FFE8B54A">tomszo/tab-favourites.png</texture>
+					<visible>!String.IsEmpty(ListItem.Rating)</visible>
+				</control>
+				<control type="label">
+					<right>24</right>
+					<top>20</top>
+					<width>80</width>
+					<height>44</height>
+					<aligny>center</aligny>
+					<font>font27</font>
+					<label>$INFO[ListItem.Rating]</label>
+				</control>
+				<control type="image">
+					<right>28</right>
+					<bottom>28</bottom>
+					<width>32</width>
+					<height>32</height>
+					<aspectratio>keep</aspectratio>
+					<texture colordiffuse="FF8A939C">$VAR[ListWatchedIconVar]</texture>
+				</control>
+				<control type="image">
+					<left>145</left>
+					<right>24</right>
+					<bottom>0</bottom>
+					<height>1</height>
+					<texture colordiffuse="14FFFFFF">colors/white.png</texture>
+				</control>
+				</itemlayout>
+				<focusedlayout height="170">
+				<control type="image">
+					<left>8</left>
+					<right>8</right>
+					<top>6</top>
+					<bottom>6</bottom>
+					<texture border="30" colordiffuse="FF1C2A2A">tomszo/card.png</texture>
+					<visible>Control.HasFocus(56)</visible>
+				</control>
+				<control type="image">
+					<left>24</left>
+					<top>15</top>
+					<width>93</width>
+					<height>140</height>
+					<texture colordiffuse="FF1C222B">tomszo/mask-poster.png</texture>
+				</control>
+				<control type="image">
+					<left>24</left>
+					<top>15</top>
+					<width>93</width>
+					<height>140</height>
+					<aspectratio>scale</aspectratio>
+					<texture diffuse="tomszo/mask-poster.png" background="true">$VAR[MobilePosterVar]</texture>
+					<visible>!String.IsEmpty(ListItem.Art(poster)) | !String.IsEmpty(ListItem.Art(tvshow.poster))</visible>
+				</control>
+				<control type="image">
+					<left>34</left>
+					<top>40</top>
+					<width>73</width>
+					<height>90</height>
+					<aspectratio>keep</aspectratio>
+					<texture fallback="DefaultFolder.png" background="true">$INFO[ListItem.Icon]</texture>
+					<visible>![!String.IsEmpty(ListItem.Art(poster)) | !String.IsEmpty(ListItem.Art(tvshow.poster))]</visible>
+				</control>
+				<control type="label">
+					<left>145</left>
+					<right>200</right>
+					<top>20</top>
+					<height>46</height>
+					<aligny>center</aligny>
+					<font>font32</font>
+					<label>$VAR[MobileTitleVar]</label>
+					<scroll>true</scroll>
+				</control>
+				<control type="label">
+					<left>145</left>
+					<right>200</right>
+					<top>66</top>
+					<height>34</height>
+					<aligny>center</aligny>
+					<font>font12</font>
+					<textcolor>FFA8B0B8</textcolor>
+					<label>$VAR[MobileMetaVar]</label>
+				</control>
+				<control type="label">
+					<left>145</left>
+					<right>200</right>
+					<top>100</top>
+					<height>32</height>
+					<aligny>center</aligny>
+					<font>font10</font>
+					<textcolor>FF7D868F</textcolor>
+					<label>$INFO[ListItem.Plot]</label>
+				</control>
+				<control type="progress">
+					<left>145</left>
+					<top>142</top>
+					<width>320</width>
+					<height>5</height>
+					<texturebg colordiffuse="30FFFFFF">colors/white.png</texturebg>
+					<midtexture colordiffuse="button_focus">colors/white.png</midtexture>
+					<info>ListItem.PercentPlayed</info>
+					<visible>Integer.IsGreater(ListItem.PercentPlayed,0)</visible>
+				</control>
+				<control type="image">
+					<right>110</right>
+					<top>27</top>
+					<width>30</width>
+					<height>30</height>
+					<texture colordiffuse="FFE8B54A">tomszo/tab-favourites.png</texture>
+					<visible>!String.IsEmpty(ListItem.Rating)</visible>
+				</control>
+				<control type="label">
+					<right>24</right>
+					<top>20</top>
+					<width>80</width>
+					<height>44</height>
+					<aligny>center</aligny>
+					<font>font27</font>
+					<label>$INFO[ListItem.Rating]</label>
+				</control>
+				<control type="image">
+					<right>28</right>
+					<bottom>28</bottom>
+					<width>32</width>
+					<height>32</height>
+					<aspectratio>keep</aspectratio>
+					<texture colordiffuse="FF8A939C">$VAR[ListWatchedIconVar]</texture>
+				</control>
+				</focusedlayout>
+			</control>
+		</control>
+	</include>
+</includes>

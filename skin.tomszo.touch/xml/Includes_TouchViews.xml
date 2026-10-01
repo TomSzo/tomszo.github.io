@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- TomSzo Touch: nézetsorrend módonként. Érintés módban a mobilos nézetek (56 Mobil lista, 57 Kártyák) állnak elöl. -->
+<includes>
+	<include name="TS_Views_MyVideoNav_Remote">
+		<views>504,50,51,52,53,54,55,500,501,502</views>
+	</include>
+	<include name="TS_Views_MyVideoNav_Touch">
+		<views>57,56,504,50,51,52,53,54,55,500,501,502</views>
+	</include>
+	<include name="TS_Views_AddonBrowser_Remote">
+		<views>50,52,55</views>
+	</include>
+	<include name="TS_Views_AddonBrowser_Touch">
+		<views>56,50,52,55</views>
+	</include>
+	<include name="TS_Views_MyPrograms_Remote">
+		<views>50,52,55,500</views>
+	</include>
+	<include name="TS_Views_MyPrograms_Touch">
+		<views>56,50,52,55,500</views>
+	</include>
+</includes>

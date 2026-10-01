@@ -33,6 +33,15 @@ TV / Box módban az eredeti Estuary kezdőképernyő marad.
 
 ![App-szerű kezdőképernyő](resources/screenshot-02.jpg)
 
+## Mobilos nézetek (Érintés mód)
+
+A filmek, sorozatok, kiegészítők és programok listáiban két új nézet van. A *Nézettípus* menüben választhatók (oldalmenü: kétujjas húzás jobbra), Érintés módban ezek az alapértelmezettek:
+
+- **Mobil lista:** sorok kis poszterrel, cím, *évszám · műfaj · hossz*, egysoros leírás, értékelés ★ és haladásjelző
+- **Kártyák:** függőlegesen görgethető poszterrács (filmek, sorozatok, gyűjtemények, évadok)
+
+![Mobil lista](resources/screenshot-03.jpg)
+
 ## Mi más, mint az Estuary?
 
 | Terület | Változás |
