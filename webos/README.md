@@ -1,0 +1,84 @@
+# Network4 – LG webOS TV-re (BÉTA)
+
+A [Network4 Kodi-kiegészítő](../plugin.video.network4) webOS-változata LG TV-kre
+(fejlesztve LG C4-re, webOS 24). Nem hivatalos alkalmazás, nincs kapcsolatban a
+Network4-gyel; a **saját Network4 / Arena4+ előfizetéseddel** működik.
+
+- **Alap:** `plugin.video.arena4plus` – szerzők: **heg** és **vargalex** (GPL-3.0).
+- **Lejátszó:** [shaka-player](https://github.com/shaka-project/shaka-player) (Apache-2.0).
+- Licenc: **GPL-3.0-or-later**.
+
+## Funkciók
+
+- Élő közvetítések (élőben vagy az elejétől)
+- Sportok: Kiemelt sportok + sportágak → gyűjtemények → videók
+- Videótár (összes gyűjtemény), keresés
+- Beállítások: belépés, minőség (1080p / 720p / automatikus), lejátszó, kapcsolat teszt
+- Távirányító: nyilak + OK + Vissza; a Magic Remote mutatója is működik
+- Lejátszás közben: OK = szünet, ◀ / ▶ = tekerés (−10 / +30 mp), Vissza = kilépés
+
+## Telepítés fejlesztői módban
+
+### 1. Fejlesztői mód a TV-n (egyszer)
+
+1. Regisztrálj egy ingyenes fiókot: <https://webostv.developer.lge.com> (LG Developer).
+2. A TV-n: **LG Content Store** → keresd meg és telepítsd a **Developer Mode** alkalmazást.
+3. Nyisd meg, lépj be az LG Developer fiókkal, kapcsold be a **Dev Mode Status**-t → a TV
+   újraindul.
+4. Nyisd meg újra a Developer Mode alkalmazást, és kapcsold be a **Key Server**-t. Itt látod
+   a TV **IP-címét** és a **Passphrase**-t – ezek kellenek a következő lépéshez.
+
+### 2. Az alkalmazás telepítése a gépedről
+
+A legegyszerűbb a **webOS Dev Manager** (Windows / macOS / Linux):
+<https://github.com/webosbrew/dev-manager-desktop/releases>
+
+1. Töltsd le az IPK-t: **[hu.tomszo.network4_0.1.0_all.ipk](hu.tomszo.network4_0.1.0_all.ipk)**
+2. Dev Manager → **Add device** → add meg a TV IP-címét és a Passphrase-t.
+3. **Apps** → **Install** → válaszd ki a letöltött IPK-t.
+4. A TV alkalmazáslistájában megjelenik a **Network4**.
+
+Parancssorból (ha a webOS CLI telepítve van: `npm install -g @webos-tools/cli`):
+
+```sh
+ares-setup-device            # TV hozzáadása (IP, port 9922, felhasználó: prisoner)
+ares-novacom --device tv --getkey    # a Passphrase-t kéri
+ares-install --device tv hu.tomszo.network4_0.1.0_all.ipk
+```
+
+### 3. Első indítás
+
+**Beállítások** → add meg a Network4 / Arena4+ email címed és jelszavad → **Kapcsolat teszt**
+→ **Mentés**. A belépési adat csak a TV-n tárolódik.
+
+## Fontos: a fejlesztői mód lejár
+
+A fejlesztői mód kb. **50 óránként lejár**, és lejáratkor a TV **törli** a fejlesztői módban
+telepített alkalmazásokat. A Developer Mode alkalmazásban az **Extend** gombbal
+meghosszabbítható (a Dev Manager is mutatja a hátralévő időt). Ha mégis lejárt: kapcsold
+vissza, és telepítsd újra az IPK-t.
+
+## Frissítés (opcionális): Homebrew Channel-tároló
+
+A Homebrew Channel fejlesztői módban is telepíthető (Dev Manager → Apps → Homebrew Channel).
+A beállításaiban add hozzá ezt a tárolót, és onnan frissítheted a Network4-et:
+
+```
+https://tomszo.github.io/webos/apps.json
+```
+
+## Ismert korlátok
+
+- **Cloudflare:** a Network4 API Cloudflare mögött van. A TV-s háttérszolgáltatás (Node.js)
+  kéréseit eddig átengedte, de ha a Cloudflare szigorít, „elutasította a kérést” hibát kapsz.
+- **Zárolt videók:** a „token” jelzésű videókhoz aláírt lejátszás kellene, ezeket az API nem
+  adja meg – „zárolt”-ként jelennek meg (a Kodi-ban is).
+- **DRM:** ha egy élő adás Widevine-védett DASH-ként jön, a lejátszás a TV DRM-támogatásán
+  múlik.
+- Ha a lejátszás nem indul: **Beállítások → Lejátszó → webOS beépített (tartalék)**.
+
+## Fejlesztőknek
+
+- `network4/app` – webes alkalmazás (HTML/JS), `network4/service` – Node.js szolgáltatás
+  (a Network4 felé menő kérések; csak a Network4 címeit engedi).
+- Építés: `sh webos/build.sh` → IPK + `apps.json` + manifest.

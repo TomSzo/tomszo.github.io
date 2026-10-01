@@ -33,6 +33,11 @@ egyetlen tárolóból települjenek.
 | **weather.tomszo** | Időjárás-szolgáltató *(Időkép magyar településekre + Open-Meteo, API-kulcs nélkül)*. |
 | **script.speedtester** | Internet-sebességteszt (speedtest.net) – *TomSzo v2.0.0 fork*. |
 
+#### LG webOS TV *(BÉTA, fejlesztői módban)*
+| Alkalmazás | Mire jó? |
+|------------|----------|
+| **Network4** *(webOS)* | A Network4 kiegészítő LG TV-re (pl. C4, webOS 24) – telepítés: [webos/README.md](webos/README.md). |
+
 #### Skin
 | Skin | Mire jó? |
 |------|----------|

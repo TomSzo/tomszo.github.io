@@ -1,0 +1,472 @@
+[
+ {
+  "title": "Kiemelt sportok",
+  "items": [
+   {
+    "slug": "motogp",
+    "name": "MotoGP",
+    "img": "https://imagedelivery.net/5L3HkUi9A-3S8PjT0CDczw/bf7bb0f4-4d39-4aff-b165-b710b556c300/public"
+   },
+   {
+    "slug": "nfl",
+    "name": "NFL",
+    "img": "https://imagedelivery.net/5L3HkUi9A-3S8PjT0CDczw/5603226b-bcfe-4513-6040-06d2421e9900/public"
+   },
+   {
+    "slug": "serie-a",
+    "name": "Serie A",
+    "img": "https://imagedelivery.net/5L3HkUi9A-3S8PjT0CDczw/678b4e15-31ed-4a03-4cde-3a6ee15f4900/public"
+   },
+   {
+    "slug": "premier-league",
+    "name": "Premier League",
+    "img": "https://imagedelivery.net/5L3HkUi9A-3S8PjT0CDczw/eab38db8-fc14-45f0-595c-47c37f2fb500/public"
+   },
+   {
+    "slug": "bundesliga",
+    "name": "Bundesliga",
+    "img": "https://imagedelivery.net/5L3HkUi9A-3S8PjT0CDczw/6377cf0d-c80b-4f73-fd97-874f13a90400/public"
+   },
+   {
+    "slug": "nascar",
+    "name": "NASCAR Cup Series",
+    "img": "https://imagedelivery.net/5L3HkUi9A-3S8PjT0CDczw/1bc8c035-1835-4c33-c6b1-85f48ef2df00/public"
+   },
+   {
+    "slug": "ufc",
+    "name": "UFC",
+    "img": "https://imagedelivery.net/5L3HkUi9A-3S8PjT0CDczw/90412458-ca9d-4534-727a-20854829bb00/public"
+   },
+   {
+    "slug": "atp",
+    "name": "ATP Tour",
+    "img": "https://imagedelivery.net/5L3HkUi9A-3S8PjT0CDczw/b5003e65-413a-4232-7156-6b89d94b5500/public"
+   },
+   {
+    "slug": "wta-tour",
+    "name": "WTA Tour",
+    "img": "https://imagedelivery.net/5L3HkUi9A-3S8PjT0CDczw/de9d4f9a-41ce-4ee6-5359-dd02d93ab500/public"
+   },
+   {
+    "slug": "superbike",
+    "name": "Superbike",
+    "img": "https://imagedelivery.net/5L3HkUi9A-3S8PjT0CDczw/896010d1-6764-4273-d74e-4610e859ea00/public"
+   },
+   {
+    "slug": "ingyen",
+    "name": "Ingyenes sporttartalom",
+    "img": "https://imagedelivery.net/5L3HkUi9A-3S8PjT0CDczw/3aa742e8-fdb1-46f2-44c0-a67d4bc03c00/public"
+   },
+   {
+    "slug": "kiralysag",
+    "name": "A Királyság",
+    "img": "https://imagedelivery.net/5L3HkUi9A-3S8PjT0CDczw/099d8337-833b-4e22-2699-5574e637e900/public"
+   }
+  ]
+ },
+ {
+  "title": "Dokumentumfilm",
+  "items": [
+   {
+    "slug": "kiralysag",
+    "name": "A Királyság",
+    "img": "https://imagedelivery.net/5L3HkUi9A-3S8PjT0CDczw/099d8337-833b-4e22-2699-5574e637e900/public"
+   },
+   {
+    "slug": "30for30",
+    "name": "30 for 30",
+    "img": "https://imagedelivery.net/5L3HkUi9A-3S8PjT0CDczw/2966c21a-f2b8-4d11-879d-c1cce0841b00/public"
+   },
+   {
+    "slug": "kiralysag-dup",
+    "name": "Road to America 2026",
+    "img": "https://imagedelivery.net/5L3HkUi9A-3S8PjT0CDczw/a36d5969-6d15-40f6-75cc-532a74fd6e00/public"
+   },
+   {
+    "slug": "kiralysag-dup-dup",
+    "name": "Champions of Made in Italy",
+    "img": "https://imagedelivery.net/5L3HkUi9A-3S8PjT0CDczw/d8b93b5a-ad06-4ff7-4bb1-962445a55e00/public"
+   },
+   {
+    "slug": "kiralysag-dup-dup-dup",
+    "name": "Premier League World Beaters",
+    "img": "https://imagedelivery.net/5L3HkUi9A-3S8PjT0CDczw/cd319c3b-4783-4bdd-9dc4-1c763fe5cc00/public"
+   }
+  ]
+ },
+ {
+  "title": "Labdarúgás",
+  "items": [
+   {
+    "slug": "premier-league",
+    "name": "Premier League",
+    "img": "https://imagedelivery.net/5L3HkUi9A-3S8PjT0CDczw/eab38db8-fc14-45f0-595c-47c37f2fb500/public"
+   },
+   {
+    "slug": "serie-a",
+    "name": "Serie A",
+    "img": "https://imagedelivery.net/5L3HkUi9A-3S8PjT0CDczw/678b4e15-31ed-4a03-4cde-3a6ee15f4900/public"
+   },
+   {
+    "slug": "bundesliga",
+    "name": "Bundesliga",
+    "img": "https://imagedelivery.net/5L3HkUi9A-3S8PjT0CDczw/6377cf0d-c80b-4f73-fd97-874f13a90400/public"
+   },
+   {
+    "slug": "coppaitalia",
+    "name": "Coppa Italia",
+    "img": "https://imagedelivery.net/5L3HkUi9A-3S8PjT0CDczw/c5d170b5-acbe-45ac-fc97-0fde6949cf00/public"
+   },
+   {
+    "slug": "angol-ligakupa",
+    "name": "Angol Ligakupa",
+    "img": "https://imagedelivery.net/5L3HkUi9A-3S8PjT0CDczw/a1b5b486-e0dd-4ea2-43d8-5ee9b0c8a700/public"
+   },
+   {
+    "slug": "championship",
+    "name": "Championship",
+    "img": "https://imagedelivery.net/5L3HkUi9A-3S8PjT0CDczw/ffc518ac-a41f-49d0-d69f-131382194c00/public"
+   },
+   {
+    "slug": "skot-premiership",
+    "name": "Skót PL / Skót Ligakupa",
+    "img": "https://imagedelivery.net/5L3HkUi9A-3S8PjT0CDczw/9378fc42-4fd2-4abd-8af2-0af9ece3b400/public"
+   },
+   {
+    "slug": "bundesliga-2",
+    "name": "Bundesliga 2",
+    "img": "https://imagedelivery.net/5L3HkUi9A-3S8PjT0CDczw/364eb9ba-ad12-4666-2a98-13d637d02000/public"
+   },
+   {
+    "slug": "league-onetwo",
+    "name": "League One/Two",
+    "img": "https://imagedelivery.net/5L3HkUi9A-3S8PjT0CDczw/32968889-3aad-464b-8627-3dac9ad50700/public"
+   },
+   {
+    "slug": "26vbselejtezo",
+    "name": "FIFA26 Vb-selejtezők",
+    "img": "https://imagedelivery.net/5L3HkUi9A-3S8PjT0CDczw/574f81ce-ee19-4a56-7b86-3a78f24caf00/public"
+   },
+   {
+    "slug": "nemzetek-ligaja",
+    "name": "Nemzetek Ligája",
+    "img": "https://imagedelivery.net/5L3HkUi9A-3S8PjT0CDczw/e6db0b72-40ae-4a0f-e82f-b9a57874b800/public"
+   },
+   {
+    "slug": "felkeszulesi-merkozesek",
+    "name": "Felkészülési mérkőzések",
+    "img": "https://imagedelivery.net/5L3HkUi9A-3S8PjT0CDczw/a33ba941-cec6-4395-0bcc-051970d2d500/public"
+   }
+  ]
+ },
+ {
+  "title": "Amerikaifutball",
+  "items": [
+   {
+    "slug": "nfl",
+    "name": "NFL",
+    "img": "https://imagedelivery.net/5L3HkUi9A-3S8PjT0CDczw/5603226b-bcfe-4513-6040-06d2421e9900/public"
+   },
+   {
+    "slug": "ncaa-amerikaifoci",
+    "name": "NCAA amerikaifoci",
+    "img": "https://imagedelivery.net/5L3HkUi9A-3S8PjT0CDczw/0522d70d-ece5-4751-d20a-f99e65815b00/public"
+   },
+   {
+    "slug": "nfl-countdown",
+    "name": "NFL Countdown",
+    "img": "https://imagedelivery.net/5L3HkUi9A-3S8PjT0CDczw/f3185f3b-ca1d-4fc6-3920-bb21874d2a00/public"
+   },
+   {
+    "slug": "nfl-gameday",
+    "name": "NFL Gameday",
+    "img": "https://imagedelivery.net/5L3HkUi9A-3S8PjT0CDczw/9062aeb9-6f18-45ea-2a61-9c58eac8f800/public"
+   }
+  ]
+ },
+ {
+  "title": "Motorsport",
+  "items": [
+   {
+    "slug": "motogp",
+    "name": "MotoGP",
+    "img": "https://imagedelivery.net/5L3HkUi9A-3S8PjT0CDczw/bf7bb0f4-4d39-4aff-b165-b710b556c300/public"
+   },
+   {
+    "slug": "indycar",
+    "name": "IndyCar",
+    "img": "https://imagedelivery.net/5L3HkUi9A-3S8PjT0CDczw/bf3e7646-5ff2-4f7e-0d80-9d2d188ff400/public"
+   },
+   {
+    "slug": "superbike",
+    "name": "Superbike",
+    "img": "https://imagedelivery.net/5L3HkUi9A-3S8PjT0CDczw/896010d1-6764-4273-d74e-4610e859ea00/public"
+   },
+   {
+    "slug": "kamion-eb",
+    "name": "Kamion Eb",
+    "img": "https://imagedelivery.net/5L3HkUi9A-3S8PjT0CDczw/41f12de0-9adc-4009-7ab6-89795f823200/public"
+   },
+   {
+    "slug": "nascar",
+    "name": "NASCAR Cup Series",
+    "img": "https://imagedelivery.net/5L3HkUi9A-3S8PjT0CDczw/1bc8c035-1835-4c33-c6b1-85f48ef2df00/public"
+   },
+   {
+    "slug": "nascar-xfinity-series",
+    "name": "NASCAR O'Reilly Series",
+    "img": "https://imagedelivery.net/5L3HkUi9A-3S8PjT0CDczw/c55a3072-96fa-4f85-1a1d-09203b831b00/public"
+   },
+   {
+    "slug": "nascar-truck-series",
+    "name": "NASCAR Truck Series",
+    "img": "https://imagedelivery.net/5L3HkUi9A-3S8PjT0CDczw/b89a0e96-1ae5-40a6-2acc-486a4016c200/public"
+   },
+   {
+    "slug": "f4",
+    "name": "F4 Italy",
+    "img": "https://imagedelivery.net/5L3HkUi9A-3S8PjT0CDczw/f8ce53b9-c5f6-4a09-8529-bcedf74a8a00/public"
+   },
+   {
+    "slug": "fia-formula-regional",
+    "name": "FIA Formula Regional",
+    "img": "https://imagedelivery.net/5L3HkUi9A-3S8PjT0CDczw/ae3e70ba-d0f4-4be5-9989-50449c62aa00/public"
+   },
+   {
+    "slug": "porsche-carrera-cup",
+    "name": "Porsche Carrera Cup",
+    "img": "https://imagedelivery.net/5L3HkUi9A-3S8PjT0CDczw/caa09160-37fb-49fd-f6e9-278d7d21b300/public"
+   },
+   {
+    "slug": "ferrarichallenge",
+    "name": "Ferrari Challenge Europe",
+    "img": "https://imagedelivery.net/5L3HkUi9A-3S8PjT0CDczw/25cff162-0aba-45dd-16bd-e951741f0800/public"
+   },
+   {
+    "slug": "granturismo",
+    "name": "Gran Turismo World Series",
+    "img": "https://imagedelivery.net/5L3HkUi9A-3S8PjT0CDczw/a05c7471-2087-44df-4def-a22c76fc1c00/public"
+   },
+   {
+    "slug": "isle-of-man-tt",
+    "name": "Isle of Man TT",
+    "img": "https://imagedelivery.net/5L3HkUi9A-3S8PjT0CDczw/f5dcfbac-dc7d-4520-313e-c7dd03f00300/public"
+   },
+   {
+    "slug": "dtm",
+    "name": "DTM",
+    "img": "https://imagedelivery.net/5L3HkUi9A-3S8PjT0CDczw/7424bc33-10b1-43ce-c90c-a7ff2d5a5c00/public"
+   }
+  ]
+ },
+ {
+  "title": "Amerikai sportok",
+  "items": [
+   {
+    "slug": "nfl",
+    "name": "NFL",
+    "img": "https://imagedelivery.net/5L3HkUi9A-3S8PjT0CDczw/5603226b-bcfe-4513-6040-06d2421e9900/public"
+   },
+   {
+    "slug": "ncaa-amerikaifoci",
+    "name": "NCAA amerikaifoci",
+    "img": "https://imagedelivery.net/5L3HkUi9A-3S8PjT0CDczw/0522d70d-ece5-4751-d20a-f99e65815b00/public"
+   },
+   {
+    "slug": "indycar",
+    "name": "IndyCar",
+    "img": "https://imagedelivery.net/5L3HkUi9A-3S8PjT0CDczw/bf3e7646-5ff2-4f7e-0d80-9d2d188ff400/public"
+   },
+   {
+    "slug": "nascar",
+    "name": "NASCAR Cup Series",
+    "img": "https://imagedelivery.net/5L3HkUi9A-3S8PjT0CDczw/1bc8c035-1835-4c33-c6b1-85f48ef2df00/public"
+   },
+   {
+    "slug": "nascar-xfinity-series",
+    "name": "NASCAR O'Reilly Series",
+    "img": "https://imagedelivery.net/5L3HkUi9A-3S8PjT0CDczw/c55a3072-96fa-4f85-1a1d-09203b831b00/public"
+   },
+   {
+    "slug": "nascar-truck-series",
+    "name": "NASCAR Truck Series",
+    "img": "https://imagedelivery.net/5L3HkUi9A-3S8PjT0CDczw/b89a0e96-1ae5-40a6-2acc-486a4016c200/public"
+   },
+   {
+    "slug": "ncaa-kosarlabda",
+    "name": "NCAA kosárlabda",
+    "img": "https://imagedelivery.net/5L3HkUi9A-3S8PjT0CDczw/2786ab6f-fdb5-4ff6-3792-972d11c60900/public"
+   }
+  ]
+ },
+ {
+  "title": "Küzdősportok",
+  "items": [
+   {
+    "slug": "ufc",
+    "name": "UFC",
+    "img": "https://imagedelivery.net/5L3HkUi9A-3S8PjT0CDczw/90412458-ca9d-4534-727a-20854829bb00/public"
+   },
+   {
+    "slug": "aew-dynamite",
+    "name": "AEW Dynamite",
+    "img": "https://imagedelivery.net/5L3HkUi9A-3S8PjT0CDczw/6b3797e2-b6b1-4ac1-d112-475cbf8b8500/public"
+   },
+   {
+    "slug": "aew-collision",
+    "name": "AEW Collision",
+    "img": "https://imagedelivery.net/5L3HkUi9A-3S8PjT0CDczw/ba9784e7-484c-4e27-b5de-e21869369a00/public"
+   },
+   {
+    "slug": "hexagone-mma",
+    "name": "Hexagone MMA",
+    "img": "https://imagedelivery.net/5L3HkUi9A-3S8PjT0CDczw/f3547472-ce25-4f5c-b39f-33fdcc4b3b00/public"
+   },
+   {
+    "slug": "aew-collision-dup",
+    "name": "Women of Wrestling",
+    "img": "https://imagedelivery.net/5L3HkUi9A-3S8PjT0CDczw/67beaf87-85a3-4e90-3535-5cb7dea07900/public"
+   }
+  ]
+ },
+ {
+  "title": "Tenisz",
+  "items": [
+   {
+    "slug": "atp",
+    "name": "ATP Tour",
+    "img": "https://imagedelivery.net/5L3HkUi9A-3S8PjT0CDczw/b5003e65-413a-4232-7156-6b89d94b5500/public"
+   },
+   {
+    "slug": "wta-tour",
+    "name": "WTA Tour",
+    "img": "https://imagedelivery.net/5L3HkUi9A-3S8PjT0CDczw/de9d4f9a-41ce-4ee6-5359-dd02d93ab500/public"
+   }
+  ]
+ },
+ {
+  "title": "Egyéb sportok",
+  "items": [
+   {
+    "slug": "nurburgring-24h",
+    "name": "Egyéb sportok",
+    "img": "https://imagedelivery.net/5L3HkUi9A-3S8PjT0CDczw/3eafdc20-9c16-47b6-fbf7-7b5859950500/public"
+   },
+   {
+    "slug": "darts",
+    "name": "Darts",
+    "img": "https://imagedelivery.net/5L3HkUi9A-3S8PjT0CDczw/c345659e-165a-455c-3984-84b1f6333c00/public"
+   },
+   {
+    "slug": "roplabda-bl",
+    "name": "Röplabda BL",
+    "img": "https://imagedelivery.net/5L3HkUi9A-3S8PjT0CDczw/8df3f24c-78d1-4f26-cb4e-429ea7cfc300/public"
+   },
+   {
+    "slug": "ottusa-vk",
+    "name": "Öttusa",
+    "img": "https://imagedelivery.net/5L3HkUi9A-3S8PjT0CDczw/202f8c62-60be-40db-a7a0-705ce488a800/public"
+   },
+   {
+    "slug": "ingyen",
+    "name": "Ingyenes sporttartalom",
+    "img": "https://imagedelivery.net/5L3HkUi9A-3S8PjT0CDczw/3aa742e8-fdb1-46f2-44c0-a67d4bc03c00/public"
+   }
+  ]
+ },
+ {
+  "title": "Stúdióműsorok",
+  "items": [
+   {
+    "slug": "nfl-countdown",
+    "name": "NFL Countdown",
+    "img": "https://imagedelivery.net/5L3HkUi9A-3S8PjT0CDczw/f3185f3b-ca1d-4fc6-3920-bb21874d2a00/public"
+   },
+   {
+    "slug": "weekend",
+    "name": "Week-end",
+    "img": "https://imagedelivery.net/5L3HkUi9A-3S8PjT0CDczw/063b8516-c1d4-4ace-71a8-765ee1750400/public"
+   },
+   {
+    "slug": "haromoroszlan",
+    "name": "Háromoroszlán",
+    "img": "https://imagedelivery.net/5L3HkUi9A-3S8PjT0CDczw/958e8663-f9b5-4038-91f9-efb55871d600/public"
+   },
+   {
+    "slug": "nyitobuli",
+    "name": "NyitóBuLi",
+    "img": "https://imagedelivery.net/5L3HkUi9A-3S8PjT0CDczw/4c1a18d1-9c37-4ba8-9df5-1c6a28699000/public"
+   },
+   {
+    "slug": "zarobuli",
+    "name": "ZáróBuLi",
+    "img": "https://imagedelivery.net/5L3HkUi9A-3S8PjT0CDczw/566ad096-d1f2-40d1-c2c8-9e2f87161000/public"
+   }
+  ]
+ },
+ {
+  "title": "Magazinműsorok",
+  "items": [
+   {
+    "slug": "blweekly",
+    "name": "Bundesliga Weekly",
+    "img": "https://imagedelivery.net/5L3HkUi9A-3S8PjT0CDczw/0edf26a9-fd49-4f1c-327d-b8917db7de00/public"
+   },
+   {
+    "slug": "blspecial",
+    "name": "Bundesliga Special",
+    "img": "https://imagedelivery.net/5L3HkUi9A-3S8PjT0CDczw/889c359e-958f-4aec-54d5-5144dfc91700/public"
+   },
+   {
+    "slug": "plonetoeleven",
+    "name": "PL 1 to 11",
+    "img": "https://imagedelivery.net/5L3HkUi9A-3S8PjT0CDczw/aff724c8-28e7-43d2-bed8-0e9c98bec100/public"
+   },
+   {
+    "slug": "plbiginterview",
+    "name": "PL Big Interview",
+    "img": "https://imagedelivery.net/5L3HkUi9A-3S8PjT0CDczw/cfca2140-3565-44e6-45f7-850f85759f00/public"
+   },
+   {
+    "slug": "plmoments",
+    "name": "PL Moments",
+    "img": "https://imagedelivery.net/5L3HkUi9A-3S8PjT0CDczw/b33791e2-00fb-44e6-7e94-60955213e200/public"
+   },
+   {
+    "slug": "plpreview",
+    "name": "PL Preview",
+    "img": "https://imagedelivery.net/5L3HkUi9A-3S8PjT0CDczw/66720c96-213d-4b90-ed0d-9641d913ef00/public"
+   },
+   {
+    "slug": "plrewind",
+    "name": "PL Rewind",
+    "img": "https://imagedelivery.net/5L3HkUi9A-3S8PjT0CDczw/987cc888-82b7-4fe1-de23-eaf956f57500/public"
+   },
+   {
+    "slug": "fullimpact",
+    "name": "Serie A Full Impact",
+    "img": "https://imagedelivery.net/5L3HkUi9A-3S8PjT0CDczw/53c41fdd-bf76-4261-8781-5191adcbc400/public"
+   },
+   {
+    "slug": "insideseriea",
+    "name": "Serie A beharangozó",
+    "img": "https://imagedelivery.net/5L3HkUi9A-3S8PjT0CDczw/d859888c-9cfd-4b4a-1d62-0ff8f3704a00/public"
+   },
+   {
+    "slug": "atpthisweek",
+    "name": "ATP Tour: Ezen a héten",
+    "img": "https://imagedelivery.net/5L3HkUi9A-3S8PjT0CDczw/f5aaf0f0-6bed-4da0-82d8-560467626f00/public"
+   },
+   {
+    "slug": "ufcconnected",
+    "name": "UFC Connected",
+    "img": "https://imagedelivery.net/5L3HkUi9A-3S8PjT0CDczw/a3aec68a-1737-4232-67f1-b1c3bf817900/public"
+   },
+   {
+    "slug": "plstories",
+    "name": "PL Stories",
+    "img": "https://imagedelivery.net/5L3HkUi9A-3S8PjT0CDczw/fba14bbf-0af2-42f7-0bb4-52f3a39e7d00/public"
+   }
+  ]
+ }
+]

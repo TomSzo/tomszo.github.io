@@ -1,0 +1,14 @@
+{
+  "id": "hu.tomszo.network4",
+  "version": "0.1.0",
+  "vendor": "TomSzo",
+  "type": "web",
+  "main": "index.html",
+  "title": "Network4",
+  "icon": "icon.png",
+  "largeIcon": "largeIcon.png",
+  "bgColor": "#0b0f17",
+  "resolution": "1920x1080",
+  "disableBackHistoryAPI": true,
+  "requiredPermissions": []
+}

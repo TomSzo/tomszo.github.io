@@ -1,0 +1,9 @@
+{
+  "id": "hu.tomszo.network4.service",
+  "description": "Network4 (webOS) - HTTP szolgáltatás",
+  "services": [
+    {
+      "name": "hu.tomszo.network4.service"
+    }
+  ]
+}
