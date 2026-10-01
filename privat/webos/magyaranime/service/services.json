@@ -1,0 +1,9 @@
+{
+  "id": "hu.tomszo.magyaranime.service",
+  "description": "MagyarAnime (webOS) - HTTP szolgáltatás",
+  "services": [
+    {
+      "name": "hu.tomszo.magyaranime.service"
+    }
+  ]
+}

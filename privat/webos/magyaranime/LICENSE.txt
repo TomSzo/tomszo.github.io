@@ -1,0 +1,4 @@
+MagyarAnime (private) - Kodi video add-on
+Copyright (C) 2026 TomSzo
+GPL-3.0-or-later. https://www.gnu.org/licenses/gpl-3.0.txt
+Private, personal use only.

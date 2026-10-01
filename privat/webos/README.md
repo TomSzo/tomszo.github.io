@@ -1,4 +1,4 @@
-# Network4 – LG webOS TV-re (BÉTA, privát)
+# TomSzo LG webOS-alkalmazások – Network4 és MagyarAnime (BÉTA, privát)
 
 > **Személyes, privát alkalmazás** – a tulajdonos saját TV-jére és saját Network4 /
 > Arena4+ előfizetésére készült; nincs a nyilvános tárolóban hirdetve.
@@ -86,8 +86,47 @@ https://tomszo.github.io/privat/webos/apps.json
   múlik.
 - Ha a lejátszás nem indul: **Beállítások → Lejátszó → webOS beépített (tartalék)**.
 
+## MagyarAnime (0.1.0, BÉTA)
+
+A [MagyarAnime Kodi-kiegészítő](../plugin.video.magyaranime) TV-s változata, ugyanazzal a
+streaming-stílusú felülettel. **Személyes, privát** – a saját MagyarAnime-fiókod
+munkamenet-sütijével működik, belépési adatot nem tartalmaz.
+
+- Telepítés: ugyanúgy, mint a Network4 –
+  **[hu.tomszo.magyaranime_0.1.0_all.ipk](hu.tomszo.magyaranime_0.1.0_all.ipk)**
+- Menük: Keresés, Főoldal (Folytatás, Kedvencek, Aktuális szezon, Legújabbak), Böngészés
+  (adatlapok szűrőkkel), Kedvencek, Előzmények, Beállítások
+- Anime-adatlap: borító, ismertető, részek (filler-jelölés, ✓ megnézve), Lejátszás /
+  Folytatás, ★ Kedvenc
+- Szerverválasztó a napi számlálóval (egyetlen forrás-lekérés a listához, mint a Kodi-ban);
+  közvetlen HLS / MP4 és indavideo (mega.nz nem támogatott)
+
+### A süti megadása
+
+1. A gépeden / telefonodon a böngészőben lépj be a MagyarAnime-re, és a **Cookie-Editor**
+   bővítménnyel exportáld a sütiket (Export → JSON).
+2. A TV-n: **Beállítások → Süti telefonról**. A TV kiír egy címet (pl.
+   `http://192.168.1.50:9711/`) és egy **PIN-kódot**.
+3. A telefonodon (ugyanazon a Wi-Fi-n) nyisd meg a címet, add meg a PIN-t, és másold be
+   az exportot → a TV magától átveszi.
+4. **Kapcsolat teszt** – „Bejelentkezve: IGEN”.
+
+Ha a TV nem engedi a helyi oldalt (fejlesztői módban ez TV-függő), használd a
+**Süti beírása** lehetőséget (`PHPSESSID=…; loginkey=…`).
+
+### Lejátszás és a Referer-fejléc
+
+A videószerverek Referer / Origin fejlécet várhatnak, amit a TV böngészője nem küld. Ezért
+a lejátszás alapból a háttérszolgáltatás **helyi videó-továbbítóján** megy (a fejlécekkel).
+Ha valami nem indul: **Beállítások → Videó-továbbító: Ki**, illetve **Lejátszó: webOS
+beépített**.
+
 ## Fejlesztőknek
 
 - `network4/app` – webes alkalmazás (HTML/JS), `network4/service` – Node.js szolgáltatás
   (a Network4 felé menő kérések; csak a Network4 címeit engedi).
-- Építés: `sh privat/webos/build.sh` → IPK + `apps.json` + manifest.
+- `magyaranime/app` – webes alkalmazás, `magyaranime/service` – Node.js szolgáltatás
+  (sütis kérések, telefonos süti-párosítás PIN-nel, helyi videó-továbbító; belső hálózati
+  címet nem kér le).
+- Építés: `sh privat/webos/build.sh` (vagy `… build.sh magyaranime`) → IPK-k + `apps.json`
+  + manifestek.
