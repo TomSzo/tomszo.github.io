@@ -36,7 +36,7 @@ Network4-gyel; a **saját Network4 / Arena4+ előfizetéseddel** működik.
 A legegyszerűbb a **webOS Dev Manager** (Windows / macOS / Linux):
 <https://github.com/webosbrew/dev-manager-desktop/releases>
 
-1. Töltsd le az IPK-t: **[hu.tomszo.network4_0.1.0_all.ipk](hu.tomszo.network4_0.1.0_all.ipk)**
+1. Töltsd le az IPK-t: **[hu.tomszo.network4_0.1.1_all.ipk](hu.tomszo.network4_0.1.1_all.ipk)**
 2. Dev Manager → **Add device** → add meg a TV IP-címét és a Passphrase-t.
 3. **Apps** → **Install** → válaszd ki a letöltött IPK-t.
 4. A TV alkalmazáslistájában megjelenik a **Network4**.
@@ -46,7 +46,7 @@ Parancssorból (ha a webOS CLI telepítve van: `npm install -g @webos-tools/cli`
 ```sh
 ares-setup-device            # TV hozzáadása (IP, port 9922, felhasználó: prisoner)
 ares-novacom --device tv --getkey    # a Passphrase-t kéri
-ares-install --device tv hu.tomszo.network4_0.1.0_all.ipk
+ares-install --device tv hu.tomszo.network4_0.1.1_all.ipk
 ```
 
 ### 3. Első indítás
@@ -72,8 +72,10 @@ https://tomszo.github.io/privat/webos/apps.json
 
 ## Ismert korlátok
 
-- **Cloudflare:** a Network4 API Cloudflare mögött van. A TV-s háttérszolgáltatás (Node.js)
-  kéréseit eddig átengedte, de ha a Cloudflare szigorít, „elutasította a kérést” hibát kapsz.
+- **Cloudflare:** a Network4 API Cloudflare mögött van. Az app (0.1.1-től) közvetlenül a TV
+  böngészőmotorjából kérdez (az API ezt engedi), és csak ha ezt elutasítják, vált a
+  háttérszolgáltatásra. Ha mégis „elutasította a kérést” hibát kapsz: **Beállítások →
+  Kapcsolat** – próbáld a másik módot; a **Kapcsolat teszt** kiírja, melyik út működött.
 - **Zárolt videók:** a „token” jelzésű videókhoz aláírt lejátszás kellene, ezeket az API nem
   adja meg – „zárolt”-ként jelennek meg (a Kodi-ban is).
 - **DRM:** ha egy élő adás Widevine-védett DASH-ként jön, a lejátszás a TV DRM-támogatásán

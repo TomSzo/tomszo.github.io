@@ -15,18 +15,18 @@
       "manifestUrl": "https://tomszo.github.io/privat/webos/hu.tomszo.network4.manifest.json",
       "manifest": {
         "id": "hu.tomszo.network4",
-        "version": "0.1.0",
+        "version": "0.1.1",
         "type": "web",
         "title": "Network4",
         "appDescription": "Network4 / Arena4+ - sport és élő közvetítések a saját előfizetéseddel (nem hivatalos; alap: Arena4Plus - heg, vargalex)",
         "iconUri": "https://tomszo.github.io/privat/webos/network4/app/largeIcon.png",
         "sourceUrl": "https://github.com/TomSzo/tomszo.github.io/tree/main/privat/webos/network4",
         "rootRequired": false,
-        "ipkUrl": "https://tomszo.github.io/privat/webos/hu.tomszo.network4_0.1.0_all.ipk",
+        "ipkUrl": "https://tomszo.github.io/privat/webos/hu.tomszo.network4_0.1.1_all.ipk",
         "ipkHash": {
-          "sha256": "23f548585f9624eb6005f5ff37a81c505bf46ef3975628d7af39c4d7a86522ce"
+          "sha256": "b050e206cf052e48f0c8675f0ae2dca0493a57dd0723b0c043f0e8985c6cf3ff"
         },
-        "ipkSize": 327144
+        "ipkSize": 327746
       },
       "pool": "main",
       "shortDescription": "Sport és élő közvetítések a saját Network4 / Arena4+ előfizetéseddel"
