@@ -1,6 +1,9 @@
-# Network4 – LG webOS TV-re (BÉTA)
+# Network4 – LG webOS TV-re (BÉTA, privát)
 
-A [Network4 Kodi-kiegészítő](../plugin.video.network4) webOS-változata LG TV-kre
+> **Személyes, privát alkalmazás** – a tulajdonos saját TV-jére és saját Network4 /
+> Arena4+ előfizetésére készült; nincs a nyilvános tárolóban hirdetve.
+
+A [Network4 Kodi-kiegészítő](../../plugin.video.network4) webOS-változata LG TV-kre
 (fejlesztve LG C4-re, webOS 24). Nem hivatalos alkalmazás, nincs kapcsolatban a
 Network4-gyel; a **saját Network4 / Arena4+ előfizetéseddel** működik.
 
@@ -64,7 +67,7 @@ A Homebrew Channel fejlesztői módban is telepíthető (Dev Manager → Apps �
 A beállításaiban add hozzá ezt a tárolót, és onnan frissítheted a Network4-et:
 
 ```
-https://tomszo.github.io/webos/apps.json
+https://tomszo.github.io/privat/webos/apps.json
 ```
 
 ## Ismert korlátok
@@ -81,4 +84,4 @@ https://tomszo.github.io/webos/apps.json
 
 - `network4/app` – webes alkalmazás (HTML/JS), `network4/service` – Node.js szolgáltatás
   (a Network4 felé menő kérések; csak a Network4 címeit engedi).
-- Építés: `sh webos/build.sh` → IPK + `apps.json` + manifest.
+- Építés: `sh privat/webos/build.sh` → IPK + `apps.json` + manifest.

@@ -2,7 +2,7 @@
 # Network4 (webOS) - IPK építése és a Homebrew Channel-tároló frissítése.
 #
 # Kell hozzá: Node.js és a webOS CLI (npm install -g @webos-tools/cli), python3.
-# Használat:  sh webos/build.sh
+# Használat:  sh privat/webos/build.sh
 #
 # Eredmény (a GitHub Pages kiszolgálja):
 #   webos/hu.tomszo.network4_<verzió>_all.ipk          - telepíthető csomag
@@ -30,7 +30,7 @@ python3 - "$ID" "$VERSION" "$IPK" <<'EOF'
 import hashlib, json, os, sys
 
 app_id, version, ipk = sys.argv[1:]
-base = 'https://tomszo.github.io/webos/'
+base = 'https://tomszo.github.io/privat/webos/'
 data = open(ipk, 'rb').read()
 manifest = {
     'id': app_id,
@@ -40,7 +40,7 @@ manifest = {
     'appDescription': 'Network4 / Arena4+ - sport és élő közvetítések a saját előfizetéseddel '
                       '(nem hivatalos; alap: Arena4Plus - heg, vargalex)',
     'iconUri': base + 'network4/app/largeIcon.png',
-    'sourceUrl': 'https://github.com/TomSzo/tomszo.github.io/tree/main/webos/network4',
+    'sourceUrl': 'https://github.com/TomSzo/tomszo.github.io/tree/main/privat/webos/network4',
     'rootRequired': False,
     'ipkUrl': base + ipk,
     'ipkHash': {'sha256': hashlib.sha256(data).hexdigest()},
