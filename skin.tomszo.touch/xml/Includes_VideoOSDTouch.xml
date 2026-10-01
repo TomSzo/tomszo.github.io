@@ -1,0 +1,375 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- TomSzo Touch: mobilos videó-OSD Érintés módhoz.
+     Egy ablakban minden: fent vissza + cím + ikonok, középen nagy vezérlők,
+     alul idő + ujjal húzható idősáv. A Seekbar (DialogSeekBar) és a felső sáv
+     (Custom_1109) ilyenkor rejtve van, hogy ne legyen dupla kijelzés. -->
+<includes>
+	<variable name="OSDTouchTitleVar">
+		<value condition="!String.IsEmpty(VideoPlayer.Title)">$INFO[VideoPlayer.Title]</value>
+		<value>$INFO[Player.Title]</value>
+	</variable>
+	<variable name="OSDTouchSubtitleVar">
+		<value condition="VideoPlayer.Content(livetv)">$INFO[VideoPlayer.ChannelName]</value>
+		<value condition="VideoPlayer.Content(episodes)">$INFO[VideoPlayer.TVShowTitle]$INFO[VideoPlayer.Season, · S,]$INFO[VideoPlayer.Episode,E,]</value>
+		<value>$INFO[VideoPlayer.Year]$INFO[VideoPlayer.Genre, · ,]</value>
+	</variable>
+	<variable name="OSDTouchPlayIconVar">
+		<value condition="Player.Paused | Player.Forwarding | Player.Rewinding">tomszo/osd-play.png</value>
+		<value>tomszo/osd-pause.png</value>
+	</variable>
+	<expression name="OSDTouchHidden">Window.IsVisible(SliderDialog) | Window.IsVisible(1110) | Window.IsVisible(osdaudiosettings) | Window.IsVisible(osdvideosettings) | Window.IsVisible(osdsubtitlesettings) | Window.IsVisible(VideoBookmarks) | Window.IsVisible(playerprocessinfo) | Window.IsVisible(osdcmssettings) | Window.IsVisible(PVROSDChannels) | Window.IsVisible(pvrchannelguide) | Window.IsVisible(1101)</expression>
+
+	<!-- kis ikon-gomb a felső sávba (96 x 96, kör alakú fókusz) -->
+	<include name="OSDTouchIconButton">
+		<param name="visible">true</param>
+		<param name="onclick_2"></param>
+		<param name="onclick_3"></param>
+		<definition>
+			<control type="group">
+				<width>96</width>
+				<height>96</height>
+				<visible>$PARAM[visible]</visible>
+				<control type="button" id="$PARAM[id]">
+					<width>96</width>
+					<height>96</height>
+					<label></label>
+					<texturefocus colordiffuse="33FFFFFF">tomszo/osd-nib-big.png</texturefocus>
+					<texturenofocus />
+					<onclick>$PARAM[onclick]</onclick>
+					<onclick>$PARAM[onclick_2]</onclick>
+					<onclick>$PARAM[onclick_3]</onclick>
+				</control>
+				<control type="image">
+					<centerleft>50%</centerleft>
+					<centertop>50%</centertop>
+					<width>46</width>
+					<height>46</height>
+					<aspectratio>keep</aspectratio>
+					<texture>$PARAM[icon]</texture>
+				</control>
+			</control>
+		</definition>
+	</include>
+
+	<!-- nagy kör alakú középső gomb -->
+	<include name="OSDTouchCenterButton">
+		<param name="size">140</param>
+		<param name="icon_size">76</param>
+		<definition>
+			<control type="image">
+				<width>$PARAM[size]</width>
+				<height>$PARAM[size]</height>
+				<texture colordiffuse="66000000">tomszo/osd-nib-big.png</texture>
+			</control>
+			<control type="button" id="$PARAM[id]">
+				<width>$PARAM[size]</width>
+				<height>$PARAM[size]</height>
+				<label></label>
+				<texturefocus colordiffuse="33FFFFFF">tomszo/osd-nib-big.png</texturefocus>
+				<texturenofocus />
+				<onclick>$PARAM[onclick]</onclick>
+				<onleft>$PARAM[onleft]</onleft>
+				<onright>$PARAM[onright]</onright>
+				<onup>9901</onup>
+				<ondown>9801</ondown>
+			</control>
+			<control type="image">
+				<centerleft>50%</centerleft>
+				<centertop>50%</centertop>
+				<width>$PARAM[icon_size]</width>
+				<height>$PARAM[icon_size]</height>
+				<aspectratio>keep</aspectratio>
+				<texture>$PARAM[icon]</texture>
+			</control>
+		</definition>
+	</include>
+
+	<include name="VideoOSDTouch">
+		<!-- sötét átmenetek fent és lent -->
+		<control type="image">
+			<left>0</left>
+			<right>0</right>
+			<top>0</top>
+			<height>300</height>
+			<texture>tomszo/osd-scrim.png</texture>
+			<animation effect="fade" start="0" end="100" time="200">WindowOpen</animation>
+			<animation effect="fade" start="100" end="0" time="200">WindowClose</animation>
+		</control>
+		<control type="image">
+			<left>0</left>
+			<right>0</right>
+			<bottom>0</bottom>
+			<height>340</height>
+			<texture flipy="true">tomszo/osd-scrim.png</texture>
+			<animation effect="fade" start="0" end="100" time="200">WindowOpen</animation>
+			<animation effect="fade" start="100" end="0" time="200">WindowClose</animation>
+		</control>
+		<!-- üres területre koppintás: OSD bezárása -->
+		<control type="button">
+			<description>background close area</description>
+			<left>0</left>
+			<top>0</top>
+			<width>100%</width>
+			<height>100%</height>
+			<texturefocus />
+			<texturenofocus />
+			<onclick>Action(close)</onclick>
+		</control>
+		<control type="group">
+			<visible>![$EXP[OSDTouchHidden]]</visible>
+			<animation effect="fade" start="0" end="100" time="200">WindowOpen</animation>
+			<animation effect="fade" start="100" end="0" time="200">WindowClose</animation>
+			<animation effect="fade" time="200">VisibleChange</animation>
+
+			<!-- FELSŐ SÁV -->
+			<control type="group">
+				<left>24</left>
+				<top>24</top>
+				<width>96</width>
+				<height>96</height>
+				<include content="OSDTouchIconButton">
+					<param name="id" value="9901" />
+					<param name="icon" value="tomszo/osd-back.png" />
+					<param name="onclick" value="Dialog.Close(all,true)" />
+					<param name="onclick_2" value="Action(FullScreen)" />
+				</include>
+			</control>
+			<control type="label">
+				<left>136</left>
+				<right>620</right>
+				<top>30</top>
+				<height>54</height>
+				<aligny>center</aligny>
+				<font>font40_title</font>
+				<scroll>true</scroll>
+				<label>$VAR[OSDTouchTitleVar]</label>
+			</control>
+			<control type="label">
+				<left>136</left>
+				<right>620</right>
+				<top>84</top>
+				<height>34</height>
+				<aligny>center</aligny>
+				<font>font12</font>
+				<textcolor>FFC0C6CC</textcolor>
+				<label>$VAR[OSDTouchSubtitleVar]</label>
+			</control>
+			<control type="grouplist" id="9900">
+				<right>24</right>
+				<top>24</top>
+				<width>600</width>
+				<height>96</height>
+				<orientation>horizontal</orientation>
+				<align>right</align>
+				<itemgap>8</itemgap>
+				<usecontrolcoords>true</usecontrolcoords>
+				<onleft>9900</onleft>
+				<onright>9900</onright>
+				<ondown>602</ondown>
+				<control type="label">
+					<width>auto</width>
+					<height>96</height>
+					<aligny>center</aligny>
+					<font>font27</font>
+					<textcolor>FFC0C6CC</textcolor>
+					<label>$INFO[System.Time]  </label>
+				</control>
+				<include content="OSDTouchIconButton">
+					<param name="id" value="9902" />
+					<param name="icon" value="tomszo/osd-subtitles.png" />
+					<param name="onclick" value="SetProperty(settingsdialog_content,streamselection,home)" />
+					<param name="onclick_2" value="SetProperty(settingsdialog_header,$LOCALIZE[13392],home)" />
+					<param name="onclick_3" value="ActivateWindow(1101)" />
+				</include>
+				<include content="OSDTouchIconButton">
+					<param name="id" value="9903" />
+					<param name="icon" value="tomszo/tab-settings.png" />
+					<param name="onclick" value="SetProperty(settingsdialog_content,videosettings,home)" />
+					<param name="onclick_2" value="SetProperty(settingsdialog_header,$LOCALIZE[5],home)" />
+					<param name="onclick_3" value="ActivateWindow(1101)" />
+				</include>
+				<include content="OSDTouchIconButton">
+					<param name="id" value="603" />
+					<param name="icon" value="tomszo/osd-stop.png" />
+					<param name="onclick" value="PlayerControl(Stop)" />
+				</include>
+			</control>
+
+			<!-- KÖZÉPSŐ VEZÉRLŐK -->
+			<control type="group">
+				<centerleft>50%</centerleft>
+				<centertop>50%</centertop>
+				<width>700</width>
+				<height>200</height>
+				<control type="group">
+					<left>40</left>
+					<top>30</top>
+					<width>140</width>
+					<height>140</height>
+					<visible>Player.SeekEnabled</visible>
+					<include content="OSDTouchCenterButton">
+						<param name="id" value="9701" />
+						<param name="icon" value="tomszo/osd-replay10.png" />
+						<param name="onclick" value="Seek(-10)" />
+						<param name="onleft" value="9703" />
+						<param name="onright" value="602" />
+					</include>
+				</control>
+				<control type="group">
+					<left>250</left>
+					<top>0</top>
+					<width>200</width>
+					<height>200</height>
+					<visible>Player.PauseEnabled</visible>
+					<include content="OSDTouchCenterButton">
+						<param name="id" value="602" />
+						<param name="size" value="200" />
+						<param name="icon_size" value="96" />
+						<param name="icon" value="$VAR[OSDTouchPlayIconVar]" />
+						<param name="onclick" value="PlayerControl(Play)" />
+						<param name="onleft" value="9701" />
+						<param name="onright" value="9703" />
+					</include>
+				</control>
+				<control type="group">
+					<left>520</left>
+					<top>30</top>
+					<width>140</width>
+					<height>140</height>
+					<visible>Player.SeekEnabled</visible>
+					<include content="OSDTouchCenterButton">
+						<param name="id" value="9703" />
+						<param name="icon" value="tomszo/osd-forward30.png" />
+						<param name="onclick" value="Seek(30)" />
+						<param name="onleft" value="602" />
+						<param name="onright" value="9701" />
+					</include>
+				</control>
+			</control>
+
+			<!-- ALSÓ SÁV: idő + idősáv -->
+			<control type="group">
+				<left>0</left>
+				<right>0</right>
+				<bottom>0</bottom>
+				<height>190</height>
+				<control type="label">
+					<left>48</left>
+					<top>40</top>
+					<width>400</width>
+					<height>44</height>
+					<aligny>center</aligny>
+					<font>font27</font>
+					<label>$INFO[Player.Time]</label>
+					<visible>Player.SeekEnabled</visible>
+				</control>
+				<control type="label">
+					<right>48</right>
+					<top>40</top>
+					<width>400</width>
+					<height>44</height>
+					<align>right</align>
+					<aligny>center</aligny>
+					<font>font27</font>
+					<textcolor>FFC0C6CC</textcolor>
+					<label>$INFO[Player.Duration]</label>
+					<visible>Player.SeekEnabled + !String.IsEmpty(Player.Duration)</visible>
+				</control>
+				<!-- ÉLŐ jelzés, ha nem tekerhető -->
+				<control type="group">
+					<left>48</left>
+					<top>44</top>
+					<width>110</width>
+					<height>40</height>
+					<visible>!Player.SeekEnabled | VideoPlayer.Content(livetv)</visible>
+					<control type="image">
+						<width>110</width>
+						<height>40</height>
+						<texture border="20" colordiffuse="FFD93636">tomszo/pill.png</texture>
+					</control>
+					<control type="label">
+						<width>110</width>
+						<height>40</height>
+						<align>center</align>
+						<aligny>center</aligny>
+						<font>font12</font>
+						<label>$LOCALIZE[31984]</label>
+					</control>
+				</control>
+				<!-- sáv: háttér, puffer, haladás -->
+				<control type="image">
+					<left>48</left>
+					<right>48</right>
+					<top>110</top>
+					<height>6</height>
+					<texture colordiffuse="40FFFFFF">colors/white.png</texture>
+					<visible>Player.SeekEnabled</visible>
+				</control>
+				<control type="progress">
+					<left>48</left>
+					<right>48</right>
+					<top>110</top>
+					<height>6</height>
+					<texturebg colordiffuse="00FFFFFF">colors/white.png</texturebg>
+					<midtexture colordiffuse="50FFFFFF">colors/white.png</midtexture>
+					<info>Player.ProgressCache</info>
+					<visible>Player.SeekEnabled + !VideoPlayer.Content(livetv)</visible>
+				</control>
+				<control type="progress">
+					<left>48</left>
+					<right>48</right>
+					<top>110</top>
+					<height>6</height>
+					<texturebg colordiffuse="00FFFFFF">colors/white.png</texturebg>
+					<midtexture colordiffuse="button_focus">colors/white.png</midtexture>
+					<info>Player.Progress</info>
+					<visible>Player.SeekEnabled + !VideoPlayer.Content(livetv)</visible>
+				</control>
+				<control type="progress">
+					<left>48</left>
+					<right>48</right>
+					<top>110</top>
+					<height>6</height>
+					<texturebg colordiffuse="00FFFFFF">colors/white.png</texturebg>
+					<midtexture colordiffuse="button_focus">colors/white.png</midtexture>
+					<info>PVR.TimeshiftProgressPlayPos</info>
+					<visible>Player.SeekEnabled + VideoPlayer.Content(livetv)</visible>
+				</control>
+				<!-- húzható fogó (a sáv és a fogó ugyanaz a textúra, így a fogó magassága = a csúszka magassága) -->
+				<control type="slider" id="9801">
+					<left>30</left>
+					<right>30</right>
+					<top>95</top>
+					<height>36</height>
+					<texturesliderbar colordiffuse="00FFFFFF">tomszo/osd-nib.png</texturesliderbar>
+					<textureslidernib>tomszo/osd-nib.png</textureslidernib>
+					<textureslidernibfocus colordiffuse="button_focus">tomszo/osd-nib.png</textureslidernibfocus>
+					<info>Player.Progress</info>
+					<action>seek</action>
+					<onup>602</onup>
+					<ondown>noop</ondown>
+					<visible>Player.SeekEnabled + !VideoPlayer.Content(livetv)</visible>
+				</control>
+				<control type="slider" id="9802">
+					<left>30</left>
+					<right>30</right>
+					<top>95</top>
+					<height>36</height>
+					<texturesliderbar colordiffuse="00FFFFFF">tomszo/osd-nib.png</texturesliderbar>
+					<textureslidernib>tomszo/osd-nib.png</textureslidernib>
+					<textureslidernibfocus colordiffuse="button_focus">tomszo/osd-nib.png</textureslidernibfocus>
+					<info>PVR.TimeshiftProgressPlayPos</info>
+					<action>pvr.seek</action>
+					<onup>602</onup>
+					<ondown>noop</ondown>
+					<visible>Player.SeekEnabled + VideoPlayer.Content(livetv)</visible>
+				</control>
+			</control>
+		</control>
+	</include>
+
+	<!-- Érintés módban a régi idősáv és felső sáv rejtve, amíg a mobilos OSD látszik -->
+	<include name="TS_HideWhenTouchOSD">
+		<visible>!Window.IsVisible(videoosd)</visible>
+	</include>
+</includes>

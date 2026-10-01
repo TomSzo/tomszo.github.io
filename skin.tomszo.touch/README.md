@@ -42,13 +42,24 @@ A filmek, sorozatok, kiegészítők és programok listáiban két új nézet van
 
 ![Mobil lista](resources/screenshot-03.jpg)
 
+## Mobilos lejátszó (Érintés mód)
+
+Lejátszás közben egy koppintás hozza elő a telefonos lejátszó-felületet:
+
+- **fent:** vissza, cím és alcím, óra, feliratok/hangsávok, beállítások, leállítás
+- **középen:** nagy *10 mp vissza · lejátszás/szünet · 30 mp előre* gombok
+- **alul:** eltelt idő / teljes hossz és ujjal húzható idősáv. Ha az adás nem tekerhető, piros **ÉLŐ** jelzés jelenik meg.
+- üres területre koppintva eltűnik
+
+![Mobilos OSD](resources/screenshot-04.jpg)
+
 ## Mi más, mint az Estuary?
 
 | Terület | Változás |
 |---------|----------|
 | Kinézet | Minimalista, sötét „flat” stílus: egyszínű háttér minta nélkül, sötét dialógusok |
 | Érintés mód | Ujjal húzva, lendülettel görgethető listák; képernyőn lévő *Vissza*, *Beállítások*, *Hangerő*, *Kedvencek* gombok, görgetősáv a kezdőlap-sorokon |
-| Videó OSD | Nagy, középre helyezett gombok: **-10 mp · lejátszás/szünet · +30 mp** |
+| Videó OSD | Mobilos lejátszó-felület: felső sáv, nagy középső gombok, húzható idősáv |
 | Méretek | Listasorok 75 → 100 px, oldalmenü 80 → 96 px, beállítás-gombok 70 → 86 px |
 | Sebesség | Dia animációk **alapból kikapcsolva** (csak áttűnés) |
 | Színek | Zöldeskék kiemelőszín, saját ikon és háttérkép |

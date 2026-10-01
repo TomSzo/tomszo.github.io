@@ -779,7 +779,7 @@ v1.0.0 (2026-09-25)
     </extension>
 </addon>
 
-<addon id="skin.tomszo.touch" version="1.3.0" name="TomSzo Touch" provider-name="TomSzo (alap: Estuary – phil65, Ichabod Fletchman)">
+<addon id="skin.tomszo.touch" version="1.4.0" name="TomSzo Touch" provider-name="TomSzo (alap: Estuary – phil65, Ichabod Fletchman)">
 	<requires>
 		<import addon="xbmc.gui" version="5.18.0"/>
 	</requires>
@@ -803,6 +803,7 @@ v1.0.0 (2026-09-25)
 			<screenshot>resources/screenshot-01.jpg</screenshot>
 			<screenshot>resources/screenshot-02.jpg</screenshot>
 			<screenshot>resources/screenshot-03.jpg</screenshot>
+			<screenshot>resources/screenshot-04.jpg</screenshot>
 		</assets>
 		<summary lang="en_GB">Minimal Estuary fork for Kodi 22 with two modes: Touch and TV / Box</summary>
 		<summary lang="hu_HU">Minimalista Estuary-fork Kodi 22-höz két móddal: Érintés és TV / Box</summary>
@@ -813,7 +814,7 @@ v1.0.0 (2026-09-25)
 - Touch mode has mobile-style views for lists: "Mobile list" (rows with poster, year, genre, runtime, plot, rating) and "Cards" (poster grid)
 - Minimal, flat dark look: solid background without pattern, dark dialogs
 - Touch mode: lists scroll with a finger swipe (kinetic scrolling); on-screen back, settings, volume and favourites buttons, scrollbars on home widgets
-- Big on-screen playback controls in the video OSD (-10 s, play/pause, +30 s)
+- Mobile-style video OSD in Touch mode: back, title, clock and icons on top; big replay 10 / play-pause / forward 30 in the middle; time and a draggable seek bar at the bottom
 - Larger list rows, menu items and setting buttons for easier tapping
 - Lightweight: slide animations are OFF by default (fade only)
 - New default accent colour
@@ -827,7 +828,7 @@ Based on Estuary by phil65 and Ichabod Fletchman (Team Kodi).</description>
 - Érintés módban mobilos nézetek a listákhoz: „Mobil lista” (sorok poszterrel, évvel, műfajjal, hosszal, leírással, értékeléssel) és „Kártyák” (poszterrács)
 - Minimalista, sötét „flat” megjelenés: egyszínű háttér minta nélkül, sötét dialógusok
 - Érintés mód: a listák ujjal húzva, lendülettel görgethetők; képernyőn lévő vissza, beállítások, hangerő és kedvencek gombok, görgetősáv a kezdőlap-sorokon
-- Nagy lejátszásvezérlő gombok a videó OSD közepén (-10 mp, lejátszás/szünet, +30 mp)
+- Mobilos videó-OSD Érintés módban: fent vissza, cím, óra és ikonok; középen nagy 10 mp vissza / lejátszás-szünet / 30 mp előre; alul idő és ujjal húzható idősáv
 - Nagyobb listasorok, menüpontok és beállítás-gombok a könnyebb koppintáshoz
 - Könnyű: a dia animációk alapból KI vannak kapcsolva (csak áttűnés)
 - Új alap kiemelőszín
@@ -835,6 +836,10 @@ Based on Estuary by phil65 and Ichabod Fletchman (Team Kodi).</description>
 
 Alap: Estuary – phil65 és Ichabod Fletchman (Team Kodi).</description>
 		<news>
+v1.4.0 (2026-10-01)
+- Új: mobilos videó-OSD Érintés módban (egységes felső sáv, nagy középső gombok, húzható idősáv)
+- TV / Box módban marad az eredeti OSD
+
 v1.3.0 (2026-10-01)
 - Új: „Mobil lista” és „Kártyák” nézet Érintés módban (filmek, sorozatok, kiegészítők, programok)
 - Javítás: a módválasztó bal kártyájának tartalma elcsúszott
