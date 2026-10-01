@@ -1,6 +1,6 @@
 # 🛠️ TomSzo Kodi Repository
 
-Saját Kodi addon-gyűjtemény – repository-k, egy módosított skin és hasznos modulok
+Saját Kodi addon-gyűjtemény – repository-k, skinek és hasznos modulok
 egy helyen. A cél, hogy magyar tartalom, feliratok és a megszokott kiegészítők
 egyetlen tárolóból települjenek.
 
@@ -33,10 +33,11 @@ egyetlen tárolóból települjenek.
 | **weather.tomszo** | Időjárás-szolgáltató *(Időkép magyar településekre + Open-Meteo, API-kulcs nélkül)*. |
 | **script.speedtester** | Internet-sebességteszt (speedtest.net) – *TomSzo v2.0.0 fork*. |
 
-#### Skin
+#### Skinek
 | Skin | Mire jó? |
 |------|----------|
 | **skin.avdvplus.estuary** | Módosított Estuary skin. **Csak az AVDV release 9 buildekhez** jó. |
+| **skin.tomszo.touch** | **TomSzo Touch** – érintésre optimalizált, könnyű Estuary-fork **Kodi 22-höz, Androidra** (nagy gombok, érintős mód alapból). |
 
 ---
 
@@ -50,7 +51,7 @@ egyetlen tárolóból települjenek.
 
 **2. lépés — Repository telepítése:**
 - **Kiegészítők** → **Telepítés ZIP fájlból** → `TomSzo Repo`
-- Válaszd: `repository.tomszo-1.0.16.zip`
+- Válaszd: `repository.tomszo-1.0.17.zip`
 - Várj 5-10 másodpercet
 
 **3. lépés — Addonok telepítése:**
@@ -84,4 +85,4 @@ egyetlen tárolóból települjenek.
 ---
 
 Ha hasznosnak találod, adj egy ⭐ csillagot a repónak!  
-Utolsó frissítés: 2026. szeptember
+Utolsó frissítés: 2026. október

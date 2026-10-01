@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<addon id="repository.tomszo" name="TomSzo Repository" version="1.0.16" provider-name="TomSzo">
+<addon id="repository.tomszo" name="TomSzo Repository" version="1.0.17" provider-name="TomSzo">
     <requires>
         <import addon="xbmc.addon" version="12.0.0"/>
     </requires>
@@ -31,6 +31,7 @@ Add-ons:
 - service.autosub (automatic subtitles; mainly for anime)
 - Speed Tester (Internet bandwidth test)
 - avdvplus.Estuary (skin - AVDV release 9 builds only)
+- TomSzo Touch (skin - touch-first Estuary fork for Kodi 22 on Android)
 
 WARNING: BETA repository. Use at your own risk.</description>
         <description lang="hu">TomSzo személyes Kodi tárolója: gondosan válogatott harmadik féltől származó tárolók és hasznos kiegészítők.
@@ -51,9 +52,13 @@ Kiegészítők:
 - service.autosub (automatikus felirat; főleg animenézőknek)
 - Speed Tester (internet sebességteszt)
 - avdvplus.Estuary (skin - csak AVDV release 9 buildekhez)
+- TomSzo Touch (skin - érintésre optimalizált Estuary-fork Kodi 22-höz, Androidra)
 
 FIGYELEM: BÉTA tároló. Csak saját felelősségre használd!</description>
         <news>
+v1.0.17 (2026-10-01) - BÉTA
+- Hozzáadva: skin.tomszo.touch (1.0.0) - TomSzo Touch, érintésre optimalizált skin Kodi 22-höz (Android)
+
 v1.0.16 (2026-09-26) - BÉTA
 - Frissítve: script.speedtester 2.0.0 - a hivatalos Kodi repóba mergelt, javított kiadás (Greptile-fixek + maintainer mezők)
 
