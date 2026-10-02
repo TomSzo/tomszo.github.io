@@ -1,0 +1,975 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- GENERÁLT FÁJL: _tools/build_home.py - kézzel ne szerkeszd -->
+<includes>
+	<variable name="TSHeroArt">
+		<value condition="String.IsEqual(Window(home).Property(TSRow),5101) + !String.IsEmpty(Container(5101).ListItem.Art(fanart))">$INFO[Container(5101).ListItem.Art(fanart)]</value>
+		<value condition="String.IsEqual(Window(home).Property(TSRow),5101) + !String.IsEmpty(Container(5101).ListItem.Art(landscape))">$INFO[Container(5101).ListItem.Art(landscape)]</value>
+		<value condition="String.IsEqual(Window(home).Property(TSRow),5101) + !String.IsEmpty(Container(5101).ListItem.Art(thumb))">$INFO[Container(5101).ListItem.Art(thumb)]</value>
+		<value condition="String.IsEqual(Window(home).Property(TSRow),5102) + !String.IsEmpty(Container(5102).ListItem.Art(thumb))">$INFO[Container(5102).ListItem.Art(thumb)]</value>
+		<value condition="String.IsEqual(Window(home).Property(TSRow),5102) + !String.IsEmpty(Container(5102).ListItem.Art(landscape))">$INFO[Container(5102).ListItem.Art(landscape)]</value>
+		<value condition="String.IsEqual(Window(home).Property(TSRow),5103) + !String.IsEmpty(Container(5103).ListItem.Art(fanart))">$INFO[Container(5103).ListItem.Art(fanart)]</value>
+		<value condition="String.IsEqual(Window(home).Property(TSRow),5103) + !String.IsEmpty(Container(5103).ListItem.Art(landscape))">$INFO[Container(5103).ListItem.Art(landscape)]</value>
+		<value condition="String.IsEqual(Window(home).Property(TSRow),5103) + !String.IsEmpty(Container(5103).ListItem.Art(thumb))">$INFO[Container(5103).ListItem.Art(thumb)]</value>
+		<value condition="String.IsEqual(Window(home).Property(TSRow),5104) + !String.IsEmpty(Container(5104).ListItem.Art(fanart))">$INFO[Container(5104).ListItem.Art(fanart)]</value>
+		<value condition="String.IsEqual(Window(home).Property(TSRow),5104) + !String.IsEmpty(Container(5104).ListItem.Art(landscape))">$INFO[Container(5104).ListItem.Art(landscape)]</value>
+		<value condition="String.IsEqual(Window(home).Property(TSRow),5104) + !String.IsEmpty(Container(5104).ListItem.Art(thumb))">$INFO[Container(5104).ListItem.Art(thumb)]</value>
+		<value condition="String.IsEqual(Window(home).Property(TSRow),5106) + !String.IsEmpty(Container(5106).ListItem.Art(fanart))">$INFO[Container(5106).ListItem.Art(fanart)]</value>
+		<value condition="String.IsEqual(Window(home).Property(TSRow),5106) + !String.IsEmpty(Container(5106).ListItem.Art(landscape))">$INFO[Container(5106).ListItem.Art(landscape)]</value>
+		<value condition="String.IsEqual(Window(home).Property(TSRow),5106) + !String.IsEmpty(Container(5106).ListItem.Art(thumb))">$INFO[Container(5106).ListItem.Art(thumb)]</value>
+		<value condition="String.IsEqual(Window(home).Property(TSRow),5107) + !String.IsEmpty(Container(5107).ListItem.Art(fanart))">$INFO[Container(5107).ListItem.Art(fanart)]</value>
+		<value condition="String.IsEqual(Window(home).Property(TSRow),5107) + !String.IsEmpty(Container(5107).ListItem.Art(landscape))">$INFO[Container(5107).ListItem.Art(landscape)]</value>
+		<value condition="String.IsEqual(Window(home).Property(TSRow),5107) + !String.IsEmpty(Container(5107).ListItem.Art(thumb))">$INFO[Container(5107).ListItem.Art(thumb)]</value>
+		<value condition="String.IsEqual(Window(home).Property(TSRow),5201) + !String.IsEmpty(Container(5201).ListItem.Art(fanart))">$INFO[Container(5201).ListItem.Art(fanart)]</value>
+		<value condition="String.IsEqual(Window(home).Property(TSRow),5201) + !String.IsEmpty(Container(5201).ListItem.Art(landscape))">$INFO[Container(5201).ListItem.Art(landscape)]</value>
+		<value condition="String.IsEqual(Window(home).Property(TSRow),5201) + !String.IsEmpty(Container(5201).ListItem.Art(thumb))">$INFO[Container(5201).ListItem.Art(thumb)]</value>
+		<value condition="String.IsEqual(Window(home).Property(TSRow),5202) + !String.IsEmpty(Container(5202).ListItem.Art(fanart))">$INFO[Container(5202).ListItem.Art(fanart)]</value>
+		<value condition="String.IsEqual(Window(home).Property(TSRow),5202) + !String.IsEmpty(Container(5202).ListItem.Art(landscape))">$INFO[Container(5202).ListItem.Art(landscape)]</value>
+		<value condition="String.IsEqual(Window(home).Property(TSRow),5202) + !String.IsEmpty(Container(5202).ListItem.Art(thumb))">$INFO[Container(5202).ListItem.Art(thumb)]</value>
+		<value condition="String.IsEqual(Window(home).Property(TSRow),5203) + !String.IsEmpty(Container(5203).ListItem.Art(fanart))">$INFO[Container(5203).ListItem.Art(fanart)]</value>
+		<value condition="String.IsEqual(Window(home).Property(TSRow),5203) + !String.IsEmpty(Container(5203).ListItem.Art(landscape))">$INFO[Container(5203).ListItem.Art(landscape)]</value>
+		<value condition="String.IsEqual(Window(home).Property(TSRow),5203) + !String.IsEmpty(Container(5203).ListItem.Art(thumb))">$INFO[Container(5203).ListItem.Art(thumb)]</value>
+		<value condition="String.IsEqual(Window(home).Property(TSRow),5204) + !String.IsEmpty(Container(5204).ListItem.Art(fanart))">$INFO[Container(5204).ListItem.Art(fanart)]</value>
+		<value condition="String.IsEqual(Window(home).Property(TSRow),5204) + !String.IsEmpty(Container(5204).ListItem.Art(landscape))">$INFO[Container(5204).ListItem.Art(landscape)]</value>
+		<value condition="String.IsEqual(Window(home).Property(TSRow),5204) + !String.IsEmpty(Container(5204).ListItem.Art(thumb))">$INFO[Container(5204).ListItem.Art(thumb)]</value>
+		<value condition="String.IsEqual(Window(home).Property(TSRow),5205) + !String.IsEmpty(Container(5205).ListItem.Art(fanart))">$INFO[Container(5205).ListItem.Art(fanart)]</value>
+		<value condition="String.IsEqual(Window(home).Property(TSRow),5205) + !String.IsEmpty(Container(5205).ListItem.Art(landscape))">$INFO[Container(5205).ListItem.Art(landscape)]</value>
+		<value condition="String.IsEqual(Window(home).Property(TSRow),5205) + !String.IsEmpty(Container(5205).ListItem.Art(thumb))">$INFO[Container(5205).ListItem.Art(thumb)]</value>
+		<value condition="String.IsEqual(Window(home).Property(TSRow),5206) + !String.IsEmpty(Container(5206).ListItem.Art(fanart))">$INFO[Container(5206).ListItem.Art(fanart)]</value>
+		<value condition="String.IsEqual(Window(home).Property(TSRow),5206) + !String.IsEmpty(Container(5206).ListItem.Art(landscape))">$INFO[Container(5206).ListItem.Art(landscape)]</value>
+		<value condition="String.IsEqual(Window(home).Property(TSRow),5206) + !String.IsEmpty(Container(5206).ListItem.Art(thumb))">$INFO[Container(5206).ListItem.Art(thumb)]</value>
+		<value condition="String.IsEqual(Window(home).Property(TSRow),5207) + !String.IsEmpty(Container(5207).ListItem.Art(fanart))">$INFO[Container(5207).ListItem.Art(fanart)]</value>
+		<value condition="String.IsEqual(Window(home).Property(TSRow),5207) + !String.IsEmpty(Container(5207).ListItem.Art(landscape))">$INFO[Container(5207).ListItem.Art(landscape)]</value>
+		<value condition="String.IsEqual(Window(home).Property(TSRow),5207) + !String.IsEmpty(Container(5207).ListItem.Art(thumb))">$INFO[Container(5207).ListItem.Art(thumb)]</value>
+		<value condition="String.IsEqual(Window(home).Property(TSRow),5301) + !String.IsEmpty(Container(5301).ListItem.Art(fanart))">$INFO[Container(5301).ListItem.Art(fanart)]</value>
+		<value condition="String.IsEqual(Window(home).Property(TSRow),5301) + !String.IsEmpty(Container(5301).ListItem.Art(landscape))">$INFO[Container(5301).ListItem.Art(landscape)]</value>
+		<value condition="String.IsEqual(Window(home).Property(TSRow),5301) + !String.IsEmpty(Container(5301).ListItem.Art(thumb))">$INFO[Container(5301).ListItem.Art(thumb)]</value>
+		<value condition="String.IsEqual(Window(home).Property(TSRow),5302) + !String.IsEmpty(Container(5302).ListItem.Art(fanart))">$INFO[Container(5302).ListItem.Art(fanart)]</value>
+		<value condition="String.IsEqual(Window(home).Property(TSRow),5302) + !String.IsEmpty(Container(5302).ListItem.Art(landscape))">$INFO[Container(5302).ListItem.Art(landscape)]</value>
+		<value condition="String.IsEqual(Window(home).Property(TSRow),5302) + !String.IsEmpty(Container(5302).ListItem.Art(thumb))">$INFO[Container(5302).ListItem.Art(thumb)]</value>
+		<value condition="String.IsEqual(Window(home).Property(TSRow),5303) + !String.IsEmpty(Container(5303).ListItem.Art(fanart))">$INFO[Container(5303).ListItem.Art(fanart)]</value>
+		<value condition="String.IsEqual(Window(home).Property(TSRow),5303) + !String.IsEmpty(Container(5303).ListItem.Art(landscape))">$INFO[Container(5303).ListItem.Art(landscape)]</value>
+		<value condition="String.IsEqual(Window(home).Property(TSRow),5303) + !String.IsEmpty(Container(5303).ListItem.Art(thumb))">$INFO[Container(5303).ListItem.Art(thumb)]</value>
+		<value condition="String.IsEqual(Window(home).Property(TSRow),5304) + !String.IsEmpty(Container(5304).ListItem.Art(fanart))">$INFO[Container(5304).ListItem.Art(fanart)]</value>
+		<value condition="String.IsEqual(Window(home).Property(TSRow),5304) + !String.IsEmpty(Container(5304).ListItem.Art(landscape))">$INFO[Container(5304).ListItem.Art(landscape)]</value>
+		<value condition="String.IsEqual(Window(home).Property(TSRow),5304) + !String.IsEmpty(Container(5304).ListItem.Art(thumb))">$INFO[Container(5304).ListItem.Art(thumb)]</value>
+		<value condition="String.IsEqual(Window(home).Property(TSRow),5305) + !String.IsEmpty(Container(5305).ListItem.Art(fanart))">$INFO[Container(5305).ListItem.Art(fanart)]</value>
+		<value condition="String.IsEqual(Window(home).Property(TSRow),5305) + !String.IsEmpty(Container(5305).ListItem.Art(landscape))">$INFO[Container(5305).ListItem.Art(landscape)]</value>
+		<value condition="String.IsEqual(Window(home).Property(TSRow),5305) + !String.IsEmpty(Container(5305).ListItem.Art(thumb))">$INFO[Container(5305).ListItem.Art(thumb)]</value>
+		<value condition="String.IsEqual(Window(home).Property(TSRow),5306) + !String.IsEmpty(Container(5306).ListItem.Art(fanart))">$INFO[Container(5306).ListItem.Art(fanart)]</value>
+		<value condition="String.IsEqual(Window(home).Property(TSRow),5306) + !String.IsEmpty(Container(5306).ListItem.Art(landscape))">$INFO[Container(5306).ListItem.Art(landscape)]</value>
+		<value condition="String.IsEqual(Window(home).Property(TSRow),5306) + !String.IsEmpty(Container(5306).ListItem.Art(thumb))">$INFO[Container(5306).ListItem.Art(thumb)]</value>
+		<value condition="String.IsEqual(Window(home).Property(TSRow),5401) + !String.IsEmpty(Container(5401).ListItem.Art(thumb))">$INFO[Container(5401).ListItem.Art(thumb)]</value>
+		<value condition="String.IsEqual(Window(home).Property(TSRow),5401) + !String.IsEmpty(Container(5401).ListItem.Art(landscape))">$INFO[Container(5401).ListItem.Art(landscape)]</value>
+		<value condition="String.IsEqual(Window(home).Property(TSRow),5402) + !String.IsEmpty(Container(5402).ListItem.Art(thumb))">$INFO[Container(5402).ListItem.Art(thumb)]</value>
+		<value condition="String.IsEqual(Window(home).Property(TSRow),5402) + !String.IsEmpty(Container(5402).ListItem.Art(landscape))">$INFO[Container(5402).ListItem.Art(landscape)]</value>
+		<value condition="String.IsEqual(Window(home).Property(TSRow),5403) + !String.IsEmpty(Container(5403).ListItem.Art(thumb))">$INFO[Container(5403).ListItem.Art(thumb)]</value>
+		<value condition="String.IsEqual(Window(home).Property(TSRow),5403) + !String.IsEmpty(Container(5403).ListItem.Art(landscape))">$INFO[Container(5403).ListItem.Art(landscape)]</value>
+		<value condition="String.IsEqual(Window(home).Property(TSRow),5404) + !String.IsEmpty(Container(5404).ListItem.Art(thumb))">$INFO[Container(5404).ListItem.Art(thumb)]</value>
+		<value condition="String.IsEqual(Window(home).Property(TSRow),5404) + !String.IsEmpty(Container(5404).ListItem.Art(landscape))">$INFO[Container(5404).ListItem.Art(landscape)]</value>
+		<value condition="String.IsEqual(Window(home).Property(TSRow),5405) + !String.IsEmpty(Container(5405).ListItem.Art(thumb))">$INFO[Container(5405).ListItem.Art(thumb)]</value>
+		<value condition="String.IsEqual(Window(home).Property(TSRow),5405) + !String.IsEmpty(Container(5405).ListItem.Art(landscape))">$INFO[Container(5405).ListItem.Art(landscape)]</value>
+		<value condition="String.IsEqual(Window(home).Property(TSRow),5406) + !String.IsEmpty(Container(5406).ListItem.Art(thumb))">$INFO[Container(5406).ListItem.Art(thumb)]</value>
+		<value condition="String.IsEqual(Window(home).Property(TSRow),5406) + !String.IsEmpty(Container(5406).ListItem.Art(landscape))">$INFO[Container(5406).ListItem.Art(landscape)]</value>
+		<value condition="String.IsEqual(Window(home).Property(TSRow),5407) + !String.IsEmpty(Container(5407).ListItem.Art(thumb))">$INFO[Container(5407).ListItem.Art(thumb)]</value>
+		<value condition="String.IsEqual(Window(home).Property(TSRow),5407) + !String.IsEmpty(Container(5407).ListItem.Art(landscape))">$INFO[Container(5407).ListItem.Art(landscape)]</value>
+		<value condition="String.IsEqual(Window(home).Property(TSRow),5504) + !String.IsEmpty(Container(5504).ListItem.Art(thumb))">$INFO[Container(5504).ListItem.Art(thumb)]</value>
+		<value condition="String.IsEqual(Window(home).Property(TSRow),5504) + !String.IsEmpty(Container(5504).ListItem.Art(landscape))">$INFO[Container(5504).ListItem.Art(landscape)]</value>
+		<value condition="String.IsEqual(Window(home).Property(TSRow),5505) + !String.IsEmpty(Container(5505).ListItem.Art(thumb))">$INFO[Container(5505).ListItem.Art(thumb)]</value>
+		<value condition="String.IsEqual(Window(home).Property(TSRow),5505) + !String.IsEmpty(Container(5505).ListItem.Art(landscape))">$INFO[Container(5505).ListItem.Art(landscape)]</value>
+		<value condition="String.IsEqual(Window(home).Property(TSRow),5506) + !String.IsEmpty(Container(5506).ListItem.Art(thumb))">$INFO[Container(5506).ListItem.Art(thumb)]</value>
+		<value condition="String.IsEqual(Window(home).Property(TSRow),5506) + !String.IsEmpty(Container(5506).ListItem.Art(landscape))">$INFO[Container(5506).ListItem.Art(landscape)]</value>
+	</variable>
+	<variable name="TSHeroPoster">
+		<value condition="String.IsEqual(Window(home).Property(TSRow),5105)">$INFO[Container(5105).ListItem.Art(poster)]</value>
+		<value condition="String.IsEqual(Window(home).Property(TSRow),5501)">$INFO[Container(5501).ListItem.Art(poster)]</value>
+		<value condition="String.IsEqual(Window(home).Property(TSRow),5502)">$INFO[Container(5502).ListItem.Art(poster)]</value>
+		<value condition="String.IsEqual(Window(home).Property(TSRow),5503)">$INFO[Container(5503).ListItem.Art(poster)]</value>
+		<value condition="String.IsEqual(Window(home).Property(TSRow),5507)">$INFO[Container(5507).ListItem.Art(poster)]</value>
+	</variable>
+	<variable name="TSHeroLogo">
+		<value condition="String.IsEqual(Window(home).Property(TSRow),5101) + !String.IsEmpty(Container(5101).ListItem.Art(clearlogo))">$INFO[Container(5101).ListItem.Art(clearlogo)]</value>
+		<value condition="String.IsEqual(Window(home).Property(TSRow),5102) + !String.IsEmpty(Container(5102).ListItem.Art(clearlogo))">$INFO[Container(5102).ListItem.Art(clearlogo)]</value>
+		<value condition="String.IsEqual(Window(home).Property(TSRow),5103) + !String.IsEmpty(Container(5103).ListItem.Art(clearlogo))">$INFO[Container(5103).ListItem.Art(clearlogo)]</value>
+		<value condition="String.IsEqual(Window(home).Property(TSRow),5104) + !String.IsEmpty(Container(5104).ListItem.Art(clearlogo))">$INFO[Container(5104).ListItem.Art(clearlogo)]</value>
+		<value condition="String.IsEqual(Window(home).Property(TSRow),5105) + !String.IsEmpty(Container(5105).ListItem.Art(clearlogo))">$INFO[Container(5105).ListItem.Art(clearlogo)]</value>
+		<value condition="String.IsEqual(Window(home).Property(TSRow),5106) + !String.IsEmpty(Container(5106).ListItem.Art(clearlogo))">$INFO[Container(5106).ListItem.Art(clearlogo)]</value>
+		<value condition="String.IsEqual(Window(home).Property(TSRow),5107) + !String.IsEmpty(Container(5107).ListItem.Art(clearlogo))">$INFO[Container(5107).ListItem.Art(clearlogo)]</value>
+		<value condition="String.IsEqual(Window(home).Property(TSRow),5201) + !String.IsEmpty(Container(5201).ListItem.Art(clearlogo))">$INFO[Container(5201).ListItem.Art(clearlogo)]</value>
+		<value condition="String.IsEqual(Window(home).Property(TSRow),5202) + !String.IsEmpty(Container(5202).ListItem.Art(clearlogo))">$INFO[Container(5202).ListItem.Art(clearlogo)]</value>
+		<value condition="String.IsEqual(Window(home).Property(TSRow),5203) + !String.IsEmpty(Container(5203).ListItem.Art(clearlogo))">$INFO[Container(5203).ListItem.Art(clearlogo)]</value>
+		<value condition="String.IsEqual(Window(home).Property(TSRow),5204) + !String.IsEmpty(Container(5204).ListItem.Art(clearlogo))">$INFO[Container(5204).ListItem.Art(clearlogo)]</value>
+		<value condition="String.IsEqual(Window(home).Property(TSRow),5205) + !String.IsEmpty(Container(5205).ListItem.Art(clearlogo))">$INFO[Container(5205).ListItem.Art(clearlogo)]</value>
+		<value condition="String.IsEqual(Window(home).Property(TSRow),5206) + !String.IsEmpty(Container(5206).ListItem.Art(clearlogo))">$INFO[Container(5206).ListItem.Art(clearlogo)]</value>
+		<value condition="String.IsEqual(Window(home).Property(TSRow),5207) + !String.IsEmpty(Container(5207).ListItem.Art(clearlogo))">$INFO[Container(5207).ListItem.Art(clearlogo)]</value>
+		<value condition="String.IsEqual(Window(home).Property(TSRow),5301) + !String.IsEmpty(Container(5301).ListItem.Art(clearlogo))">$INFO[Container(5301).ListItem.Art(clearlogo)]</value>
+		<value condition="String.IsEqual(Window(home).Property(TSRow),5302) + !String.IsEmpty(Container(5302).ListItem.Art(clearlogo))">$INFO[Container(5302).ListItem.Art(clearlogo)]</value>
+		<value condition="String.IsEqual(Window(home).Property(TSRow),5303) + !String.IsEmpty(Container(5303).ListItem.Art(clearlogo))">$INFO[Container(5303).ListItem.Art(clearlogo)]</value>
+		<value condition="String.IsEqual(Window(home).Property(TSRow),5304) + !String.IsEmpty(Container(5304).ListItem.Art(clearlogo))">$INFO[Container(5304).ListItem.Art(clearlogo)]</value>
+		<value condition="String.IsEqual(Window(home).Property(TSRow),5305) + !String.IsEmpty(Container(5305).ListItem.Art(clearlogo))">$INFO[Container(5305).ListItem.Art(clearlogo)]</value>
+		<value condition="String.IsEqual(Window(home).Property(TSRow),5306) + !String.IsEmpty(Container(5306).ListItem.Art(clearlogo))">$INFO[Container(5306).ListItem.Art(clearlogo)]</value>
+		<value condition="String.IsEqual(Window(home).Property(TSRow),5401) + !String.IsEmpty(Container(5401).ListItem.Art(clearlogo))">$INFO[Container(5401).ListItem.Art(clearlogo)]</value>
+		<value condition="String.IsEqual(Window(home).Property(TSRow),5402) + !String.IsEmpty(Container(5402).ListItem.Art(clearlogo))">$INFO[Container(5402).ListItem.Art(clearlogo)]</value>
+		<value condition="String.IsEqual(Window(home).Property(TSRow),5403) + !String.IsEmpty(Container(5403).ListItem.Art(clearlogo))">$INFO[Container(5403).ListItem.Art(clearlogo)]</value>
+		<value condition="String.IsEqual(Window(home).Property(TSRow),5404) + !String.IsEmpty(Container(5404).ListItem.Art(clearlogo))">$INFO[Container(5404).ListItem.Art(clearlogo)]</value>
+		<value condition="String.IsEqual(Window(home).Property(TSRow),5405) + !String.IsEmpty(Container(5405).ListItem.Art(clearlogo))">$INFO[Container(5405).ListItem.Art(clearlogo)]</value>
+		<value condition="String.IsEqual(Window(home).Property(TSRow),5406) + !String.IsEmpty(Container(5406).ListItem.Art(clearlogo))">$INFO[Container(5406).ListItem.Art(clearlogo)]</value>
+		<value condition="String.IsEqual(Window(home).Property(TSRow),5407) + !String.IsEmpty(Container(5407).ListItem.Art(clearlogo))">$INFO[Container(5407).ListItem.Art(clearlogo)]</value>
+		<value condition="String.IsEqual(Window(home).Property(TSRow),5501) + !String.IsEmpty(Container(5501).ListItem.Art(clearlogo))">$INFO[Container(5501).ListItem.Art(clearlogo)]</value>
+		<value condition="String.IsEqual(Window(home).Property(TSRow),5502) + !String.IsEmpty(Container(5502).ListItem.Art(clearlogo))">$INFO[Container(5502).ListItem.Art(clearlogo)]</value>
+		<value condition="String.IsEqual(Window(home).Property(TSRow),5503) + !String.IsEmpty(Container(5503).ListItem.Art(clearlogo))">$INFO[Container(5503).ListItem.Art(clearlogo)]</value>
+		<value condition="String.IsEqual(Window(home).Property(TSRow),5504) + !String.IsEmpty(Container(5504).ListItem.Art(clearlogo))">$INFO[Container(5504).ListItem.Art(clearlogo)]</value>
+		<value condition="String.IsEqual(Window(home).Property(TSRow),5505) + !String.IsEmpty(Container(5505).ListItem.Art(clearlogo))">$INFO[Container(5505).ListItem.Art(clearlogo)]</value>
+		<value condition="String.IsEqual(Window(home).Property(TSRow),5506) + !String.IsEmpty(Container(5506).ListItem.Art(clearlogo))">$INFO[Container(5506).ListItem.Art(clearlogo)]</value>
+		<value condition="String.IsEqual(Window(home).Property(TSRow),5507) + !String.IsEmpty(Container(5507).ListItem.Art(clearlogo))">$INFO[Container(5507).ListItem.Art(clearlogo)]</value>
+	</variable>
+	<variable name="TSHeroTitle">
+		<value condition="String.IsEqual(Window(home).Property(TSRow),5101) + !String.IsEmpty(Container(5101).ListItem.TVShowTitle)">$INFO[Container(5101).ListItem.TVShowTitle]</value>
+		<value condition="String.IsEqual(Window(home).Property(TSRow),5101) + !String.IsEmpty(Container(5101).ListItem.Title)">$INFO[Container(5101).ListItem.Title]</value>
+		<value condition="String.IsEqual(Window(home).Property(TSRow),5101)">$INFO[Container(5101).ListItem.Label]</value>
+		<value condition="String.IsEqual(Window(home).Property(TSRow),5102) + !String.IsEmpty(Container(5102).ListItem.TVShowTitle)">$INFO[Container(5102).ListItem.TVShowTitle]</value>
+		<value condition="String.IsEqual(Window(home).Property(TSRow),5102) + !String.IsEmpty(Container(5102).ListItem.Title)">$INFO[Container(5102).ListItem.Title]</value>
+		<value condition="String.IsEqual(Window(home).Property(TSRow),5102)">$INFO[Container(5102).ListItem.Label]</value>
+		<value condition="String.IsEqual(Window(home).Property(TSRow),5103) + !String.IsEmpty(Container(5103).ListItem.TVShowTitle)">$INFO[Container(5103).ListItem.TVShowTitle]</value>
+		<value condition="String.IsEqual(Window(home).Property(TSRow),5103) + !String.IsEmpty(Container(5103).ListItem.Title)">$INFO[Container(5103).ListItem.Title]</value>
+		<value condition="String.IsEqual(Window(home).Property(TSRow),5103)">$INFO[Container(5103).ListItem.Label]</value>
+		<value condition="String.IsEqual(Window(home).Property(TSRow),5104) + !String.IsEmpty(Container(5104).ListItem.TVShowTitle)">$INFO[Container(5104).ListItem.TVShowTitle]</value>
+		<value condition="String.IsEqual(Window(home).Property(TSRow),5104) + !String.IsEmpty(Container(5104).ListItem.Title)">$INFO[Container(5104).ListItem.Title]</value>
+		<value condition="String.IsEqual(Window(home).Property(TSRow),5104)">$INFO[Container(5104).ListItem.Label]</value>
+		<value condition="String.IsEqual(Window(home).Property(TSRow),5105) + !String.IsEmpty(Container(5105).ListItem.TVShowTitle)">$INFO[Container(5105).ListItem.TVShowTitle]</value>
+		<value condition="String.IsEqual(Window(home).Property(TSRow),5105) + !String.IsEmpty(Container(5105).ListItem.Title)">$INFO[Container(5105).ListItem.Title]</value>
+		<value condition="String.IsEqual(Window(home).Property(TSRow),5105)">$INFO[Container(5105).ListItem.Label]</value>
+		<value condition="String.IsEqual(Window(home).Property(TSRow),5106) + !String.IsEmpty(Container(5106).ListItem.TVShowTitle)">$INFO[Container(5106).ListItem.TVShowTitle]</value>
+		<value condition="String.IsEqual(Window(home).Property(TSRow),5106) + !String.IsEmpty(Container(5106).ListItem.Title)">$INFO[Container(5106).ListItem.Title]</value>
+		<value condition="String.IsEqual(Window(home).Property(TSRow),5106)">$INFO[Container(5106).ListItem.Label]</value>
+		<value condition="String.IsEqual(Window(home).Property(TSRow),5107) + !String.IsEmpty(Container(5107).ListItem.TVShowTitle)">$INFO[Container(5107).ListItem.TVShowTitle]</value>
+		<value condition="String.IsEqual(Window(home).Property(TSRow),5107) + !String.IsEmpty(Container(5107).ListItem.Title)">$INFO[Container(5107).ListItem.Title]</value>
+		<value condition="String.IsEqual(Window(home).Property(TSRow),5107)">$INFO[Container(5107).ListItem.Label]</value>
+		<value condition="String.IsEqual(Window(home).Property(TSRow),5201) + !String.IsEmpty(Container(5201).ListItem.TVShowTitle)">$INFO[Container(5201).ListItem.TVShowTitle]</value>
+		<value condition="String.IsEqual(Window(home).Property(TSRow),5201) + !String.IsEmpty(Container(5201).ListItem.Title)">$INFO[Container(5201).ListItem.Title]</value>
+		<value condition="String.IsEqual(Window(home).Property(TSRow),5201)">$INFO[Container(5201).ListItem.Label]</value>
+		<value condition="String.IsEqual(Window(home).Property(TSRow),5202) + !String.IsEmpty(Container(5202).ListItem.TVShowTitle)">$INFO[Container(5202).ListItem.TVShowTitle]</value>
+		<value condition="String.IsEqual(Window(home).Property(TSRow),5202) + !String.IsEmpty(Container(5202).ListItem.Title)">$INFO[Container(5202).ListItem.Title]</value>
+		<value condition="String.IsEqual(Window(home).Property(TSRow),5202)">$INFO[Container(5202).ListItem.Label]</value>
+		<value condition="String.IsEqual(Window(home).Property(TSRow),5203) + !String.IsEmpty(Container(5203).ListItem.TVShowTitle)">$INFO[Container(5203).ListItem.TVShowTitle]</value>
+		<value condition="String.IsEqual(Window(home).Property(TSRow),5203) + !String.IsEmpty(Container(5203).ListItem.Title)">$INFO[Container(5203).ListItem.Title]</value>
+		<value condition="String.IsEqual(Window(home).Property(TSRow),5203)">$INFO[Container(5203).ListItem.Label]</value>
+		<value condition="String.IsEqual(Window(home).Property(TSRow),5204) + !String.IsEmpty(Container(5204).ListItem.TVShowTitle)">$INFO[Container(5204).ListItem.TVShowTitle]</value>
+		<value condition="String.IsEqual(Window(home).Property(TSRow),5204) + !String.IsEmpty(Container(5204).ListItem.Title)">$INFO[Container(5204).ListItem.Title]</value>
+		<value condition="String.IsEqual(Window(home).Property(TSRow),5204)">$INFO[Container(5204).ListItem.Label]</value>
+		<value condition="String.IsEqual(Window(home).Property(TSRow),5205) + !String.IsEmpty(Container(5205).ListItem.TVShowTitle)">$INFO[Container(5205).ListItem.TVShowTitle]</value>
+		<value condition="String.IsEqual(Window(home).Property(TSRow),5205) + !String.IsEmpty(Container(5205).ListItem.Title)">$INFO[Container(5205).ListItem.Title]</value>
+		<value condition="String.IsEqual(Window(home).Property(TSRow),5205)">$INFO[Container(5205).ListItem.Label]</value>
+		<value condition="String.IsEqual(Window(home).Property(TSRow),5206) + !String.IsEmpty(Container(5206).ListItem.TVShowTitle)">$INFO[Container(5206).ListItem.TVShowTitle]</value>
+		<value condition="String.IsEqual(Window(home).Property(TSRow),5206) + !String.IsEmpty(Container(5206).ListItem.Title)">$INFO[Container(5206).ListItem.Title]</value>
+		<value condition="String.IsEqual(Window(home).Property(TSRow),5206)">$INFO[Container(5206).ListItem.Label]</value>
+		<value condition="String.IsEqual(Window(home).Property(TSRow),5207) + !String.IsEmpty(Container(5207).ListItem.TVShowTitle)">$INFO[Container(5207).ListItem.TVShowTitle]</value>
+		<value condition="String.IsEqual(Window(home).Property(TSRow),5207) + !String.IsEmpty(Container(5207).ListItem.Title)">$INFO[Container(5207).ListItem.Title]</value>
+		<value condition="String.IsEqual(Window(home).Property(TSRow),5207)">$INFO[Container(5207).ListItem.Label]</value>
+		<value condition="String.IsEqual(Window(home).Property(TSRow),5301) + !String.IsEmpty(Container(5301).ListItem.TVShowTitle)">$INFO[Container(5301).ListItem.TVShowTitle]</value>
+		<value condition="String.IsEqual(Window(home).Property(TSRow),5301) + !String.IsEmpty(Container(5301).ListItem.Title)">$INFO[Container(5301).ListItem.Title]</value>
+		<value condition="String.IsEqual(Window(home).Property(TSRow),5301)">$INFO[Container(5301).ListItem.Label]</value>
+		<value condition="String.IsEqual(Window(home).Property(TSRow),5302) + !String.IsEmpty(Container(5302).ListItem.TVShowTitle)">$INFO[Container(5302).ListItem.TVShowTitle]</value>
+		<value condition="String.IsEqual(Window(home).Property(TSRow),5302) + !String.IsEmpty(Container(5302).ListItem.Title)">$INFO[Container(5302).ListItem.Title]</value>
+		<value condition="String.IsEqual(Window(home).Property(TSRow),5302)">$INFO[Container(5302).ListItem.Label]</value>
+		<value condition="String.IsEqual(Window(home).Property(TSRow),5303) + !String.IsEmpty(Container(5303).ListItem.TVShowTitle)">$INFO[Container(5303).ListItem.TVShowTitle]</value>
+		<value condition="String.IsEqual(Window(home).Property(TSRow),5303) + !String.IsEmpty(Container(5303).ListItem.Title)">$INFO[Container(5303).ListItem.Title]</value>
+		<value condition="String.IsEqual(Window(home).Property(TSRow),5303)">$INFO[Container(5303).ListItem.Label]</value>
+		<value condition="String.IsEqual(Window(home).Property(TSRow),5304) + !String.IsEmpty(Container(5304).ListItem.TVShowTitle)">$INFO[Container(5304).ListItem.TVShowTitle]</value>
+		<value condition="String.IsEqual(Window(home).Property(TSRow),5304) + !String.IsEmpty(Container(5304).ListItem.Title)">$INFO[Container(5304).ListItem.Title]</value>
+		<value condition="String.IsEqual(Window(home).Property(TSRow),5304)">$INFO[Container(5304).ListItem.Label]</value>
+		<value condition="String.IsEqual(Window(home).Property(TSRow),5305) + !String.IsEmpty(Container(5305).ListItem.TVShowTitle)">$INFO[Container(5305).ListItem.TVShowTitle]</value>
+		<value condition="String.IsEqual(Window(home).Property(TSRow),5305) + !String.IsEmpty(Container(5305).ListItem.Title)">$INFO[Container(5305).ListItem.Title]</value>
+		<value condition="String.IsEqual(Window(home).Property(TSRow),5305)">$INFO[Container(5305).ListItem.Label]</value>
+		<value condition="String.IsEqual(Window(home).Property(TSRow),5306) + !String.IsEmpty(Container(5306).ListItem.TVShowTitle)">$INFO[Container(5306).ListItem.TVShowTitle]</value>
+		<value condition="String.IsEqual(Window(home).Property(TSRow),5306) + !String.IsEmpty(Container(5306).ListItem.Title)">$INFO[Container(5306).ListItem.Title]</value>
+		<value condition="String.IsEqual(Window(home).Property(TSRow),5306)">$INFO[Container(5306).ListItem.Label]</value>
+		<value condition="String.IsEqual(Window(home).Property(TSRow),5401) + !String.IsEmpty(Container(5401).ListItem.TVShowTitle)">$INFO[Container(5401).ListItem.TVShowTitle]</value>
+		<value condition="String.IsEqual(Window(home).Property(TSRow),5401) + !String.IsEmpty(Container(5401).ListItem.Title)">$INFO[Container(5401).ListItem.Title]</value>
+		<value condition="String.IsEqual(Window(home).Property(TSRow),5401)">$INFO[Container(5401).ListItem.Label]</value>
+		<value condition="String.IsEqual(Window(home).Property(TSRow),5402) + !String.IsEmpty(Container(5402).ListItem.TVShowTitle)">$INFO[Container(5402).ListItem.TVShowTitle]</value>
+		<value condition="String.IsEqual(Window(home).Property(TSRow),5402) + !String.IsEmpty(Container(5402).ListItem.Title)">$INFO[Container(5402).ListItem.Title]</value>
+		<value condition="String.IsEqual(Window(home).Property(TSRow),5402)">$INFO[Container(5402).ListItem.Label]</value>
+		<value condition="String.IsEqual(Window(home).Property(TSRow),5403) + !String.IsEmpty(Container(5403).ListItem.TVShowTitle)">$INFO[Container(5403).ListItem.TVShowTitle]</value>
+		<value condition="String.IsEqual(Window(home).Property(TSRow),5403) + !String.IsEmpty(Container(5403).ListItem.Title)">$INFO[Container(5403).ListItem.Title]</value>
+		<value condition="String.IsEqual(Window(home).Property(TSRow),5403)">$INFO[Container(5403).ListItem.Label]</value>
+		<value condition="String.IsEqual(Window(home).Property(TSRow),5404) + !String.IsEmpty(Container(5404).ListItem.TVShowTitle)">$INFO[Container(5404).ListItem.TVShowTitle]</value>
+		<value condition="String.IsEqual(Window(home).Property(TSRow),5404) + !String.IsEmpty(Container(5404).ListItem.Title)">$INFO[Container(5404).ListItem.Title]</value>
+		<value condition="String.IsEqual(Window(home).Property(TSRow),5404)">$INFO[Container(5404).ListItem.Label]</value>
+		<value condition="String.IsEqual(Window(home).Property(TSRow),5405) + !String.IsEmpty(Container(5405).ListItem.TVShowTitle)">$INFO[Container(5405).ListItem.TVShowTitle]</value>
+		<value condition="String.IsEqual(Window(home).Property(TSRow),5405) + !String.IsEmpty(Container(5405).ListItem.Title)">$INFO[Container(5405).ListItem.Title]</value>
+		<value condition="String.IsEqual(Window(home).Property(TSRow),5405)">$INFO[Container(5405).ListItem.Label]</value>
+		<value condition="String.IsEqual(Window(home).Property(TSRow),5406) + !String.IsEmpty(Container(5406).ListItem.TVShowTitle)">$INFO[Container(5406).ListItem.TVShowTitle]</value>
+		<value condition="String.IsEqual(Window(home).Property(TSRow),5406) + !String.IsEmpty(Container(5406).ListItem.Title)">$INFO[Container(5406).ListItem.Title]</value>
+		<value condition="String.IsEqual(Window(home).Property(TSRow),5406)">$INFO[Container(5406).ListItem.Label]</value>
+		<value condition="String.IsEqual(Window(home).Property(TSRow),5407) + !String.IsEmpty(Container(5407).ListItem.TVShowTitle)">$INFO[Container(5407).ListItem.TVShowTitle]</value>
+		<value condition="String.IsEqual(Window(home).Property(TSRow),5407) + !String.IsEmpty(Container(5407).ListItem.Title)">$INFO[Container(5407).ListItem.Title]</value>
+		<value condition="String.IsEqual(Window(home).Property(TSRow),5407)">$INFO[Container(5407).ListItem.Label]</value>
+		<value condition="String.IsEqual(Window(home).Property(TSRow),5501) + !String.IsEmpty(Container(5501).ListItem.TVShowTitle)">$INFO[Container(5501).ListItem.TVShowTitle]</value>
+		<value condition="String.IsEqual(Window(home).Property(TSRow),5501) + !String.IsEmpty(Container(5501).ListItem.Title)">$INFO[Container(5501).ListItem.Title]</value>
+		<value condition="String.IsEqual(Window(home).Property(TSRow),5501)">$INFO[Container(5501).ListItem.Label]</value>
+		<value condition="String.IsEqual(Window(home).Property(TSRow),5502) + !String.IsEmpty(Container(5502).ListItem.TVShowTitle)">$INFO[Container(5502).ListItem.TVShowTitle]</value>
+		<value condition="String.IsEqual(Window(home).Property(TSRow),5502) + !String.IsEmpty(Container(5502).ListItem.Title)">$INFO[Container(5502).ListItem.Title]</value>
+		<value condition="String.IsEqual(Window(home).Property(TSRow),5502)">$INFO[Container(5502).ListItem.Label]</value>
+		<value condition="String.IsEqual(Window(home).Property(TSRow),5503) + !String.IsEmpty(Container(5503).ListItem.TVShowTitle)">$INFO[Container(5503).ListItem.TVShowTitle]</value>
+		<value condition="String.IsEqual(Window(home).Property(TSRow),5503) + !String.IsEmpty(Container(5503).ListItem.Title)">$INFO[Container(5503).ListItem.Title]</value>
+		<value condition="String.IsEqual(Window(home).Property(TSRow),5503)">$INFO[Container(5503).ListItem.Label]</value>
+		<value condition="String.IsEqual(Window(home).Property(TSRow),5504) + !String.IsEmpty(Container(5504).ListItem.TVShowTitle)">$INFO[Container(5504).ListItem.TVShowTitle]</value>
+		<value condition="String.IsEqual(Window(home).Property(TSRow),5504) + !String.IsEmpty(Container(5504).ListItem.Title)">$INFO[Container(5504).ListItem.Title]</value>
+		<value condition="String.IsEqual(Window(home).Property(TSRow),5504)">$INFO[Container(5504).ListItem.Label]</value>
+		<value condition="String.IsEqual(Window(home).Property(TSRow),5505) + !String.IsEmpty(Container(5505).ListItem.TVShowTitle)">$INFO[Container(5505).ListItem.TVShowTitle]</value>
+		<value condition="String.IsEqual(Window(home).Property(TSRow),5505) + !String.IsEmpty(Container(5505).ListItem.Title)">$INFO[Container(5505).ListItem.Title]</value>
+		<value condition="String.IsEqual(Window(home).Property(TSRow),5505)">$INFO[Container(5505).ListItem.Label]</value>
+		<value condition="String.IsEqual(Window(home).Property(TSRow),5506) + !String.IsEmpty(Container(5506).ListItem.TVShowTitle)">$INFO[Container(5506).ListItem.TVShowTitle]</value>
+		<value condition="String.IsEqual(Window(home).Property(TSRow),5506) + !String.IsEmpty(Container(5506).ListItem.Title)">$INFO[Container(5506).ListItem.Title]</value>
+		<value condition="String.IsEqual(Window(home).Property(TSRow),5506)">$INFO[Container(5506).ListItem.Label]</value>
+		<value condition="String.IsEqual(Window(home).Property(TSRow),5507) + !String.IsEmpty(Container(5507).ListItem.TVShowTitle)">$INFO[Container(5507).ListItem.TVShowTitle]</value>
+		<value condition="String.IsEqual(Window(home).Property(TSRow),5507) + !String.IsEmpty(Container(5507).ListItem.Title)">$INFO[Container(5507).ListItem.Title]</value>
+		<value condition="String.IsEqual(Window(home).Property(TSRow),5507)">$INFO[Container(5507).ListItem.Label]</value>
+	</variable>
+	<variable name="TSHeroMeta">
+		<value condition="String.IsEqual(Window(home).Property(TSRow),5101) + String.IsEqual(Container(5101).ListItem.Year,1970)">$INFO[Container(5101).ListItem.Season,S, ]$INFO[Container(5101).ListItem.Episode,E,  ]$INFO[Container(5101).ListItem.Genre,,   ]$INFO[Container(5101).ListItem.Duration(mins),, perc   ]$INFO[Container(5101).ListItem.Rating,★ ,]</value>
+		<value condition="String.IsEqual(Window(home).Property(TSRow),5101)">$INFO[Container(5101).ListItem.Season,S, ]$INFO[Container(5101).ListItem.Episode,E,  ]$INFO[Container(5101).ListItem.Year,,   ]$INFO[Container(5101).ListItem.Genre,,   ]$INFO[Container(5101).ListItem.Duration(mins),, perc   ]$INFO[Container(5101).ListItem.Rating,★ ,]</value>
+		<value condition="String.IsEqual(Window(home).Property(TSRow),5102) + String.IsEqual(Container(5102).ListItem.Year,1970)">$INFO[Container(5102).ListItem.Season,S, ]$INFO[Container(5102).ListItem.Episode,E,  ]$INFO[Container(5102).ListItem.Genre,,   ]$INFO[Container(5102).ListItem.Duration(mins),, perc   ]$INFO[Container(5102).ListItem.Rating,★ ,]</value>
+		<value condition="String.IsEqual(Window(home).Property(TSRow),5102)">$INFO[Container(5102).ListItem.Season,S, ]$INFO[Container(5102).ListItem.Episode,E,  ]$INFO[Container(5102).ListItem.Year,,   ]$INFO[Container(5102).ListItem.Genre,,   ]$INFO[Container(5102).ListItem.Duration(mins),, perc   ]$INFO[Container(5102).ListItem.Rating,★ ,]</value>
+		<value condition="String.IsEqual(Window(home).Property(TSRow),5103) + String.IsEqual(Container(5103).ListItem.Year,1970)">$INFO[Container(5103).ListItem.Season,S, ]$INFO[Container(5103).ListItem.Episode,E,  ]$INFO[Container(5103).ListItem.Genre,,   ]$INFO[Container(5103).ListItem.Duration(mins),, perc   ]$INFO[Container(5103).ListItem.Rating,★ ,]</value>
+		<value condition="String.IsEqual(Window(home).Property(TSRow),5103)">$INFO[Container(5103).ListItem.Season,S, ]$INFO[Container(5103).ListItem.Episode,E,  ]$INFO[Container(5103).ListItem.Year,,   ]$INFO[Container(5103).ListItem.Genre,,   ]$INFO[Container(5103).ListItem.Duration(mins),, perc   ]$INFO[Container(5103).ListItem.Rating,★ ,]</value>
+		<value condition="String.IsEqual(Window(home).Property(TSRow),5104) + String.IsEqual(Container(5104).ListItem.Year,1970)">$INFO[Container(5104).ListItem.Season,S, ]$INFO[Container(5104).ListItem.Episode,E,  ]$INFO[Container(5104).ListItem.Genre,,   ]$INFO[Container(5104).ListItem.Duration(mins),, perc   ]$INFO[Container(5104).ListItem.Rating,★ ,]</value>
+		<value condition="String.IsEqual(Window(home).Property(TSRow),5104)">$INFO[Container(5104).ListItem.Season,S, ]$INFO[Container(5104).ListItem.Episode,E,  ]$INFO[Container(5104).ListItem.Year,,   ]$INFO[Container(5104).ListItem.Genre,,   ]$INFO[Container(5104).ListItem.Duration(mins),, perc   ]$INFO[Container(5104).ListItem.Rating,★ ,]</value>
+		<value condition="String.IsEqual(Window(home).Property(TSRow),5105) + String.IsEqual(Container(5105).ListItem.Year,1970)">$INFO[Container(5105).ListItem.Season,S, ]$INFO[Container(5105).ListItem.Episode,E,  ]$INFO[Container(5105).ListItem.Genre,,   ]$INFO[Container(5105).ListItem.Duration(mins),, perc   ]$INFO[Container(5105).ListItem.Rating,★ ,]</value>
+		<value condition="String.IsEqual(Window(home).Property(TSRow),5105)">$INFO[Container(5105).ListItem.Season,S, ]$INFO[Container(5105).ListItem.Episode,E,  ]$INFO[Container(5105).ListItem.Year,,   ]$INFO[Container(5105).ListItem.Genre,,   ]$INFO[Container(5105).ListItem.Duration(mins),, perc   ]$INFO[Container(5105).ListItem.Rating,★ ,]</value>
+		<value condition="String.IsEqual(Window(home).Property(TSRow),5106) + String.IsEqual(Container(5106).ListItem.Year,1970)">$INFO[Container(5106).ListItem.Season,S, ]$INFO[Container(5106).ListItem.Episode,E,  ]$INFO[Container(5106).ListItem.Genre,,   ]$INFO[Container(5106).ListItem.Duration(mins),, perc   ]$INFO[Container(5106).ListItem.Rating,★ ,]</value>
+		<value condition="String.IsEqual(Window(home).Property(TSRow),5106)">$INFO[Container(5106).ListItem.Season,S, ]$INFO[Container(5106).ListItem.Episode,E,  ]$INFO[Container(5106).ListItem.Year,,   ]$INFO[Container(5106).ListItem.Genre,,   ]$INFO[Container(5106).ListItem.Duration(mins),, perc   ]$INFO[Container(5106).ListItem.Rating,★ ,]</value>
+		<value condition="String.IsEqual(Window(home).Property(TSRow),5107) + String.IsEqual(Container(5107).ListItem.Year,1970)">$INFO[Container(5107).ListItem.Season,S, ]$INFO[Container(5107).ListItem.Episode,E,  ]$INFO[Container(5107).ListItem.Genre,,   ]$INFO[Container(5107).ListItem.Duration(mins),, perc   ]$INFO[Container(5107).ListItem.Rating,★ ,]</value>
+		<value condition="String.IsEqual(Window(home).Property(TSRow),5107)">$INFO[Container(5107).ListItem.Season,S, ]$INFO[Container(5107).ListItem.Episode,E,  ]$INFO[Container(5107).ListItem.Year,,   ]$INFO[Container(5107).ListItem.Genre,,   ]$INFO[Container(5107).ListItem.Duration(mins),, perc   ]$INFO[Container(5107).ListItem.Rating,★ ,]</value>
+		<value condition="String.IsEqual(Window(home).Property(TSRow),5201) + String.IsEqual(Container(5201).ListItem.Year,1970)">$INFO[Container(5201).ListItem.Season,S, ]$INFO[Container(5201).ListItem.Episode,E,  ]$INFO[Container(5201).ListItem.Genre,,   ]$INFO[Container(5201).ListItem.Duration(mins),, perc   ]$INFO[Container(5201).ListItem.Rating,★ ,]</value>
+		<value condition="String.IsEqual(Window(home).Property(TSRow),5201)">$INFO[Container(5201).ListItem.Season,S, ]$INFO[Container(5201).ListItem.Episode,E,  ]$INFO[Container(5201).ListItem.Year,,   ]$INFO[Container(5201).ListItem.Genre,,   ]$INFO[Container(5201).ListItem.Duration(mins),, perc   ]$INFO[Container(5201).ListItem.Rating,★ ,]</value>
+		<value condition="String.IsEqual(Window(home).Property(TSRow),5202) + String.IsEqual(Container(5202).ListItem.Year,1970)">$INFO[Container(5202).ListItem.Season,S, ]$INFO[Container(5202).ListItem.Episode,E,  ]$INFO[Container(5202).ListItem.Genre,,   ]$INFO[Container(5202).ListItem.Duration(mins),, perc   ]$INFO[Container(5202).ListItem.Rating,★ ,]</value>
+		<value condition="String.IsEqual(Window(home).Property(TSRow),5202)">$INFO[Container(5202).ListItem.Season,S, ]$INFO[Container(5202).ListItem.Episode,E,  ]$INFO[Container(5202).ListItem.Year,,   ]$INFO[Container(5202).ListItem.Genre,,   ]$INFO[Container(5202).ListItem.Duration(mins),, perc   ]$INFO[Container(5202).ListItem.Rating,★ ,]</value>
+		<value condition="String.IsEqual(Window(home).Property(TSRow),5203) + String.IsEqual(Container(5203).ListItem.Year,1970)">$INFO[Container(5203).ListItem.Season,S, ]$INFO[Container(5203).ListItem.Episode,E,  ]$INFO[Container(5203).ListItem.Genre,,   ]$INFO[Container(5203).ListItem.Duration(mins),, perc   ]$INFO[Container(5203).ListItem.Rating,★ ,]</value>
+		<value condition="String.IsEqual(Window(home).Property(TSRow),5203)">$INFO[Container(5203).ListItem.Season,S, ]$INFO[Container(5203).ListItem.Episode,E,  ]$INFO[Container(5203).ListItem.Year,,   ]$INFO[Container(5203).ListItem.Genre,,   ]$INFO[Container(5203).ListItem.Duration(mins),, perc   ]$INFO[Container(5203).ListItem.Rating,★ ,]</value>
+		<value condition="String.IsEqual(Window(home).Property(TSRow),5204) + String.IsEqual(Container(5204).ListItem.Year,1970)">$INFO[Container(5204).ListItem.Season,S, ]$INFO[Container(5204).ListItem.Episode,E,  ]$INFO[Container(5204).ListItem.Genre,,   ]$INFO[Container(5204).ListItem.Duration(mins),, perc   ]$INFO[Container(5204).ListItem.Rating,★ ,]</value>
+		<value condition="String.IsEqual(Window(home).Property(TSRow),5204)">$INFO[Container(5204).ListItem.Season,S, ]$INFO[Container(5204).ListItem.Episode,E,  ]$INFO[Container(5204).ListItem.Year,,   ]$INFO[Container(5204).ListItem.Genre,,   ]$INFO[Container(5204).ListItem.Duration(mins),, perc   ]$INFO[Container(5204).ListItem.Rating,★ ,]</value>
+		<value condition="String.IsEqual(Window(home).Property(TSRow),5205) + String.IsEqual(Container(5205).ListItem.Year,1970)">$INFO[Container(5205).ListItem.Season,S, ]$INFO[Container(5205).ListItem.Episode,E,  ]$INFO[Container(5205).ListItem.Genre,,   ]$INFO[Container(5205).ListItem.Duration(mins),, perc   ]$INFO[Container(5205).ListItem.Rating,★ ,]</value>
+		<value condition="String.IsEqual(Window(home).Property(TSRow),5205)">$INFO[Container(5205).ListItem.Season,S, ]$INFO[Container(5205).ListItem.Episode,E,  ]$INFO[Container(5205).ListItem.Year,,   ]$INFO[Container(5205).ListItem.Genre,,   ]$INFO[Container(5205).ListItem.Duration(mins),, perc   ]$INFO[Container(5205).ListItem.Rating,★ ,]</value>
+		<value condition="String.IsEqual(Window(home).Property(TSRow),5206) + String.IsEqual(Container(5206).ListItem.Year,1970)">$INFO[Container(5206).ListItem.Season,S, ]$INFO[Container(5206).ListItem.Episode,E,  ]$INFO[Container(5206).ListItem.Genre,,   ]$INFO[Container(5206).ListItem.Duration(mins),, perc   ]$INFO[Container(5206).ListItem.Rating,★ ,]</value>
+		<value condition="String.IsEqual(Window(home).Property(TSRow),5206)">$INFO[Container(5206).ListItem.Season,S, ]$INFO[Container(5206).ListItem.Episode,E,  ]$INFO[Container(5206).ListItem.Year,,   ]$INFO[Container(5206).ListItem.Genre,,   ]$INFO[Container(5206).ListItem.Duration(mins),, perc   ]$INFO[Container(5206).ListItem.Rating,★ ,]</value>
+		<value condition="String.IsEqual(Window(home).Property(TSRow),5207) + String.IsEqual(Container(5207).ListItem.Year,1970)">$INFO[Container(5207).ListItem.Season,S, ]$INFO[Container(5207).ListItem.Episode,E,  ]$INFO[Container(5207).ListItem.Genre,,   ]$INFO[Container(5207).ListItem.Duration(mins),, perc   ]$INFO[Container(5207).ListItem.Rating,★ ,]</value>
+		<value condition="String.IsEqual(Window(home).Property(TSRow),5207)">$INFO[Container(5207).ListItem.Season,S, ]$INFO[Container(5207).ListItem.Episode,E,  ]$INFO[Container(5207).ListItem.Year,,   ]$INFO[Container(5207).ListItem.Genre,,   ]$INFO[Container(5207).ListItem.Duration(mins),, perc   ]$INFO[Container(5207).ListItem.Rating,★ ,]</value>
+		<value condition="String.IsEqual(Window(home).Property(TSRow),5301) + String.IsEqual(Container(5301).ListItem.Year,1970)">$INFO[Container(5301).ListItem.Season,S, ]$INFO[Container(5301).ListItem.Episode,E,  ]$INFO[Container(5301).ListItem.Genre,,   ]$INFO[Container(5301).ListItem.Duration(mins),, perc   ]$INFO[Container(5301).ListItem.Rating,★ ,]</value>
+		<value condition="String.IsEqual(Window(home).Property(TSRow),5301)">$INFO[Container(5301).ListItem.Season,S, ]$INFO[Container(5301).ListItem.Episode,E,  ]$INFO[Container(5301).ListItem.Year,,   ]$INFO[Container(5301).ListItem.Genre,,   ]$INFO[Container(5301).ListItem.Duration(mins),, perc   ]$INFO[Container(5301).ListItem.Rating,★ ,]</value>
+		<value condition="String.IsEqual(Window(home).Property(TSRow),5302) + String.IsEqual(Container(5302).ListItem.Year,1970)">$INFO[Container(5302).ListItem.Season,S, ]$INFO[Container(5302).ListItem.Episode,E,  ]$INFO[Container(5302).ListItem.Genre,,   ]$INFO[Container(5302).ListItem.Duration(mins),, perc   ]$INFO[Container(5302).ListItem.Rating,★ ,]</value>
+		<value condition="String.IsEqual(Window(home).Property(TSRow),5302)">$INFO[Container(5302).ListItem.Season,S, ]$INFO[Container(5302).ListItem.Episode,E,  ]$INFO[Container(5302).ListItem.Year,,   ]$INFO[Container(5302).ListItem.Genre,,   ]$INFO[Container(5302).ListItem.Duration(mins),, perc   ]$INFO[Container(5302).ListItem.Rating,★ ,]</value>
+		<value condition="String.IsEqual(Window(home).Property(TSRow),5303) + String.IsEqual(Container(5303).ListItem.Year,1970)">$INFO[Container(5303).ListItem.Season,S, ]$INFO[Container(5303).ListItem.Episode,E,  ]$INFO[Container(5303).ListItem.Genre,,   ]$INFO[Container(5303).ListItem.Duration(mins),, perc   ]$INFO[Container(5303).ListItem.Rating,★ ,]</value>
+		<value condition="String.IsEqual(Window(home).Property(TSRow),5303)">$INFO[Container(5303).ListItem.Season,S, ]$INFO[Container(5303).ListItem.Episode,E,  ]$INFO[Container(5303).ListItem.Year,,   ]$INFO[Container(5303).ListItem.Genre,,   ]$INFO[Container(5303).ListItem.Duration(mins),, perc   ]$INFO[Container(5303).ListItem.Rating,★ ,]</value>
+		<value condition="String.IsEqual(Window(home).Property(TSRow),5304) + String.IsEqual(Container(5304).ListItem.Year,1970)">$INFO[Container(5304).ListItem.Season,S, ]$INFO[Container(5304).ListItem.Episode,E,  ]$INFO[Container(5304).ListItem.Genre,,   ]$INFO[Container(5304).ListItem.Duration(mins),, perc   ]$INFO[Container(5304).ListItem.Rating,★ ,]</value>
+		<value condition="String.IsEqual(Window(home).Property(TSRow),5304)">$INFO[Container(5304).ListItem.Season,S, ]$INFO[Container(5304).ListItem.Episode,E,  ]$INFO[Container(5304).ListItem.Year,,   ]$INFO[Container(5304).ListItem.Genre,,   ]$INFO[Container(5304).ListItem.Duration(mins),, perc   ]$INFO[Container(5304).ListItem.Rating,★ ,]</value>
+		<value condition="String.IsEqual(Window(home).Property(TSRow),5305) + String.IsEqual(Container(5305).ListItem.Year,1970)">$INFO[Container(5305).ListItem.Season,S, ]$INFO[Container(5305).ListItem.Episode,E,  ]$INFO[Container(5305).ListItem.Genre,,   ]$INFO[Container(5305).ListItem.Duration(mins),, perc   ]$INFO[Container(5305).ListItem.Rating,★ ,]</value>
+		<value condition="String.IsEqual(Window(home).Property(TSRow),5305)">$INFO[Container(5305).ListItem.Season,S, ]$INFO[Container(5305).ListItem.Episode,E,  ]$INFO[Container(5305).ListItem.Year,,   ]$INFO[Container(5305).ListItem.Genre,,   ]$INFO[Container(5305).ListItem.Duration(mins),, perc   ]$INFO[Container(5305).ListItem.Rating,★ ,]</value>
+		<value condition="String.IsEqual(Window(home).Property(TSRow),5306) + String.IsEqual(Container(5306).ListItem.Year,1970)">$INFO[Container(5306).ListItem.Season,S, ]$INFO[Container(5306).ListItem.Episode,E,  ]$INFO[Container(5306).ListItem.Genre,,   ]$INFO[Container(5306).ListItem.Duration(mins),, perc   ]$INFO[Container(5306).ListItem.Rating,★ ,]</value>
+		<value condition="String.IsEqual(Window(home).Property(TSRow),5306)">$INFO[Container(5306).ListItem.Season,S, ]$INFO[Container(5306).ListItem.Episode,E,  ]$INFO[Container(5306).ListItem.Year,,   ]$INFO[Container(5306).ListItem.Genre,,   ]$INFO[Container(5306).ListItem.Duration(mins),, perc   ]$INFO[Container(5306).ListItem.Rating,★ ,]</value>
+		<value condition="String.IsEqual(Window(home).Property(TSRow),5401) + String.IsEqual(Container(5401).ListItem.Year,1970)">$INFO[Container(5401).ListItem.Season,S, ]$INFO[Container(5401).ListItem.Episode,E,  ]$INFO[Container(5401).ListItem.Genre,,   ]$INFO[Container(5401).ListItem.Duration(mins),, perc   ]$INFO[Container(5401).ListItem.Rating,★ ,]</value>
+		<value condition="String.IsEqual(Window(home).Property(TSRow),5401)">$INFO[Container(5401).ListItem.Season,S, ]$INFO[Container(5401).ListItem.Episode,E,  ]$INFO[Container(5401).ListItem.Year,,   ]$INFO[Container(5401).ListItem.Genre,,   ]$INFO[Container(5401).ListItem.Duration(mins),, perc   ]$INFO[Container(5401).ListItem.Rating,★ ,]</value>
+		<value condition="String.IsEqual(Window(home).Property(TSRow),5402) + String.IsEqual(Container(5402).ListItem.Year,1970)">$INFO[Container(5402).ListItem.Season,S, ]$INFO[Container(5402).ListItem.Episode,E,  ]$INFO[Container(5402).ListItem.Genre,,   ]$INFO[Container(5402).ListItem.Duration(mins),, perc   ]$INFO[Container(5402).ListItem.Rating,★ ,]</value>
+		<value condition="String.IsEqual(Window(home).Property(TSRow),5402)">$INFO[Container(5402).ListItem.Season,S, ]$INFO[Container(5402).ListItem.Episode,E,  ]$INFO[Container(5402).ListItem.Year,,   ]$INFO[Container(5402).ListItem.Genre,,   ]$INFO[Container(5402).ListItem.Duration(mins),, perc   ]$INFO[Container(5402).ListItem.Rating,★ ,]</value>
+		<value condition="String.IsEqual(Window(home).Property(TSRow),5403) + String.IsEqual(Container(5403).ListItem.Year,1970)">$INFO[Container(5403).ListItem.Season,S, ]$INFO[Container(5403).ListItem.Episode,E,  ]$INFO[Container(5403).ListItem.Genre,,   ]$INFO[Container(5403).ListItem.Duration(mins),, perc   ]$INFO[Container(5403).ListItem.Rating,★ ,]</value>
+		<value condition="String.IsEqual(Window(home).Property(TSRow),5403)">$INFO[Container(5403).ListItem.Season,S, ]$INFO[Container(5403).ListItem.Episode,E,  ]$INFO[Container(5403).ListItem.Year,,   ]$INFO[Container(5403).ListItem.Genre,,   ]$INFO[Container(5403).ListItem.Duration(mins),, perc   ]$INFO[Container(5403).ListItem.Rating,★ ,]</value>
+		<value condition="String.IsEqual(Window(home).Property(TSRow),5404) + String.IsEqual(Container(5404).ListItem.Year,1970)">$INFO[Container(5404).ListItem.Season,S, ]$INFO[Container(5404).ListItem.Episode,E,  ]$INFO[Container(5404).ListItem.Genre,,   ]$INFO[Container(5404).ListItem.Duration(mins),, perc   ]$INFO[Container(5404).ListItem.Rating,★ ,]</value>
+		<value condition="String.IsEqual(Window(home).Property(TSRow),5404)">$INFO[Container(5404).ListItem.Season,S, ]$INFO[Container(5404).ListItem.Episode,E,  ]$INFO[Container(5404).ListItem.Year,,   ]$INFO[Container(5404).ListItem.Genre,,   ]$INFO[Container(5404).ListItem.Duration(mins),, perc   ]$INFO[Container(5404).ListItem.Rating,★ ,]</value>
+		<value condition="String.IsEqual(Window(home).Property(TSRow),5405) + String.IsEqual(Container(5405).ListItem.Year,1970)">$INFO[Container(5405).ListItem.Season,S, ]$INFO[Container(5405).ListItem.Episode,E,  ]$INFO[Container(5405).ListItem.Genre,,   ]$INFO[Container(5405).ListItem.Duration(mins),, perc   ]$INFO[Container(5405).ListItem.Rating,★ ,]</value>
+		<value condition="String.IsEqual(Window(home).Property(TSRow),5405)">$INFO[Container(5405).ListItem.Season,S, ]$INFO[Container(5405).ListItem.Episode,E,  ]$INFO[Container(5405).ListItem.Year,,   ]$INFO[Container(5405).ListItem.Genre,,   ]$INFO[Container(5405).ListItem.Duration(mins),, perc   ]$INFO[Container(5405).ListItem.Rating,★ ,]</value>
+		<value condition="String.IsEqual(Window(home).Property(TSRow),5406) + String.IsEqual(Container(5406).ListItem.Year,1970)">$INFO[Container(5406).ListItem.Season,S, ]$INFO[Container(5406).ListItem.Episode,E,  ]$INFO[Container(5406).ListItem.Genre,,   ]$INFO[Container(5406).ListItem.Duration(mins),, perc   ]$INFO[Container(5406).ListItem.Rating,★ ,]</value>
+		<value condition="String.IsEqual(Window(home).Property(TSRow),5406)">$INFO[Container(5406).ListItem.Season,S, ]$INFO[Container(5406).ListItem.Episode,E,  ]$INFO[Container(5406).ListItem.Year,,   ]$INFO[Container(5406).ListItem.Genre,,   ]$INFO[Container(5406).ListItem.Duration(mins),, perc   ]$INFO[Container(5406).ListItem.Rating,★ ,]</value>
+		<value condition="String.IsEqual(Window(home).Property(TSRow),5407) + String.IsEqual(Container(5407).ListItem.Year,1970)">$INFO[Container(5407).ListItem.Season,S, ]$INFO[Container(5407).ListItem.Episode,E,  ]$INFO[Container(5407).ListItem.Genre,,   ]$INFO[Container(5407).ListItem.Duration(mins),, perc   ]$INFO[Container(5407).ListItem.Rating,★ ,]</value>
+		<value condition="String.IsEqual(Window(home).Property(TSRow),5407)">$INFO[Container(5407).ListItem.Season,S, ]$INFO[Container(5407).ListItem.Episode,E,  ]$INFO[Container(5407).ListItem.Year,,   ]$INFO[Container(5407).ListItem.Genre,,   ]$INFO[Container(5407).ListItem.Duration(mins),, perc   ]$INFO[Container(5407).ListItem.Rating,★ ,]</value>
+		<value condition="String.IsEqual(Window(home).Property(TSRow),5501) + String.IsEqual(Container(5501).ListItem.Year,1970)">$INFO[Container(5501).ListItem.Season,S, ]$INFO[Container(5501).ListItem.Episode,E,  ]$INFO[Container(5501).ListItem.Genre,,   ]$INFO[Container(5501).ListItem.Duration(mins),, perc   ]$INFO[Container(5501).ListItem.Rating,★ ,]</value>
+		<value condition="String.IsEqual(Window(home).Property(TSRow),5501)">$INFO[Container(5501).ListItem.Season,S, ]$INFO[Container(5501).ListItem.Episode,E,  ]$INFO[Container(5501).ListItem.Year,,   ]$INFO[Container(5501).ListItem.Genre,,   ]$INFO[Container(5501).ListItem.Duration(mins),, perc   ]$INFO[Container(5501).ListItem.Rating,★ ,]</value>
+		<value condition="String.IsEqual(Window(home).Property(TSRow),5502) + String.IsEqual(Container(5502).ListItem.Year,1970)">$INFO[Container(5502).ListItem.Season,S, ]$INFO[Container(5502).ListItem.Episode,E,  ]$INFO[Container(5502).ListItem.Genre,,   ]$INFO[Container(5502).ListItem.Duration(mins),, perc   ]$INFO[Container(5502).ListItem.Rating,★ ,]</value>
+		<value condition="String.IsEqual(Window(home).Property(TSRow),5502)">$INFO[Container(5502).ListItem.Season,S, ]$INFO[Container(5502).ListItem.Episode,E,  ]$INFO[Container(5502).ListItem.Year,,   ]$INFO[Container(5502).ListItem.Genre,,   ]$INFO[Container(5502).ListItem.Duration(mins),, perc   ]$INFO[Container(5502).ListItem.Rating,★ ,]</value>
+		<value condition="String.IsEqual(Window(home).Property(TSRow),5503) + String.IsEqual(Container(5503).ListItem.Year,1970)">$INFO[Container(5503).ListItem.Season,S, ]$INFO[Container(5503).ListItem.Episode,E,  ]$INFO[Container(5503).ListItem.Genre,,   ]$INFO[Container(5503).ListItem.Duration(mins),, perc   ]$INFO[Container(5503).ListItem.Rating,★ ,]</value>
+		<value condition="String.IsEqual(Window(home).Property(TSRow),5503)">$INFO[Container(5503).ListItem.Season,S, ]$INFO[Container(5503).ListItem.Episode,E,  ]$INFO[Container(5503).ListItem.Year,,   ]$INFO[Container(5503).ListItem.Genre,,   ]$INFO[Container(5503).ListItem.Duration(mins),, perc   ]$INFO[Container(5503).ListItem.Rating,★ ,]</value>
+		<value condition="String.IsEqual(Window(home).Property(TSRow),5504) + String.IsEqual(Container(5504).ListItem.Year,1970)">$INFO[Container(5504).ListItem.Season,S, ]$INFO[Container(5504).ListItem.Episode,E,  ]$INFO[Container(5504).ListItem.Genre,,   ]$INFO[Container(5504).ListItem.Duration(mins),, perc   ]$INFO[Container(5504).ListItem.Rating,★ ,]</value>
+		<value condition="String.IsEqual(Window(home).Property(TSRow),5504)">$INFO[Container(5504).ListItem.Season,S, ]$INFO[Container(5504).ListItem.Episode,E,  ]$INFO[Container(5504).ListItem.Year,,   ]$INFO[Container(5504).ListItem.Genre,,   ]$INFO[Container(5504).ListItem.Duration(mins),, perc   ]$INFO[Container(5504).ListItem.Rating,★ ,]</value>
+		<value condition="String.IsEqual(Window(home).Property(TSRow),5505) + String.IsEqual(Container(5505).ListItem.Year,1970)">$INFO[Container(5505).ListItem.Season,S, ]$INFO[Container(5505).ListItem.Episode,E,  ]$INFO[Container(5505).ListItem.Genre,,   ]$INFO[Container(5505).ListItem.Duration(mins),, perc   ]$INFO[Container(5505).ListItem.Rating,★ ,]</value>
+		<value condition="String.IsEqual(Window(home).Property(TSRow),5505)">$INFO[Container(5505).ListItem.Season,S, ]$INFO[Container(5505).ListItem.Episode,E,  ]$INFO[Container(5505).ListItem.Year,,   ]$INFO[Container(5505).ListItem.Genre,,   ]$INFO[Container(5505).ListItem.Duration(mins),, perc   ]$INFO[Container(5505).ListItem.Rating,★ ,]</value>
+		<value condition="String.IsEqual(Window(home).Property(TSRow),5506) + String.IsEqual(Container(5506).ListItem.Year,1970)">$INFO[Container(5506).ListItem.Season,S, ]$INFO[Container(5506).ListItem.Episode,E,  ]$INFO[Container(5506).ListItem.Genre,,   ]$INFO[Container(5506).ListItem.Duration(mins),, perc   ]$INFO[Container(5506).ListItem.Rating,★ ,]</value>
+		<value condition="String.IsEqual(Window(home).Property(TSRow),5506)">$INFO[Container(5506).ListItem.Season,S, ]$INFO[Container(5506).ListItem.Episode,E,  ]$INFO[Container(5506).ListItem.Year,,   ]$INFO[Container(5506).ListItem.Genre,,   ]$INFO[Container(5506).ListItem.Duration(mins),, perc   ]$INFO[Container(5506).ListItem.Rating,★ ,]</value>
+		<value condition="String.IsEqual(Window(home).Property(TSRow),5507) + String.IsEqual(Container(5507).ListItem.Year,1970)">$INFO[Container(5507).ListItem.Season,S, ]$INFO[Container(5507).ListItem.Episode,E,  ]$INFO[Container(5507).ListItem.Genre,,   ]$INFO[Container(5507).ListItem.Duration(mins),, perc   ]$INFO[Container(5507).ListItem.Rating,★ ,]</value>
+		<value condition="String.IsEqual(Window(home).Property(TSRow),5507)">$INFO[Container(5507).ListItem.Season,S, ]$INFO[Container(5507).ListItem.Episode,E,  ]$INFO[Container(5507).ListItem.Year,,   ]$INFO[Container(5507).ListItem.Genre,,   ]$INFO[Container(5507).ListItem.Duration(mins),, perc   ]$INFO[Container(5507).ListItem.Rating,★ ,]</value>
+	</variable>
+	<variable name="TSHeroPlot">
+		<value condition="String.IsEqual(Window(home).Property(TSRow),5101)">$INFO[Container(5101).ListItem.Plot]</value>
+		<value condition="String.IsEqual(Window(home).Property(TSRow),5102)">$INFO[Container(5102).ListItem.Plot]</value>
+		<value condition="String.IsEqual(Window(home).Property(TSRow),5103)">$INFO[Container(5103).ListItem.Plot]</value>
+		<value condition="String.IsEqual(Window(home).Property(TSRow),5104)">$INFO[Container(5104).ListItem.Plot]</value>
+		<value condition="String.IsEqual(Window(home).Property(TSRow),5105)">$INFO[Container(5105).ListItem.Plot]</value>
+		<value condition="String.IsEqual(Window(home).Property(TSRow),5106)">$INFO[Container(5106).ListItem.Plot]</value>
+		<value condition="String.IsEqual(Window(home).Property(TSRow),5107)">$INFO[Container(5107).ListItem.Plot]</value>
+		<value condition="String.IsEqual(Window(home).Property(TSRow),5201)">$INFO[Container(5201).ListItem.Plot]</value>
+		<value condition="String.IsEqual(Window(home).Property(TSRow),5202)">$INFO[Container(5202).ListItem.Plot]</value>
+		<value condition="String.IsEqual(Window(home).Property(TSRow),5203)">$INFO[Container(5203).ListItem.Plot]</value>
+		<value condition="String.IsEqual(Window(home).Property(TSRow),5204)">$INFO[Container(5204).ListItem.Plot]</value>
+		<value condition="String.IsEqual(Window(home).Property(TSRow),5205)">$INFO[Container(5205).ListItem.Plot]</value>
+		<value condition="String.IsEqual(Window(home).Property(TSRow),5206)">$INFO[Container(5206).ListItem.Plot]</value>
+		<value condition="String.IsEqual(Window(home).Property(TSRow),5207)">$INFO[Container(5207).ListItem.Plot]</value>
+		<value condition="String.IsEqual(Window(home).Property(TSRow),5301)">$INFO[Container(5301).ListItem.Plot]</value>
+		<value condition="String.IsEqual(Window(home).Property(TSRow),5302)">$INFO[Container(5302).ListItem.Plot]</value>
+		<value condition="String.IsEqual(Window(home).Property(TSRow),5303)">$INFO[Container(5303).ListItem.Plot]</value>
+		<value condition="String.IsEqual(Window(home).Property(TSRow),5304)">$INFO[Container(5304).ListItem.Plot]</value>
+		<value condition="String.IsEqual(Window(home).Property(TSRow),5305)">$INFO[Container(5305).ListItem.Plot]</value>
+		<value condition="String.IsEqual(Window(home).Property(TSRow),5306)">$INFO[Container(5306).ListItem.Plot]</value>
+		<value condition="String.IsEqual(Window(home).Property(TSRow),5401)">$INFO[Container(5401).ListItem.Plot]</value>
+		<value condition="String.IsEqual(Window(home).Property(TSRow),5402)">$INFO[Container(5402).ListItem.Plot]</value>
+		<value condition="String.IsEqual(Window(home).Property(TSRow),5403)">$INFO[Container(5403).ListItem.Plot]</value>
+		<value condition="String.IsEqual(Window(home).Property(TSRow),5404)">$INFO[Container(5404).ListItem.Plot]</value>
+		<value condition="String.IsEqual(Window(home).Property(TSRow),5405)">$INFO[Container(5405).ListItem.Plot]</value>
+		<value condition="String.IsEqual(Window(home).Property(TSRow),5406)">$INFO[Container(5406).ListItem.Plot]</value>
+		<value condition="String.IsEqual(Window(home).Property(TSRow),5407)">$INFO[Container(5407).ListItem.Plot]</value>
+		<value condition="String.IsEqual(Window(home).Property(TSRow),5501)">$INFO[Container(5501).ListItem.Plot]</value>
+		<value condition="String.IsEqual(Window(home).Property(TSRow),5502)">$INFO[Container(5502).ListItem.Plot]</value>
+		<value condition="String.IsEqual(Window(home).Property(TSRow),5503)">$INFO[Container(5503).ListItem.Plot]</value>
+		<value condition="String.IsEqual(Window(home).Property(TSRow),5504)">$INFO[Container(5504).ListItem.Plot]</value>
+		<value condition="String.IsEqual(Window(home).Property(TSRow),5505)">$INFO[Container(5505).ListItem.Plot]</value>
+		<value condition="String.IsEqual(Window(home).Property(TSRow),5506)">$INFO[Container(5506).ListItem.Plot]</value>
+		<value condition="String.IsEqual(Window(home).Property(TSRow),5507)">$INFO[Container(5507).ListItem.Plot]</value>
+	</variable>
+	<variable name="TSSectionTitle">
+		<value condition="String.IsEqual(Window(home).Property(TSSection),home)">Üdv itthon!</value>
+		<value condition="String.IsEqual(Window(home).Property(TSSection),movies)">Filmek</value>
+		<value condition="String.IsEqual(Window(home).Property(TSSection),tvshows)">Sorozatok</value>
+		<value condition="String.IsEqual(Window(home).Property(TSSection),sport)">Sport – Network4</value>
+		<value condition="String.IsEqual(Window(home).Property(TSSection),anime)">Anime</value>
+	</variable>
+	<variable name="TSCardLandscape">
+		<value condition="!String.IsEmpty(ListItem.Art(landscape))">$INFO[ListItem.Art(landscape)]</value>
+		<value condition="!String.IsEmpty(ListItem.Art(fanart))">$INFO[ListItem.Art(fanart)]</value>
+		<value condition="!String.IsEmpty(ListItem.Art(thumb))">$INFO[ListItem.Art(thumb)]</value>
+		<value>$INFO[ListItem.Icon]</value>
+	</variable>
+	<variable name="TSCardThumb">
+		<value condition="!String.IsEmpty(ListItem.Art(thumb))">$INFO[ListItem.Art(thumb)]</value>
+		<value condition="!String.IsEmpty(ListItem.Art(landscape))">$INFO[ListItem.Art(landscape)]</value>
+		<value>$INFO[ListItem.Icon]</value>
+	</variable>
+	<variable name="TSCardPoster">
+		<value condition="!String.IsEmpty(ListItem.Art(poster))">$INFO[ListItem.Art(poster)]</value>
+		<value condition="!String.IsEmpty(ListItem.Art(tvshow.poster))">$INFO[ListItem.Art(tvshow.poster)]</value>
+		<value condition="!String.IsEmpty(ListItem.Art(thumb))">$INFO[ListItem.Art(thumb)]</value>
+		<value>$INFO[ListItem.Icon]</value>
+	</variable>
+	<variable name="TSCardTitle">
+		<value condition="!String.IsEmpty(ListItem.TVShowTitle)">$INFO[ListItem.TVShowTitle]$INFO[ListItem.Season,  S,]$INFO[ListItem.Episode,E,]</value>
+		<value>$INFO[ListItem.Label]</value>
+	</variable>
+	<expression name="TSHasLogo">[String.IsEqual(Window(home).Property(TSRow),5101) + !String.IsEmpty(Container(5101).ListItem.Art(clearlogo))] | [String.IsEqual(Window(home).Property(TSRow),5102) + !String.IsEmpty(Container(5102).ListItem.Art(clearlogo))] | [String.IsEqual(Window(home).Property(TSRow),5103) + !String.IsEmpty(Container(5103).ListItem.Art(clearlogo))] | [String.IsEqual(Window(home).Property(TSRow),5104) + !String.IsEmpty(Container(5104).ListItem.Art(clearlogo))] | [String.IsEqual(Window(home).Property(TSRow),5105) + !String.IsEmpty(Container(5105).ListItem.Art(clearlogo))] | [String.IsEqual(Window(home).Property(TSRow),5106) + !String.IsEmpty(Container(5106).ListItem.Art(clearlogo))] | [String.IsEqual(Window(home).Property(TSRow),5107) + !String.IsEmpty(Container(5107).ListItem.Art(clearlogo))] | [String.IsEqual(Window(home).Property(TSRow),5201) + !String.IsEmpty(Container(5201).ListItem.Art(clearlogo))] | [String.IsEqual(Window(home).Property(TSRow),5202) + !String.IsEmpty(Container(5202).ListItem.Art(clearlogo))] | [String.IsEqual(Window(home).Property(TSRow),5203) + !String.IsEmpty(Container(5203).ListItem.Art(clearlogo))] | [String.IsEqual(Window(home).Property(TSRow),5204) + !String.IsEmpty(Container(5204).ListItem.Art(clearlogo))] | [String.IsEqual(Window(home).Property(TSRow),5205) + !String.IsEmpty(Container(5205).ListItem.Art(clearlogo))] | [String.IsEqual(Window(home).Property(TSRow),5206) + !String.IsEmpty(Container(5206).ListItem.Art(clearlogo))] | [String.IsEqual(Window(home).Property(TSRow),5207) + !String.IsEmpty(Container(5207).ListItem.Art(clearlogo))] | [String.IsEqual(Window(home).Property(TSRow),5301) + !String.IsEmpty(Container(5301).ListItem.Art(clearlogo))] | [String.IsEqual(Window(home).Property(TSRow),5302) + !String.IsEmpty(Container(5302).ListItem.Art(clearlogo))] | [String.IsEqual(Window(home).Property(TSRow),5303) + !String.IsEmpty(Container(5303).ListItem.Art(clearlogo))] | [String.IsEqual(Window(home).Property(TSRow),5304) + !String.IsEmpty(Container(5304).ListItem.Art(clearlogo))] | [String.IsEqual(Window(home).Property(TSRow),5305) + !String.IsEmpty(Container(5305).ListItem.Art(clearlogo))] | [String.IsEqual(Window(home).Property(TSRow),5306) + !String.IsEmpty(Container(5306).ListItem.Art(clearlogo))] | [String.IsEqual(Window(home).Property(TSRow),5401) + !String.IsEmpty(Container(5401).ListItem.Art(clearlogo))] | [String.IsEqual(Window(home).Property(TSRow),5402) + !String.IsEmpty(Container(5402).ListItem.Art(clearlogo))] | [String.IsEqual(Window(home).Property(TSRow),5403) + !String.IsEmpty(Container(5403).ListItem.Art(clearlogo))] | [String.IsEqual(Window(home).Property(TSRow),5404) + !String.IsEmpty(Container(5404).ListItem.Art(clearlogo))] | [String.IsEqual(Window(home).Property(TSRow),5405) + !String.IsEmpty(Container(5405).ListItem.Art(clearlogo))] | [String.IsEqual(Window(home).Property(TSRow),5406) + !String.IsEmpty(Container(5406).ListItem.Art(clearlogo))] | [String.IsEqual(Window(home).Property(TSRow),5407) + !String.IsEmpty(Container(5407).ListItem.Art(clearlogo))] | [String.IsEqual(Window(home).Property(TSRow),5501) + !String.IsEmpty(Container(5501).ListItem.Art(clearlogo))] | [String.IsEqual(Window(home).Property(TSRow),5502) + !String.IsEmpty(Container(5502).ListItem.Art(clearlogo))] | [String.IsEqual(Window(home).Property(TSRow),5503) + !String.IsEmpty(Container(5503).ListItem.Art(clearlogo))] | [String.IsEqual(Window(home).Property(TSRow),5504) + !String.IsEmpty(Container(5504).ListItem.Art(clearlogo))] | [String.IsEqual(Window(home).Property(TSRow),5505) + !String.IsEmpty(Container(5505).ListItem.Art(clearlogo))] | [String.IsEqual(Window(home).Property(TSRow),5506) + !String.IsEmpty(Container(5506).ListItem.Art(clearlogo))] | [String.IsEqual(Window(home).Property(TSRow),5507) + !String.IsEmpty(Container(5507).ListItem.Art(clearlogo))]</expression>
+	<expression name="TSPosterRow">String.IsEqual(Window(home).Property(TSRow),5105) | String.IsEqual(Window(home).Property(TSRow),5501) | String.IsEqual(Window(home).Property(TSRow),5502) | String.IsEqual(Window(home).Property(TSRow),5503) | String.IsEqual(Window(home).Property(TSRow),5507)</expression>
+	<expression name="TSRowHasItems">[String.IsEqual(Window(home).Property(TSRow),5101) + Integer.IsGreater(Container(5101).NumItems,0)] | [String.IsEqual(Window(home).Property(TSRow),5102) + Integer.IsGreater(Container(5102).NumItems,0)] | [String.IsEqual(Window(home).Property(TSRow),5103) + Integer.IsGreater(Container(5103).NumItems,0)] | [String.IsEqual(Window(home).Property(TSRow),5104) + Integer.IsGreater(Container(5104).NumItems,0)] | [String.IsEqual(Window(home).Property(TSRow),5105) + Integer.IsGreater(Container(5105).NumItems,0)] | [String.IsEqual(Window(home).Property(TSRow),5106) + Integer.IsGreater(Container(5106).NumItems,0)] | [String.IsEqual(Window(home).Property(TSRow),5107) + Integer.IsGreater(Container(5107).NumItems,0)] | [String.IsEqual(Window(home).Property(TSRow),5201) + Integer.IsGreater(Container(5201).NumItems,0)] | [String.IsEqual(Window(home).Property(TSRow),5202) + Integer.IsGreater(Container(5202).NumItems,0)] | [String.IsEqual(Window(home).Property(TSRow),5203) + Integer.IsGreater(Container(5203).NumItems,0)] | [String.IsEqual(Window(home).Property(TSRow),5204) + Integer.IsGreater(Container(5204).NumItems,0)] | [String.IsEqual(Window(home).Property(TSRow),5205) + Integer.IsGreater(Container(5205).NumItems,0)] | [String.IsEqual(Window(home).Property(TSRow),5206) + Integer.IsGreater(Container(5206).NumItems,0)] | [String.IsEqual(Window(home).Property(TSRow),5207) + Integer.IsGreater(Container(5207).NumItems,0)] | [String.IsEqual(Window(home).Property(TSRow),5301) + Integer.IsGreater(Container(5301).NumItems,0)] | [String.IsEqual(Window(home).Property(TSRow),5302) + Integer.IsGreater(Container(5302).NumItems,0)] | [String.IsEqual(Window(home).Property(TSRow),5303) + Integer.IsGreater(Container(5303).NumItems,0)] | [String.IsEqual(Window(home).Property(TSRow),5304) + Integer.IsGreater(Container(5304).NumItems,0)] | [String.IsEqual(Window(home).Property(TSRow),5305) + Integer.IsGreater(Container(5305).NumItems,0)] | [String.IsEqual(Window(home).Property(TSRow),5306) + Integer.IsGreater(Container(5306).NumItems,0)] | [String.IsEqual(Window(home).Property(TSRow),5401) + Integer.IsGreater(Container(5401).NumItems,0)] | [String.IsEqual(Window(home).Property(TSRow),5402) + Integer.IsGreater(Container(5402).NumItems,0)] | [String.IsEqual(Window(home).Property(TSRow),5403) + Integer.IsGreater(Container(5403).NumItems,0)] | [String.IsEqual(Window(home).Property(TSRow),5404) + Integer.IsGreater(Container(5404).NumItems,0)] | [String.IsEqual(Window(home).Property(TSRow),5405) + Integer.IsGreater(Container(5405).NumItems,0)] | [String.IsEqual(Window(home).Property(TSRow),5406) + Integer.IsGreater(Container(5406).NumItems,0)] | [String.IsEqual(Window(home).Property(TSRow),5407) + Integer.IsGreater(Container(5407).NumItems,0)] | [String.IsEqual(Window(home).Property(TSRow),5501) + Integer.IsGreater(Container(5501).NumItems,0)] | [String.IsEqual(Window(home).Property(TSRow),5502) + Integer.IsGreater(Container(5502).NumItems,0)] | [String.IsEqual(Window(home).Property(TSRow),5503) + Integer.IsGreater(Container(5503).NumItems,0)] | [String.IsEqual(Window(home).Property(TSRow),5504) + Integer.IsGreater(Container(5504).NumItems,0)] | [String.IsEqual(Window(home).Property(TSRow),5505) + Integer.IsGreater(Container(5505).NumItems,0)] | [String.IsEqual(Window(home).Property(TSRow),5506) + Integer.IsGreater(Container(5506).NumItems,0)] | [String.IsEqual(Window(home).Property(TSRow),5507) + Integer.IsGreater(Container(5507).NumItems,0)]</expression>
+	<expression name="TSRailOpen">ControlGroup(9000).HasFocus</expression>
+	<include name="TSRow_landscape">
+		<param name="overlay">true</param>
+		<definition>
+			<control type="label" id="$PARAM[list_id]1"><left>180</left><width>1500</width><height>58</height><font>ts_row</font><textcolor>FFE6E6EA</textcolor><aligny>bottom</aligny><label>$PARAM[title]</label><visible>$PARAM[visible] + [Integer.IsGreater(Container($PARAM[list_id]).NumItems,0) | Container($PARAM[list_id]).IsUpdating]</visible></control>
+			<control type="fixedlist" id="$PARAM[list_id]">
+				<left>180</left><width>1740</width><height>285</height>
+				<visible>$PARAM[visible] + [Integer.IsGreater(Container($PARAM[list_id]).NumItems,0) | Container($PARAM[list_id]).IsUpdating]</visible>
+				<orientation>horizontal</orientation>
+				<focusposition>0</focusposition><movement>0</movement>
+				<scrolltime tween="cubic" easing="out">320</scrolltime>
+				<onleft>9000</onleft>
+				<onfocus>SetProperty(TSRow,$PARAM[list_id],home)</onfocus>
+				<onback>9000</onback>
+				<preloaditems>2</preloaditems>
+				<itemlayout width="422" height="285"><control type="group"><top>18</top><control type="image"><width>400</width><height>225</height><texture colordiffuse="FF1E1E24" diffuse="tomszo/mask_card.png">tomszo/white.png</texture></control><control type="label"><left>16</left><top>0</top><width>368</width><height>225</height><font>ts_card</font><align>center</align><aligny>center</aligny><wrapmultiline>true</wrapmultiline><label>$VAR[TSCardTitle]</label><textcolor>FFE6E6EA</textcolor></control><control type="image"><width>400</width><height>225</height><aspectratio>scale</aspectratio><fadetime>200</fadetime><texture background="true" diffuse="tomszo/mask_card.png">$VAR[TSCardLandscape]</texture></control><control type="image"><top>115</top><width>400</width><height>110</height><texture>tomszo/grad_card.png</texture><visible>$PARAM[overlay]</visible></control><control type="label"><left>18</left><top>175</top><width>364</width><height>40</height><font>ts_card</font><label>$VAR[TSCardTitle]</label><textcolor>FFFFFFFF</textcolor><shadowcolor>A0000000</shadowcolor><scroll>false</scroll><visible>$PARAM[overlay]</visible></control><control type="progress"><left>14</left><top>207</top><width>372</width><height>8</height><texturebg colordiffuse="60FFFFFF" border="4">tomszo/bar.png</texturebg><lefttexture/><midtexture colordiffuse="FFE5262C" border="4">tomszo/bar.png</midtexture><righttexture/><info>ListItem.PercentPlayed</info><visible>Integer.IsGreater(ListItem.PercentPlayed,0)</visible></control></control></itemlayout>
+				<focusedlayout width="422" height="285"><control type="group"><top>18</top><animation type="Focus" reversible="false"><effect type="zoom" start="100" end="108" time="180" tween="cubic" easing="out" center="200,112"/></animation><animation type="Conditional" condition="!Control.HasFocus($PARAM[list_id])" reversible="true"><effect type="zoom" start="108" end="100" time="1" center="200,112"/></animation><control type="image"><width>400</width><height>225</height><texture colordiffuse="FF1E1E24" diffuse="tomszo/mask_card.png">tomszo/white.png</texture></control><control type="label"><left>16</left><top>0</top><width>368</width><height>225</height><font>ts_card</font><align>center</align><aligny>center</aligny><wrapmultiline>true</wrapmultiline><label>$VAR[TSCardTitle]</label><textcolor>FFE6E6EA</textcolor></control><control type="image"><width>400</width><height>225</height><aspectratio>scale</aspectratio><fadetime>200</fadetime><texture background="true" diffuse="tomszo/mask_card.png">$VAR[TSCardLandscape]</texture></control><control type="image"><top>115</top><width>400</width><height>110</height><texture>tomszo/grad_card.png</texture><visible>$PARAM[overlay]</visible></control><control type="label"><left>18</left><top>175</top><width>364</width><height>40</height><font>ts_card</font><label>$VAR[TSCardTitle]</label><textcolor>FFFFFFFF</textcolor><shadowcolor>A0000000</shadowcolor><scroll>true</scroll><visible>$PARAM[overlay]</visible></control><control type="progress"><left>14</left><top>207</top><width>372</width><height>8</height><texturebg colordiffuse="60FFFFFF" border="4">tomszo/bar.png</texturebg><lefttexture/><midtexture colordiffuse="FFE5262C" border="4">tomszo/bar.png</midtexture><righttexture/><info>ListItem.PercentPlayed</info><visible>Integer.IsGreater(ListItem.PercentPlayed,0)</visible></control><control type="image"><left>-6</left><top>-6</top><width>412</width><height>237</height><texture border="22">tomszo/frame.png</texture><visible>Control.HasFocus($PARAM[list_id])</visible></control></control></focusedlayout>
+				<content target="videos" limit="30" browse="auto">$PARAM[path]</content>
+			</control>
+		</definition>
+	</include>
+	<include name="TSRow_thumb">
+		<param name="overlay">true</param>
+		<definition>
+			<control type="label" id="$PARAM[list_id]1"><left>180</left><width>1500</width><height>58</height><font>ts_row</font><textcolor>FFE6E6EA</textcolor><aligny>bottom</aligny><label>$PARAM[title]</label><visible>$PARAM[visible] + [Integer.IsGreater(Container($PARAM[list_id]).NumItems,0) | Container($PARAM[list_id]).IsUpdating]</visible></control>
+			<control type="fixedlist" id="$PARAM[list_id]">
+				<left>180</left><width>1740</width><height>285</height>
+				<visible>$PARAM[visible] + [Integer.IsGreater(Container($PARAM[list_id]).NumItems,0) | Container($PARAM[list_id]).IsUpdating]</visible>
+				<orientation>horizontal</orientation>
+				<focusposition>0</focusposition><movement>0</movement>
+				<scrolltime tween="cubic" easing="out">320</scrolltime>
+				<onleft>9000</onleft>
+				<onfocus>SetProperty(TSRow,$PARAM[list_id],home)</onfocus>
+				<onback>9000</onback>
+				<preloaditems>2</preloaditems>
+				<itemlayout width="422" height="285"><control type="group"><top>18</top><control type="image"><width>400</width><height>225</height><texture colordiffuse="FF1E1E24" diffuse="tomszo/mask_card.png">tomszo/white.png</texture></control><control type="label"><left>16</left><top>0</top><width>368</width><height>225</height><font>ts_card</font><align>center</align><aligny>center</aligny><wrapmultiline>true</wrapmultiline><label>$VAR[TSCardTitle]</label><textcolor>FFE6E6EA</textcolor></control><control type="image"><width>400</width><height>225</height><aspectratio>scale</aspectratio><fadetime>200</fadetime><texture background="true" diffuse="tomszo/mask_card.png">$VAR[TSCardThumb]</texture></control><control type="image"><top>115</top><width>400</width><height>110</height><texture>tomszo/grad_card.png</texture><visible>$PARAM[overlay]</visible></control><control type="label"><left>18</left><top>175</top><width>364</width><height>40</height><font>ts_card</font><label>$VAR[TSCardTitle]</label><textcolor>FFFFFFFF</textcolor><shadowcolor>A0000000</shadowcolor><scroll>false</scroll><visible>$PARAM[overlay]</visible></control><control type="progress"><left>14</left><top>207</top><width>372</width><height>8</height><texturebg colordiffuse="60FFFFFF" border="4">tomszo/bar.png</texturebg><lefttexture/><midtexture colordiffuse="FFE5262C" border="4">tomszo/bar.png</midtexture><righttexture/><info>ListItem.PercentPlayed</info><visible>Integer.IsGreater(ListItem.PercentPlayed,0)</visible></control></control></itemlayout>
+				<focusedlayout width="422" height="285"><control type="group"><top>18</top><animation type="Focus" reversible="false"><effect type="zoom" start="100" end="108" time="180" tween="cubic" easing="out" center="200,112"/></animation><animation type="Conditional" condition="!Control.HasFocus($PARAM[list_id])" reversible="true"><effect type="zoom" start="108" end="100" time="1" center="200,112"/></animation><control type="image"><width>400</width><height>225</height><texture colordiffuse="FF1E1E24" diffuse="tomszo/mask_card.png">tomszo/white.png</texture></control><control type="label"><left>16</left><top>0</top><width>368</width><height>225</height><font>ts_card</font><align>center</align><aligny>center</aligny><wrapmultiline>true</wrapmultiline><label>$VAR[TSCardTitle]</label><textcolor>FFE6E6EA</textcolor></control><control type="image"><width>400</width><height>225</height><aspectratio>scale</aspectratio><fadetime>200</fadetime><texture background="true" diffuse="tomszo/mask_card.png">$VAR[TSCardThumb]</texture></control><control type="image"><top>115</top><width>400</width><height>110</height><texture>tomszo/grad_card.png</texture><visible>$PARAM[overlay]</visible></control><control type="label"><left>18</left><top>175</top><width>364</width><height>40</height><font>ts_card</font><label>$VAR[TSCardTitle]</label><textcolor>FFFFFFFF</textcolor><shadowcolor>A0000000</shadowcolor><scroll>true</scroll><visible>$PARAM[overlay]</visible></control><control type="progress"><left>14</left><top>207</top><width>372</width><height>8</height><texturebg colordiffuse="60FFFFFF" border="4">tomszo/bar.png</texturebg><lefttexture/><midtexture colordiffuse="FFE5262C" border="4">tomszo/bar.png</midtexture><righttexture/><info>ListItem.PercentPlayed</info><visible>Integer.IsGreater(ListItem.PercentPlayed,0)</visible></control><control type="image"><left>-6</left><top>-6</top><width>412</width><height>237</height><texture border="22">tomszo/frame.png</texture><visible>Control.HasFocus($PARAM[list_id])</visible></control></control></focusedlayout>
+				<content target="videos" limit="30" browse="auto">$PARAM[path]</content>
+			</control>
+		</definition>
+	</include>
+	<include name="TSRow_poster">
+		<param name="overlay">true</param>
+		<definition>
+			<control type="label" id="$PARAM[list_id]1"><left>180</left><width>1500</width><height>58</height><font>ts_row</font><textcolor>FFE6E6EA</textcolor><aligny>bottom</aligny><label>$PARAM[title]</label><visible>$PARAM[visible] + [Integer.IsGreater(Container($PARAM[list_id]).NumItems,0) | Container($PARAM[list_id]).IsUpdating]</visible></control>
+			<control type="fixedlist" id="$PARAM[list_id]">
+				<left>180</left><width>1740</width><height>420</height>
+				<visible>$PARAM[visible] + [Integer.IsGreater(Container($PARAM[list_id]).NumItems,0) | Container($PARAM[list_id]).IsUpdating]</visible>
+				<orientation>horizontal</orientation>
+				<focusposition>0</focusposition><movement>0</movement>
+				<scrolltime tween="cubic" easing="out">320</scrolltime>
+				<onleft>9000</onleft>
+				<onfocus>SetProperty(TSRow,$PARAM[list_id],home)</onfocus>
+				<onback>9000</onback>
+				<preloaditems>2</preloaditems>
+				<itemlayout width="262" height="420"><control type="group"><top>18</top><control type="image"><width>240</width><height>360</height><texture colordiffuse="FF1E1E24" diffuse="tomszo/mask_poster.png">tomszo/white.png</texture></control><control type="label"><left>16</left><top>0</top><width>208</width><height>360</height><font>ts_card</font><align>center</align><aligny>center</aligny><wrapmultiline>true</wrapmultiline><label>$VAR[TSCardTitle]</label><textcolor>FFE6E6EA</textcolor></control><control type="image"><width>240</width><height>360</height><aspectratio>scale</aspectratio><fadetime>200</fadetime><texture background="true" diffuse="tomszo/mask_poster.png">$VAR[TSCardPoster]</texture></control><control type="progress"><left>14</left><top>342</top><width>212</width><height>8</height><texturebg colordiffuse="60FFFFFF" border="4">tomszo/bar.png</texturebg><lefttexture/><midtexture colordiffuse="FFE5262C" border="4">tomszo/bar.png</midtexture><righttexture/><info>ListItem.PercentPlayed</info><visible>Integer.IsGreater(ListItem.PercentPlayed,0)</visible></control></control></itemlayout>
+				<focusedlayout width="262" height="420"><control type="group"><top>18</top><animation type="Focus" reversible="false"><effect type="zoom" start="100" end="108" time="180" tween="cubic" easing="out" center="120,180"/></animation><animation type="Conditional" condition="!Control.HasFocus($PARAM[list_id])" reversible="true"><effect type="zoom" start="108" end="100" time="1" center="120,180"/></animation><control type="image"><width>240</width><height>360</height><texture colordiffuse="FF1E1E24" diffuse="tomszo/mask_poster.png">tomszo/white.png</texture></control><control type="label"><left>16</left><top>0</top><width>208</width><height>360</height><font>ts_card</font><align>center</align><aligny>center</aligny><wrapmultiline>true</wrapmultiline><label>$VAR[TSCardTitle]</label><textcolor>FFE6E6EA</textcolor></control><control type="image"><width>240</width><height>360</height><aspectratio>scale</aspectratio><fadetime>200</fadetime><texture background="true" diffuse="tomszo/mask_poster.png">$VAR[TSCardPoster]</texture></control><control type="progress"><left>14</left><top>342</top><width>212</width><height>8</height><texturebg colordiffuse="60FFFFFF" border="4">tomszo/bar.png</texturebg><lefttexture/><midtexture colordiffuse="FFE5262C" border="4">tomszo/bar.png</midtexture><righttexture/><info>ListItem.PercentPlayed</info><visible>Integer.IsGreater(ListItem.PercentPlayed,0)</visible></control><control type="image"><left>-6</left><top>-6</top><width>252</width><height>372</height><texture border="22">tomszo/frame.png</texture><visible>Control.HasFocus($PARAM[list_id])</visible></control></control></focusedlayout>
+				<content target="videos" limit="30" browse="auto">$PARAM[path]</content>
+			</control>
+		</definition>
+	</include>
+	<include name="TSHero">
+		<control type="group" id="3000">
+			<control type="image">
+				<left>420</left><top>0</top><width>1500</width><height>844</height>
+				<aspectratio>scale</aspectratio>
+				<fadetime>500</fadetime>
+				<texture background="true">$VAR[TSHeroArt]</texture>
+				<visible>!$EXP[TSPosterRow]</visible>
+			</control>
+			<control type="image">
+				<left>420</left><top>0</top><width>900</width><height>844</height>
+				<texture>tomszo/grad_left.png</texture>
+			</control>
+			<control type="image">
+				<left>420</left><top>330</top><width>1500</width><height>520</height>
+				<texture>tomszo/grad_bottom.png</texture>
+			</control>
+			<control type="image">
+				<left>0</left><top>0</top><width>1920</width><height>260</height>
+				<texture>tomszo/grad_top.png</texture>
+			</control>
+			<control type="image">
+				<right>140</right><top>110</top><width>290</width><height>435</height>
+				<aspectratio>scale</aspectratio>
+				<fadetime>300</fadetime>
+				<texture background="true" diffuse="tomszo/mask_poster.png">$VAR[TSHeroPoster]</texture>
+				<visible>$EXP[TSPosterRow] + $EXP[TSRowHasItems]</visible>
+			</control>
+			<control type="grouplist">
+				<left>180</left><top>96</top><width>1050</width><height>470</height>
+				<orientation>vertical</orientation>
+				<itemgap>14</itemgap>
+				<visible>$EXP[TSRowHasItems]</visible>
+				<control type="image">
+					<width>640</width><height>190</height>
+					<aspectratio align="left" aligny="bottom">keep</aspectratio>
+					<fadetime>300</fadetime>
+					<texture background="true">$VAR[TSHeroLogo]</texture>
+					<visible>$EXP[TSHasLogo]</visible>
+				</control>
+				<control type="textbox">
+					<width>1050</width><height min="0" max="200">auto</height>
+					<font>ts_hero</font>
+					<textcolor>FFFFFFFF</textcolor>
+					<shadowcolor>80000000</shadowcolor>
+					<label>$VAR[TSHeroTitle]</label>
+					<visible>!$EXP[TSHasLogo]</visible>
+				</control>
+				<control type="label">
+					<width>1050</width><height>40</height>
+					<font>ts_meta</font>
+					<textcolor>FFB4B4BE</textcolor>
+					<label>$VAR[TSHeroMeta]</label>
+				</control>
+				<control type="textbox">
+					<width>960</width><height min="0" max="132">auto</height>
+					<font>ts_text</font>
+					<textcolor>FFDCDCE2</textcolor>
+					<label>$VAR[TSHeroPlot]</label>
+				</control>
+			</control>
+			<control type="group">
+				<visible>!$EXP[TSRowHasItems]</visible>
+				<control type="label">
+					<left>180</left><top>200</top><width>1400</width><height>110</height>
+					<font>ts_hero</font><textcolor>FFFFFFFF</textcolor>
+					<label>$VAR[TSSectionTitle]</label>
+				</control>
+				<control type="label">
+					<left>180</left><top>310</top><width>1400</width><height>50</height>
+					<font>ts_meta</font><textcolor>FFB4B4BE</textcolor>
+					<label>Válassz a lenti sorokból – vagy balra a menü.</label>
+				</control>
+			</control>
+		</control>
+		<control type="label">
+			<right>70</right><top>40</top><width>300</width><height>50</height>
+			<align>right</align>
+			<font>ts_meta</font><textcolor>FFDCDCE2</textcolor>
+			<label>$INFO[System.Time]</label>
+		</control>
+	</include>
+	<include name="TSRows">
+		<control type="grouplist" id="4000">
+			<left>0</left><top>585</top><width>1920</width><bottom>0</bottom>
+			<orientation>vertical</orientation>
+			<itemgap>0</itemgap>
+			<scrolltime tween="cubic" easing="out">380</scrolltime>
+			<usecontrolcoords>true</usecontrolcoords>
+			<onleft>9000</onleft>
+			<include content="TSRow_landscape">
+				<param name="list_id" value="5101"/>
+				<param name="title" value="Folytatás"/>
+				<param name="path" value="special://skin/playlists/inprogress_movies.xsp"/>
+				<param name="visible" value="String.IsEqual(Window(home).Property(TSSection),home)"/>
+			</include>
+			<include content="TSRow_thumb">
+				<param name="list_id" value="5102"/>
+				<param name="title" value="Élő sport – Network4"/>
+				<param name="path" value="plugin://plugin.video.network4/?action=live"/>
+				<param name="visible" value="String.IsEqual(Window(home).Property(TSSection),home) + System.HasAddon(plugin.video.network4)"/>
+			</include>
+			<include content="TSRow_landscape">
+				<param name="list_id" value="5103"/>
+				<param name="title" value="Felkapott filmek"/>
+				<param name="path" value="plugin://plugin.video.themoviedb.helper/?info=trending_week&amp;tmdb_type=movie"/>
+				<param name="visible" value="String.IsEqual(Window(home).Property(TSSection),home) + System.HasAddon(plugin.video.themoviedb.helper)"/>
+			</include>
+			<include content="TSRow_landscape">
+				<param name="list_id" value="5104"/>
+				<param name="title" value="Felkapott sorozatok"/>
+				<param name="path" value="plugin://plugin.video.themoviedb.helper/?info=trending_week&amp;tmdb_type=tv"/>
+				<param name="visible" value="String.IsEqual(Window(home).Property(TSSection),home) + System.HasAddon(plugin.video.themoviedb.helper)"/>
+			</include>
+			<include content="TSRow_poster">
+				<param name="list_id" value="5105"/>
+				<param name="title" value="Anime – folytatás"/>
+				<param name="path" value="plugin://plugin.video.magyaranime/?action=history"/>
+				<param name="visible" value="String.IsEqual(Window(home).Property(TSSection),home) + System.HasAddon(plugin.video.magyaranime)"/>
+			</include>
+			<include content="TSRow_landscape">
+				<param name="list_id" value="5106"/>
+				<param name="title" value="Új részek a könyvtárban"/>
+				<param name="path" value="videodb://recentlyaddedepisodes/"/>
+				<param name="visible" value="String.IsEqual(Window(home).Property(TSSection),home)"/>
+			</include>
+			<include content="TSRow_landscape">
+				<param name="list_id" value="5107"/>
+				<param name="title" value="Nemrég hozzáadott filmek"/>
+				<param name="path" value="videodb://recentlyaddedmovies/"/>
+				<param name="visible" value="String.IsEqual(Window(home).Property(TSSection),home)"/>
+			</include>
+			<include content="TSRow_landscape">
+				<param name="list_id" value="5201"/>
+				<param name="title" value="Folytatás"/>
+				<param name="path" value="special://skin/playlists/inprogress_movies.xsp"/>
+				<param name="visible" value="String.IsEqual(Window(home).Property(TSSection),movies)"/>
+			</include>
+			<include content="TSRow_landscape">
+				<param name="list_id" value="5202"/>
+				<param name="title" value="Nemrég hozzáadott"/>
+				<param name="path" value="videodb://recentlyaddedmovies/"/>
+				<param name="visible" value="String.IsEqual(Window(home).Property(TSSection),movies)"/>
+			</include>
+			<include content="TSRow_landscape">
+				<param name="list_id" value="5203"/>
+				<param name="title" value="Népszerű most"/>
+				<param name="path" value="plugin://plugin.video.themoviedb.helper/?info=popular&amp;tmdb_type=movie"/>
+				<param name="visible" value="String.IsEqual(Window(home).Property(TSSection),movies) + System.HasAddon(plugin.video.themoviedb.helper)"/>
+			</include>
+			<include content="TSRow_landscape">
+				<param name="list_id" value="5204"/>
+				<param name="title" value="Most a mozikban"/>
+				<param name="path" value="plugin://plugin.video.themoviedb.helper/?info=now_playing&amp;tmdb_type=movie"/>
+				<param name="visible" value="String.IsEqual(Window(home).Property(TSSection),movies) + System.HasAddon(plugin.video.themoviedb.helper)"/>
+			</include>
+			<include content="TSRow_landscape">
+				<param name="list_id" value="5205"/>
+				<param name="title" value="Legjobbra értékelt"/>
+				<param name="path" value="plugin://plugin.video.themoviedb.helper/?info=top_rated&amp;tmdb_type=movie"/>
+				<param name="visible" value="String.IsEqual(Window(home).Property(TSSection),movies) + System.HasAddon(plugin.video.themoviedb.helper)"/>
+			</include>
+			<include content="TSRow_landscape">
+				<param name="list_id" value="5206"/>
+				<param name="title" value="Hamarosan"/>
+				<param name="path" value="plugin://plugin.video.themoviedb.helper/?info=upcoming&amp;tmdb_type=movie"/>
+				<param name="visible" value="String.IsEqual(Window(home).Property(TSSection),movies) + System.HasAddon(plugin.video.themoviedb.helper)"/>
+			</include>
+			<include content="TSRow_landscape">
+				<param name="list_id" value="5207"/>
+				<param name="title" value="Még nem látott"/>
+				<param name="path" value="special://skin/playlists/unwatched_movies.xsp"/>
+				<param name="visible" value="String.IsEqual(Window(home).Property(TSSection),movies)"/>
+			</include>
+			<include content="TSRow_landscape">
+				<param name="list_id" value="5301"/>
+				<param name="title" value="Új részek"/>
+				<param name="path" value="videodb://recentlyaddedepisodes/"/>
+				<param name="visible" value="String.IsEqual(Window(home).Property(TSSection),tvshows)"/>
+			</include>
+			<include content="TSRow_landscape">
+				<param name="list_id" value="5302"/>
+				<param name="title" value="Folyamatban"/>
+				<param name="path" value="videodb://inprogresstvshows/"/>
+				<param name="visible" value="String.IsEqual(Window(home).Property(TSSection),tvshows)"/>
+			</include>
+			<include content="TSRow_landscape">
+				<param name="list_id" value="5303"/>
+				<param name="title" value="Felkapott"/>
+				<param name="path" value="plugin://plugin.video.themoviedb.helper/?info=trending_week&amp;tmdb_type=tv"/>
+				<param name="visible" value="String.IsEqual(Window(home).Property(TSSection),tvshows) + System.HasAddon(plugin.video.themoviedb.helper)"/>
+			</include>
+			<include content="TSRow_landscape">
+				<param name="list_id" value="5304"/>
+				<param name="title" value="Ma adásban"/>
+				<param name="path" value="plugin://plugin.video.themoviedb.helper/?info=airing_today&amp;tmdb_type=tv"/>
+				<param name="visible" value="String.IsEqual(Window(home).Property(TSSection),tvshows) + System.HasAddon(plugin.video.themoviedb.helper)"/>
+			</include>
+			<include content="TSRow_landscape">
+				<param name="list_id" value="5305"/>
+				<param name="title" value="Népszerű sorozatok"/>
+				<param name="path" value="plugin://plugin.video.themoviedb.helper/?info=popular&amp;tmdb_type=tv"/>
+				<param name="visible" value="String.IsEqual(Window(home).Property(TSSection),tvshows) + System.HasAddon(plugin.video.themoviedb.helper)"/>
+			</include>
+			<include content="TSRow_landscape">
+				<param name="list_id" value="5306"/>
+				<param name="title" value="Legjobbra értékelt"/>
+				<param name="path" value="plugin://plugin.video.themoviedb.helper/?info=top_rated&amp;tmdb_type=tv"/>
+				<param name="visible" value="String.IsEqual(Window(home).Property(TSSection),tvshows) + System.HasAddon(plugin.video.themoviedb.helper)"/>
+			</include>
+			<include content="TSRow_thumb">
+				<param name="list_id" value="5401"/>
+				<param name="title" value="Élő és hamarosan"/>
+				<param name="path" value="plugin://plugin.video.network4/?action=live"/>
+				<param name="visible" value="String.IsEqual(Window(home).Property(TSSection),sport) + System.HasAddon(plugin.video.network4)"/>
+			</include>
+			<include content="TSRow_thumb">
+				<param name="list_id" value="5402"/>
+				<param name="title" value="Kiemelt sportok"/>
+				<param name="path" value="plugin://plugin.video.network4/?action=sportcat&amp;i=0"/>
+				<param name="visible" value="String.IsEqual(Window(home).Property(TSSection),sport) + System.HasAddon(plugin.video.network4)"/>
+			</include>
+			<include content="TSRow_thumb">
+				<param name="list_id" value="5403"/>
+				<param name="title" value="Premier League"/>
+				<param name="path" value="plugin://plugin.video.network4/?action=collection&amp;slug=premier-league"/>
+				<param name="visible" value="String.IsEqual(Window(home).Property(TSSection),sport) + System.HasAddon(plugin.video.network4)"/>
+				<param name="overlay" value="false"/>
+			</include>
+			<include content="TSRow_thumb">
+				<param name="list_id" value="5404"/>
+				<param name="title" value="Bundesliga"/>
+				<param name="path" value="plugin://plugin.video.network4/?action=collection&amp;slug=bundesliga"/>
+				<param name="visible" value="String.IsEqual(Window(home).Property(TSSection),sport) + System.HasAddon(plugin.video.network4)"/>
+				<param name="overlay" value="false"/>
+			</include>
+			<include content="TSRow_thumb">
+				<param name="list_id" value="5405"/>
+				<param name="title" value="NFL"/>
+				<param name="path" value="plugin://plugin.video.network4/?action=collection&amp;slug=nfl"/>
+				<param name="visible" value="String.IsEqual(Window(home).Property(TSSection),sport) + System.HasAddon(plugin.video.network4)"/>
+				<param name="overlay" value="false"/>
+			</include>
+			<include content="TSRow_thumb">
+				<param name="list_id" value="5406"/>
+				<param name="title" value="MotoGP"/>
+				<param name="path" value="plugin://plugin.video.network4/?action=collection&amp;slug=motogp"/>
+				<param name="visible" value="String.IsEqual(Window(home).Property(TSSection),sport) + System.HasAddon(plugin.video.network4)"/>
+				<param name="overlay" value="false"/>
+			</include>
+			<include content="TSRow_thumb">
+				<param name="list_id" value="5407"/>
+				<param name="title" value="UFC"/>
+				<param name="path" value="plugin://plugin.video.network4/?action=collection&amp;slug=ufc"/>
+				<param name="visible" value="String.IsEqual(Window(home).Property(TSSection),sport) + System.HasAddon(plugin.video.network4)"/>
+				<param name="overlay" value="false"/>
+			</include>
+			<include content="TSRow_poster">
+				<param name="list_id" value="5501"/>
+				<param name="title" value="MagyarAnime – folytatás"/>
+				<param name="path" value="plugin://plugin.video.magyaranime/?action=history"/>
+				<param name="visible" value="String.IsEqual(Window(home).Property(TSSection),anime) + System.HasAddon(plugin.video.magyaranime)"/>
+			</include>
+			<include content="TSRow_poster">
+				<param name="list_id" value="5502"/>
+				<param name="title" value="MagyarAnime – kedvencek"/>
+				<param name="path" value="plugin://plugin.video.magyaranime/?action=favorites"/>
+				<param name="visible" value="String.IsEqual(Window(home).Property(TSSection),anime) + System.HasAddon(plugin.video.magyaranime)"/>
+			</include>
+			<include content="TSRow_poster">
+				<param name="list_id" value="5503"/>
+				<param name="title" value="MagyarAnime – aktuális szezon"/>
+				<param name="path" value="plugin://plugin.video.magyaranime/?action=catalog&amp;allapot=1"/>
+				<param name="visible" value="String.IsEqual(Window(home).Property(TSSection),anime) + System.HasAddon(plugin.video.magyaranime)"/>
+			</include>
+			<include content="TSRow_thumb">
+				<param name="list_id" value="5504"/>
+				<param name="title" value="Muteki Fansub – legfrissebb részek"/>
+				<param name="path" value="plugin://plugin.video.mutekifansub/?action=latest"/>
+				<param name="visible" value="String.IsEqual(Window(home).Property(TSSection),anime) + System.HasAddon(plugin.video.mutekifansub)"/>
+			</include>
+			<include content="TSRow_thumb">
+				<param name="list_id" value="5505"/>
+				<param name="title" value="Kintsugi Fansub – legfrissebb részek"/>
+				<param name="path" value="plugin://plugin.video.kintsugifansub/?action=latest"/>
+				<param name="visible" value="String.IsEqual(Window(home).Property(TSSection),anime) + System.HasAddon(plugin.video.kintsugifansub)"/>
+			</include>
+			<include content="TSRow_thumb">
+				<param name="list_id" value="5506"/>
+				<param name="title" value="Naruto-Kun – legfrissebb részek"/>
+				<param name="path" value="plugin://plugin.video.narutokun/?action=latest"/>
+				<param name="visible" value="String.IsEqual(Window(home).Property(TSSection),anime) + System.HasAddon(plugin.video.narutokun)"/>
+			</include>
+			<include content="TSRow_poster">
+				<param name="list_id" value="5507"/>
+				<param name="title" value="Muteki Fansub – kedvencek"/>
+				<param name="path" value="plugin://plugin.video.mutekifansub/?action=favorites"/>
+				<param name="visible" value="String.IsEqual(Window(home).Property(TSSection),anime) + System.HasAddon(plugin.video.mutekifansub)"/>
+			</include>
+		</control>
+		<control type="image">
+			<left>0</left><top>575</top><width>1920</width><height>90</height>
+			<texture flipy="true">tomszo/grad_card.png</texture>
+			<visible>!$EXP[TSRailOpen] + ![Control.HasFocus(5101) | Control.HasFocus(5201) | Control.HasFocus(5301) | Control.HasFocus(5401) | Control.HasFocus(5501)]</visible>
+			<animation effect="fade" time="200">VisibleChange</animation>
+		</control>
+		<control type="image">
+			<left>0</left><top>0</top><width>1920</width><height>1080</height>
+			<texture colordiffuse="A0000000">tomszo/white.png</texture>
+			<visible>$EXP[TSRailOpen]</visible>
+			<animation effect="fade" time="250">VisibleChange</animation>
+		</control>
+	</include>
+	<include name="TSRail">
+		<control type="image">
+			<left>0</left><top>0</top><width>640</width><height>1080</height>
+			<texture>tomszo/grad_rail.png</texture>
+			<visible>$EXP[TSRailOpen]</visible>
+			<animation effect="fade" time="200">VisibleChange</animation>
+		</control>
+		<control type="image">
+			<left>32</left><top>40</top><width>56</width><height>56</height>
+			<texture>special://skin/resources/icon.png</texture>
+		</control>
+		<control type="group" id="9000">
+			<defaultcontrol always="false">9002</defaultcontrol>
+			<control type="button" id="9001">
+				<left>22</left><top>190</top><width>340</width><height>70</height>
+				<texturefocus border="22" colordiffuse="FFFFFFFF">tomszo/pill.png</texturefocus>
+				<texturenofocus/>
+				<label/>
+				<onup>9010</onup><ondown>9002</ondown><onright>4000</onright><onleft>noop</onleft>
+				<onclick>ActivateWindow(1107)</onclick>
+			</control>
+			<control type="image"><left>22</left><top>205</top><width>6</width><height>40</height><texture colordiffuse="FFE5262C" border="3">tomszo/bar.png</texture><visible>false</visible></control>
+			<control type="image"><left>44</left><top>205</top><width>40</width><height>40</height><texture colordiffuse="$VAR[TSRailIcon9001]">tomszo/icon_search.png</texture></control>
+			<control type="label"><left>104</left><top>190</top><width>250</width><height>70</height><font>ts_menu</font><aligny>center</aligny><label>Keresés</label><textcolor>$VAR[TSRailText9001]</textcolor><visible>$EXP[TSRailOpen]</visible><animation effect="fade" time="150">VisibleChange</animation></control>
+			<control type="button" id="9002">
+				<left>22</left><top>270</top><width>340</width><height>70</height>
+				<texturefocus border="22" colordiffuse="FFFFFFFF">tomszo/pill.png</texturefocus>
+				<texturenofocus/>
+				<label/>
+				<onup>9001</onup><ondown>9003</ondown><onright>4000</onright><onleft>noop</onleft>
+				<onclick>SetProperty(TSSection,home,home)</onclick>
+				<onclick>SetProperty(TSRow,5101,home)</onclick>
+				<onclick>SetFocus(4000)</onclick>
+			</control>
+			<control type="image"><left>22</left><top>285</top><width>6</width><height>40</height><texture colordiffuse="FFE5262C" border="3">tomszo/bar.png</texture><visible>String.IsEqual(Window(home).Property(TSSection),home)</visible></control>
+			<control type="image"><left>44</left><top>285</top><width>40</width><height>40</height><texture colordiffuse="$VAR[TSRailIcon9002]">tomszo/icon_home.png</texture></control>
+			<control type="label"><left>104</left><top>270</top><width>250</width><height>70</height><font>ts_menu</font><aligny>center</aligny><label>Kezdőlap</label><textcolor>$VAR[TSRailText9002]</textcolor><visible>$EXP[TSRailOpen]</visible><animation effect="fade" time="150">VisibleChange</animation></control>
+			<control type="button" id="9003">
+				<left>22</left><top>350</top><width>340</width><height>70</height>
+				<texturefocus border="22" colordiffuse="FFFFFFFF">tomszo/pill.png</texturefocus>
+				<texturenofocus/>
+				<label/>
+				<onup>9002</onup><ondown>9004</ondown><onright>4000</onright><onleft>noop</onleft>
+				<onclick>SetProperty(TSSection,movies,home)</onclick>
+				<onclick>SetProperty(TSRow,5201,home)</onclick>
+				<onclick>SetFocus(4000)</onclick>
+			</control>
+			<control type="image"><left>22</left><top>365</top><width>6</width><height>40</height><texture colordiffuse="FFE5262C" border="3">tomszo/bar.png</texture><visible>String.IsEqual(Window(home).Property(TSSection),movies)</visible></control>
+			<control type="image"><left>44</left><top>365</top><width>40</width><height>40</height><texture colordiffuse="$VAR[TSRailIcon9003]">tomszo/icon_movies.png</texture></control>
+			<control type="label"><left>104</left><top>350</top><width>250</width><height>70</height><font>ts_menu</font><aligny>center</aligny><label>Filmek</label><textcolor>$VAR[TSRailText9003]</textcolor><visible>$EXP[TSRailOpen]</visible><animation effect="fade" time="150">VisibleChange</animation></control>
+			<control type="button" id="9004">
+				<left>22</left><top>430</top><width>340</width><height>70</height>
+				<texturefocus border="22" colordiffuse="FFFFFFFF">tomszo/pill.png</texturefocus>
+				<texturenofocus/>
+				<label/>
+				<onup>9003</onup><ondown>9005</ondown><onright>4000</onright><onleft>noop</onleft>
+				<onclick>SetProperty(TSSection,tvshows,home)</onclick>
+				<onclick>SetProperty(TSRow,5301,home)</onclick>
+				<onclick>SetFocus(4000)</onclick>
+			</control>
+			<control type="image"><left>22</left><top>445</top><width>6</width><height>40</height><texture colordiffuse="FFE5262C" border="3">tomszo/bar.png</texture><visible>String.IsEqual(Window(home).Property(TSSection),tvshows)</visible></control>
+			<control type="image"><left>44</left><top>445</top><width>40</width><height>40</height><texture colordiffuse="$VAR[TSRailIcon9004]">tomszo/icon_tv.png</texture></control>
+			<control type="label"><left>104</left><top>430</top><width>250</width><height>70</height><font>ts_menu</font><aligny>center</aligny><label>Sorozatok</label><textcolor>$VAR[TSRailText9004]</textcolor><visible>$EXP[TSRailOpen]</visible><animation effect="fade" time="150">VisibleChange</animation></control>
+			<control type="button" id="9005">
+				<left>22</left><top>510</top><width>340</width><height>70</height>
+				<texturefocus border="22" colordiffuse="FFFFFFFF">tomszo/pill.png</texturefocus>
+				<texturenofocus/>
+				<label/>
+				<onup>9004</onup><ondown>9006</ondown><onright>4000</onright><onleft>noop</onleft>
+				<onclick>SetProperty(TSSection,sport,home)</onclick>
+				<onclick>SetProperty(TSRow,5401,home)</onclick>
+				<onclick>SetFocus(4000)</onclick>
+			</control>
+			<control type="image"><left>22</left><top>525</top><width>6</width><height>40</height><texture colordiffuse="FFE5262C" border="3">tomszo/bar.png</texture><visible>String.IsEqual(Window(home).Property(TSSection),sport)</visible></control>
+			<control type="image"><left>44</left><top>525</top><width>40</width><height>40</height><texture colordiffuse="$VAR[TSRailIcon9005]">tomszo/icon_sport.png</texture></control>
+			<control type="label"><left>104</left><top>510</top><width>250</width><height>70</height><font>ts_menu</font><aligny>center</aligny><label>Sport</label><textcolor>$VAR[TSRailText9005]</textcolor><visible>$EXP[TSRailOpen]</visible><animation effect="fade" time="150">VisibleChange</animation></control>
+			<control type="button" id="9006">
+				<left>22</left><top>590</top><width>340</width><height>70</height>
+				<texturefocus border="22" colordiffuse="FFFFFFFF">tomszo/pill.png</texturefocus>
+				<texturenofocus/>
+				<label/>
+				<onup>9005</onup><ondown>9007</ondown><onright>4000</onright><onleft>noop</onleft>
+				<onclick>SetProperty(TSSection,anime,home)</onclick>
+				<onclick>SetProperty(TSRow,5501,home)</onclick>
+				<onclick>SetFocus(4000)</onclick>
+			</control>
+			<control type="image"><left>22</left><top>605</top><width>6</width><height>40</height><texture colordiffuse="FFE5262C" border="3">tomszo/bar.png</texture><visible>String.IsEqual(Window(home).Property(TSSection),anime)</visible></control>
+			<control type="image"><left>44</left><top>605</top><width>40</width><height>40</height><texture colordiffuse="$VAR[TSRailIcon9006]">tomszo/icon_anime.png</texture></control>
+			<control type="label"><left>104</left><top>590</top><width>250</width><height>70</height><font>ts_menu</font><aligny>center</aligny><label>Anime</label><textcolor>$VAR[TSRailText9006]</textcolor><visible>$EXP[TSRailOpen]</visible><animation effect="fade" time="150">VisibleChange</animation></control>
+			<control type="button" id="9007">
+				<left>22</left><top>670</top><width>340</width><height>70</height>
+				<texturefocus border="22" colordiffuse="FFFFFFFF">tomszo/pill.png</texturefocus>
+				<texturenofocus/>
+				<label/>
+				<onup>9006</onup><ondown>9008</ondown><onright>4000</onright><onleft>noop</onleft>
+				<onclick>ActivateWindow(Videos,addons://sources/video/,return)</onclick>
+			</control>
+			<control type="image"><left>22</left><top>685</top><width>6</width><height>40</height><texture colordiffuse="FFE5262C" border="3">tomszo/bar.png</texture><visible>false</visible></control>
+			<control type="image"><left>44</left><top>685</top><width>40</width><height>40</height><texture colordiffuse="$VAR[TSRailIcon9007]">tomszo/icon_addons.png</texture></control>
+			<control type="label"><left>104</left><top>670</top><width>250</width><height>70</height><font>ts_menu</font><aligny>center</aligny><label>Kiegészítők</label><textcolor>$VAR[TSRailText9007]</textcolor><visible>$EXP[TSRailOpen]</visible><animation effect="fade" time="150">VisibleChange</animation></control>
+			<control type="button" id="9008">
+				<left>22</left><top>750</top><width>340</width><height>70</height>
+				<texturefocus border="22" colordiffuse="FFFFFFFF">tomszo/pill.png</texturefocus>
+				<texturenofocus/>
+				<label/>
+				<onup>9007</onup><ondown>9009</ondown><onright>4000</onright><onleft>noop</onleft>
+				<onclick>ActivateWindow(favouritesbrowser)</onclick>
+			</control>
+			<control type="image"><left>22</left><top>765</top><width>6</width><height>40</height><texture colordiffuse="FFE5262C" border="3">tomszo/bar.png</texture><visible>false</visible></control>
+			<control type="image"><left>44</left><top>765</top><width>40</width><height>40</height><texture colordiffuse="$VAR[TSRailIcon9008]">tomszo/icon_favourites.png</texture></control>
+			<control type="label"><left>104</left><top>750</top><width>250</width><height>70</height><font>ts_menu</font><aligny>center</aligny><label>Kedvencek</label><textcolor>$VAR[TSRailText9008]</textcolor><visible>$EXP[TSRailOpen]</visible><animation effect="fade" time="150">VisibleChange</animation></control>
+			<control type="button" id="9009">
+				<left>22</left><top>830</top><width>340</width><height>70</height>
+				<texturefocus border="22" colordiffuse="FFFFFFFF">tomszo/pill.png</texturefocus>
+				<texturenofocus/>
+				<label/>
+				<onup>9008</onup><ondown>9010</ondown><onright>4000</onright><onleft>noop</onleft>
+				<onclick>ActivateWindow(Settings)</onclick>
+			</control>
+			<control type="image"><left>22</left><top>845</top><width>6</width><height>40</height><texture colordiffuse="FFE5262C" border="3">tomszo/bar.png</texture><visible>false</visible></control>
+			<control type="image"><left>44</left><top>845</top><width>40</width><height>40</height><texture colordiffuse="$VAR[TSRailIcon9009]">tomszo/icon_settings.png</texture></control>
+			<control type="label"><left>104</left><top>830</top><width>250</width><height>70</height><font>ts_menu</font><aligny>center</aligny><label>Beállítások</label><textcolor>$VAR[TSRailText9009]</textcolor><visible>$EXP[TSRailOpen]</visible><animation effect="fade" time="150">VisibleChange</animation></control>
+			<control type="button" id="9010">
+				<left>22</left><top>910</top><width>340</width><height>70</height>
+				<texturefocus border="22" colordiffuse="FFFFFFFF">tomszo/pill.png</texturefocus>
+				<texturenofocus/>
+				<label/>
+				<onup>9009</onup><ondown>9001</ondown><onright>4000</onright><onleft>noop</onleft>
+				<onclick>ActivateWindow(shutdownmenu)</onclick>
+			</control>
+			<control type="image"><left>22</left><top>925</top><width>6</width><height>40</height><texture colordiffuse="FFE5262C" border="3">tomszo/bar.png</texture><visible>false</visible></control>
+			<control type="image"><left>44</left><top>925</top><width>40</width><height>40</height><texture colordiffuse="$VAR[TSRailIcon9010]">tomszo/icon_power.png</texture></control>
+			<control type="label"><left>104</left><top>910</top><width>250</width><height>70</height><font>ts_menu</font><aligny>center</aligny><label>Kikapcsolás</label><textcolor>$VAR[TSRailText9010]</textcolor><visible>$EXP[TSRailOpen]</visible><animation effect="fade" time="150">VisibleChange</animation></control>
+		</control>
+	</include>
+	<variable name="TSRailIcon9001">
+		<value condition="Control.HasFocus(9001)">FF0A0A0C</value>
+		<value condition="false">FFFFFFFF</value>
+		<value>FF9A9AA6</value>
+	</variable>
+	<variable name="TSRailText9001">
+		<value condition="Control.HasFocus(9001)">FF0A0A0C</value>
+		<value condition="false">FFFFFFFF</value>
+		<value>FF9A9AA6</value>
+	</variable>
+	<variable name="TSRailIcon9002">
+		<value condition="Control.HasFocus(9002)">FF0A0A0C</value>
+		<value condition="String.IsEqual(Window(home).Property(TSSection),home)">FFFFFFFF</value>
+		<value>FF9A9AA6</value>
+	</variable>
+	<variable name="TSRailText9002">
+		<value condition="Control.HasFocus(9002)">FF0A0A0C</value>
+		<value condition="String.IsEqual(Window(home).Property(TSSection),home)">FFFFFFFF</value>
+		<value>FF9A9AA6</value>
+	</variable>
+	<variable name="TSRailIcon9003">
+		<value condition="Control.HasFocus(9003)">FF0A0A0C</value>
+		<value condition="String.IsEqual(Window(home).Property(TSSection),movies)">FFFFFFFF</value>
+		<value>FF9A9AA6</value>
+	</variable>
+	<variable name="TSRailText9003">
+		<value condition="Control.HasFocus(9003)">FF0A0A0C</value>
+		<value condition="String.IsEqual(Window(home).Property(TSSection),movies)">FFFFFFFF</value>
+		<value>FF9A9AA6</value>
+	</variable>
+	<variable name="TSRailIcon9004">
+		<value condition="Control.HasFocus(9004)">FF0A0A0C</value>
+		<value condition="String.IsEqual(Window(home).Property(TSSection),tvshows)">FFFFFFFF</value>
+		<value>FF9A9AA6</value>
+	</variable>
+	<variable name="TSRailText9004">
+		<value condition="Control.HasFocus(9004)">FF0A0A0C</value>
+		<value condition="String.IsEqual(Window(home).Property(TSSection),tvshows)">FFFFFFFF</value>
+		<value>FF9A9AA6</value>
+	</variable>
+	<variable name="TSRailIcon9005">
+		<value condition="Control.HasFocus(9005)">FF0A0A0C</value>
+		<value condition="String.IsEqual(Window(home).Property(TSSection),sport)">FFFFFFFF</value>
+		<value>FF9A9AA6</value>
+	</variable>
+	<variable name="TSRailText9005">
+		<value condition="Control.HasFocus(9005)">FF0A0A0C</value>
+		<value condition="String.IsEqual(Window(home).Property(TSSection),sport)">FFFFFFFF</value>
+		<value>FF9A9AA6</value>
+	</variable>
+	<variable name="TSRailIcon9006">
+		<value condition="Control.HasFocus(9006)">FF0A0A0C</value>
+		<value condition="String.IsEqual(Window(home).Property(TSSection),anime)">FFFFFFFF</value>
+		<value>FF9A9AA6</value>
+	</variable>
+	<variable name="TSRailText9006">
+		<value condition="Control.HasFocus(9006)">FF0A0A0C</value>
+		<value condition="String.IsEqual(Window(home).Property(TSSection),anime)">FFFFFFFF</value>
+		<value>FF9A9AA6</value>
+	</variable>
+	<variable name="TSRailIcon9007">
+		<value condition="Control.HasFocus(9007)">FF0A0A0C</value>
+		<value condition="false">FFFFFFFF</value>
+		<value>FF9A9AA6</value>
+	</variable>
+	<variable name="TSRailText9007">
+		<value condition="Control.HasFocus(9007)">FF0A0A0C</value>
+		<value condition="false">FFFFFFFF</value>
+		<value>FF9A9AA6</value>
+	</variable>
+	<variable name="TSRailIcon9008">
+		<value condition="Control.HasFocus(9008)">FF0A0A0C</value>
+		<value condition="false">FFFFFFFF</value>
+		<value>FF9A9AA6</value>
+	</variable>
+	<variable name="TSRailText9008">
+		<value condition="Control.HasFocus(9008)">FF0A0A0C</value>
+		<value condition="false">FFFFFFFF</value>
+		<value>FF9A9AA6</value>
+	</variable>
+	<variable name="TSRailIcon9009">
+		<value condition="Control.HasFocus(9009)">FF0A0A0C</value>
+		<value condition="false">FFFFFFFF</value>
+		<value>FF9A9AA6</value>
+	</variable>
+	<variable name="TSRailText9009">
+		<value condition="Control.HasFocus(9009)">FF0A0A0C</value>
+		<value condition="false">FFFFFFFF</value>
+		<value>FF9A9AA6</value>
+	</variable>
+	<variable name="TSRailIcon9010">
+		<value condition="Control.HasFocus(9010)">FF0A0A0C</value>
+		<value condition="false">FFFFFFFF</value>
+		<value>FF9A9AA6</value>
+	</variable>
+	<variable name="TSRailText9010">
+		<value condition="Control.HasFocus(9010)">FF0A0A0C</value>
+		<value condition="false">FFFFFFFF</value>
+		<value>FF9A9AA6</value>
+	</variable>
+</includes>
