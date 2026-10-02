@@ -13,6 +13,7 @@
 | **plugin.video.mutekifansub** | Muteki Fansub | saját fiók |
 | **plugin.video.kintsugifansub** | Kintsugi Fansub | saját fiók |
 | **plugin.video.narutokun** | Naruto-Kun.Hu | saját fiók (felhasználónév/jelszó) |
+| **skin.tomszo.avdv** | TomSzo AVDV – streaming-stílusú TV-skin az AVDV boxra (Kodi 21), lásd [skin.tomszo.avdv/README.md](skin.tomszo.avdv/README.md) | – |
 | **script.module.resolveurl** | lejátszó-feloldó modul (függőség) | – |
 | **MagyarAnime (LG webOS TV)** | MagyarAnime a TV-n, fejlesztői módban – lásd [webos/README.md](webos/README.md) | saját fiók (süti, telefonról PIN-nel) |
 | **Network4 (LG webOS TV)** | Network4 / Arena4+ a TV-n, fejlesztői módban – lásd [webos/README.md](webos/README.md) | saját fiók (email/jelszó) |
