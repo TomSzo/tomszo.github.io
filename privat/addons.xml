@@ -472,7 +472,7 @@ v1.0.0 (2026-09-21) - PRIVÁT
 	</extension>
 </addon>
 <addon id="plugin.video.tmdb.bingie.helper"
-version="1.0.3.1"
+version="1.0.3.2"
 name="TMDb Bingie Helper"
 provider-name="jurialmunkey,matke">
 <requires>
@@ -691,7 +691,7 @@ provider-name="jurialmunkey,matke">
         </assets>
     </extension>
 </addon>
-<addon id="script.module.bingie" name="bingie common" provider-name="jurialmunkey,matke" version="1.0.1.1">
+<addon id="script.module.bingie" name="bingie common" provider-name="jurialmunkey,matke" version="1.0.1.2">
   <requires>
     <import addon="xbmc.python" version="3.0.1"/>
     <import addon="script.module.requests" version="2.9.1"/>

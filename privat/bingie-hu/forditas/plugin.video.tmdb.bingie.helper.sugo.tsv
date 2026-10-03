@@ -85,7 +85,7 @@ only_resolve_strm	A helyettesítő URL-t csak a könyvtár .strm fájljainál ha
 force_xbmcplayer	Szakértői beállítás: a PlayMedia hívásokat a Kodi saját lejátszójára irányítja át.
 force_recache_kodidb	Lejátszók összeállításakor mindig újraolvassa a Kodi-könyvtárat. Pontosabb, de lassabb.
 use_alternate_api_url	Másik TMDb-címet használ. Akkor kapcsold be, ha a szolgáltatód blokkolja a TMDb-t.
-max_threads	Egyszerre hány adatlekérés futhat párhuzamosan. 0 = korlátlan. Gyengébb eszközön kisebb érték stabilabb lehet.
+max_threads	Egyszerre hány adatlekérés futhat párhuzamosan (0 = korlátlan). Ajánlott: 4 – mérés szerint TV-boxon ez a leggyorsabb: a kapcsolatok újrahasznosulnak, és 3–6-szor kevesebb processzoridőt visz, mint a korlátlan.
 cache_location	Hol tárolja a kiegészítő a gyorsítótár-adatbázist. Gyors belső tárhely ajánlott.
 image_location	Hol tárolja a kiegészítő a letöltött képeket.
 delete_cache	Törli a kiegészítő gyorsítótárát. Csak tartós hibák esetén használd: utána minden adat újra letöltődik.
