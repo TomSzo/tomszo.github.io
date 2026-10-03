@@ -1,0 +1,10 @@
+hide_watched	A könyvtárból összeállított videó-widgetekből kimaradnak a már megnézett elemek.
+hide_watched_recent	A „nemrég hozzáadott” listákból kimaradnak a már megnézett elemek.
+hide_watched_similar	A „hasonló” widgetekből kimaradnak a már megnézett elemek.
+default_limit	Alapból hány elemet adjon egy widget. Kevesebb elem = gyorsabb betöltés.
+num_recent_similar	Hány nemrég nézett elem alapján keressen hasonlókat. Több elem = változatosabb ajánlás, de lassabb.
+aggresive_refresh	A widgetek gyakrabban frissülnek (pl. lejátszás után azonnal). Frissebb tartalom, de több terhelés.
+exp_recommended	Kísérleti ajánló widgetek bekapcsolása. Előfordulhat, hogy nem működnek tökéletesen.
+episodes_enable_specials	A rész-widgetekben a különkiadások (0. évad) is megjelennek.
+nextup_inprogressonly	A „Következő részek” widget csak azokat a sorozatokat mutatja, amelyeket elkezdtél nézni.
+episodes_grouping	A legújabb részek widgetben egy sorozat több új része egy tételbe kerül.

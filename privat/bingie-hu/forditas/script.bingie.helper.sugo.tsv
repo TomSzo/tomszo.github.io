@@ -1,0 +1,2 @@
+log	Bekapcsolja a Bingie Helper naplózását.
+debuglog	Részletes hibakeresési naplózás. Normál használatban kapcsold ki, mert lassít.

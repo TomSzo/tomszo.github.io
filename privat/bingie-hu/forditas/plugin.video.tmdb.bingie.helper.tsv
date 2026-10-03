@@ -1,0 +1,609 @@
+30000	Arab (Egyesült Arab Emírségek)
+30001	Arab (Szaúd-Arábia)
+30002	Belarusz (Belarusz)
+30003	Bolgár (Bulgária)
+30004	Bengáli (Banglades)
+30005	Katalán (Spanyolország)
+30006	Csamorro (Guam)
+30007	Cseh (Csehország)
+30008	Dán (Dánia)
+30009	Német (Ausztria)
+30010	Német (Svájc)
+30011	Német (Németország)
+30012	Görög (Görögország)
+30013	Angol (Ausztrália)
+30014	Angol (Kanada)
+30015	Angol (Egyesült Királyság)
+30016	Angol (Írország)
+30017	Angol (Új-Zéland)
+30018	Angol (Amerikai Egyesült Államok)
+30019	Eszperantó (nincs)
+30020	Spanyol (Spanyolország)
+30021	Spanyol (Mexikó)
+30022	Észt (Észtország)
+30023	Baszk (Spanyolország)
+30024	Perzsa (Irán)
+30025	Finn (Finnország)
+30026	Francia (Kanada)
+30027	Francia (Franciaország)
+30028	Galiciai (Spanyolország)
+30029	Héber (Izrael)
+32030	Fanart.tv API
+32031	Trakt API
+32032	Lejátszók letöltése
+32033	Alapértelmezett lejátszók
+32034	Megnézettség-jelölők és részszámok lekérése (lassabb)
+32035	Sorozatok megnézett részeinek száma a Trakt-ról
+32036	Beépített lejátszók
+32037	Beépített lejátszók használata
+32038	További adatok a helyi Kodi-könyvtár adatbázisából
+32039	Kodi-könyvtár adatbázisa
+32040	Az elem nem található.
+32041	A kiegészítő nem adott vissza találatot.
+32042	Válassz műveletet
+32043	Következő rész
+32044	Keresett kifejezés
+32045	Gyorsítótár frissítése
+32046	A tárolt adatok frissítve
+32047	Eltávolítás a Trakt-gyűjteményből
+32048	Hozzáadás a Trakt-gyűjteményhez
+32049	Eltávolítás a Trakt figyelőlistáról
+32050	Hozzáadás a Trakt figyelőlistához
+32051	Eltávolítás a Trakt megnézési előzményeiből
+32052	Hozzáadás a Trakt megnézési előzményeihez
+32053	Gyorsítótár frissítése
+32054	Törlöd előbb a meglévő lejátszókat?
+32055	Sikertelen hitelesítés.
+32056	A felhasználónév vagy a jelszó hibás. Újrapróbálod?
+32057	Újra
+32058	A megadott URL érvénytelen vagy nem érhető el.
+32059	Sikerült!
+32060	fájl kicsomagolva
+32061	Lejátszás ezzel:
+32062	TMDb ID {0} hozzáadva ide: {1}
+32063	TMDb ID {0} eltávolítva innen: {1}
+32064	Eltávolítod ezt: {0} a Trakt {1} listádból?\n\nTMDb {2} ID {3}
+32065	Hozzáadod ezt: {0} a Trakt {1} listádhoz?\n\nTMDb {2} ID {3}
+32066	Hibakeresési naplózás
+32067	Laza egyeztetés a helyi könyvtárral
+32068	Laza egyeztetés filmeknél (évszám figyelmen kívül)
+32069	Laza egyeztetés sorozatoknál (évszám figyelmen kívül)
+32070	Férfi
+32071	Nő
+32072	Még nem bemutatott elemek
+32073	Még nem bemutatott filmek elrejtése
+32074	Könyvtár-integráció
+32075	TV
+32076	Könyvtár frissítése elemek hozzáadása után
+32077	Mappalétrehozás ellenőrzésének kihagyása
+32078	Még megnézendő
+32079	Csak rendszerhasználatra
+32080	Egyéb
+32081	„Következő oldal” elem
+32082	Figyelőlista rendezése
+32083	Fiókok
+32084	Még nem adásba került részek elrejtése
+32085	Évadok összevonása
+32086	Könyvtár automatikus frissítése, új / hiányzó részek hozzáadása
+32087	resolvedURL módszer a strm „következő lejátszási lista” hibájának elnyomására
+32088	Navigáció
+32089	Művelet kiválasztása
+32090	Tartalom
+32091	Különleges évad-mappák
+32092	Widgetek
+32093	Következő részek rendezése
+32094	Helyi fájlok előnyben az alapértelmezett lejátszóval szemben
+32095	Írd be a kódot
+32096	Nyisd meg: [B]https://trakt.tv/activate[/B]
+32097	Trakt-hitelesítés
+32098	Már létezik
+32099	Ennek a paraméternek már van értéke
+32100	Törlöd a meglévő elemeket, vagy újakat adsz hozzá?
+32101	Elemek törlése
+32102	Elemek hozzáadása
+32103	Nincs megadott érték
+32104	{} TMDb ID-je nem található, vagy nincs kiválasztva.\nSzeretnél másik értéket megadni?
+32105	Szeretnél másik értéket megadni?
+32106	Hozzáadva
+32107	Egyeztetési mód beállítása
+32108	Egyeztetési mód a több értékű paraméterekhez.
+32109	BÁRMELYIK érték egyezzen
+32110	MINDEN érték egyezzen
+32111	Elemek kiválasztása
+32112	Műfajok kiválasztása
+32113	Megadható a mai naphoz viszonyítva is, T-X vagy T+X formában (pl. T-10 = tíz nappal ezelőtt)
+32114	Megadás
+32115	Gyártó cég
+32116	Csatorna
+32117	Kulcsszó
+32118	Személy
+32119	Megjelenési típusok kiválasztása
+32120	Megjelenési régió kiválasztása
+32121	Keresési előzmények törlése
+32122	Az XBMCVFS szerint az útvonal nem hozható létre
+32123	Ha a hiba megmarad, és a mappák rendben létrejönnek, kapcsold ki a mappaútvonal-ellenőrzést a TMDbBingieHelper beállításaiban.
+32124	Hozzáadás
+32125	Trakt-lista hozzáadása a Kodi-könyvtárhoz
+32126	Biztosan hozzáadod ezt a Trakt-listát a Kodi-könyvtáradhoz?
+32127	készítette:
+32128	A lista tartalma:
+32129	elem
+32130	Könyvtár automatikus frissítésének időpontja
+32131	Könyvtár automatikus frissítése Trakt-listá(k)ból
+32132	Frissíted most a könyvtárat a Trakt-listá(k)ból?
+32133	Listá(k) kiválasztása
+32134	Felhasználói azonosító (slug)
+32135	{} {} eltávolítva a(z) {} listából.
+32136	{} {} hozzáadva a(z) {} listához.
+32137	Nem sikerült eltávolítani: {} {} a(z) {} listából.
+32138	Nem sikerült hozzáadni: {} {} a(z) {} listához.
+32139	Eltávolítás Trakt-listáról
+32140	Hozzáadás Trakt-listához
+32141	Új lista létrehozása…
+32142	Megnézett elemek elrejtése
+32143	{} tárolt adatai frissítve!
+32144	TMDb-adatok frissítése
+32145	TMDbBingieHelper beállításai
+32146	Lejátszás ezzel (TMDbBingieHelper)
+32147	Évadok böngészése (TMDbBingieHelper)
+32148	Hozzáadás a Trakt figyelőlistához / eltávolítás
+32149	Hozzáadás a Trakt előzményeihez / eltávolítás
+32150	Hozzáadás a Trakt-gyűjteményhez / eltávolítás
+32151	Hozzáadás a Kodi-könyvtárhoz
+32152	Eltávolítás a listáról
+32153	Tárolt adatok frissítése
+32154	Könyvtár frissítése most
+32155	Következő adások (könyvtár)
+32156	A könyvtár „következő adások” naptára a helyi sorozatra mutat
+32157	Az elem TMDb ID-je nem található.
+32158	Lejátszó automatikus használata, ha csak egy van
+32159	Eredeti nyelv kiválasztása
+32160	Hozzáadás a könyvtárhoz: {} – {}…
+32161	Frissíted most a könyvtárat ezzel a listával?
+32162	Helyi fájlok automatikus lejátszása
+32163	OMDb API
+32164	Trakt-listából listánként legfeljebb [B]{}[/B] sorozat és [B]{}[/B] film adható a könyvtárhoz.\nEz a korlát az ingyenes adatszolgáltatók kímélését szolgálja.
+32165	A lista túl hosszú. Kihagyva…
+32166	Elemek hozzáadása a könyvtárhoz…
+32167	Frissítés
+32168	[B]{}[/B], készítette: [B]{}[/B]
+32169	Kijelentkezés a Trakt-fiókból…
+32170	[B][COLOR=red]Figyelem[/COLOR][/B] A lista [B]{}[/B] sorozatot és [B]{}[/B] filmet tartalmaz
+32171	[B][COLOR=red]Figyelem[/COLOR][/B] A lista {} elemet tartalmaz
+32172	Személyek
+32173	Véletlenszerű
+32174	Felfedezés
+32175	Népszerű
+32176	Legjobbra értékelt
+32177	Hamarosan
+32178	Ma felkapott
+32179	A hét felkapottjai
+32180	Moziban
+32181	Ma adásban
+32182	Jelenleg futó
+32183	Következő adások (könyvtár)
+32184	Legnagyobb bevétel
+32185	Legtöbb szavazat
+32186	Összes
+32187	Gyűjtemények
+32188	Kritikák
+32189	TV-csatornák
+32190	Filmstúdiók
+32191	Képek
+32192	Gyűjtemény
+32193	Figyelőlista
+32194	Nemrég nézted
+32195	Legtöbbet nézted
+32196	Folyamatban nálad
+32197	Következő részeid
+32198	Neked ajánljuk
+32199	A nemrég nézettek alapján
+32200	A legtöbbet nézettek alapján
+32201	Saját
+32202	Ezen a héten adásban
+32203	Naptár
+32204	Felkapott
+32205	Legtöbbet lejátszott
+32206	Várva várt
+32207	Top 10 a mozipénztáraknál
+32208	Felkapott listák
+32209	Népszerű listák
+32210	Kedvelt listák
+32211	Saját listáid
+32212	Kijelentkezés a Trakt-fiókból
+32213	Kijelentkezel a Trakt-fiókodból?
+32214	Nem található Trakt hozzáférési token
+32215	A kijelentkezés nem sikerült!
+32216	Sikeresen kijelentkeztél a Trakt-fiókból
+32217	Nem található kép ehhez: {} ID {}
+32218	Kép található ehhez: {} ID {}\n{}
+32219	Nyelv: {} | {} kedvelés | ID {}
+32220	Kép kiválasztása
+32221	Összes kép frissítése
+32222	Képek kezelése
+32223	Ajánlott
+32224	Hasonló
+32225	Stáb
+32226	Poszterek
+32227	Szereplő (filmek)
+32228	Szereplő (sorozatok)
+32229	Stábtag (filmek)
+32230	Stábtag (sorozatok)
+32231	Bélyegképek
+32232	Trakt-listákon
+32233	Adatok frissítése
+32234	Adatok frissítve: {} ID {}
+32235	Listák böngészése
+32236	Elem kiválasztása
+32237	Felfedezési előzmények törlése
+32238	Felfedezés: {}
+32239	Egyeztetés
+32240	Rendezés
+32241	Mentés másként
+32242	Bemutató
+32243	Mozi (korlátozott)
+32244	Mozi
+32245	Digitális
+32246	Fizikai
+32247	Szereplővel
+32248	Stábtaggal
+32249	Személlyel
+32250	Elsődleges megjelenés éve
+32251	Elsődleges megjelenés ezután
+32252	Elsődleges megjelenés ezelőtt
+32253	Megjelenés ezután
+32254	Megjelenés ezelőtt
+32255	Megjelenés típusa
+32256	Megjelenési régió
+32257	Csatornával
+32258	Adásnap ezután
+32259	Adásnap ezelőtt
+32260	Első adásnap ezután
+32261	Első adásnap ezelőtt
+32262	Első adás éve
+32263	Műfajjal
+32264	Műfaj nélkül
+32265	Gyártó céggel
+32266	Nélkül
+32267	Kulcsszó nélkül
+32268	Kulcsszóval
+32269	Eredeti nyelv
+32270	Szavazatok száma ( > vagy = )
+32271	Szavazatok száma ( < vagy = )
+32272	Átlagos értékelés ( > vagy = )
+32273	Átlagos értékelés ( < vagy = )
+32274	Játékidő (perc) ( > vagy = )
+32275	Játékidő (perc) ( < vagy = )
+32276	Keresés:
+32277	Szabály hozzáadása
+32278	Add meg a csatornák ID-jét \" / \" jellel elválasztva
+32279	Add meg az évet
+32280	Elmúlt két hét
+32281	Elmúlt hét
+32282	Tegnap
+32283	Jövő hét
+32284	Ez a hét
+32285	Ez a két hét
+32286	Helyezés
+32287	Rendezés:
+32288	Mert megnézted:
+32289	Hozzáadás a gyűjteményhez
+32290	Eltávolítás a gyűjteményből
+32291	Hozzáadás a figyelőlistához
+32292	Eltávolítás a figyelőlistáról
+32293	Hozzáadás az ajánlásokhoz
+32294	Eltávolítás az ajánlásokból
+32295	Trakt-műveletek
+32296	{} nem sikerült: {}!\n{} ID {}
+32297	{} sikerült: {}!\n{} ID {}
+32298	Hozzáadás saját listához
+32299	Hozzáadás új listához
+32300	Felkapott lista
+32301	Népszerű lista
+32302	Kedvelt lista
+32303	Saját lista
+32304	Hozzászólások megtekintése
+32305	Hozzászólások
+32306	Nincs hozzászólás!
+32307	Újrapróbálkozás felfüggesztve {} másodpercre
+32308	Kapcsolódási hiba: {}
+32309	Rendezett lista böngészése
+32310	{} TMDb ID-je nem található!
+32311	Alapértelmezett lejátszó törlése
+32312	Listák kiválasztása
+32313	Add meg a lejátszók letöltési URL-jét
+32314	Letöltöd a lejátszókat erről az URL-ről?\n[B]{}[/B]
+32315	Hozzáadás a kedvelt listákhoz
+32316	Lista sikeresen {}!
+32317	Nem sikerült: lista {}!
+32318	Hibakód: {}
+32319	Eltávolítás a kedvelt listákból
+32320	kedvelés visszavonva
+32321	kedvelve
+32322	Lejátszó kiválasztása
+32323	Elem hozzáadva a könyvtárhoz
+32324	Lejátszási mód kiválasztása
+32325	A lejátszó beállításából hiányzik az \"is_resolvable\" jelző. Válassz feloldási módot.\n\nA setResolvedUrl az ajánlott mód, és általában minden olyan lejátszó-kiegészítővel működik, amely közvetlenül játssza le a fájlt, inputstream adaptive-ot használ, vagy legfeljebb a bitrátát / minőséget kérdezi meg. A PlayMedia olyan lejátszó-kiegészítőkhöz való, amelyek előbb forrásokat gyűjtenek egy szkripttel, vagy más okból nem működnek jól a setResolvedUrl móddal.\n\nHa ezt az ablakot nem szeretnéd látni, állíts be feloldási módot a lejátszóhoz a TMDbBingieHelper lejátszóbeállításaiban.
+32326	Ez a hónap
+32327	Előző hónap
+32328	Beállítandó lejátszó kiválasztása
+32329	Lejátszók beállítása
+32330	Visszaállítás alapra
+32331	Új név ehhez: {}
+32332	Feloldási mód kiválasztása a lejátszóhoz
+32333	Felhasználó választása
+32334	Visszaállítod a lejátszót alapra?
+32335	Visszaállítod a(z) [B]{}[/B] lejátszófájlt az eredeti, módosítatlan állapotára?\n\n[B]FIGYELEM:[/B] ez nem vonható vissza.
+32336	Mented a módosításokat?
+32337	A(z) [B]{}[/B] lejátszófájl megváltozott.\nMented a módosításokat?\n\nHa mentés nélkül zárod be, a módosítások elvesznek.
+32338	Bezárás mentés nélkül
+32339	{} – lejátszási URL feloldási módja
+32340	A setResolvedUrl a Kodi által ajánlott mód a lejátszási URL-ek feloldására. A PlayMedia módot csak akkor használd, ha ezzel a lejátszóval a setResolvedUrl nem működik jól.\n\nBiztosan PlayMedia-ra állítod ennek a lejátszónak a feloldási módját?
+32341	Tartalék lejátszási mód kiválasztása
+32342	Tartalékok ehhez: {}
+32343	Tartalék kiválasztása ehhez: {} {}
+32344	Új prioritás ehhez: {}
+32345	Részcsoportok
+32346	Helyi fájlok újraküldése (Trakt scrobble-hiba javítása)
+32347	Trakt-kérések naplózása
+32348	TMDb-kérések naplózása
+32349	Filmes lejátszási lista készítése
+32350	Sorozatos lejátszási lista készítése
+32351	Helyettesítő ResolvedURL
+32352	Helyettesítő videó hossza (másodperc)
+32353	Hiányzó \"is_resolvable\" jelző
+32354	Ez a lejátszó közvetlenül egyetlen lejátszható fájlra old fel?\n\nVálaszd az \"Igen\"-t, ha a lejátszó egyetlen forrásból közvetlenül játszik le. Válaszd a \"Nem\"-et, ha több forrást gyűjt, vagy más okból nem működik a setResolvedURL móddal.
+32355	Eltávolítás saját listáról
+32356	Új lista neve
+32357	Biztosan törlöd: [B]{}[/B]?\n\nEz nem vonható vissza.
+32358	Saját lista törlése
+32359	Új név
+32360	Cégek
+32361	Listák keresése
+32362	Hozzáadod most ezt az elemet a könyvtárhoz?
+32363	Várakozás feloldás után (másodperc)
+32364	PlayMedia átirányítása az xbmc.Player()-re
+32365	Összevont
+32366	Adásnap nélküli elemek elrejtése
+32367	Helyi információk
+32368	Következő adások / következő részek
+32369	bélyegképek
+32370	fekvő
+32371	Előnyben részesített kép a bélyegképekhez
+32372	háttérkép (fanart)
+32373	Csak a könyvtár strm-fájljai
+32374	Lejátszók összeállítása
+32375	Elemadatok lekérése
+32376	Lejátszóválasztó összeállítása
+32377	Lejátszásszám
+32378	Mind látszik
+32379	Különkiadások elrejtése
+32380	Következő rész elrejtése
+32381	Következő rész és különkiadások elrejtése
+32382	Részcsoportok elrejtése
+32383	Részcsoportok és különkiadások elrejtése
+32384	Részcsoportok és következő rész elrejtése
+32385	Mind elrejtve
+32386	Gyorsítótár törlése
+32387	{} gyorsítótár törlése
+32388	Biztosan törlöd a(z) {} gyorsítótárat? Ez nem vonható vissza.\n\nA TMDbBingieHelper magától is rendszeresen karbantartja és takarítja a gyorsítótárat. Kézzel csak akkor töröld, ha tartósan gyorsítótárral kapcsolatos hibákat tapasztalsz.
+32389	Gyorsítótár törölve!
+32390	Alternatív .nfo-fájlnév
+32391	Frissítés típusa
+32392	A [B]Gyors frissítés[/B] csak az új elemeket keresi.\n\nA [B]Kényszerített frissítés[/B] figyelmen kívül hagyja a korábban tárolt adatokat, és minden elemet újraellenőriz. Csak a Kodi-könyvtár kitakarításakor és újraépítésekor használd.
+32393	Kényszerített frissítés
+32394	Gyors frissítés
+32395	Időmérési jelentések naplózása a mappákhoz
+32396	Meg nem nézett részek száma csak a folyamatban lévő sorozatoknál
+32397	Eredeti
+32398	Közepes
+32399	Angol képek, ha a fő nyelven nincs
+32400	Helyi Kodi-könyvtárbeli fájlok lejátszása
+32401	Részletes TMDb-adatok
+32402	További adatok és képek a TMDb-ről
+32403	Több listaelem oldalanként szinkronizáláskor (lassabb)
+32404	Egy napon adásba kerülő több rész összevonása
+32405	Ezen a héten adásban lévő sorozataid
+32406	Folyamatban lévő részeid
+32407	Folytatási pontok lekérése (lassabb)
+32408	TMDb-képek előnyben, ha vannak
+32409	Gyorsítótár-adatbázis helye
+32410	Párhuzamos szálak maximális száma (0 = korlátlan)
+32411	Szolgáltatók
+32412	Streamingszolgáltatóval
+32413	Következő részeknél naptár-ellenőrzés (lassabb, de pontosabb)
+32414	Legnézettebb
+32415	Egy kiegészítő összes lejátszója egy tételben
+32416	Bemutatók
+32417	Eltávolítás a folyamatban lévők közül
+32418	Szöveget ír a korhatár-jelölés elé. Például „Korhatár” beállítással a „PG” besorolás „Korhatár PG”-ként jelenik meg. A már tárolt elemeket frissíteni kell.
+32419	A TMDb és Trakt adatlekérésekhez használt nyelv és ország
+32420	TMDb-képek minősége
+32421	Toplisták
+32422	MDbList API
+32423	MDbList API-kulcs
+32424	Részekből lejátszási lista
+32425	Egy rész lejátszásakor a TMDbBingieHelper sorba állítsa az összes részt egy lejátszási listában, ha ezt a lejátszót használod?
+32426	Vissza az előző mappába (..)
+32427	A jelenlegi mappa legyen a keresési URL
+32428	FILM keresési URL tallózása
+32429	SOROZAT keresési URL tallózása
+32430	Add meg a lejátszó nevét
+32431	A sorozatokhoz is ugyanazt a keresési URL-t használja, mint a filmekhez?
+32432	Sablon kiválasztása
+32433	Hiányzik a QUERYKEY az URL-ből
+32434	A QUERYKEY-t oda kell beírnod, ahová az URL-ben a keresett kifejezés kerül
+32435	Írd be a QUERYKEY-t a keresett kifejezés helyére
+32436	Részletek
+32437	Szolgáltatói adatok engedélylistájának beállítása
+32438	Szolgáltatói engedélylista frissítve
+32439	A szolgáltatói engedélylista frissült. A szolgáltatói adatok frissítéséhez az elemek gyorsítótárát is frissíteni kell. Az elemek gyorsítótára a szakértői beállításoknál törölhető.
+32440	Lépések szerkesztése
+32441	Új lépés hozzáadása
+32442	Új szabály hozzáadása
+32443	Érték kiválasztása az egyeztetéshez: {}
+32444	Szabály vagy listaelem-kulcs kiválasztása
+32445	{}. lépés szabályainak szerkesztése
+32446	plugin:// keresési URL ehhez: {}
+32447	Csak a következő rész
+32448	Leállás a lejátszás megkísérlése előtt
+32449	Régiós megjelenési szűrő figyelmen kívül hagyása
+32450	Helyi menü kiegészítő telepítése
+32451	Legkisebb
+32452	Legnagyobb
+32453	Legkevésbé lejátszott
+32454	Legrövidebb
+32455	Leghosszabb
+32456	Figyelőlista (megjelent)
+32457	Figyelőlista (várva várt)
+32458	Következő adások a könyvtárban
+32459	Hamarosan adásba kerülő részeid
+32460	Díjak
+32461	Elnyerte:
+32462	Jelölve:
+32463	Saját egyéni listáid elemeinek tárolása 24 órára
+32464	Jelentősen növeli a memóriahasználatot, de gyorsíthatja az ismételt gyorsítótár-olvasást, ha a lemezes gyorsítótár lassú tárolón van (pl. USB vagy SD-kártya). Normál tárolóval (pl. SSD, eMMC vagy belső HDD) vagy kevés memóriával valószínűleg inkább lassít.
+32465	Lemezolvasások gyorsítótárazása memóriába (több RAM-ot használ)
+32466	Automatikus lejátszás az elérhető szolgáltatókkal
+32467	Tárolt Kodi-könyvtáradatok frissítése
+32468	Hitelesítési és szinkronizálási értesítések indításkor
+32469	Névelők figyelmen kívül hagyása betűrendes rendezéskor
+32470	Trakt
+32471	Kapcsolódási hibák értesítése
+32472	Képgyorsítótár helye
+32473	Gyűjteményben
+32474	{} beállítva alapértelmezett lejátszónak ehhez: {}
+32475	Alapértelmezett lejátszó törölve ehhez: {}
+32476	Alapértelmezett lejátszó kiválasztása
+32477	Alapértelmezett lejátszó módosítása sorozathoz, évadhoz vagy részhez
+32478	Háttérszolgáltatás listaelemeinek újraépítése a képernyőn kívül
+32479	Egyes eszközökön összeomlást okozhat, ha a háttérszolgáltatás a képernyőn lévő listaelemeket egészíti ki további adatokkal. Ha a listaelemek a képernyőn kívül épülnek újra, ez nem fordul elő, de a képek és értékelések kicsit lassabban jelennek meg. A változáshoz indítsd újra a Kodit.
+32480	Háttérszolgáltatás listaelemeinek előtöltése
+32481	Megnöveli a nemrég nézett elemek körét, amelyből a „Mert megnézted” típusú ajánlásokhoz véletlenszerűen választ.
+32482	Véletlen kiinduló elemek száma az ajánlásokhoz
+32483	Külső kiegészítők hozzáférhetnek az API-kulcshoz / tokenhez
+32484	TVDb API
+32485	Értékelés hozzáadása
+32486	Korhatár-besorolás
+32487	Korhatár-besorolás ( < vagy = )
+32488	Korhatár-besorolás ( > vagy = )
+32489	Értékelés módosítása
+32490	Hozzáadás a kedvencekhez
+32491	Eltávolítás a kedvencekből
+32492	{} már szerepel itt: {}!\\nEltávolítod ezt az elemet a listáról?
+32493	{} eltávolítva innen: {}
+32494	{} hozzáadva ide: {}
+32495	Új csomópont létrehozása
+32496	Hozzáadás / eltávolítás egyéni csomópontként
+32497	Mappatartalom-típus használata médiatípus nélküli listaelemeknél
+32498	Egyes kiegészítők hiányos metaadatokat adnak, és nem töltik ki az elem médiatípusát, így a háttérszolgáltatás nem tudja azonosítani az elemet. Ezzel a beállítással a szolgáltatás a mappa tartalomtípusát használja, ha az elem médiatípusa hiányzik. A rossz metaadatok miatt így gyakoribbak lehetnek a téves egyezések.
+32499	Oldalszorzók (nagyobb = lassabb)
+32500	Oldalszorzó (TMDb alaplisták)
+32501	Oldalszorzó (Trakt alaplisták)
+32502	Oldalszorzó (Trakt szinkronlisták)
+32503	Oldalszorzó (könyvtárablakok)
+32504	{} hozzáadása a csomóponthoz
+32505	Műfajikonok mappája (TMDb)
+32506	Szolgáltatóikonok mappája (TMDb)
+32507	Műfajikonok mappája (Trakt)
+32508	Kodi-könyvtáradatok újratárolása lejátszók összeállításakor
+32509	Alternatív TMDb API-cím használata
+32510	Csak elemek
+32511	Elemek
+32512	Lemezolvasások gyorsítótárazása memóriába
+32513	MDbList-műveletek
+32514	Hozzáadás MDbList-listához
+32515	Már szerepel a listán.
+32516	Nem találhatók MDbList API-adatok.
+32517	Add meg a saját MDbList API-kulcsodat a TMDbBingieHelper beállításaiban.
+32518	A jelenlegi MDbList-felhasználónak nincs statikus listája.
+32519	Eltávolítás MDbList-listáról
+32520	TMDb
+32521	Értékelt
+32522	TMDb felhasználói műveletek
+32523	Hozzáadás TMDb-listához / eltávolítás
+32524	Saját listák
+32525	Hozzáadás a TMDb-kedvencekhez / eltávolítás
+32526	Hozzáadás a TMDb figyelőlistához / eltávolítás
+32527	Eltávolítás innen: {}
+32528	Hozzáadás ide: {}
+32529	A TMDbBingieHelperrel lejátszott elemek scrobble-ja
+32530	Értékelés törlése
+32531	Ez a funkció csak VIP-fiókkal érhető el.
+32532	Újraszinkronizálás kényszerítése
+32533	Résztípusok lekérése (lassabb)
+32534	Trakt-szinkronizálás állapotértesítései
+32535	A szöveg a Wikipédiáról származik, CC BY-SA 3.0 licenc alatt.
+32536	Ennek a résznek az adatai nem dolgozhatók fel
+32537	Nincs találat
+32538	Nincs találat erre: {}
+32539	Sorozat elengedése
+32540	Sorozat visszavétele
+32541	Elengedett sorozatok
+30030	Hindi (India)
+30031	Magyar (Magyarország)
+30032	Indonéz (Indonézia)
+30033	Olasz (Olaszország)
+30034	Japán (Japán)
+30035	Grúz (Grúzia)
+30036	Kazah (Kazahsztán)
+30037	Kannada (India)
+30038	Koreai (Dél-Korea)
+30039	Litván (Litvánia)
+30040	Lett (Lettország)
+30041	Malajálam (India)
+30042	Maláj (Malajzia)
+30043	Maláj (Szingapúr)
+30044	Norvég bokmål (Norvégia)
+30045	Holland (Hollandia)
+30046	Norvég (Norvégia)
+30047	Lengyel (Lengyelország)
+30048	Portugál (Brazília)
+30049	Portugál (Portugália)
+30050	Román (Románia)
+30051	Orosz (Oroszország)
+30052	Szingaléz (Srí Lanka)
+30053	Szlovák (Szlovákia)
+30054	Szlovén (Szlovénia)
+30055	Szerb (Szerbia)
+30056	Svéd (Svédország)
+30057	Tamil (India)
+30058	Telugu (India)
+30059	Thai (Thaiföld)
+30060	Tagalog (Fülöp-szigetek)
+30061	Török (Törökország)
+30062	Ukrán (Ukrajna)
+30063	Vietnámi (Vietnám)
+30064	Mandarin (Kína)
+30065	Mandarin (Hongkong)
+30066	Mandarin (Tajvan)
+30067	Zulu (Dél-Afrika)
+32000	TMDb API-kulcs
+32001	OMDb API-kulcs
+32002	Adatok tárolása (nap)
+32003	Listák tárolása (nap)
+32004	Korhatár-jelölés előtagja
+32005	Nyelv és ország
+32006	Elem kiválasztása
+32007	401-es hiba: nincs jogosultság
+32008	API-kulcs
+32009	Az API 401-es (nincs jogosultság) hibát adott. Ha megadtál API-kulcsot ehhez a szolgáltatáshoz$COMMA ellenőrizd$COMMA hogy helyes-e. Ha a hiba a TMDb API-hoz kapcsolódik$COMMA küldj hibakeresési naplót ide: [B]https://github.com/matke-84/plugin.video.tmdb.bingie.helper/issues[/B]
+32010	Trakt-fiók hitelesítése…
+32011	Token
+32012	Ehhez a funkcióhoz hitelesítened kell a Trakt-fiókodat.
+32013	Trakt-listakezelési lehetőségek a TMDb-részletek listájában
+32014	Lejátszók
+32015	Lejátszók URL-je
+32016	Lejátszók frissítése URL-ről
+32017	API-kulcsok
+32018	Fanart.tv API-kulcs
+32019	Fanart.tv kliens kulcs
+32020	Csak akkor használd, ha az alapértelmezett API-kulcs le van tiltva
+32021	Fanart.tv képek a kiegészítő elemeihez (lassabb)
+32022	Lejátszás / megnyitás
+32023	Alapművelet a kiegészítőben
+32024	Alapértelmezett lejátszó filmekhez
+32025	Alapértelmezett lejátszó részekhez
+32026	Alapértelmezett lejátszók kiválasztása
+32027	Alapértelmezett lejátszók törlése
+32028	Wikipédia nyelve

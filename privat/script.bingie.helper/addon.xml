@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<addon id="script.bingie.helper" name="Bingie Helper" version="1.1.2.1" provider-name="cartman.dos, matke">
+	<requires>
+		<import addon="xbmc.python" version="3.0.0"/>
+		<import addon="script.module.simplejson" version="3.17.0"/>
+	</requires>
+	<extension point="xbmc.python.script" library="default.py" />
+	<extension point="xbmc.addon.metadata">
+		<summary lang="hu_HU">Bingie Helper</summary>
+		<description lang="hu_HU">Segédprogram a Bingie skin egyes funkcióihoz.</description>
+		<disclaimer lang="hu_HU">Magyar fordítás és súgó: TomSzo (privát tároló). Eredeti: matke-84/repository.bingie.</disclaimer>
+		<language/>
+		<summary lang="en">Bingie Helper</summary>
+		<description lang="en">Helper for some of Bingie skin features.</description>
+		<platform>all</platform>
+		<license>GPL v3.0</license>
+		<forum></forum>
+		<website></website>
+		<source>https://github.com/matke-84/script.bingie.helper/</source>
+		<assets>
+			<icon>resources/icon.png</icon>
+			<fanart>resources/fanart.jpg</fanart>
+		</assets>
+	</extension>
+</addon>

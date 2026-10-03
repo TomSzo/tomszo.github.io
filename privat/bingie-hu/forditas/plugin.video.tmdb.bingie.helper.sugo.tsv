@@ -1,0 +1,95 @@
+wikipedia_language	Milyen nyelvű Wikipédiából olvassa be a szereplők és filmek leírását.
+fanarttv_enfallback	Ha egy képhez (logó, poszter) nincs magyar változat, az angolt használja. Ajánlott bekapcsolva hagyni, különben sok elemnél üres marad a logó.
+ignore_regionreleasefilter	Kikapcsolja a régió szerinti megjelenési szűrőt, így olyan filmek is megjelennek, amelyek a beállított országban még nem jelentek meg.
+local_db	A TMDb-adatokat kiegészíti a saját Kodi-könyvtárad adataival (pl. megnézettség, folytatási pont). Kis többletmunkával jár.
+artwork_quality	A TMDb-ről letöltött képek mérete. Az „Eredeti” a legszebb, de a legnagyobb és leglassabb; a „Közepes” gyorsabb, és TV-n is jól néz ki.
+default_select	Mi történjen, ha egy elemre kattintasz a kiegészítőben: lejátszás vagy az adatlap megnyitása.
+hide_unaired_movies	Elrejti a még be nem mutatott filmeket a listákból.
+hide_unaired_episodes	Elrejti a még adásba nem került részeket.
+nodate_is_unaired	Az adásnap nélküli elemeket is még be nem mutatottnak tekinti, és elrejti.
+special_folders	Mely különleges mappák (különkiadások, következő rész, részcsoportok) jelenjenek meg egy sorozat évadai között.
+flatten_seasons	Évadok nélkül, egyetlen listában mutatja egy sorozat összes részét.
+widgets_nextpage	A widget-sorok végén „Következő oldal” elem jelenik meg. Kikapcsolva rövidebbek és gyorsabbak a sorok.
+widgets_hidewatched	A widgetekből kimaradnak a már megnézett elemek.
+calendar_flatten	Ha egy sorozatnak egy napon több része kerül adásba, a naptárban egy tételként jelenik meg.
+nextaired_linklibrary	A könyvtári „következő adások” naptár elemei a saját könyvtáradban lévő sorozatra mutatnak.
+calendar_art	Milyen kép jelenjen meg a naptár- és következő-rész listák bélyegképein.
+trakt_nextepisodesort	Milyen sorrendben jelenjenek meg a következő részek.
+nextepisodes_usecalendar	A következő részek összeállításakor a naptárt is ellenőrzi. Pontosabb, de lassabb.
+movies_library	Ebbe a mappába kerülnek a könyvtárhoz adott filmek (.strm fájlként).
+tvshows_library	Ebbe a mappába kerülnek a könyvtárhoz adott sorozatok (.strm fájlként).
+auto_update	Elemek hozzáadása után a Kodi-könyvtár magától frissül.
+library_autoupdate	A könyvtárhoz adott sorozatoknál a kiegészítő magától felveszi az új vagy hiányzó részeket.
+library_autoupdate_hour	Hány órakor fusson naponta az automatikus könyvtárfrissítés.
+monitor_userlist	Mely Trakt-listákból frissüljön magától a könyvtár.
+monitor_userslug	A Trakt-felhasználó azonosítója a figyelt listákhoz. Rendszer által kezelt érték.
+last_autoupdate	Azonnal lefuttatja a könyvtár frissítését.
+ignore_folderchecking	Nem ellenőrzi, hogy a könyvtármappák létrejöttek-e. Csak akkor kapcsold be, ha hálózati mappánál hibát jelez, pedig a mappák rendben vannak.
+alternative_nfo	Más nevű .nfo fájlt használ a könyvtárhoz adott elemekhez.
+legacy_conversion	Régi beállítások átalakítása. Rendszer által kezelt érték, nem kell módosítani.
+update_skinshortcuts	A skin menüinek frissítése. Rendszer által kezelt érték, nem kell módosítani.
+omdb_apikey	Saját OMDb API-kulcs. Ezzel jelennek meg az IMDb-, Rotten Tomatoes- és Metacritic-értékelések. Ingyenes kulcs: omdbapi.com.
+omdb_apikey_access	Más kiegészítők is használhatják ezt a kulcsot.
+mdblist_apikey	Saját MDbList API-kulcs: további értékelésekhez és listákhoz. Ingyenes kulcs: mdblist.com.
+mdblist_apikey_access	Más kiegészítők is használhatják ezt a kulcsot.
+fanarttv_clientkey	Saját Fanart.tv kliens kulcs. Gyorsabb és frissebb képeket ad (logók, lemezképek). Ingyenes: fanart.tv.
+fanarttv_lookup	Más kiegészítők elemeihez (pl. MagyarAnime, Network4) is keres képet a Fanart.tv-n. Szebb, de lassabb.
+fanarttv_clientkey_access	Más kiegészítők is használhatják ezt a kulcsot.
+fanarttv_secondpref	Ha a TMDb-n van kép, azt használja, és csak ha nincs, akkor a Fanart.tv-t. Gyorsabb.
+tvdb_token	TVDb hozzáférési token. Rendszer által kezelt érték.
+tvdb_token_access	Más kiegészítők is használhatják ezt a tokent.
+tmdb_user_token	A TMDb-fiókod hozzáférési tokenje (saját listákhoz, kedvencekhez). Rendszer által kezelt érték.
+tmdb_user_token_access	Más kiegészítők is használhatják ezt a tokent.
+trakt_token	A Trakt-fiókod hozzáférési tokenje. Rendszer által kezelt érték, a lenti gombbal jön létre.
+authenticate_trakt	Összekapcsolja a Trakt-fiókodat: megjelenik egy kód, amit a trakt.tv/activate oldalon kell beírnod.
+trakt_token_access	Más kiegészítők is használhatják a Trakt-tokent.
+revoke_trakt	Kijelentkezik a Trakt-fiókból ezen az eszközön.
+trakt_scrobbling	A TMDbBingieHelperrel lejátszott tartalmakat elküldi a Trakt-nak (megnézettség, előzmények).
+trakt_episodetypes	Lekéri a részek típusát (pl. évadzáró, évadnyitó). Lassabb.
+trakt_watchedindicators	A Trakt-ról lekéri, mit néztél meg, és hány rész van hátra. Lassítja a listák betöltését.
+trakt_playprogress	A Trakt-ról lekéri a folytatási pontokat. Lassítja a listák betöltését.
+trakt_sortignorearticle	Betűrendes rendezésnél figyelmen kívül hagyja a névelőket (The, A, An).
+trakt_cacheownlists	A saját Trakt-listáid elemeit 24 órára eltárolja, így gyorsabban töltenek be.
+default_player_movies	Ezzel a lejátszóval indulnak a filmek, külön kérdés nélkül.
+default_player_episodes	Ezzel a lejátszóval indulnak a sorozatrészek, külön kérdés nélkül.
+default_player_provider	Ha a film elérhető valamelyik szolgáltatónál, automatikusan azzal játssza le.
+default_player_kodi	Ha az elem megvan a saját Kodi-könyvtáradban, azt a fájlt játssza le.
+combined_players	Egy kiegészítő összes lejátszója egyetlen tételként jelenik meg a lejátszóválasztóban.
+bundled_players	A kiegészítővel érkező, előre megírt lejátszók használata.
+players_url	Lejátszó-beállítások letöltése egy URL-ről (zip). A lejátszók mondják meg, melyik kiegészítővel játssza le a tartalmat.
+configure_players	A lejátszók egyenként beállíthatók: név, prioritás, feloldási mód, tartalékok.
+provider_allowlist	Mely streamingszolgáltatók adatai jelenjenek meg (pl. hol nézhető egy film).
+service_listitem_read_ahead	A háttérszolgáltatás előre betölti a lista következő elemeinek adatait, így görgetéskor gyorsabban jelennek meg a képek és értékelések. Több memóriát használ.
+recache_kodidb	Újraolvassa és eltárolja a Kodi-könyvtár adatait. Akkor hasznos, ha a könyvtárad megváltozott.
+pagemulti_library	Hány oldalnyi elemet töltsön be egyszerre a könyvtárablakokban. Nagyobb érték = hosszabb lista, de lassabb betöltés.
+pagemulti_tmdb	Hány oldalnyi elemet töltsön be egyszerre a TMDb-listákban. Nagyobb érték = lassabb.
+pagemulti_trakt	Hány oldalnyi elemet töltsön be egyszerre a Trakt-alaplistákban. Nagyobb érték = lassabb.
+pagemulti_sync	Hány oldalnyi elemet töltsön be egyszerre a szinkronizált Trakt-listákban. Nagyobb érték = lassabb.
+contextmenu_related_lists	A helyi menüben megjelenik a „Listák böngészése” pont.
+contextmenu_sync_trakt	A helyi menüben megjelennek a Trakt-műveletek.
+contextmenu_sync_tmdb	A helyi menüben megjelennek a TMDb felhasználói műveletek.
+contextmenu_manage_artwork	A helyi menüben megjelenik a „Képek kezelése” pont.
+contextmenu_refresh_details	A helyi menüben megjelenik az „Adatok frissítése” pont.
+contextmenu_add_to_library	A helyi menüben megjelenik a „Hozzáadás a könyvtárhoz” pont.
+contextmenu_make_node	A helyi menüben megjelenik az „Egyéni csomópont” pont.
+genre_icon_location	Melyik mappából jöjjenek a TMDb-műfajok ikonjai.
+trakt_genre_icon_location	Melyik mappából jöjjenek a Trakt-műfajok ikonjai.
+provider_icon_location	Melyik mappából jöjjenek a streamingszolgáltatók ikonjai.
+startup_notifications	Indításkor értesítést mutat a hitelesítésről és a szinkronizálásról.
+sync_notifications	Értesítést mutat a Trakt-szinkronizálás állapotáról.
+connection_notifications	Értesítést mutat, ha valamelyik adatforrás nem érhető el.
+dummy_duration	Szakértői beállítás: a helyettesítő videó hossza lejátszás indításakor. Ne módosítsd, ha nincs vele gond.
+dummy_delay	Szakértői beállítás: várakozás az URL feloldása után. Ne módosítsd, ha nincs vele gond.
+dummy_waitresolve	Szakértői beállítás: megáll a lejátszás megkísérlése előtt.
+only_resolve_strm	A helyettesítő URL-t csak a könyvtár .strm fájljainál használja.
+force_xbmcplayer	Szakértői beállítás: a PlayMedia hívásokat a Kodi saját lejátszójára irányítja át.
+force_recache_kodidb	Lejátszók összeállításakor mindig újraolvassa a Kodi-könyvtárat. Pontosabb, de lassabb.
+use_alternate_api_url	Másik TMDb-címet használ. Akkor kapcsold be, ha a szolgáltatód blokkolja a TMDb-t.
+max_threads	Egyszerre hány adatlekérés futhat párhuzamosan. 0 = korlátlan. Gyengébb eszközön kisebb érték stabilabb lehet.
+cache_location	Hol tárolja a kiegészítő a gyorsítótár-adatbázist. Gyors belső tárhely ajánlott.
+image_location	Hol tárolja a kiegészítő a letöltött képeket.
+delete_cache	Törli a kiegészítő gyorsítótárát. Csak tartós hibák esetén használd: utána minden adat újra letöltődik.
+timer_reports	A naplóba kiírja, mennyi ideig tartott egy-egy lista betöltése. Sebességméréshez hasznos.
+debug_logging	Részletes naplózás hibakereséshez. Normál használatban kapcsold ki, mert lassít.
+log_request_tmdb	Egy TMDb-kérés teljes válaszát kiírja a naplóba (hibakereséshez).
+log_request_trakt	Egy Trakt-kérés teljes válaszát kiírja a naplóba (hibakereséshez).
