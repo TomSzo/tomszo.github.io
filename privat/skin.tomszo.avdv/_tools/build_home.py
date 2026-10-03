@@ -244,7 +244,7 @@ def card_layout(kind, focused):
                  '<font>ts_card</font><label>$VAR[TSCardTitle]</label><textcolor>FFFFFFFF</textcolor>'
                  '<shadowcolor>A0000000</shadowcolor><scroll>%s</scroll>'
                  '<visible>$PARAM[overlay]</visible></control>'
-                 % (h - 50, w - 36, 'true' if focused else 'false'))
+                 % (h - 58, w - 36, 'true' if focused else 'false'))
     # haladásjelző
     L.append('<control type="progress"><left>14</left><top>%d</top><width>%d</width><height>8</height>'
              '<texturebg colordiffuse="60FFFFFF" border="4">tomszo/bar.png</texturebg>'

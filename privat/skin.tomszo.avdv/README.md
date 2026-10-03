@@ -28,7 +28,7 @@ elemet – a hiányzó addon nem okoz hibát, a sor egyszerűen eltűnik.
 ## Telepítés
 
 1. Telepítsd a privát tárolót (lásd a [fő README-t](../README.md)), és belőle a
-   **TomSzo AVDV** skint – vagy közvetlenül a `skin.tomszo.avdv-1.0.0.zip`-et.
+   **TomSzo AVDV** skint – vagy közvetlenül a `skin.tomszo.avdv-1.0.1.zip`-et.
 2. **Beállítások → Felület → Skin → TomSzo AVDV**.
 3. A sorokhoz kellenek: **TMDb Helper** (jurialmunkey tároló), **Network4**
    (TomSzo tároló), és az anime-kiegészítők (privát tároló) – mindegyik a saját
@@ -39,5 +39,9 @@ elemet – a hiányzó addon nem okoz hibát, a sor egyszerűen eltűnik.
 A kezdőképernyő (`xml/Home.xml`, `xml/Includes_TomSzo.xml`) **generált**:
 a sorokat a `_tools/build_home.py` `ROWS` listájában lehet szerkeszteni, majd
 `python3 _tools/build_home.py`. A grafikák (`media/tomszo/`, ikon, háttér) a
-`_tools/make_media.py`-vel készülnek (Pillow + cairosvg). A `_tools` mappa nem
+`_tools/make_media.py`-vel készülnek (Pillow + cairosvg).
+A `fonts/TSInter-*.ttf` az Inter és a Noto Sans SC / KR (kínai, japán, koreai
+karakterek) összeolvasztása – a Kodi nem vált betűtípust karakterenként, így e nélkül
+a fordítás nélküli ázsiai címek helyén „NO GLYPH” jelenne meg. Újragyártás:
+`_tools/make_fonts.py` (fonttools). A `_tools` mappa nem
 kerül bele a zipbe.

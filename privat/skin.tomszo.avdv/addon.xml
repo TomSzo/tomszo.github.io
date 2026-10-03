@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<addon id="skin.tomszo.avdv" version="1.0.0" name="TomSzo AVDV" provider-name="TomSzo (alap: avdvplus.Estuary – phil65, Ichabod Fletchman)">
+<addon id="skin.tomszo.avdv" version="1.0.1" name="TomSzo AVDV" provider-name="TomSzo (alap: avdvplus.Estuary – phil65, Ichabod Fletchman)">
 	<requires>
 		<import addon="xbmc.gui" version="5.17.0"/>
 	</requires>
@@ -25,6 +25,8 @@
 		<summary lang="en_GB">TomSzo AVDV – streaming-style, TV-only skin for AVDV (CoreELEC) boxes</summary>
 		<description lang="hu_HU">Személyes skin az avdvplus.Estuary (phil65, Ichabod Fletchman) alapján. Streaming-stílusú kezdőképernyő: bal oldali menüsáv, nagy hero a kijelölt tartalom hátterével, logójával és leírásával, alatta vízszintes widget-sorok. Szekciók: Kezdőlap, Filmek, Sorozatok (TMDb Helper + saját könyvtár), Sport (Network4), Anime (MagyarAnime, Muteki, Kintsugi, Naruto-Kun). Az AVDV Dolby Vision / HDR információs ablaka és a CoreELEC-beállítások változatlanok.</description>
 		<description lang="en_GB">Personal skin based on avdvplus.Estuary (phil65, Ichabod Fletchman). Streaming-style home: side menu, large hero with the focused item's fanart, logo and plot, horizontal widget rows below. Sections: Home, Movies, TV shows (TMDb Helper + own library), Sport (Network4), Anime. The AVDV Dolby Vision / HDR info dialog and CoreELEC settings are kept unchanged.</description>
+		<news>1.0.1 – Kínai, japán és koreai címek („NO GLYPH” helyett): az Inter mellé a Noto Sans SC / KR karakterei. A kártyacím nem lóg a haladásjelzőre.
+1.0.0 – Első kiadás.</news>
 		<disclaimer lang="hu_HU">Személyes, privát skin – csak AVDV (Kodi 21) buildekhez.</disclaimer>
 	</extension>
 </addon>
