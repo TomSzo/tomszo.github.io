@@ -84,7 +84,7 @@ def branding():
     """A skin ikonja (resources/icon.png) és háttérképe (resources/fanart.jpg)."""
     from PIL import ImageFont, ImageFilter
     res = os.path.join(os.path.dirname(OUT), '..', 'resources')
-    font = os.path.join(os.path.dirname(OUT), '..', 'fonts', 'Inter-ExtraBold.ttf')
+    font = os.path.join(os.path.dirname(OUT), '..', '_tools', 'fonts-src', 'Inter-ExtraBold.ttf')
     size = 512
     ic = Image.new('RGBA', (size, size), (0, 0, 0, 0))
     d = ImageDraw.Draw(ic)
