@@ -16,6 +16,16 @@ Bingie skinjének és kiegészítőinek **teljes magyar fordítása, magyar súg
   leírásokat; az alap-színtéma színnevei magyarok.
 - A kódba égetett néhány angol felirat is magyar.
 
+## Optimalizálás (skin.bingie 2.0.2.2)
+
+- **TV-box gyorsmód** gomb: Skinbeállítások → Általános skinbeállítások → Haladó. Egy kattintással
+  kikapcsolja a legnehezebb effekteket (automatikus előzetesek, háttér- és hóanimáció, mozgó
+  fókuszkeret, extra / véletlen háttérképek, indítóvideó). Bármelyik egyenként visszakapcsolható.
+- A **menüépítő (skinshortcuts) a kezdőképernyőn munkamenetenként egyszer fut**, nem minden
+  visszalépéskor (a menü szerkesztése után a skinbeállításokból kilépve úgyis újraépül).
+- A **külső képek** (szereplőfotók, epizód- és listaképek, csatornalogók) **háttérben töltődnek**,
+  így görgetéskor nem akad meg a felület.
+
 A verziószámok az eredeti után egy `.1`-et kapnak (pl. `skin.bingie` 2.0.2 → **2.0.2.1**),
 így ha mindkét tároló telepítve van, a Kodi a magyar változatot választja.
 

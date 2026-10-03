@@ -29,7 +29,9 @@ PRIVAT = os.path.dirname(BASE)               # privat
 FORD = os.path.join(BASE, 'forditas')
 CACHE = os.environ.get('BINGIE_CACHE', os.path.join(os.path.expanduser('~'), '.cache', 'bingie-hu'))
 UPSTREAM = 'https://raw.githubusercontent.com/matke-84/repository.bingie/main/omega/'
-SUFFIX = '.1'                                # a magyar kiadás sorszáma
+SUFFIX = '.1'                                # a magyar kiadás sorszáma (alap)
+# kiegészítőnként eltérő sorszám, ha egy csomag újabb magyar kiadást kapott
+REVISION = {'skin.bingie': '.2'}
 # ezeket nem építjük újra (nincs bennük szöveg) – a matke-tárolóból jönnek
 SKIP = {'repository.bingie', 'resource.images.studios.coloured'}
 HELP_BASE = 33000                            # kiegészítők: új súgó-szövegazonosítók innen
@@ -104,7 +106,7 @@ class Pkg:
         return '%s/%s' % (self.id, rel)
 
     def get(self, rel):
-        return self.files[self.path(rel)].decode('utf-8')
+        return self.files[self.path(rel)].decode('utf-8-sig')
 
     def put(self, rel, text):
         self.files[self.path(rel)] = text.encode('utf-8')
@@ -366,6 +368,70 @@ def skin_patches(pkg, items):
     return extra
 
 
+# képek, amelyek külső forrásból (internet / könyvtár) jönnek: háttérben töltődjenek,
+# hogy görgetéskor ne akadjon a felület
+ASYNC_TEXTURES = {
+    'Includes.xml': ('$VAR[VideoListThumbVar]', 2),
+    'IncludesBingie.xml': ('ListItem.Property(Cast.1.Thumb)', 1),
+    'IncludesHomeBingie.xml': ('ListItem.Property(Cast.1.Thumb)', 1),
+    'IncludesDialogVideoInfo.xml': ('$VAR[LandscapeImage]', 2),
+    'View_525_Bingie_Episodes.xml': ('$VAR[LandscapeImage]', 1),
+    'View_527_Bingie_Seasons.xml': ('$VAR[LandscapeImage]', 1),
+    'DialogVideoManager.xml': ('$VAR[VideoListPosterVar]', 2),
+    'MyPVRGuide.xml': ('$VAR[PVRThumb]', 1),
+    'View_10_SimplePVR.xml': ('$VAR[PVRThumb]', 1),
+    'IncludesOSDDialogs.xml': ('.Icon]', 5),
+}
+
+GYORSMOD = [
+    'Skin.Reset(BingieAutoTrailer)', 'Skin.Reset(SpotLightTrailers)', 'Skin.Reset(BackgroundAnimation)',
+    'Skin.Reset(EnableSnowAnimation)', 'Skin.SetBool(EnableFixedFrameWidgets)', 'Skin.Reset(AutoHidePlotOnIdle)',
+    'Skin.Reset(EnableNativeExtraFanart)', 'Skin.Reset(RandomizeBackground)', 'Skin.Reset(animateMusicArt)',
+    'Skin.SetString(SplashAnimationResolution,1080p)', 'Skin.SetString(splash_screen,none)',
+    'Skin.SetString(splash_screen.label,$LOCALIZE[231])',
+]
+
+
+def skin_optimize(pkg):
+    """Sebességjavítások a skinben (a viselkedés nem változik)."""
+    extra = {31690: 'TV-box gyorsmód (nehéz effektek kikapcsolása)',
+             31691: 'Kész: előzetesek, animációk és indítóvideó kikapcsolva.',
+             31692: 'TV-box gyorsmód'}
+    # 1) külső képek háttérbetöltése
+    for name, (needle, count) in ASYNC_TEXTURES.items():
+        s = pkg.get('1080i/' + name)
+        pat = re.compile(r'<texture(?![^>]*background=)([^>]*)>([^<]*%s[^<]*)</texture>' % re.escape(needle))
+        s, n = pat.subn(r'<texture background="true"\1>\2</texture>', s)
+        if n != count:
+            raise SystemExit('%s: %d háttérbetöltés helyett %d' % (name, count, n))
+        pkg.put('1080i/' + name, s)
+    # 2) a skinshortcuts-menüépítő a kezdőképernyőn munkamenetenként egyszer fusson
+    #    (a menü csak a skinbeállításokban szerkeszthető, onnan kilépve úgyis újraépül)
+    s = pkg.get('1080i/Home.xml')
+    s = replace_once(s, '<onload>RunScript(script.skinshortcuts,type=buildxml',
+                     '<onload condition="String.IsEmpty(Window(Home).Property(HU_MenuBuilt))">'
+                     'RunScript(script.skinshortcuts,type=buildxml', 'Home.xml buildxml')
+    s = replace_once(s, '<onload condition="String.IsEmpty(Window(Home).Property(widgetstyle))">',
+                     '<onload>SetProperty(HU_MenuBuilt,1,Home)</onload>\n    '
+                     '<onload condition="String.IsEmpty(Window(Home).Property(widgetstyle))">', 'Home.xml jelző')
+    pkg.put('1080i/Home.xml', s)
+    s = pkg.get('1080i/Custom_1105_SkinSettings.xml')
+    s = replace_once(s, '<onunload>ClearProperty(SkinSettingSection,Home)</onunload>',
+                     '<onunload>ClearProperty(SkinSettingSection,Home)</onunload>\n'
+                     '    <onunload>ClearProperty(HU_MenuBuilt,Home)</onunload>', 'Custom_1105 jelző')
+    pkg.put('1080i/Custom_1105_SkinSettings.xml', s)
+    # 3) TV-box gyorsmód gomb (Általános skinbeállítások → Haladó)
+    s = pkg.get('1080i/IncludesSkinSettings.xml')
+    btn = ('\n        <!-- TV-box gyorsmód (TomSzo) -->\n        <control type="button" id="31690">\n'
+           '            <include>SkinSettings_Button</include>\n            <label>$LOCALIZE[31690]</label>\n'
+           + ''.join('            <onclick>%s</onclick>\n' % a for a in GYORSMOD) +
+           '            <onclick>Notification($LOCALIZE[31692],$LOCALIZE[31691],5000)</onclick>\n        </control>')
+    anchor = '            <label>$LOCALIZE[35226]</label>\n        </control>'
+    s = replace_once(s, anchor, anchor + btn, 'gyorsmód gomb')
+    pkg.put('1080i/IncludesSkinSettings.xml', s)
+    return extra
+
+
 def skin_setting_items(pkg):
     """A skinbeállítások vezérlői: id -> (típus, felirat)."""
     s = pkg.get('1080i/IncludesSkinSettings.xml')
@@ -426,13 +492,14 @@ def main():
         pkg = Pkg(aid, files)
         extra = {}
         if aid == 'skin.bingie':
-            extra = skin_patches(pkg, skin_setting_items(pkg))
+            extra = skin_optimize(pkg)
+            extra.update(skin_patches(pkg, skin_setting_items(pkg)))
         else:
             convert_old_settings(pkg)
             extra = settings_help(pkg)
         translate(pkg, extra)
         code_patches(pkg)
-        newver = ver + SUFFIX
+        newver = ver + REVISION.get(aid, SUFFIX)
         xml = patch_addon_xml(pkg, newver)
         outdir = os.path.join(PRIVAT, aid)
         if os.path.isdir(outdir):
@@ -440,8 +507,11 @@ def main():
         os.makedirs(outdir)
         zout = os.path.join(outdir, '%s-%s.zip' % (aid, newver))
         with zipfile.ZipFile(zout, 'w', zipfile.ZIP_DEFLATED) as z:
-            for n in sorted(pkg.files):
-                z.writestr(n, pkg.files[n])
+            for n in sorted(pkg.files):          # rögzített dátum: azonos tartalom = azonos zip
+                info = zipfile.ZipInfo(n, date_time=(2026, 1, 1, 0, 0, 0))
+                info.compress_type = zipfile.ZIP_DEFLATED
+                info.external_attr = 0o644 << 16
+                z.writestr(info, pkg.files[n])
         with open(os.path.join(outdir, 'addon.xml'), 'w', encoding='utf-8') as f:
             f.write(xml)
         for art in ('icon.png', 'fanart.jpg', 'resources/icon.png', 'resources/fanart.jpg'):
@@ -456,17 +526,19 @@ def main():
 
 
 def update_repo(built):
+    """A privát tároló addons.xml-je: a meglévő <addon> blokkok + a most épített (tisztán, újraírva)."""
     path = os.path.join(PRIVAT, 'addons.xml')
-    s = open(path, encoding='utf-8').read()
+    s = open(path, encoding='utf-8-sig').read()
+    blocks = re.findall(r'<addon\b.*?</addon>', s, re.S)
+    ours = {aid for aid, _, _ in built}
+    keep = [b for b in blocks if re.search(r'<addon\b[^>]*\bid="([^"]+)"', b).group(1) not in ours]
     for aid, _, xml in built:
-        body = re.sub(r'^<\?xml[^>]*\?>\s*', '', xml).strip()
-        pat = re.compile(r'<addon id="%s".*?</addon>\n?' % re.escape(aid), re.S)
-        s = pat.sub('', s)
-        s = s.replace('</addons>', body + '\n</addons>')
-    open(path, 'w', encoding='utf-8').write(s)
-    open(path + '.md5', 'w').write(hashlib.md5(s.encode('utf-8')).hexdigest())
-    print('privat/addons.xml frissítve (%d kiegészítő)' % len(built))
-
+        keep.append(re.search(r'<addon\b.*</addon>', xml.lstrip('\ufeff'), re.S).group(0))
+    out = '<?xml version="1.0" encoding="UTF-8"?>\n<addons>\n' + '\n'.join(keep) + '\n</addons>\n'
+    ET.fromstring(out.encode('utf-8'))      # érvényes XML-e
+    open(path, 'w', encoding='utf-8').write(out)
+    open(path + '.md5', 'w').write(hashlib.md5(out.encode('utf-8')).hexdigest())
+    print('privat/addons.xml frissítve (%d kiegészítő, összesen %d)' % (len(built), len(keep)))
 
 if __name__ == '__main__':
     main()
