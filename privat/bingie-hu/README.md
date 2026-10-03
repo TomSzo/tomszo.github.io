@@ -29,6 +29,23 @@ Bingie skinjének és kiegészítőinek **teljes magyar fordítása, magyar súg
 A verziószámok az eredeti után egy `.1`-et kapnak (pl. `skin.bingie` 2.0.2 → **2.0.2.1**),
 így ha mindkét tároló telepítve van, a Kodi a magyar változatot választja.
 
+## TMDb Bingie Helper gyorsítás (1.0.3.2 + script.module.bingie 1.0.1.2)
+
+Mérve (Kodi-utánzattal, valódi TMDb / fanart.tv kérésekkel, 20 elemes widget):
+
+| | Eredeti | Gyorsított |
+|---|---|---|
+| Filmek, üres gyorsítótár – idő / CPU | 2,3–2,6 mp / 5,2–7,1 mp | **1,3 mp / 1,0–1,7 mp** |
+| Sorozatok, üres gyorsítótár – idő / CPU | 1,8–1,9 mp / 3,3–3,9 mp | **1,5–1,7 mp / 0,9–1,1 mp** |
+| Gyorsítótárból – CPU | 0,25 mp | **0,20 mp** (requests/SSL nem töltődik be) |
+
+- **Párhuzamos szálak: korlátlan helyett 4** (alapérték). Korlátlannál mind a ~40 kérés külön
+  kapcsolatot és TLS-kézfogást nyitott; 4 szállal a kapcsolatok újrahasznosulnak.
+- **A `requests` csak akkor töltődik be, ha tényleg kell hálózat** – gyorsítótárból kiszolgált
+  listáknál minden widget-hívás megspórolja a requests + urllib3 + ssl betöltését.
+- **Háttérfigyelő:** ha ~2 mp-ig nem változik a kijelölt elem, 0,2 helyett 0,35 mp-enként kérdez
+  (kevesebb Kodi-hívás versenyez a kirajzolással); mozgatáskor azonnal visszagyorsul.
+
 ## Telepítés (AVDV / Kodi 21)
 
 1. Telepítsd a **matke-tárolót** is (a nem fordított függőségek, pl. a stúdiólogók onnan jönnek):

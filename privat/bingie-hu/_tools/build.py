@@ -31,7 +31,7 @@ CACHE = os.environ.get('BINGIE_CACHE', os.path.join(os.path.expanduser('~'), '.c
 UPSTREAM = 'https://raw.githubusercontent.com/matke-84/repository.bingie/main/omega/'
 SUFFIX = '.1'                                # a magyar kiadás sorszáma (alap)
 # kiegészítőnként eltérő sorszám, ha egy csomag újabb magyar kiadást kapott
-REVISION = {'skin.bingie': '.2'}
+REVISION = {'skin.bingie': '.2', 'plugin.video.tmdb.bingie.helper': '.2', 'script.module.bingie': '.2'}
 # ezeket nem építjük újra (nincs bennük szöveg) – a matke-tárolóból jönnek
 SKIP = {'repository.bingie', 'resource.images.studios.coloured'}
 HELP_BASE = 33000                            # kiegészítők: új súgó-szövegazonosítók innen
@@ -228,7 +228,29 @@ CODE_PATCHES = {
         ('resources/lib/skinsettings.py', 'notification("Invalid input", "Please enter a number...")',
          'notification("Érvénytelen érték", "Adj meg egy számot…")'),
     ],
+    'script.module.bingie': [
+        # a requests (+ urllib3, ssl) csak akkor töltődjön be, ha tényleg kell hálózat:
+        # gyorsítótárból kiszolgált listáknál ez minden widget-hívásnál megspórolható
+        ('resources/modules/bingie/reqapi.py', '\nimport requests\n', '\n'),
+    ],
     'plugin.video.tmdb.bingie.helper': [
+        # háttérfigyelő: ha ~2 mp-ig nem változik a kijelölt elem, ritkábban kérdez (0,2 -> 0,35 mp),
+        # változáskor azonnal visszaáll; kevesebb Kodi-hívás = kevesebb verseny a kirajzolással
+        ('resources/tmdbbingiehelper/lib/monitor/service.py',
+         '''    def _on_listitem(self):
+        self.listitem_funcs.on_listitem()
+        self._on_idle(POLL_MIN_INCREMENT)''',
+         '''    def _on_listitem(self):
+        self.listitem_funcs.on_listitem()
+        self._on_idle(self._hu_listitem_wait())
+
+    def _hu_listitem_wait(self):
+        cur = (getattr(self.listitem_funcs, '_cur_item', None), getattr(self.listitem_funcs, '_cur_window', None))
+        if cur != getattr(self, '_hu_last', None):
+            self._hu_last, self._hu_idle = cur, 0
+            return POLL_MIN_INCREMENT
+        self._hu_idle = getattr(self, '_hu_idle', 0) + 1
+        return POLL_MIN_INCREMENT if self._hu_idle < 10 else 0.35'''),
         ('resources/tmdbbingiehelper/lib/api/wikipedia/api.py', "Dialog().select('Links', links)",
          "Dialog().select('Hivatkozások', links)"),
         ('resources/tmdbbingiehelper/lib/api/wikipedia/api.py', "Dialog().select('Languages',",
@@ -250,7 +272,12 @@ def default_patches(pkg):
         if '<option label="30031">31</option>' not in block:
             raise SystemExit('TMDb nyelvi beállítás: nincs magyar opció')
         block2 = replace_once(block, '<default>18</default>', '<default>31</default>', 'TMDb nyelv alapérték')
-        pkg.put('resources/settings.xml', s.replace(block, block2))
+        s = s.replace(block, block2)
+        # párhuzamos szálak: korlátlan helyett 4 (mérve: hideg listánál 3-6x kevesebb CPU, a
+        # kapcsolatok újrahasznosulnak, kevesebb TLS-kézfogás; a falióra-idő sem nő)
+        m = re.search(r'<setting id="max_threads"[^>]*>.*?</setting>', s, re.S)
+        s = s.replace(m.group(0), replace_once(m.group(0), '<default>0</default>', '<default>4</default>', 'max_threads'))
+        pkg.put('resources/settings.xml', s)
 
 
 def code_patches(pkg):
