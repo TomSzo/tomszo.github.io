@@ -13,6 +13,7 @@
 | **plugin.video.mutekifansub** | Muteki Fansub | saját fiók |
 | **plugin.video.kintsugifansub** | Kintsugi Fansub | saját fiók |
 | **plugin.video.narutokun** | Naruto-Kun.Hu | saját fiók (felhasználónév/jelszó) |
+| **Bingie (magyar)** | A Bingie skin (Kodi 21) és kiegészítőinek teljes magyar fordítása, magyar súgóval – lásd [bingie-hu/README.md](bingie-hu/README.md) | – |
 | **script.module.resolveurl** | lejátszó-feloldó modul (függőség) | – |
 | **MagyarAnime (LG webOS TV)** | MagyarAnime a TV-n, fejlesztői módban – lásd [webos/README.md](webos/README.md) | saját fiók (süti, telefonról PIN-nel) |
 | **Network4 (LG webOS TV)** | Network4 / Arena4+ a TV-n, fejlesztői módban – lásd [webos/README.md](webos/README.md) | saját fiók (email/jelszó) |

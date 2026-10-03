@@ -1,0 +1,145 @@
+6	Általános megjelenés: képek, címkék, értékelések, előzetesek, fejléc, jelölők, nyitóképernyő és néhány haladó beállítás.
+8	A háttérképek beállításai: közös háttér, váltási idő, háttéranimáció, értékelések és a keresés viselkedése.
+9	Itt szerkesztheted a főmenü pontjait, a kezdőképernyő widgetjeit és az egyes aloldalakat (Filmek, Sorozatok, Listám…).
+12	A kezdőképernyő viselkedése: kiemelt sáv, widgetek elrendezése, automatikus előzetesek és a részletsor tartalma.
+14	A skin beállításainak mentése fájlba, visszatöltése, illetve a skin teljes visszaállítása alapállapotra.
+15	Kész színtémák kiválasztása, saját témák mentése, és a színválasztó alappalettájának beállítása.
+16	A lejátszás közbeni képernyőmenü (OSD) és a lejátszás viselkedése: videó, zene és a „Következő rész” ablak.
+17	A médiakönyvtár nézetei: clearlogo / cím helye, címkék, kodekinfó stílusa, valamint mely nézetek legyenek elérhetők.
+18	Az élő TV és a műsorújság beállításai. Csak akkor látszik, ha van beállított TV-csatornád.
+19	A film- és sorozat-adatlap (videó-adatlap) beállításai: gombok, szereplők, ikonok, gyűjtemények.
+20	Szinte minden szín egyenként átállítható. Válassz egy csoportot, majd egy elemet, és megnyílik a színválasztó.
+31	A Bingie-hez kapcsolódó kiegészítők beállításai egy helyen. Kattintásra megnyílik az adott kiegészítő beállítás-ablaka.
+300	A Bingie Widgets beállításai: mit mutassanak a könyvtáradból összeállított widgetek (ajánlások, következő részek, véletlenszerű elemek).
+301	A skinmentések kiegészítő beállításai: alapértelmezett mentési hely és automatikus napi mentés.
+302	A Skin Shortcuts kiegészítő kezeli a főmenüt és a widgeteket. Nem telepített állapotban kattintásra telepíthető.
+303	Az automatikus kiegészítés a keresési billentyűzetnél gépelés közben ad javaslatokat.
+304	Az Up Next kiegészítő egy rész vége előtt felajánlja a következő részt. Nem telepített állapotban kattintásra telepíthető.
+305	A TMDb Bingie Helper adja a TMDb-alapú listákat, adatokat és képeket, valamint a lejátszók beállítását. Ez a skin „motorja”.
+306	A YouTube kiegészítő az előzetesek lejátszásához kell, ha az előzetesek forrása YouTube.
+17137	Kis jelölő a filmgyűjteményeken (pl. trilógiák), hogy lásd: a csempe mögött több film van.
+17140	Jelölő a sorozatokon, amelyekben van még meg nem nézett rész.
+17160	Jelölő a még meg nem nézett filmeken és részeken.
+31006	Kiválaszthatod, mely értékelések (IMDb, TMDb, Rotten Tomatoes, Metacritic stb.) jelenjenek meg és milyen sorrendben.
+31009	Bekapcsolva a „Következő rész” ablak bővebb elrendezést kap (kép, leírás, több gomb).
+31014	Megnyitja a menüszerkesztőt: itt adhatsz a kezdőképernyőhöz új menüpontokat és widget-sorokat bármelyik kiegészítőből (pl. Network4, MagyarAnime).
+31017	Lejátszás közben egy másik, egyszerűbb OSD-elrendezést használ.
+31024	Ha kilépsz a teljes képernyős lejátszásból, a videó leáll (nem megy tovább a háttérben). Az élő TV-re nem vonatkozik.
+31031	Hány szereplő jelenjen meg az adatlap szereplőlistájában.
+31037	Alapból hány elemet töltsön be egy widget-sor. Kevesebb elem = gyorsabb betöltés.
+31038	Kisebb, tömörebb fejléc (óra, profil) a képernyő tetején.
+31039	„Új részek” címke a sorozatokon, ha új rész érkezett.
+31042	A filmstúdió vagy TV-csatorna logója az értékelések mellett.
+31052	Kiválaszthatod, milyen háttérképek jelenjenek meg az időjárás oldalon (képcsomag-kiegészítő).
+31055	Melyik színpaletta nyíljon meg először a színválasztóban.
+31058	A Sorozatok aloldal widgetjeinek és menüjének szerkesztése.
+31060	Kiválaszthatod, mely gombok látszódjanak lejátszás közben az OSD-n (felirat, hang, beállítások stb.).
+31063	A videó fejezeteit jelölő vonalak az OSD folyamatjelzőjén.
+31069	Honnan jöjjenek az előzetesek: a helyi könyvtárból vagy a YouTube-ról.
+31072	Az OSD néhány másodperc tétlenség után magától bezárul.
+31075	4K felbontáson is lejátssza az indítóanimációt. Gyengébb eszközön lassíthat.
+31078	Az időjárás-ikonok stílusa (képcsomag-kiegészítő).
+31082	Kiválaszthatod, mely gombok jelenjenek meg az adatlapon (Lejátszás, Előzetes, Listám, Értékelés…).
+31083	A zenei háttérkép lassú mozgása lejátszás közben.
+31087	Hány másodperc után zárjon be magától az OSD.
+31092	Szüneteltetéskor megjelenik az infópanel (cím, idő, leírás).
+31106	Ha több háttérképet állítottál be, véletlen sorrendben váltakoznak.
+31107	A clearlogo (képes cím) helyett szöveges címet mutat. Akkor hasznos, ha sok elemnek nincs clearlogója.
+31111	Hol mutassa a pontos bemutató dátumát az évszám helyett.
+31113	Ha egy főmenüpontra lépsz, az almenüje magától kinyílik.
+31118	Hol jelenjenek meg az értékelések és a stúdiólogó (kiemelt sáv, widgetek, nézetek).
+31120	Kis ikonok a részleteknél (szereplők, rendező, műfaj).
+31123	A kijelölt csempe körüli keret együtt mozog a kijelöléssel. Kikapcsolva kicsit gyorsabb lehet.
+31129	A hangerőjelző megjelenési stílusa.
+31130	Pufferelés (töltés) közben százalékos állapotot mutat.
+31141	Hol jelenjenek meg címkék (pl. „Új”, „Top 10”) a könyvtárnézetekben.
+31142	Élő TV-nézéskor a teljes műsorújság helyett egy kis műsorsávot nyit meg.
+31144	Mely adatok jelenjenek meg a kiemelt elem alatti részletsorban (év, korhatár, hossz, évadok…).
+31154	Az indítóanimáció kiválasztása, vagy kikapcsolása a gyorsabb indulásért.
+31166	A Listám aloldal widgetjeinek szerkesztése.
+31169	Ha nincs beállított kiemelt widget, a skin nem tesz be helyette mintát.
+31173	A kijelölt elem előzetese magától elindul a háttérben a kezdőképernyőn és az aloldalakon. Több adatforgalommal és terheléssel jár.
+31177	Ha egy ideig nem nyúlsz a távirányítóhoz, a cím / clearlogo animálva jelenik meg.
+31179	Zene indításakor rögtön a teljes képernyős lejátszó nyílik meg.
+31181	A filmműfajok ikonjainak stílusa (képcsomag-kiegészítő).
+31184	Az adatlapon a szereplők és a stáb szöveges lista helyett képekkel jelenik meg.
+31193	Milyen vastag legyen a kijelölt csempe kerete.
+31197	A média- és kodekinformációk (felbontás, HDR, hang) megjelenítési stílusa.
+31199	Több szereplő-bélyegkép a részleteknél.
+31202	A keresés menü pontjainak szerkesztése.
+31204	A kikapcsolás menü pontjainak szerkesztése (újraindítás, kilépés, alvó mód…).
+31207	Ha egy elemhez több háttérkép van, azok váltakozva jelennek meg.
+31208	Az adatlapon az „Értékeld ezt a címet” gomb helyett a Trakt-értékelés jelenik meg. Trakt-fiók kell hozzá.
+31213	Hány másodperc után induljon el az automatikus előzetes.
+31214	Az adatlapon a „Hozzáadás a Listámhoz” gomb helyett a Trakt-kedvencek kezelése jelenik meg. Trakt-fiók kell hozzá.
+31218	A sorozat adatlapján az első meg nem nézett (vagy épp nézett) rész adatai látszanak.
+31225	A hosszú leírások maguktól lassan görögnek.
+31232	Teljes képernyős zenelejátszáskor az infópanel mindig látszik.
+31237	A műsorújság idővonalán a műsorok a műfajuknak megfelelő színt kapnak.
+31239	Másféle folyamatjelző a műsorújság aktuális műsoránál.
+31243	Zenelejátszáskor nagy, gördülő szöveg mutatja az előadót és a címet.
+31245	Hány csatornasor látszódjon egyszerre a műsorújságban.
+31249	Tekeréskor vagy ugráskor jelzés mutatja, mennyit ugrottál.
+31250	Az Egyéni aloldal widgetjeinek szerkesztése.
+31258	Az OSD mutatja a befejezés időpontját, az aktuális és a teljes időt.
+31259	Az OSD-n a lemezkép (discart) forog.
+31264	Téli hóesés-animáció a háttérben. Gyengébb eszközön lassíthat.
+31265	Kikapcsolja a főmenüpontok összes almenüjét.
+31266	A háttérképek lassú mozgása (Ken Burns-effekt). Gyengébb eszközön lassíthat.
+31272	Elmenti a skin összes beállítását egy fájlba, hogy később visszatölthesd.
+31273	Visszatölti a skin beállításait egy korábbi mentésből.
+31274	Minden skinbeállítást visszaállít alapra. Előtte érdemes mentést készíteni!
+31275	Elrejti a Bingie logót a kezdőképernyőn.
+31276	A főmenü magától elrejtőzik, ha a tartalomra lépsz.
+31281	A cím / clearlogo alatti folyamatjelző helyett a sima jelölőt használja.
+31282	A részletikonok piros-fehér színben jelennek meg.
+31283	A Top 250 alcím ikonja fehér lesz.
+31296	Hány másodpercig látszódjon egy háttérkép, mielőtt a következőre vált.
+31297	Kikapcsolja a kezdőképernyő tetején lévő nagy kiemelt sávot. Így a widgetek feljebb kerülnek, és gyorsabb lehet a betöltés.
+31304	A részeknél a widgetekben a sorozat képe jelenik meg a rész saját képe helyett.
+31308	A filmműfajok háttérképeinek stílusa (képcsomag-kiegészítő).
+31309	A korhatár-jelölés (pl. 16+, PG-13) megjelenési stílusa.
+31312	A csatornalogó és a csatornaszám megjelenítése a műsorújságban.
+31317	Az adatlapon nem jelennek meg a filmgyűjtemények (pl. a trilógia többi része).
+31323	Hol jelenjen meg az IMDb Top 250 helyezés.
+31325	Az OSD-infópanelen az aktuális időjárás is megjelenik.
+31327	Hol legyen a clearlogo / cím a könyvtárnézetekben.
+31338	Az értékelések és a stúdiólogó fehér, egyszínű változatban jelennek meg.
+31344	Mikor látszódjon a görgetősáv a listákban.
+31355	A címkék középre igazítva jelennek meg.
+31358	Ha egy widget elemére kattintasz, nem indul el a lejátszás, hanem megnyílik az adatlap.
+31359	Mely adatok jelenjenek meg a videó-adatlapon.
+31360	Bekapcsolja az értékelések (IMDb, TMDb stb.) megjelenítését.
+31361	Egy közös háttérkép minden menühöz: saját kép, képmappa vagy a skin hátterei.
+31362	Ha lejátszás közben megnyitod az OSD-t, a videó magától megáll.
+31367	Skinmentések kezelése: mentés, visszaállítás, törlés.
+31368	Kész színtémák kiválasztása, saját téma mentése vagy importálása.
+31370	A kiemelt widgetben a kijelölt elem előzetese magától elindul.
+31378	Másik elrendezésű film- és sorozat-adatlapot használ.
+31383	A „Lepj meg” aloldal widgetjeinek szerkesztése.
+31415	A főmenüt és a widgeteket visszaállítja a skin alapállapotára. A saját módosításaid elvesznek!
+31416	A „nem tetszik” gomb melyik értékelést (1–10) adja.
+31418	A „tetszik” gomb melyik értékelést (1–10) adja.
+31434	A Filmek aloldal widgetjeinek és menüjének szerkesztése.
+31436	Kikapcsolja a gépelés közbeni keresési javaslatokat.
+31438	Jelölő, ha egy elem épp megy, vagy felvétel / időzítés tartozik hozzá (élő TV).
+31447	Milyen alcím jelenjen meg a Bingie fekvő csempéken.
+31449	Hány másodpercenként váltson a háttér több képes vagy véletlen háttérképeknél.
+31472	A Zene aloldal widgetjeinek szerkesztése.
+31487	Kiválaszthatod, mely nézetek legyenek elérhetők a könyvtárban. A kevesebb nézet áttekinthetőbb.
+31491	A Kategóriák aloldal widgetjeinek szerkesztése.
+31498	Ha egy filmnek nincs lemezképe (discart), egy általános lemezképet mutat.
+31500	Csak a könyvtárban tárolt előzeteseket játssza le, internetről nem tölt.
+31504	Ez a kép jelenik meg zenelejátszáskor, ha az előadóhoz nincs háttérkép.
+31506	Az „Új és népszerű” aloldal widgetjeinek szerkesztése.
+31507	A kezdőképernyő widget-sorainak elrendezési stílusa.
+31513	Jelölő a már megnézett elemeken.
+31514	Jelölő a félbehagyott (folyamatban lévő) elemeken.
+31525	Mi látszódjon a kezdőképernyő fejlécében (óra, időjárás, profil).
+31526	Mi látszódjon a fejlécben minden más ablakban.
+31550	A keresésnél a FEL gombbal teljes billentyűzetre válthatsz.
+31555	Teljes képernyős zenelejátszáskor megjelenik az előadó logója.
+31575	Élő TV-nézéskor a teljes csatornalista helyett egy kis listát nyit meg.
+311971	A média- és kodekinformációk megjelenítési stílusa az OSD-n.
+312022	A TMDb-keresés menü pontjainak szerkesztése.
+313671	Skinmentések kezelése: mentés, visszaállítás, törlés.
