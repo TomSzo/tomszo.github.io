@@ -1,0 +1,9 @@
+{
+  "id": "hu.tomszo.watchsports.service",
+  "description": "WatchSports (webOS) - HTTP szolgáltatás",
+  "services": [
+    {
+      "name": "hu.tomszo.watchsports.service"
+    }
+  ]
+}

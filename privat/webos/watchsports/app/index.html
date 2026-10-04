@@ -3,28 +3,43 @@
 <head>
 <meta charset="utf-8">
 <title>WatchSports</title>
-<style>
-html,body{margin:0;height:100%;background:#2d2c41;color:#fff;font:32px/1.4 sans-serif}
-body{display:flex;align-items:center;justify-content:center;text-align:center}
-small{display:block;margin-top:16px;font-size:22px;color:#9aa3b5}
-</style>
-<script>
-/*
- * Indító: a watchsports.su webhelyet nyitja meg az app ablakában.
- * Az oldal nem engedi a beágyazást (X-Frame-Options: SAMEORIGIN), ezért nem
- * iframe-ben fut, hanem az app közvetlenül oda navigál. A location.replace nem hagy
- * history-bejegyzést, így a Vissza gomb az oldalon belül lép vissza, a kezdőoldalon
- * pedig kilép az appból (nincs disableBackHistoryAPI).
- */
-var URL = 'https://watchsports.su/';
-window.onload = function () {
-	if (navigator.onLine === false) {
-		document.getElementById('msg').innerHTML = 'Nincs internetkapcsolat.<small>Ellenőrizd a hálózatot, és indítsd újra az appot.</small>';
-		return;
-	}
-	location.replace(URL);
-};
-</script>
+<link rel="stylesheet" href="css/app.css">
+<script src="js/app.js"></script>
 </head>
-<body><div id="msg">WatchSports betöltése…<small>Vissza gomb: vissza / kilépés</small></div></body>
+<body>
+<div id="backdrop"><div class="bd-logos"><img class="bd-a" alt=""><img class="bd-b" alt=""></div></div>
+<header id="top">
+	<div class="logo">WATCH<b>SPORTS</b></div>
+	<div id="status"></div>
+	<div id="clock"></div>
+</header>
+<section id="hero">
+	<div class="h-badges"><span class="h-live">ÉLŐ</span><span class="h-sport"></span><span class="h-time"></span></div>
+	<h1 class="h-title"></h1>
+	<div class="h-detail"></div>
+	<div class="h-teams"></div>
+	<div class="h-actions">
+		<span class="btn btn-play">▶&nbsp; Adások</span>
+		<span class="btn btn-info">ⓘ&nbsp; <span class="h-streams"></span></span>
+	</div>
+</section>
+<main id="rows"><div class="rows-inner"></div></main>
+<div id="detail">
+	<div class="d-panel">
+		<div class="d-head">
+			<div class="d-logos"></div>
+			<div class="d-text">
+				<div class="d-badges"></div>
+				<h2 class="d-title"></h2>
+				<div class="d-meta"></div>
+			</div>
+		</div>
+		<h3>Adások</h3>
+		<div class="d-list"></div>
+		<div class="d-help">▲▼ lépés · OK megnyitás az appban · <span class="red">●</span> piros gomb: TV böngészője · Vissza: bezárás</div>
+	</div>
+</div>
+<div id="loading"><div class="spinner"></div></div>
+<div id="toast"></div>
+</body>
 </html>

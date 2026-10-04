@@ -167,19 +167,32 @@ ablakában (teljes képernyőn), belépés nem kell.
 - Az oldal nem engedi a beágyazást (X-Frame-Options), ezért nincs saját felület vagy
   reklámszűrő – az app közvetlenül az oldalra navigál, ugyanúgy, mint a böngésző.
 
-## WatchSports (0.1.0, BÉTA)
+## WatchSports (0.2.0, BÉTA)
 
-Egyszerű indító a **watchsports.su** webhelyhez, ugyanúgy, mint a StreamSports99: az app
-az oldalt nyitja meg a saját ablakában. Vissza: az oldalon belül vissza, a kezdőoldalon
-kilépés. Az oldal nem engedi a beágyazást (X-Frame-Options / CSP), ezért nincs saját
-felület vagy reklámszűrő.
+A **watchsports.su** sportműsora **Netflix-stílusú** felületen (0.2.0-tól; a 0.1.0 csak
+megnyitotta az oldalt). Belépés nem kell.
 
 - Telepítés: ugyanúgy, mint a Network4 –
-  **[hu.tomszo.watchsports_0.1.0_all.ipk](hu.tomszo.watchsports_0.1.0_all.ipk)**
+  **[hu.tomszo.watchsports_0.2.0_all.ipk](hu.tomszo.watchsports_0.2.0_all.ipk)**
+- **Hero:** a kijelölt meccs nagyban – csapatlogók, ÉLŐ jelzés / állás (pl. „55. perc”,
+  „4. játékrész · 2:15”) vagy kezdési idő (helyi idő szerint), bajnokság, adásszám.
+- **Sorok:** **Élő most** (a legtöbb adással rendelkező elöl), **Hamarosan kezdődik**
+  (3 órán belül), majd sportáganként (magyar nevekkel, a site sorrendjében). A műsor
+  percenként frissül, a kijelölés megmarad.
+- **OK egy meccsen:** adatlap az adások listájával (forrás, csatorna, 1080p / fps /
+  reklámszám). **OK egy adáson:** az adás oldala az app ablakában nyílik meg; **Vissza**
+  gombbal ugyanide (az adatlapra) térsz vissza. **Piros gomb:** megnyitás a TV saját
+  böngészőjében. A lista végén: a watchsports.su meccsoldala.
+- Kezelés: nyilak + OK, a **Magic Remote** mutatója és görgője is működik. Vissza: adatlap
+  bezárása; a kezdőoldalon kilépés.
+- A watchsports.su nem küld CORS-fejlécet, ezért a műsort a háttérszolgáltatás kéri le
+  (csak a watchsports.su címeit engedi). A csapatlogók az ESPN képszerveréről jönnek.
+- Az adásoldalak (külső oldalak) nem engedik a beágyazást, ezért nincs reklámszűrő: ott
+  az oldal saját lejátszója és reklámjai futnak, mint a böngészőben.
 
 ## Acestrims (0.1.0, BÉTA)
 
-Egyszerű indító az **acestrims.pages.dev** műsoroldalhoz, ugyanúgy, mint a WatchSports: az
+Egyszerű indító az **acestrims.pages.dev** műsoroldalhoz, ugyanúgy, mint a StreamSports99: az
 app az oldalt nyitja meg a saját ablakában. Vissza: az oldalon belül vissza, a kezdőoldalon
 kilépés.
 
@@ -196,6 +209,8 @@ kilépés.
   (sütis kérések, telefonos süti-párosítás PIN-nel, helyi videó-továbbító; belső hálózati
   címet nem kér le).
 - `streamed/app` – webes alkalmazás, szolgáltatás nélkül (a streamed.pk API CORS-t enged).
-- `streamsports99/app`, `watchsports/app`, `acestrims/app` – csak egy indítóoldal, ami a webhelyre navigál.
+- `watchsports/app` – webes alkalmazás, `watchsports/service` – Node.js szolgáltatás (a
+  watchsports.su oldalainak lekérése; csak ezt a címet engedi).
+- `streamsports99/app`, `acestrims/app` – csak egy indítóoldal, ami a webhelyre navigál.
 - Építés: `sh privat/webos/build.sh` (vagy `… build.sh magyaranime`) → IPK-k + `apps.json`
   + manifestek.
