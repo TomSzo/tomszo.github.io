@@ -1,9 +1,9 @@
 {
   "paging": {
     "page": 1,
-    "count": 4,
+    "count": 5,
     "maxPage": 1,
-    "itemsTotal": 4,
+    "itemsTotal": 5,
     "prevUrl": null,
     "nextUrl": null
   },
@@ -99,6 +99,29 @@
       },
       "pool": "main",
       "shortDescription": "A watchsports.su megnyitása a TV-n"
+    },
+    {
+      "id": "hu.tomszo.acestrims",
+      "title": "Acestrims",
+      "iconUri": "https://tomszo.github.io/privat/webos/acestrims/app/largeIcon.png",
+      "manifestUrl": "https://tomszo.github.io/privat/webos/hu.tomszo.acestrims.manifest.json",
+      "manifest": {
+        "id": "hu.tomszo.acestrims",
+        "version": "0.1.0",
+        "type": "web",
+        "title": "Acestrims",
+        "appDescription": "Acestrims - az acestrims.pages.dev webhely indítója a TV-n (az oldalt nyitja meg az app ablakában)",
+        "iconUri": "https://tomszo.github.io/privat/webos/acestrims/app/largeIcon.png",
+        "sourceUrl": "https://github.com/TomSzo/tomszo.github.io/tree/main/privat/webos/acestrims",
+        "rootRequired": false,
+        "ipkUrl": "https://tomszo.github.io/privat/webos/hu.tomszo.acestrims_0.1.0_all.ipk",
+        "ipkHash": {
+          "sha256": "d617b10bbf04c56180d1956f60bd4dde051488650fc08313e840289b595641df"
+        },
+        "ipkSize": 11358
+      },
+      "pool": "main",
+      "shortDescription": "Az acestrims.pages.dev megnyitása a TV-n"
     }
   ]
 }
