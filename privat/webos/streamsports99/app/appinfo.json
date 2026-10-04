@@ -1,0 +1,13 @@
+{
+  "id": "hu.tomszo.streamsports99",
+  "version": "0.1.0",
+  "vendor": "TomSzo",
+  "type": "web",
+  "main": "index.html",
+  "title": "StreamSports99",
+  "icon": "icon.png",
+  "largeIcon": "largeIcon.png",
+  "bgColor": "#1a1f2e",
+  "resolution": "1920x1080",
+  "requiredPermissions": []
+}
