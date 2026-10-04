@@ -78,6 +78,9 @@ html, body {
 
 .when { width: 112px; flex: none; text-align: center; font-size: 22px; font-weight: 600; color: var(--muted); line-height: 1.25; }
 .live-badge { display: inline-block; padding: 4px 10px; border-radius: 8px; background: var(--live); color: #fff; font-size: 20px; font-weight: 800; letter-spacing: 1px; }
+.live-badge.ended { background: #4a5263; }
+.live-badge.chan { background: #2d5bd1; }
+.when .score { margin-top: 6px; font-size: 26px; font-weight: 800; color: #fff; }
 .badges { display: flex; gap: 6px; flex: none; }
 .badges img { width: 48px; height: 48px; object-fit: contain; }
 .tag { display: inline-block; padding: 2px 8px; margin-left: 8px; border-radius: 6px; font-size: 18px; font-weight: 800; vertical-align: 3px; }
