@@ -1,4 +1,4 @@
-# TomSzo LG webOS-alkalmazások – Network4, MagyarAnime, Streamed Sport és StreamSports99 (BÉTA, privát)
+# TomSzo LG webOS-alkalmazások – Network4, MagyarAnime, Streamed Sport, WatchSports és StreamSports99 (BÉTA, privát)
 
 > **Személyes, privát alkalmazás** – a tulajdonos saját TV-jére és saját Network4 /
 > Arena4+ előfizetésére készült; nincs a nyilvános tárolóban hirdetve.
@@ -174,8 +174,8 @@ az oldalt nyitja meg a saját ablakában. Vissza: az oldalon belül vissza, a ke
 kilépés. Az oldal nem engedi a beágyazást (X-Frame-Options / CSP), ezért nincs saját
 felület vagy reklámszűrő.
 
-- Az IPK nincs a tárolóban: építsd meg helyben (`sh privat/webos/build.sh watchsports`),
-  majd telepítsd ugyanúgy, mint a Network4-et.
+- Telepítés: ugyanúgy, mint a Network4 –
+  **[hu.tomszo.watchsports_0.1.0_all.ipk](hu.tomszo.watchsports_0.1.0_all.ipk)**
 
 ## Fejlesztőknek
 
