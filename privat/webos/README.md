@@ -167,6 +167,16 @@ ablakában (teljes képernyőn), belépés nem kell.
 - Az oldal nem engedi a beágyazást (X-Frame-Options), ezért nincs saját felület vagy
   reklámszűrő – az app közvetlenül az oldalra navigál, ugyanúgy, mint a böngésző.
 
+## WatchSports (0.1.0, BÉTA)
+
+Egyszerű indító a **watchsports.su** webhelyhez, ugyanúgy, mint a StreamSports99: az app
+az oldalt nyitja meg a saját ablakában. Vissza: az oldalon belül vissza, a kezdőoldalon
+kilépés. Az oldal nem engedi a beágyazást (X-Frame-Options / CSP), ezért nincs saját
+felület vagy reklámszűrő.
+
+- Az IPK nincs a tárolóban: építsd meg helyben (`sh privat/webos/build.sh watchsports`),
+  majd telepítsd ugyanúgy, mint a Network4-et.
+
 ## Fejlesztőknek
 
 - `network4/app` – webes alkalmazás (HTML/JS), `network4/service` – Node.js szolgáltatás
@@ -175,6 +185,6 @@ ablakában (teljes képernyőn), belépés nem kell.
   (sütis kérések, telefonos süti-párosítás PIN-nel, helyi videó-továbbító; belső hálózati
   címet nem kér le).
 - `streamed/app` – webes alkalmazás, szolgáltatás nélkül (a streamed.pk API CORS-t enged).
-- `streamsports99/app` – csak egy indítóoldal, ami a webhelyre navigál.
+- `streamsports99/app`, `watchsports/app` – csak egy indítóoldal, ami a webhelyre navigál.
 - Építés: `sh privat/webos/build.sh` (vagy `… build.sh magyaranime`) → IPK-k + `apps.json`
   + manifestek.
