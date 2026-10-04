@@ -121,20 +121,23 @@ a lejátszás alapból a háttérszolgáltatás **helyi videó-továbbítóján*
 Ha valami nem indul: **Beállítások → Videó-továbbító: Ki**, illetve **Lejátszó: webOS
 beépített**.
 
-## Streamed Sport (0.1.0, BÉTA)
+## Streamed Sport (0.1.1, BÉTA)
 
 A [streamed-tui](https://github.com/Salastil/streamed-tui) (Salastil, GPL-3.0) TV-s
 változata: a **streamed.pk** sportműsora három oszlopban – kategóriák | meccsek | adások.
 Belépés nem kell.
 
 - Telepítés: ugyanúgy, mint a Network4 –
-  **[hu.tomszo.streamed_0.1.0_all.ipk](hu.tomszo.streamed_0.1.0_all.ipk)**
+  **[hu.tomszo.streamed_0.1.1_all.ipk](hu.tomszo.streamed_0.1.1_all.ipk)**
 - Kategóriák: **Élő most**, **Népszerű**, **Mai műsor**, és sportáganként (magyar
   nevekkel). Az élő meccsek elöl, piros **ÉLŐ** jelzéssel; a lista percenként frissül.
 - Adások: nyelv, HD-jelzés, forrás, nézőszám – a legjobb (HD, sok néző) elöl.
-- **OK** egy adáson: az adás lejátszóoldala teljes képernyőn nyílik meg az appban. A
-  lejátszót a **Magic Remote mutatójával** vezérelheted (pl. a lejátszás gomb, teljes
-  képernyő). **Vissza:** kilépés a lejátszásból.
+- **Csak működő (admin) adások** (a kategóriák alján, alapból BE): a TV-n az **ADMIN**
+  forrású adások indulnak, a többi forrás hálózati hibát (-102 / -107) adhat. Bekapcsolva
+  csak az admin adású meccsek és adások látszanak (a meccsnél „✓ indítható”).
+- **OK** egy adáson: az adás lejátszóoldala teljes képernyőn nyílik meg az appban. Indítás:
+  mutass a **Magic Remote-tal** a kép közepén lévő ▶ gombra, és kattints.
+  **Vissza:** kilépés a lejátszásból (kattintás után is működik).
 - **Piros gomb** egy adáson: megnyitás a TV saját böngészőjében (tartalék, ha az appban
   nem indul).
 - **Reklámszűrő** (a kategóriák alján, alapból BE): letiltja a felugró ablakokat és az
@@ -143,7 +146,8 @@ Belépés nem kell.
 Eltérés a streamed-tui-tól: az eredeti egy rejtett Chrome-mal (puppeteer) kibányássza a
 közvetlen videócímet, és az mpv-nek adja – ilyen a TV-n nincs, ezért itt az adás saját
 lejátszóoldala fut (ugyanúgy, mint böngészőben). Az **ADMIN** jelzésű adások a leírás
-szerint csak böngészőben mennek – ezek a lista végén vannak.
+szerint csak böngészőben mennek – a TV-n az appban viszont éppen ezek indulnak (a többi
+forrás lejátszója nálunk hálózati hibát ad), ezért ezek vannak elöl.
 
 ## Fejlesztőknek
 

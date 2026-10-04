@@ -1,15 +1,15 @@
 {
   "id": "hu.tomszo.streamed",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "type": "web",
   "title": "Streamed Sport",
   "appDescription": "Streamed Sport - a streamed.pk sportműsora a TV-n (a streamed-tui webOS-változata; alap: Salastil)",
   "iconUri": "https://tomszo.github.io/privat/webos/streamed/app/largeIcon.png",
   "sourceUrl": "https://github.com/TomSzo/tomszo.github.io/tree/main/privat/webos/streamed",
   "rootRequired": false,
-  "ipkUrl": "https://tomszo.github.io/privat/webos/hu.tomszo.streamed_0.1.0_all.ipk",
+  "ipkUrl": "https://tomszo.github.io/privat/webos/hu.tomszo.streamed_0.1.1_all.ipk",
   "ipkHash": {
-    "sha256": "d4beddb5107c70d5f26e39fa0021d9b024dd0296f4dc080562b84aeda9ff50fd"
+    "sha256": "0f0fae5833cbf4585b9a1496a773892117b0feacc3d5de666221b0380ae4995c"
   },
-  "ipkSize": 200838
+  "ipkSize": 201290
 }

@@ -7,8 +7,9 @@
  * ugyanazt, amit a böngésző is mutatna; a piros gombbal a TV böngészőjében is
  * megnyitható.
  *
- * Vissza gomb: az app a webOS history-kezelését használja (disableBackHistoryAPI: false),
- * így a Vissza akkor is működik, ha a lejátszó iframe-je kapta meg a fókuszt.
+ * Vissza gomb: keyCode 461 (disableBackHistoryAPI: true). Lejátszás közben a fókusz
+ * mindig visszakerül az appra (egy kattintás után is), különben a gombnyomások a
+ * lejátszó iframe-jébe mennének, és a Vissza nem működne.
  */
 (function () {
 	'use strict';
@@ -33,7 +34,13 @@
 		{id: 'today', name: 'Mai műsor', ico: '📅', url: '/api/matches/all-today'}
 	];
 
-	var SETTING = {setting: true, ico: '🛡'};
+	// beállítások (a kategóriák alján): kulcs, ikon, felirat, magyarázat
+	var SETTINGS = [
+		{setting: 'adminOnly', ico: '✅', name: 'Csak működő (admin) adások',
+			help: 'a többi forrás hálózati hibát adhat'},
+		{setting: 'adblock', ico: '🛡', name: 'Reklámszűrő',
+			help: 'felugró ablakok és átirányítás tiltása'}
+	];
 	var cols = [];          // [{el, inner, items, sel, render}]
 	var active = 0;
 	var categories = FIXED.slice();
@@ -45,10 +52,11 @@
 	var matchReq = 0;
 	var streamReq = 0;
 	var liveFailed = false;
-	var adblock = true;
+	var opts = {adminOnly: true, adblock: true};
 	var playing = false;
 	var toastTimer = null;
 	var hintTimer = null;
+	var focusTimer = null;
 
 	// --- segédek -------------------------------------------------------------
 	function $(sel) { return document.querySelector(sel); }
@@ -81,6 +89,10 @@
 		if (liveIds[m.id]) return true;
 		// ha az élő lista nem jött le: elkezdődött, és még 3 órán belül van
 		return liveFailed && m.date && m.date <= Date.now() && Date.now() - m.date < 3 * 3600000;
+	}
+
+	function hasAdmin(m) {
+		return (m.sources || []).some(function (s) { return s.source === 'admin'; });
 	}
 
 	function sportName(id) {
@@ -194,8 +206,8 @@
 		var n = el('div', 'item');
 		n.appendChild(el('div', 'ico', c.ico));
 		var main = el('div', 'main');
-		main.appendChild(el('div', 't', c.setting ? 'Reklámszűrő: ' + (adblock ? 'BE' : 'KI') : c.name));
-		if (c.setting) main.appendChild(el('div', 's', 'felugró ablakok és átirányítás tiltása'));
+		main.appendChild(el('div', 't', c.setting ? c.name + ': ' + (opts[c.setting] ? 'BE' : 'KI') : c.name));
+		if (c.setting) main.appendChild(el('div', 's', c.help));
 		n.appendChild(main);
 		return n;
 	}
@@ -213,9 +225,14 @@
 		n.appendChild(when);
 		var main = el('div', 'main');
 		main.appendChild(el('div', 't', m.title));
-		var sub = sportName(m.category);
-		if (m.sources && m.sources.length) sub += ' · ' + m.sources.length + ' forrás';
-		main.appendChild(el('div', 's', sub));
+		var sub = el('div', 's', sportName(m.category));
+		if (hasAdmin(m)) {
+			sub.appendChild(el('span', 'ok', ' · ✓ indítható'));
+		} else {
+			n.className += ' dim';
+			sub.appendChild(document.createTextNode(' · nincs admin adás'));
+		}
+		main.appendChild(sub);
 		n.appendChild(main);
 		var t = m.teams || {};
 		if ((t.home && t.home.badge) || (t.away && t.away.badge)) {
@@ -270,7 +287,7 @@
 				return {id: s.id, name: hu ? hu[0] : s.name, ico: hu ? hu[1] : '🏅',
 					url: '/api/matches/' + encodeURIComponent(s.id)};
 			});
-			categories = FIXED.concat([{sep: true}], extra, [{sep: true}, SETTING]);
+			categories = FIXED.concat([{sep: true}], extra, [{sep: true}], SETTINGS);
 			fill(0, categories, true);
 		}).catch(function () {
 			toast('A sportágak listája nem tölthető be');
@@ -299,16 +316,19 @@
 		status(cat.name + ' – betöltés…');
 		Promise.all([getJSON(cat.url), refreshLive()]).then(function (res) {
 			if (my !== matchReq) return;
-			var list = (res[0] || []).slice();
+			var all = res[0] || [];
+			var list = opts.adminOnly ? all.filter(hasAdmin) : all.slice();
 			list.sort(function (a, b) {
 				var la = isLive(a) ? 0 : 1, lb = isLive(b) ? 0 : 1;
 				if (la !== lb) return la - lb;
+				var aa = hasAdmin(a) ? 0 : 1, ab = hasAdmin(b) ? 0 : 1;
+				if (aa !== ab) return aa - ab;
 				if (cat.id === 'popular' && la === 0) return (b.viewers || 0) - (a.viewers || 0);
 				return (a.date || 0) - (b.date || 0);
 			});
 			var prev = keep && current(1);
 			matches = list;
-			fill(1, list, false, 'Nincs meccs ebben a kategóriában');
+			fill(1, list, false, all.length ? 'Itt most nincs admin adású meccs (a „Csak működő adások” kikapcsolásával a többi is látszik)' : 'Nincs meccs ebben a kategóriában');
 			if (prev) {
 				for (var i = 0; i < list.length; i++) if (list[i].id === prev.id) { select(1, i, true); break; }
 			}
@@ -336,16 +356,18 @@
 			var all = [];
 			lists.forEach(function (l) { all = all.concat(l || []); });
 			all = all.filter(function (s) { return s && s.embedUrl; });
-			// nem-admin, HD, több néző előre (az admin adások csak a böngészőben mennek
-			// biztosan - a streamed-tui leírása szerint erősebben védettek)
+			// az admin adások a TV-n (iframe-ben) működnek, a többi forrás hálózati hibát
+			// adhat: admin, HD, több néző előre; „Csak működő adások” esetén csak az admin
+			var total = all.length;
+			if (opts.adminOnly) all = all.filter(function (x) { return x.source === 'admin'; });
 			all.sort(function (a, b) {
-				var aa = a.source === 'admin' ? 1 : 0, ab = b.source === 'admin' ? 1 : 0;
+				var aa = a.source === 'admin' ? 0 : 1, ab = b.source === 'admin' ? 0 : 1;
 				if (aa !== ab) return aa - ab;
 				if (!!a.hd !== !!b.hd) return a.hd ? -1 : 1;
 				return (b.viewers || 0) - (a.viewers || 0);
 			});
 			streams = all;
-			fill(2, all, false, 'Ehhez a meccshez most nincs adás (később próbáld újra)');
+			fill(2, all, false, total ? 'Nincs admin adás – a „Csak működő adások” kikapcsolásával a többi forrás is látszik' : 'Ehhez a meccshez most nincs adás (később próbáld újra)');
 		});
 	}
 
@@ -354,7 +376,7 @@
 		var p = $('#player');
 		var old = p.querySelector('iframe');
 		var frame = old.cloneNode(false);    // a sandbox csak új iframe-nél érvényes
-		if (adblock) {
+		if (opts.adblock) {
 			frame.setAttribute('sandbox', 'allow-scripts allow-same-origin allow-forms allow-presentation');
 		} else {
 			frame.removeAttribute('sandbox');
@@ -363,13 +385,27 @@
 		old.parentNode.replaceChild(frame, old);
 		p.className = 'on';
 		playing = true;
-		history.pushState({player: true}, '');
 		var hint = p.querySelector('.p-hint');
 		hint.className = 'p-hint';
 		clearTimeout(hintTimer);
-		hintTimer = setTimeout(function () { hint.className = 'p-hint off'; }, 6000);
-		setTimeout(function () { try { frame.focus(); } catch (e) {} }, 300);
+		hintTimer = setTimeout(function () { hint.className = 'p-hint off'; }, 10000);
+		grabFocus();
+		clearInterval(focusTimer);
+		focusTimer = setInterval(grabFocus, 1000);
 	}
+
+	// a fókuszt az app egy rejtett elemére tesszük vissza (az iframe-ből is)
+	function grabFocus() {
+		if (!playing) return;
+		var sink = $('#sink');
+		if (document.activeElement !== sink) {
+			try { sink.focus(); } catch (e) {}
+		}
+	}
+
+	window.addEventListener('blur', function () {
+		if (playing) setTimeout(grabFocus, 150);   // kattintás a lejátszóban: vissza a fókusz
+	});
 
 	function stop() {
 		var p = $('#player');
@@ -379,6 +415,7 @@
 		p.querySelector('iframe').removeAttribute('src');
 		p.className = '';
 		playing = false;
+		clearInterval(focusTimer);
 		window.focus();
 	}
 
@@ -402,43 +439,41 @@
 		var it = current(active);
 		if (!it) return;
 		if (active === 0 && it.setting) {
-			adblock = !adblock;
-			try { localStorage.setItem('adblock', adblock ? '1' : '0'); } catch (e) {}
+			var k = it.setting;
+			opts[k] = !opts[k];
+			try { localStorage.setItem(k, opts[k] ? '1' : '0'); } catch (e) {}
 			fill(0, categories, true);
-			toast(adblock ? 'Reklámszűrő bekapcsolva' : 'Reklámszűrő kikapcsolva – ha egy adás nem indult, most próbáld újra');
+			toast(it.name + (opts[k] ? ' bekapcsolva' : ' kikapcsolva'));
+			if (k === 'adminOnly' && curCat) loadMatches(curCat);
 			return;
 		}
 		if (active === 0) {
 			loadMatches(it);
 			setActive(1);
-			history.pushState({col: 1}, '');
 		} else if (active === 1) {
 			loadStreams(it);
 			setActive(2);
-			history.pushState({col: 2}, '');
 		} else {
 			play(it);
 		}
 	}
 
 	function back() {
-		history.back();
+		if (playing) { stop(); return; }
+		if (active > 0) setActive(active - 1);
 	}
-
-	window.addEventListener('popstate', function (e) {
-		if (playing) stop();
-		var st = e.state || {};
-		setActive(typeof st.col === 'number' ? st.col : 0);
-	});
 
 	document.addEventListener('keydown', function (e) {
 		var k = e.keyCode;
 		if (playing) {
-			if (k === KEY.ESC || k === KEY.BACKSPACE) { e.preventDefault(); back(); }
+			if (k === KEY.BACK || k === KEY.ESC || k === KEY.BACKSPACE) { e.preventDefault(); back(); }
 			return;
 		}
-		if (k === KEY.BACK) return;          // a webOS history.back()-ként kezeli
-		if (k === KEY.ESC || k === KEY.BACKSPACE) { e.preventDefault(); if (active > 0) back(); return; }
+		if (k === KEY.BACK || k === KEY.ESC || k === KEY.BACKSPACE) {
+			e.preventDefault();
+			back();
+			return;
+		}
 		var col = cols[active];
 		if (k === KEY.UP || k === KEY.DOWN) {
 			e.preventDefault();
@@ -467,12 +502,13 @@
 		makeCol('c0', renderCat);
 		makeCol('c1', renderMatch);
 		makeCol('c2', renderStream);
-		try { adblock = localStorage.getItem('adblock') !== '0'; } catch (e) {}
-		categories = FIXED.concat([{sep: true}, SETTING]);
+		Object.keys(opts).forEach(function (k) {
+			try { if (localStorage.getItem(k) === '0') opts[k] = false; } catch (e) {}
+		});
+		categories = FIXED.concat([{sep: true}], SETTINGS);
 		fill(0, categories);
 		fill(2, [], false, 'Válassz egy meccset');
 		setActive(0);
-		history.replaceState({col: 0}, '');
 		tick();
 		setInterval(tick, 10000);
 		loadCategories();
