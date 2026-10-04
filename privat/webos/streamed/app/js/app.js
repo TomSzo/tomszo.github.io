@@ -40,8 +40,6 @@
 			help: 'a többi forrás hálózati hibát adhat'},
 		{setting: 'hideEnded', ico: '🏁', name: 'Befejezett meccsek elrejtése',
 			help: 'Sofascore és ESPN eredményei alapján'},
-		{setting: 'sitePage', ico: '🌐', name: 'Lejátszás a streamed.pk oldalán',
-			help: 'mint telefonon – ha a beágyazott lejátszó hibát ad (-102)'},
 		{setting: 'adblock', ico: '🛡', name: 'Reklámszűrő',
 			help: 'felugró ablakok és átirányítás tiltása'}
 	];
@@ -56,7 +54,7 @@
 	var matchReq = 0;
 	var streamReq = 0;
 	var liveFailed = false;
-	var opts = {adminOnly: true, hideEnded: true, sitePage: false, adblock: true};
+	var opts = {adminOnly: true, hideEnded: true, adblock: true};
 	var playing = false;
 	var toastTimer = null;
 	var hintTimer = null;
@@ -414,18 +412,6 @@
 	}
 
 	// --- lejátszás -----------------------------------------------------------
-	// a beágyazott lejátszó (embedUrl), vagy a streamed.pk saját nézőoldala - ezt nyitja
-	// meg a telefon is (streamed.pk/watch/<meccs>/<forrás>/<sorszám>)
-	function watchUrl(s) {
-		if (!curMatch || !curMatch.id) return s.embedUrl;
-		return BASE + '/watch/' + encodeURIComponent(curMatch.id) + '/' +
-			encodeURIComponent(s.source) + '/' + (s.streamNo || 1);
-	}
-
-	function playUrl(s) {
-		return opts.sitePage ? watchUrl(s) : s.embedUrl;
-	}
-
 	function play(s) {
 		var p = $('#player');
 		var old = p.querySelector('iframe');
@@ -435,7 +421,7 @@
 		} else {
 			frame.removeAttribute('sandbox');
 		}
-		frame.src = playUrl(s);
+		frame.src = s.embedUrl;
 		old.parentNode.replaceChild(frame, old);
 		p.className = 'on';
 		playing = true;
@@ -480,11 +466,11 @@
 			window.__bridge = bridge;   // a válaszig életben tartjuk
 			bridge.onservicecallback = function () {};
 			bridge.call('luna://com.webos.applicationManager/launch', JSON.stringify({
-				id: 'com.webos.app.browser', params: {target: watchUrl(s)}
+				id: 'com.webos.app.browser', params: {target: s.embedUrl}
 			}));
 			toast('Megnyitás a TV böngészőjében…');
 		} else {
-			window.open(watchUrl(s), '_blank');
+			window.open(s.embedUrl, '_blank');
 		}
 	}
 

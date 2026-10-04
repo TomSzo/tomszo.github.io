@@ -121,14 +121,14 @@ a lejátszás alapból a háttérszolgáltatás **helyi videó-továbbítóján*
 Ha valami nem indul: **Beállítások → Videó-továbbító: Ki**, illetve **Lejátszó: webOS
 beépített**.
 
-## Streamed Sport (0.1.3, BÉTA)
+## Streamed Sport (0.1.4, BÉTA)
 
 A [streamed-tui](https://github.com/Salastil/streamed-tui) (Salastil, GPL-3.0) TV-s
 változata: a **streamed.pk** sportműsora három oszlopban – kategóriák | meccsek | adások.
 Belépés nem kell.
 
 - Telepítés: ugyanúgy, mint a Network4 –
-  **[hu.tomszo.streamed_0.1.3_all.ipk](hu.tomszo.streamed_0.1.3_all.ipk)**
+  **[hu.tomszo.streamed_0.1.4_all.ipk](hu.tomszo.streamed_0.1.4_all.ipk)**
 - Kategóriák: **Élő most**, **Népszerű**, **Mai műsor**, és sportáganként (magyar
   nevekkel). Az élő meccsek elöl, piros **ÉLŐ** jelzéssel; a lista percenként frissül.
 - **Élő állás és befejezett meccsek:** a **Sofascore** (élő meccsek, állás, játékrész –
@@ -146,9 +146,6 @@ Belépés nem kell.
   **Vissza:** kilépés a lejátszásból (kattintás után is működik).
 - **Piros gomb** egy adáson: megnyitás a TV saját böngészőjében (tartalék, ha az appban
   nem indul).
-- **Lejátszás a streamed.pk oldalán** (alapból KI): a beágyazott lejátszó helyett a
-  streamed.pk saját nézőoldala nyílik meg (mint telefonon). Ha a beágyazott lejátszó
-  -102-es hibát ad, ezzel próbáld. A piros gomb is ezt az oldalt nyitja a TV böngészőjében.
 - **Reklámszűrő** (a kategóriák alján, alapból BE): letiltja a felugró ablakokat és az
   átirányítást. Ha egy adás nem indul el, kapcsold KI, és próbáld újra.
 
