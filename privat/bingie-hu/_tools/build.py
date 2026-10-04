@@ -31,7 +31,7 @@ CACHE = os.environ.get('BINGIE_CACHE', os.path.join(os.path.expanduser('~'), '.c
 UPSTREAM = 'https://raw.githubusercontent.com/matke-84/repository.bingie/main/omega/'
 SUFFIX = '.1'                                # a magyar kiadás sorszáma (alap)
 # kiegészítőnként eltérő sorszám, ha egy csomag újabb magyar kiadást kapott
-REVISION = {'skin.bingie': '.2', 'plugin.video.tmdb.bingie.helper': '.3', 'script.module.bingie': '.2'}
+REVISION = {'skin.bingie': '.3', 'plugin.video.tmdb.bingie.helper': '.3', 'script.module.bingie': '.2'}
 # ezeket nem építjük újra (nincs bennük szöveg) – a matke-tárolóból jönnek
 SKIP = {'repository.bingie', 'resource.images.studios.coloured'}
 HELP_BASE = 33000                            # kiegészítők: új súgó-szövegazonosítók innen
@@ -510,6 +510,55 @@ def skin_optimize(pkg):
     return extra
 
 
+TINYPPI = 'script.signde.tinyppi'
+HAS_PPI = 'System.HasAddon(%s)' % TINYPPI
+EXTRA = os.path.join(BASE, 'extra')          # saját fájlok a skinbe (pl. VS10-ikonok a signde Bingie-ből, GPL-2)
+
+
+def skin_tinyppi(pkg):
+    """signde PPI (tinyppi, jamal2362 / signde) bekötése, ahogy a signde AVDV-s Bingie-je csinálja:
+    a lejátszási infó (PlayerProcessInfo) ablak a tinyppit nyitja, az OSD-n VS10-gomb.
+    Ha a tinyppi nincs telepítve, minden marad a régiben."""
+    s = pkg.get('1080i/DialogPlayerProcessInfo.xml')
+    s = replace_once(s, '<window>\n', '<window>\n'
+                     '\t<!-- signde PPI (tinyppi), ha telepítve van; különben a skin saját ablaka -->\n'
+                     '\t<onload condition="%s">RunScript(%s)</onload>\n'
+                     '\t<onload condition="%s">Close</onload>\n' % (HAS_PPI, TINYPPI, HAS_PPI), 'PPI ablak')
+    pkg.put('1080i/DialogPlayerProcessInfo.xml', s)
+    pkg.put('1080i/Custom_1160_OSD_PPI_VS10.xml', '''<?xml version="1.0" encoding="UTF-8"?>
+<window>
+    <!-- Az OSD VS10-gombja: a signde PPI párbeszédablaka (VS10-mód, lejátszási infó) -->
+    <onload>RunScript(script.signde.tinyppi,dialog)</onload>
+    <onload>Close</onload>
+    <controls />
+</window>
+''')
+    button = (
+        '{t}<control type="button" id="8499">\n'
+        '{t}\t<description>VS10 / signde PPI</description>\n'
+        '{t}\t<width>$PARAM[{size}]</width>\n{t}\t<height>$PARAM[{size}]</height>\n'
+        '{t}\t<label/>\n{t}\t<font/>\n'
+        '{t}\t<texturefocus colordiffuse="$INFO[Skin.String({fc})]">osd/vs10_fo.png</texturefocus>\n'
+        '{t}\t<texturenofocus colordiffuse="$INFO[Skin.String({c})]">osd/vs10.png</texturenofocus>\n'
+        '{t}\t<onclick>ActivateWindow(1160)</onclick>\n'
+        '{t}\t<visible>Player.HasVideo</visible>\n'
+        '{t}\t<visible>System.AddonIsEnabled(service.coreelec.settings) + ' + HAS_PPI + '</visible>\n'
+        '{t}</control>\n')
+    s = pkg.get('1080i/IncludesOSD.xml')
+    old = '\t\t\t\t<onclick>ActivateWindow(123)</onclick>\n\t\t\t\t<visible>Player.HasVideo</visible>\n\t\t\t</control>\n'
+    s = replace_once(s, old, old + button.format(t='\t\t\t', size='size', fc='OSDButtonsFocusColor',
+                                                 c='OSDButtonsColor'), 'OSD VS10 (alap)')
+    old = ('                    <onclick>ActivateWindow(123)</onclick>\n'
+           '\t\t\t\t\t<visible>Skin.HasSetting(bingie_osd_buttons_video)</visible>\n'
+           '\t\t\t\t\t<visible>Player.HasVideo</visible>\n                </control>\n')
+    s = replace_once(s, old, old + button.format(t='\t\t\t\t', size='topsize', fc='OSDBingieButtonsFocusColor',
+                                                 c='OSDBingieButtonsColor'), 'OSD VS10 (Bingie)')
+    pkg.put('1080i/IncludesOSD.xml', s)
+    for name in ('vs10.png', 'vs10_fo.png'):
+        with open(os.path.join(EXTRA, 'media', 'osd', name), 'rb') as f:
+            pkg.files[pkg.path('media/osd/' + name)] = f.read()
+
+
 def skin_setting_items(pkg):
     """A skinbeállítások vezérlői: id -> (típus, felirat)."""
     s = pkg.get('1080i/IncludesSkinSettings.xml')
@@ -571,6 +620,7 @@ def main():
         extra = {}
         if aid == 'skin.bingie':
             extra = skin_optimize(pkg)
+            skin_tinyppi(pkg)
             extra.update(skin_patches(pkg, skin_setting_items(pkg)))
         else:
             convert_old_settings(pkg)
