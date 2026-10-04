@@ -131,7 +131,7 @@ Belépés nem kell.
   **[hu.tomszo.streamed_0.1.1_all.ipk](hu.tomszo.streamed_0.1.1_all.ipk)**
 - Kategóriák: **Élő most**, **Népszerű**, **Mai műsor**, és sportáganként (magyar
   nevekkel). Az élő meccsek elöl, piros **ÉLŐ** jelzéssel; a lista percenként frissül.
-- Adások: nyelv, HD-jelzés, forrás, nézőszám – a legjobb (HD, sok néző) elöl.
+- Adások: nyelv, HD-jelzés, forrás, nézőszám – nézőszám szerint, a legnézettebb elöl.
 - **Csak működő (admin) adások** (a kategóriák alján, alapból BE): a TV-n az **ADMIN**
   forrású adások indulnak, a többi forrás hálózati hibát (-102 / -107) adhat. Bekapcsolva
   csak az admin adású meccsek és adások látszanak (a meccsnél „✓ indítható”).

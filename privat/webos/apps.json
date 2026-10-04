@@ -70,9 +70,9 @@
         "rootRequired": false,
         "ipkUrl": "https://tomszo.github.io/privat/webos/hu.tomszo.streamed_0.1.1_all.ipk",
         "ipkHash": {
-          "sha256": "0f0fae5833cbf4585b9a1496a773892117b0feacc3d5de666221b0380ae4995c"
+          "sha256": "562755645e247795611451946eff5e741b25fdd0a558068ba514657e22570d5b"
         },
-        "ipkSize": 201290
+        "ipkSize": 201292
       },
       "pool": "main",
       "shortDescription": "Élő sportközvetítések listája és lejátszása (streamed.pk)"

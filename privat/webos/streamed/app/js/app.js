@@ -357,14 +357,11 @@
 			lists.forEach(function (l) { all = all.concat(l || []); });
 			all = all.filter(function (s) { return s && s.embedUrl; });
 			// az admin adások a TV-n (iframe-ben) működnek, a többi forrás hálózati hibát
-			// adhat: admin, HD, több néző előre; „Csak működő adások” esetén csak az admin
+			// adhat: „Csak működő adások” esetén csak az admin; sorrend: nézőszám szerint
 			var total = all.length;
 			if (opts.adminOnly) all = all.filter(function (x) { return x.source === 'admin'; });
 			all.sort(function (a, b) {
-				var aa = a.source === 'admin' ? 0 : 1, ab = b.source === 'admin' ? 0 : 1;
-				if (aa !== ab) return aa - ab;
-				if (!!a.hd !== !!b.hd) return a.hd ? -1 : 1;
-				return (b.viewers || 0) - (a.viewers || 0);
+				return (b.viewers || 0) - (a.viewers || 0) || (a.streamNo || 0) - (b.streamNo || 0);
 			});
 			streams = all;
 			fill(2, all, false, total ? 'Nincs admin adás – a „Csak működő adások” kikapcsolásával a többi forrás is látszik' : 'Ehhez a meccshez most nincs adás (később próbáld újra)');
