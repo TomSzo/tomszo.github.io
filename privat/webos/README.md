@@ -1,4 +1,4 @@
-# TomSzo LG webOS-alkalmazások – Network4 és MagyarAnime (BÉTA, privát)
+# TomSzo LG webOS-alkalmazások – Network4, MagyarAnime és Streamed Sport (BÉTA, privát)
 
 > **Személyes, privát alkalmazás** – a tulajdonos saját TV-jére és saját Network4 /
 > Arena4+ előfizetésére készült; nincs a nyilvános tárolóban hirdetve.
@@ -121,6 +121,30 @@ a lejátszás alapból a háttérszolgáltatás **helyi videó-továbbítóján*
 Ha valami nem indul: **Beállítások → Videó-továbbító: Ki**, illetve **Lejátszó: webOS
 beépített**.
 
+## Streamed Sport (0.1.0, BÉTA)
+
+A [streamed-tui](https://github.com/Salastil/streamed-tui) (Salastil, GPL-3.0) TV-s
+változata: a **streamed.pk** sportműsora három oszlopban – kategóriák | meccsek | adások.
+Belépés nem kell.
+
+- Telepítés: ugyanúgy, mint a Network4 –
+  **[hu.tomszo.streamed_0.1.0_all.ipk](hu.tomszo.streamed_0.1.0_all.ipk)**
+- Kategóriák: **Élő most**, **Népszerű**, **Mai műsor**, és sportáganként (magyar
+  nevekkel). Az élő meccsek elöl, piros **ÉLŐ** jelzéssel; a lista percenként frissül.
+- Adások: nyelv, HD-jelzés, forrás, nézőszám – a legjobb (HD, sok néző) elöl.
+- **OK** egy adáson: az adás lejátszóoldala teljes képernyőn nyílik meg az appban. A
+  lejátszót a **Magic Remote mutatójával** vezérelheted (pl. a lejátszás gomb, teljes
+  képernyő). **Vissza:** kilépés a lejátszásból.
+- **Piros gomb** egy adáson: megnyitás a TV saját böngészőjében (tartalék, ha az appban
+  nem indul).
+- **Reklámszűrő** (a kategóriák alján, alapból BE): letiltja a felugró ablakokat és az
+  átirányítást. Ha egy adás nem indul el, kapcsold KI, és próbáld újra.
+
+Eltérés a streamed-tui-tól: az eredeti egy rejtett Chrome-mal (puppeteer) kibányássza a
+közvetlen videócímet, és az mpv-nek adja – ilyen a TV-n nincs, ezért itt az adás saját
+lejátszóoldala fut (ugyanúgy, mint böngészőben). Az **ADMIN** jelzésű adások a leírás
+szerint csak böngészőben mennek – ezek a lista végén vannak.
+
 ## Fejlesztőknek
 
 - `network4/app` – webes alkalmazás (HTML/JS), `network4/service` – Node.js szolgáltatás
@@ -128,5 +152,6 @@ beépített**.
 - `magyaranime/app` – webes alkalmazás, `magyaranime/service` – Node.js szolgáltatás
   (sütis kérések, telefonos süti-párosítás PIN-nel, helyi videó-továbbító; belső hálózati
   címet nem kér le).
+- `streamed/app` – webes alkalmazás, szolgáltatás nélkül (a streamed.pk API CORS-t enged).
 - Építés: `sh privat/webos/build.sh` (vagy `… build.sh magyaranime`) → IPK-k + `apps.json`
   + manifestek.

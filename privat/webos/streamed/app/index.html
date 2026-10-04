@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="hu">
+<head>
+<meta charset="utf-8">
+<title>Streamed Sport</title>
+<link rel="stylesheet" href="css/app.css">
+<script src="js/app.js"></script>
+</head>
+<body>
+<header id="top">
+	<div class="brand"><span class="dot"></span>Streamed <b>Sport</b></div>
+	<div id="status"></div>
+	<div id="clock"></div>
+</header>
+<main id="cols">
+	<section class="col" id="c0"><h2>Kategóriák</h2><div class="list"></div></section>
+	<section class="col" id="c1"><h2>Meccsek</h2><div class="list"></div></section>
+	<section class="col" id="c2">
+		<div id="hero"><img alt=""><div class="hero-text"><div class="hero-cat"></div><div class="hero-title"></div><div class="hero-time"></div></div></div>
+		<h2>Adások</h2><div class="list"></div>
+	</section>
+</main>
+<footer id="help">▲▼ lépés · ◀ ▶ oszlop · OK kiválasztás · Vissza vissza · <span class="red">●</span> piros gomb: megnyitás a TV böngészőjében</footer>
+<div id="player">
+	<iframe allow="autoplay; fullscreen; encrypted-media" allowfullscreen referrerpolicy="no-referrer-when-downgrade"></iframe>
+	<div class="p-hint">Vissza gomb: kilépés a lejátszásból · a Magic Remote mutatójával vezérelheted a lejátszót</div>
+</div>
+<div id="toast"></div>
+</body>
+</html>
