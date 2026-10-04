@@ -54,6 +54,20 @@ kiegészítő az **angol címet** használja (pl. 薬屋のひとりごと → *
 ha nincs magyar leírás, az **angol leírást**. A fordításokat csak a hiányos elemekhez kéri le,
 gyorsítótárazva. A már tárolt elemek egyszer újraépülnek (az első betöltés ezért lassabb).
 
+## Dolby Vision / HDR infó: signde PPI (tinyppi) – skin.bingie 2.0.2.3
+
+A [signde PPI](https://github.com/signde/script.tinyppi) (script.signde.tinyppi, jamal2362 /
+signde) egy kis, AVDV/CoreELEC-re írt lejátszási infó-ablak (kodek, videó, HDR, Dolby Vision
+profil/EL, VS10, hang, rendszer). A skin úgy van bekötve, mint a signde AVDV-s Bingie-je:
+
+- a **lejátszási infó** (Player Process Info, pl. „O” / INFO gomb) a tinyppit nyitja;
+- az OSD-n (videóbeállítás mellett) **VS10-gomb**: a tinyppi párbeszédablaka (VS10-mód, infó).
+
+Ha a tinyppi nincs telepítve, minden a régi marad (a VS10-gomb is rejtve).
+Telepítés: Fájlkezelő → Forrás: `https://signde.github.io/repository.signde/` → ZIP-ből a
+signde tároló → Telepítés tárolóból → signde repository → **signde PPI (avdvplus / p3i)**.
+(A VS10-ikonok a signde Bingie-ből valók, GPL-2.)
+
 ## Telepítés (AVDV / Kodi 21)
 
 1. Telepítsd a **matke-tárolót** is (a nem fordított függőségek, pl. a stúdiólogók onnan jönnek):
