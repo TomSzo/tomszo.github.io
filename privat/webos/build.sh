@@ -52,9 +52,9 @@ info = {
     'streamed': ('Streamed Sport', 'Streamed Sport - a streamed.pk sportműsora a TV-n '
                  '(a streamed-tui webOS-változata; alap: Salastil)',
                  'Élő sportközvetítések listája és lejátszása (streamed.pk)'),
-    'watchsports': ('WatchSports', 'WatchSports - a watchsports.su webhely indítója a TV-n '
-                    '(az oldalt nyitja meg az app ablakában)',
-                    'A watchsports.su megnyitása a TV-n'),
+    'watchsports': ('WatchSports', 'WatchSports - a watchsports.su sportműsora Netflix-stílusú '
+                    'felületen (élő meccsek, sportágak sorai, adások listája)',
+                    'Élő sport a watchsports.su-ról, Netflix-stílusú felületen'),
     'acestrims': ('Acestrims', 'Acestrims - az acestrims.pages.dev webhely indítója a TV-n '
                   '(az oldalt nyitja meg az app ablakában)',
                   'Az acestrims.pages.dev megnyitása a TV-n'),

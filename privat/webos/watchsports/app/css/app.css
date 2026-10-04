@@ -1,0 +1,216 @@
+/* WatchSports (webOS) - Netflix-stílusú felület, 1920x1080, távirányítóra */
+@font-face { font-family: "Inter"; font-weight: 400; src: url("../fonts/inter-latin-400-normal.woff2") format("woff2"); unicode-range: U+0000-00FF, U+2000-206F, U+20AC, U+2122, U+2190-21FF, U+25CF; }
+@font-face { font-family: "Inter"; font-weight: 400; src: url("../fonts/inter-latin-ext-400-normal.woff2") format("woff2"); unicode-range: U+0100-02AF, U+1E00-1EFF; }
+@font-face { font-family: "Inter"; font-weight: 600; src: url("../fonts/inter-latin-600-normal.woff2") format("woff2"); unicode-range: U+0000-00FF, U+2000-206F, U+20AC, U+2122, U+2190-21FF, U+25CF; }
+@font-face { font-family: "Inter"; font-weight: 600; src: url("../fonts/inter-latin-ext-600-normal.woff2") format("woff2"); unicode-range: U+0100-02AF, U+1E00-1EFF; }
+@font-face { font-family: "Inter"; font-weight: 800; src: url("../fonts/inter-latin-800-normal.woff2") format("woff2"); unicode-range: U+0000-00FF, U+2000-206F, U+20AC, U+2122, U+2190-21FF, U+25CF; }
+@font-face { font-family: "Inter"; font-weight: 800; src: url("../fonts/inter-latin-ext-800-normal.woff2") format("woff2"); unicode-range: U+0100-02AF, U+1E00-1EFF; }
+
+:root {
+	--bg: #141414;
+	--card: #232323;
+	--text: #ffffff;
+	--muted: #b3b3b3;
+	--dim: #808080;
+	--red: #e50914;
+	--sport: #3a4a6b;
+}
+
+* { box-sizing: border-box; }
+
+html, body {
+	margin: 0;
+	width: 1920px;
+	height: 1080px;
+	overflow: hidden;
+	background: var(--bg);
+	color: var(--text);
+	font-family: "Inter", "LG Smart UI", Arial, sans-serif;
+	font-size: 28px;
+	-webkit-font-smoothing: antialiased;
+}
+
+/* --- háttér (a kijelölt meccs „plakátja”) ------------------------------- */
+#backdrop {
+	position: absolute; left: 0; top: 0; width: 1920px; height: 760px; overflow: hidden;
+	background: radial-gradient(1100px 620px at 78% 30%, var(--sport) 0%, #141414 72%);
+	transition: background 0.5s;
+}
+#backdrop::after {
+	content: ""; position: absolute; inset: 0;
+	background:
+		linear-gradient(90deg, #141414 0%, rgba(20,20,20,0.92) 30%, rgba(20,20,20,0.25) 62%, rgba(20,20,20,0) 100%),
+		linear-gradient(0deg, #141414 0%, rgba(20,20,20,0) 38%);
+}
+.bd-logos {
+	position: absolute; right: 120px; top: 90px; height: 520px; display: flex; align-items: center; gap: 70px;
+	transition: opacity 0.4s;
+}
+.bd-logos img { width: 340px; height: 340px; object-fit: contain; filter: drop-shadow(0 20px 50px rgba(0,0,0,0.6)); }
+.bd-logos img[src=""], .bd-logos img:not([src]) { display: none; }
+.bd-logos.single img { width: 420px; height: 420px; }
+.bd-logos.fade { opacity: 0; }
+
+/* --- fejléc --------------------------------------------------------------- */
+#top {
+	position: absolute; left: 64px; right: 64px; top: 34px; height: 64px; z-index: 5;
+	display: flex; align-items: center; gap: 40px;
+}
+.logo {
+	font-size: 46px; font-weight: 800; letter-spacing: 1px; color: var(--red);
+	text-shadow: 0 2px 12px rgba(0,0,0,0.5); transform: scaleY(1.12);
+}
+.logo b { font-weight: 800; color: var(--red); }
+#status { flex: 1; color: var(--muted); font-size: 24px; }
+#clock { font-size: 34px; font-weight: 600; color: #e5e5e5; }
+
+/* --- hero ----------------------------------------------------------------- */
+#hero {
+	position: absolute; left: 64px; top: 150px; width: 980px; z-index: 2;
+}
+.h-badges { display: flex; align-items: center; gap: 18px; font-size: 24px; color: var(--muted); height: 40px; }
+.h-live {
+	display: none; background: var(--red); color: #fff; font-weight: 800; font-size: 20px;
+	padding: 5px 12px; border-radius: 4px; letter-spacing: 1px;
+}
+.h-live.on { display: inline-block; }
+.h-sport { font-weight: 800; color: #fff; letter-spacing: 3px; text-transform: uppercase; }
+.h-time { color: #e5e5e5; }
+.h-title {
+	margin: 14px 0 0; font-size: 76px; line-height: 1.04; font-weight: 800; letter-spacing: -1.5px;
+	max-height: 160px; overflow: hidden; text-shadow: 0 4px 24px rgba(0,0,0,0.5);
+}
+.h-detail { margin-top: 16px; font-size: 28px; color: #d2d2d2; max-height: 72px; overflow: hidden; }
+.h-teams { margin-top: 6px; font-size: 24px; color: var(--dim); height: 32px; overflow: hidden; white-space: nowrap; text-overflow: ellipsis; }
+.h-actions { margin-top: 26px; display: flex; gap: 18px; }
+.btn {
+	display: inline-flex; align-items: center; height: 64px; padding: 0 34px; border-radius: 6px;
+	font-size: 28px; font-weight: 800;
+}
+.btn-play { background: #fff; color: #000; }
+.btn-info { background: rgba(109,109,110,0.7); color: #fff; font-weight: 600; }
+
+/* --- sorok ---------------------------------------------------------------- */
+#rows {
+	position: absolute; left: 0; right: 0; top: 640px; bottom: 0; overflow: hidden; z-index: 3;
+}
+.rows-inner { transition: transform 0.3s ease; }
+.row { height: 300px; position: relative; }
+.row h2 {
+	margin: 0; padding: 0 64px; height: 50px; font-size: 32px; font-weight: 600; color: #e5e5e5;
+	display: flex; align-items: center; gap: 14px;
+}
+.row h2 .cnt { font-size: 22px; color: var(--dim); font-weight: 400; }
+.row.active h2 { color: #fff; }
+.track { position: relative; height: 250px; padding: 14px 0 0 64px; }
+.track-inner { display: flex; gap: 16px; transition: transform 0.3s ease; }
+
+.card {
+	flex: 0 0 auto; position: relative; width: 352px; height: 198px; border-radius: 6px; overflow: hidden;
+	background: linear-gradient(135deg, var(--c1, #2f3b55) 0%, var(--c2, #171c28) 100%);
+	transition: transform 0.2s ease, box-shadow 0.2s ease, margin 0.2s ease;
+	transform-origin: center center;
+}
+/* a kinagyított kártya (352 -> 394 px) széthúzza a szomszédjait */
+.card.sel {
+	transform: scale(1.12); z-index: 2; margin: 0 21px;
+	box-shadow: 0 0 0 4px #fff, 0 18px 40px rgba(0,0,0,0.75);
+}
+.row.active .card.sel:first-child { transform-origin: left center; margin: 0 42px 0 0; }
+.card .logos {
+	position: absolute; left: 0; right: 0; top: 18px; height: 92px;
+	display: flex; align-items: center; justify-content: center; gap: 28px;
+}
+.card .logos img { width: 84px; height: 84px; object-fit: contain; filter: drop-shadow(0 4px 10px rgba(0,0,0,0.5)); }
+.card .logos .vs { font-size: 22px; font-weight: 800; color: rgba(255,255,255,0.55); }
+.card .ini {
+	width: 84px; height: 84px; border-radius: 50%; background: rgba(255,255,255,0.12);
+	display: flex; align-items: center; justify-content: center; font-weight: 800; font-size: 30px;
+}
+.card .ev {
+	position: absolute; left: 18px; right: 18px; top: 20px; height: 100px;
+	display: flex; align-items: center; justify-content: center; text-align: center;
+	font-size: 30px; font-weight: 800; line-height: 1.15; overflow: hidden;
+}
+.card .names {
+	position: absolute; left: 0; right: 0; bottom: 0; padding: 30px 16px 12px;
+	background: linear-gradient(0deg, rgba(0,0,0,0.85) 0%, rgba(0,0,0,0) 100%);
+}
+.card .t { font-size: 23px; font-weight: 600; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.card .s { font-size: 19px; color: var(--muted); margin-top: 2px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.card .live {
+	position: absolute; left: 10px; top: 10px; background: var(--red); color: #fff;
+	font-size: 16px; font-weight: 800; padding: 3px 8px; border-radius: 3px; letter-spacing: 1px;
+}
+.card .badge-n {
+	position: absolute; right: 10px; top: 10px; background: rgba(0,0,0,0.55); color: #ddd;
+	font-size: 16px; font-weight: 600; padding: 3px 8px; border-radius: 3px;
+}
+.empty { padding: 30px 64px; color: var(--muted); font-size: 28px; }
+
+/* --- adatlap (adások) ----------------------------------------------------- */
+#detail {
+	position: absolute; inset: 0; z-index: 10; background: rgba(0,0,0,0.72);
+	display: none; align-items: center; justify-content: center;
+}
+#detail.on { display: flex; }
+.d-panel {
+	width: 1240px; max-height: 960px; background: #181818; border-radius: 10px; overflow: hidden;
+	box-shadow: 0 30px 80px rgba(0,0,0,0.8); display: flex; flex-direction: column;
+}
+.d-head {
+	position: relative; height: 300px; flex: 0 0 auto; display: flex; align-items: flex-end;
+	padding: 0 56px 34px; gap: 40px;
+	background: linear-gradient(0deg, #181818 0%, rgba(24,24,24,0) 60%),
+		radial-gradient(900px 400px at 80% 20%, var(--sport) 0%, #181818 80%);
+}
+.d-logos { position: absolute; right: 56px; top: 40px; display: flex; gap: 34px; align-items: center; }
+.d-logos img { width: 150px; height: 150px; object-fit: contain; filter: drop-shadow(0 8px 20px rgba(0,0,0,0.6)); }
+.d-text { position: relative; max-width: 760px; }
+.d-badges { display: flex; gap: 14px; align-items: center; font-size: 22px; color: var(--muted); }
+.d-badges .live { background: var(--red); color: #fff; font-weight: 800; padding: 4px 10px; border-radius: 4px; font-size: 18px; }
+.d-title { margin: 10px 0 0; font-size: 50px; line-height: 1.08; font-weight: 800; }
+.d-meta { margin-top: 10px; font-size: 24px; color: #cfcfcf; }
+#detail h3 { margin: 10px 56px 12px; font-size: 28px; font-weight: 600; color: #e5e5e5; }
+.d-list { padding: 0 56px; overflow: hidden; flex: 1 1 auto; position: relative; }
+.d-list-inner { transition: transform 0.2s ease; padding: 4px 0; }
+.st {
+	display: flex; align-items: center; gap: 26px; height: 92px; padding: 0 26px; margin-bottom: 10px;
+	border-radius: 6px; background: #232323; border: 3px solid transparent;
+}
+.st.sel { background: #2f2f2f; border-color: #fff; }
+.st .no { width: 44px; font-size: 34px; font-weight: 800; color: var(--dim); text-align: center; }
+.st.sel .no { color: #fff; }
+.st .main { flex: 1; min-width: 0; }
+.st .nm { font-size: 28px; font-weight: 600; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.st .nm span { color: var(--muted); font-weight: 400; margin-left: 12px; font-size: 24px; }
+.st .tags { margin-top: 6px; display: flex; gap: 10px; }
+.st .tag { font-size: 18px; color: #ddd; border: 1px solid #555; border-radius: 3px; padding: 1px 8px; }
+.st .tag.hd { border-color: #46d369; color: #46d369; }
+.st .tag.ads { border-color: #806020; color: #e0b050; }
+.st .go { font-size: 26px; color: var(--dim); }
+.st.sel .go { color: #fff; }
+.st.site { background: transparent; border: 3px dashed #444; }
+.st.site.sel { border: 3px solid #fff; background: #262626; }
+.d-empty { padding: 30px 0; color: var(--muted); font-size: 26px; }
+.d-help { flex: 0 0 auto; padding: 18px 56px 26px; font-size: 21px; color: var(--dim); }
+.red { color: #ff3b47; }
+
+/* --- egyéb ---------------------------------------------------------------- */
+#loading {
+	position: absolute; inset: 0; z-index: 20; background: var(--bg);
+	display: flex; align-items: center; justify-content: center;
+}
+#loading.off { display: none; }
+.spinner {
+	width: 90px; height: 90px; border-radius: 50%;
+	border: 8px solid rgba(229,9,20,0.25); border-top-color: var(--red);
+	animation: spin 0.9s linear infinite;
+}
+@keyframes spin { to { transform: rotate(360deg); } }
+#toast {
+	position: absolute; left: 50%; bottom: 60px; transform: translateX(-50%); z-index: 30;
+	background: rgba(40,40,40,0.95); color: #fff; padding: 18px 34px; border-radius: 8px;
+	font-size: 26px; opacity: 0; transition: opacity 0.3s; pointer-events: none; max-width: 1500px;
+}
+#toast.on { opacity: 1; }
