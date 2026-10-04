@@ -167,13 +167,13 @@ ablakában (teljes képernyőn), belépés nem kell.
 - Az oldal nem engedi a beágyazást (X-Frame-Options), ezért nincs saját felület vagy
   reklámszűrő – az app közvetlenül az oldalra navigál, ugyanúgy, mint a böngésző.
 
-## WatchSports (0.2.0, BÉTA)
+## WatchSports (0.2.1, BÉTA)
 
 A **watchsports.su** sportműsora **Netflix-stílusú** felületen (0.2.0-tól; a 0.1.0 csak
 megnyitotta az oldalt). Belépés nem kell.
 
 - Telepítés: ugyanúgy, mint a Network4 –
-  **[hu.tomszo.watchsports_0.2.0_all.ipk](hu.tomszo.watchsports_0.2.0_all.ipk)**
+  **[hu.tomszo.watchsports_0.2.1_all.ipk](hu.tomszo.watchsports_0.2.1_all.ipk)**
 - **Hero:** a kijelölt meccs nagyban – csapatlogók, ÉLŐ jelzés / állás (pl. „55. perc”,
   „4. játékrész · 2:15”) vagy kezdési idő (helyi idő szerint), bajnokság, adásszám.
 - **Sorok:** **Élő most** (a legtöbb adással rendelkező elöl), **Hamarosan kezdődik**
@@ -183,6 +183,12 @@ megnyitotta az oldalt). Belépés nem kell.
   reklámszám). **OK egy adáson:** az adás oldala az app ablakában nyílik meg; **Vissza**
   gombbal ugyanide (az adatlapra) térsz vissza. **Piros gomb:** megnyitás a TV saját
   böngészőjében. A lista végén: a watchsports.su meccsoldala.
+- **Elérhetőség-ellenőrzés (0.2.1-től):** a szolgáltató / DNS által tiltott adásoldalakon
+  a TV **-102 / -105 / -107** hibaoldalt mutatott. Az adatlap megnyitásakor a
+  háttérszolgáltatás minden adást előre ellenőriz: az elérhetők „✓ elérhető”, a nem
+  elérhetők „✗ …” jelzést kapnak (az okkal), és a lista végére kerülnek; ezekre OK-ra az
+  app nem navigál el. Ha egy adásoldal később egy *másik*, tiltott címre irányít át (pl. a
+  lejátszó), az előre nem látható – ilyenkor a hibaoldalon a Vissza / Kilépés segít.
 - Kezelés: nyilak + OK, a **Magic Remote** mutatója és görgője is működik. Vissza: adatlap
   bezárása; a kezdőoldalon kilépés.
 - A watchsports.su nem küld CORS-fejlécet, ezért a műsort a háttérszolgáltatás kéri le

@@ -261,8 +261,10 @@
 		var img = el('img');
 		img.alt = '';
 		img.onerror = function () {
-			var ini = el('div', 'ini', initials(fallbackName));
-			if (img.parentNode) img.parentNode.replaceChild(ini, img);
+			if (!img.parentNode) return;
+			// név nélkül (adatlap) a hibás logó egyszerűen eltűnik
+			if (fallbackName) img.parentNode.replaceChild(el('div', 'ini', initials(fallbackName)), img);
+			else img.parentNode.removeChild(img);
 		};
 		img.src = url;
 		return img;
@@ -532,43 +534,161 @@
 	}
 
 	function fillStreams(streams) {
-		var list = $('.d-list');
 		var g = detail.game;
 		var items = streams.slice();
 		items.push({site: true, url: BASE + g.href, name: 'Meccsoldal megnyitása',
 			channel: 'watchsports.su', tags: []});
+		items.forEach(function (s, i) { s.no = i + 1; });
 		detail.items = items;
+		detail.empty = !streams.length;
 		detail.sel = 0;
+		renderStreams();
+		checkStreams(detail);
+	}
+
+	function renderStreams() {
+		var list = $('.d-list');
 		list.innerHTML = '';
 		var inner = el('div', 'd-list-inner');
-		if (!streams.length) {
+		if (detail.empty) {
 			inner.appendChild(el('div', 'd-empty', 'Ehhez a meccshez még nincs adás – általában a ' +
 				'kezdés előtt nem sokkal jelennek meg.'));
 		}
-		items.forEach(function (s, i) {
+		detail.items.forEach(function (s, i) {
 			var row = el('div', 'st' + (s.site ? ' site' : ''));
-			row.appendChild(el('div', 'no', s.site ? '↗' : String(i + 1)));
+			row.appendChild(el('div', 'no', s.site ? '↗' : String(s.no)));
 			var main = el('div', 'main');
 			var nm = el('div', 'nm', s.name);
 			if (s.channel) nm.appendChild(el('span', null, s.channel));
 			main.appendChild(nm);
-			if (s.tags.length) {
-				var tags = el('div', 'tags');
-				s.tags.forEach(function (t) {
-					var cls = /1080|720|4k|hd/i.test(t) ? ' hd' : (/\bads?\b/i.test(t) ? ' ads' : '');
-					tags.appendChild(el('span', 'tag' + cls, t.replace(/^(\d+) ads?$/, '$1 reklám')
-						.replace(/^no ads$/i, 'reklám nélkül')));
-				});
-				main.appendChild(tags);
-			}
+			var tags = el('div', 'tags');
+			s.tags.forEach(function (t) {
+				var cls = /1080|720|4k|hd/i.test(t) ? ' hd' : (/\bads?\b/i.test(t) ? ' ads' : '');
+				tags.appendChild(el('span', 'tag' + cls, t.replace(/^(\d+) ads?$/, '$1 reklám')
+					.replace(/^no ads$/i, 'reklám nélkül')));
+			});
+			s.chip = el('span', 'tag chk');
+			tags.appendChild(s.chip);
+			main.appendChild(tags);
 			row.appendChild(main);
 			row.appendChild(el('div', 'go', '▶'));
 			row.addEventListener('mouseenter', function () { selectStream(i); });
 			row.addEventListener('click', function () { selectStream(i); playStream(s); });
+			s.row = row;
+			paintCheck(s);
 			inner.appendChild(row);
 		});
 		list.appendChild(inner);
-		selectStream(0);
+		selectStream(detail.sel);
+	}
+
+	// --- elérhetőség-ellenőrzés -----------------------------------------------
+	// A szolgáltató / DNS által tiltott adásoldalakon a TV -102 / -105 / -107 hibaoldalt
+	// mutatna (és kidobna az appból). A háttérszolgáltatás előre megnézi, hogy az oldal
+	// válaszol-e; a nem elérhetőket jelöljük, a lista végére tesszük, és nem nyitjuk meg.
+	var probeCache = {};    // url -> {at, promise, result}
+	var PROBE_TTL = 5 * 60000;
+
+	function probe(url) {
+		var c = probeCache[url];
+		if (c && Date.now() - c.at < PROBE_TTL) return c.promise;
+		c = probeCache[url] = {at: Date.now(), result: null};
+		if (!onTV()) {
+			// asztali böngészőben nincs szolgáltatás - nem ellenőrizhető
+			c.result = {ok: true, unknown: true};
+			c.promise = Promise.resolve(c.result);
+			return c.promise;
+		}
+		c.promise = new Promise(function (resolve) {
+			var bridge = new window.PalmServiceBridge();
+			var done = false;
+			pending.push(bridge);
+			var timer = setTimeout(function () {
+				if (done) return;
+				done = true;
+				resolve({ok: true, unknown: true});   // a szolgáltatás nem válaszol: nem tudjuk
+			}, 15000);
+			bridge.onservicecallback = function (msg) {
+				var i = pending.indexOf(bridge);
+				if (i >= 0) pending.splice(i, 1);
+				if (done) return;
+				done = true;
+				clearTimeout(timer);
+				var r;
+				try { r = JSON.parse(msg); } catch (e) { r = null; }
+				resolve(r && r.returnValue !== false && typeof r.ok === 'boolean' ? r : {ok: true, unknown: true});
+			};
+			bridge.call('luna://hu.tomszo.watchsports.service/probe', JSON.stringify({url: url}));
+		}).then(function (r) {
+			c.result = r;
+			if (r.unknown) c.at = 0;   // legközelebb újra próbáljuk
+			return r;
+		});
+		return c.promise;
+	}
+
+	function probeError(r) {
+		var code = String(r.code || '');
+		if (code === 'ECONNREFUSED') return 'a kapcsolatot elutasították (-102)';
+		if (code === 'ENOTFOUND' || code === 'EAI_AGAIN') return 'a cím nem található (-105, DNS-tiltás?)';
+		if (code === 'ETIMEDOUT' || code === 'ESOCKETTIMEDOUT') return 'nem válaszol (időtúllépés)';
+		if (code === 'ECONNRESET' || code === 'EPIPE' || code === 'EPROTO' || /SSL|TLS|CERT/i.test(code)) {
+			return 'a kapcsolatot megszakították (-107) – valószínűleg szolgáltatói tiltás';
+		}
+		if (code === 'EPRIVATE') return 'belső hálózati cím';
+		return 'nem érhető el' + (code ? ' (' + code + ')' : '');
+	}
+
+	function paintCheck(s) {
+		if (!s.chip) return;
+		var c = probeCache[s.url];
+		var r = c && c.result;
+		var bad = r && !r.ok;
+		s.chip.className = 'tag chk' + (!r ? ' wait' : bad ? ' bad' : r.unknown ? ' hide' : ' ok');
+		s.chip.textContent = !r ? 'ellenőrzés…' : bad ? '✗ ' + probeError(r) : '✓ elérhető';
+		if (s.row) s.row.className = s.row.className.replace(/ off\b/, '') + (bad ? ' off' : '');
+	}
+
+	function checkStreams(d) {
+		var queue = d.items.slice();
+		var running = 0;
+		function next() {
+			if (d !== detail) return;
+			if (!queue.length) {
+				if (!running) reorder(d);
+				return;
+			}
+			while (running < 4 && queue.length) {
+				var s = queue.shift();
+				running++;
+				probe(s.url).then(function (s) {
+					return function () {
+						running--;
+						if (d !== detail) return;
+						paintCheck(s);
+						next();
+					};
+				}(s));
+			}
+		}
+		next();
+	}
+
+	// a végén: az elérhető adások elöl (az eredeti sorrendben), a nem elérhetők hátul
+	function reorder(d) {
+		var bad = function (s) {
+			var c = probeCache[s.url];
+			return c && c.result && !c.result.ok ? 1 : 0;
+		};
+		var cur = d.items[d.sel];
+		var sorted = d.items.slice().sort(function (a, b) {
+			return bad(a) - bad(b) || (a.site ? 1 : 0) - (b.site ? 1 : 0) || a.no - b.no;
+		});
+		var same = sorted.every(function (s, i) { return s === d.items[i]; });
+		if (same) return;
+		d.items = sorted;
+		d.sel = d.sel === 0 ? 0 : Math.max(0, sorted.indexOf(cur));
+		renderStreams();
 	}
 
 	function selectStream(i) {
@@ -577,8 +697,9 @@
 		var rowsEl = $$('.d-list .st');
 		rowsEl.forEach(function (r, j) { r.className = r.className.replace(/ sel\b/, '') + (j === detail.sel ? ' sel' : ''); });
 		var inner = $('.d-list-inner');
+		var row = rowsEl[detail.sel];
 		var listH = $('.d-list').clientHeight || 500;
-		var off = Math.max(0, detail.sel * 102 - (listH - 120));
+		var off = row ? Math.max(0, row.offsetTop + row.offsetHeight + 16 - listH) : 0;
 		if (inner) inner.style.transform = 'translateY(' + (-off) + 'px)';
 	}
 
@@ -590,12 +711,27 @@
 
 	function playStream(s) {
 		if (!s || !s.url) return;
+		var d = detail;
+		var c = probeCache[s.url];
+		if (!(c && c.result)) toast('Elérhetőség ellenőrzése…', 15000);
+		probe(s.url).then(function (r) {
+			if (d !== detail) return;
+			paintCheck(s);
+			if (!r.ok) {
+				toast('Ez az adás a hálózatodról nem érhető el: ' + probeError(r) + '. Válassz másikat.', 6000);
+				return;
+			}
+			go(s.url);
+		});
+	}
+
+	function go(url) {
 		try {
 			sessionStorage.setItem('ws.focus', JSON.stringify({href: detail ? detail.game.href : '', row: activeRow}));
 		} catch (e) {}
 		toast('Megnyitás… (Vissza gomb: vissza az apphoz)', 6000);
 		// az adásoldalak nem engedik a beágyazást - az app ablaka navigál oda
-		setTimeout(function () { location.href = s.url; }, 150);
+		setTimeout(function () { location.href = url; }, 150);
 	}
 
 	function openInBrowser(url) {
