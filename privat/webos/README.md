@@ -1,4 +1,4 @@
-# TomSzo LG webOS-alkalmazások – Network4, MagyarAnime, Streamed Sport, WatchSports és StreamSports99 (BÉTA, privát)
+# TomSzo LG webOS-alkalmazások – Network4, MagyarAnime, Streamed Sport, WatchSports, Acestrims és StreamSports99 (BÉTA, privát)
 
 > **Személyes, privát alkalmazás** – a tulajdonos saját TV-jére és saját Network4 /
 > Arena4+ előfizetésére készült; nincs a nyilvános tárolóban hirdetve.
@@ -177,6 +177,17 @@ felület vagy reklámszűrő.
 - Telepítés: ugyanúgy, mint a Network4 –
   **[hu.tomszo.watchsports_0.1.0_all.ipk](hu.tomszo.watchsports_0.1.0_all.ipk)**
 
+## Acestrims (0.1.0, BÉTA)
+
+Egyszerű indító az **acestrims.pages.dev** műsoroldalhoz, ugyanúgy, mint a WatchSports: az
+app az oldalt nyitja meg a saját ablakában. Vissza: az oldalon belül vissza, a kezdőoldalon
+kilépés.
+
+- Telepítés: ugyanúgy, mint a Network4 –
+  **[hu.tomszo.acestrims_0.1.0_all.ipk](hu.tomszo.acestrims_0.1.0_all.ipk)**
+- Az oldal linkjei új ablakban (`target="_blank"`) nyílnak; a TV-n ez az app fölött új
+  ablakot nyithat – onnan a Vissza gombbal lehet visszalépni.
+
 ## Fejlesztőknek
 
 - `network4/app` – webes alkalmazás (HTML/JS), `network4/service` – Node.js szolgáltatás
@@ -185,6 +196,6 @@ felület vagy reklámszűrő.
   (sütis kérések, telefonos süti-párosítás PIN-nel, helyi videó-továbbító; belső hálózati
   címet nem kér le).
 - `streamed/app` – webes alkalmazás, szolgáltatás nélkül (a streamed.pk API CORS-t enged).
-- `streamsports99/app`, `watchsports/app` – csak egy indítóoldal, ami a webhelyre navigál.
+- `streamsports99/app`, `watchsports/app`, `acestrims/app` – csak egy indítóoldal, ami a webhelyre navigál.
 - Építés: `sh privat/webos/build.sh` (vagy `… build.sh magyaranime`) → IPK-k + `apps.json`
   + manifestek.

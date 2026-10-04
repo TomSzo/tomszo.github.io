@@ -1,0 +1,13 @@
+{
+  "id": "hu.tomszo.acestrims",
+  "version": "0.1.0",
+  "vendor": "TomSzo",
+  "type": "web",
+  "main": "index.html",
+  "title": "Acestrims",
+  "icon": "icon.png",
+  "largeIcon": "largeIcon.png",
+  "bgColor": "#d9d9d9",
+  "resolution": "1920x1080",
+  "requiredPermissions": []
+}

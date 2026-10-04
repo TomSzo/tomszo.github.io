@@ -1,5 +1,5 @@
 #!/bin/sh
-# TomSzo webOS-alkalmazások (Network4, MagyarAnime, Streamed Sport, WatchSports, StreamSports99) - IPK-k építése és a Homebrew
+# TomSzo webOS-alkalmazások (Network4, MagyarAnime, Streamed Sport, WatchSports, Acestrims, StreamSports99) - IPK-k építése és a Homebrew
 # Channel-tároló frissítése.
 #
 # Kell hozzá: Node.js és a webOS CLI (npm install -g @webos-tools/cli), python3.
@@ -14,7 +14,7 @@
 set -eu
 
 cd "$(dirname "$0")"
-APPS="network4 magyaranime streamed watchsports"
+APPS="network4 magyaranime streamed watchsports acestrims"
 # a streamsports99 IPK-ja nincs a tárolóban; helyi építés: sh build.sh streamsports99
 BUILD=${*:-$APPS}
 
@@ -54,6 +54,9 @@ info = {
     'watchsports': ('WatchSports', 'WatchSports - a watchsports.su webhely indítója a TV-n '
                     '(az oldalt nyitja meg az app ablakában)',
                     'A watchsports.su megnyitása a TV-n'),
+    'acestrims': ('Acestrims', 'Acestrims - az acestrims.pages.dev webhely indítója a TV-n '
+                  '(az oldalt nyitja meg az app ablakában)',
+                  'Az acestrims.pages.dev megnyitása a TV-n'),
     'streamsports99': ('StreamSports99', 'StreamSports99 - a streamsports99.ru webhely '
                        'indítója a TV-n (az oldalt nyitja meg az app ablakában)',
                        'A streamsports99.ru megnyitása a TV-n'),
