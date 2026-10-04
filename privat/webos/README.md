@@ -160,8 +160,8 @@ forrás lejátszója nálunk hálózati hibát ad), ezért ezek vannak elöl.
 Egyszerű indító a **streamsports99.ru** webhelyhez: az app az oldalt nyitja meg a saját
 ablakában (teljes képernyőn), belépés nem kell.
 
-- Telepítés: ugyanúgy, mint a Network4 –
-  **[hu.tomszo.streamsports99_0.1.0_all.ipk](hu.tomszo.streamsports99_0.1.0_all.ipk)**
+- Az IPK nincs a tárolóban: építsd meg helyben (`sh privat/webos/build.sh streamsports99`),
+  majd telepítsd ugyanúgy, mint a Network4-et.
 - Kezelés: a **Magic Remote** mutatójával (kattintás), görgetés a görgővel / nyilakkal.
 - **Vissza:** az oldalon belül vissza; a kezdőoldalon kilépés az appból.
 - Az oldal nem engedi a beágyazást (X-Frame-Options), ezért nincs saját felület vagy
