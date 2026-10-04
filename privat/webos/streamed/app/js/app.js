@@ -38,6 +38,8 @@
 	var SETTINGS = [
 		{setting: 'adminOnly', ico: '✅', name: 'Csak működő (admin) adások',
 			help: 'a többi forrás hálózati hibát adhat'},
+		{setting: 'hideEnded', ico: '🏁', name: 'Befejezett meccsek elrejtése',
+			help: 'Sofascore és ESPN eredményei alapján'},
 		{setting: 'adblock', ico: '🛡', name: 'Reklámszűrő',
 			help: 'felugró ablakok és átirányítás tiltása'}
 	];
@@ -52,7 +54,7 @@
 	var matchReq = 0;
 	var streamReq = 0;
 	var liveFailed = false;
-	var opts = {adminOnly: true, adblock: true};
+	var opts = {adminOnly: true, hideEnded: true, adblock: true};
 	var playing = false;
 	var toastTimer = null;
 	var hintTimer = null;
@@ -85,11 +87,26 @@
 		return [day, pad(d.getHours()) + ':' + pad(d.getMinutes())];
 	}
 
-	function isLive(m) {
+	// a streamed.pk szerint élő-e (ez a befejezett meccseket is sokáig élőnek mutatja)
+	function listedLive(m) {
 		if (liveIds[m.id]) return true;
 		// ha az élő lista nem jött le: elkezdődött, és még 3 órán belül van
 		return liveFailed && m.date && m.date <= Date.now() && Date.now() - m.date < 3 * 3600000;
 	}
+
+	// valódi állapot: ESPN-eredmény, ha van; különben a sportág szokásos meccshossza
+	function matchInfo(m) {
+		var st = window.Scores ? window.Scores.status(m) : null;
+		if (st) {
+			return {live: st.state === 'in', ended: st.state === 'post', score: st.score,
+				detail: st.state === 'in' ? st.detail : ''};
+		}
+		var ended = !!m.date && m.date <= Date.now() && window.Scores &&
+			window.Scores.estimateEnded(m);
+		return {live: !ended && listedLive(m), ended: !!ended, score: '', detail: ''};
+	}
+
+	function isLive(m) { return matchInfo(m).live; }
 
 	function hasAdmin(m) {
 		return (m.sources || []).some(function (s) { return s.source === 'admin'; });
@@ -215,8 +232,12 @@
 	function renderMatch(m) {
 		var n = el('div', 'item');
 		var when = el('div', 'when');
-		if (isLive(m)) {
-			when.appendChild(el('span', 'live-badge', 'ÉLŐ'));
+		var info = matchInfo(m);
+		if (info.live || info.ended) {
+			when.appendChild(el('span', info.live ? 'live-badge' : 'live-badge ended', info.live ? 'ÉLŐ' : 'VÉGE'));
+			if (info.score) when.appendChild(el('div', 'score', info.score));
+		} else if (!m.date) {
+			when.appendChild(el('span', 'live-badge chan', '0–24'));
 		} else {
 			var w = whenText(m.date);
 			when.appendChild(el('div', '', w[0]));
@@ -225,7 +246,7 @@
 		n.appendChild(when);
 		var main = el('div', 'main');
 		main.appendChild(el('div', 't', m.title));
-		var sub = el('div', 's', sportName(m.category));
+		var sub = el('div', 's', sportName(m.category) + (info.detail ? ' · ' + info.detail : ''));
 		if (hasAdmin(m)) {
 			sub.appendChild(el('span', 'ok', ' · ✓ indítható'));
 		} else {
@@ -275,7 +296,11 @@
 		hero.querySelector('.hero-cat').textContent = sportName(m.category);
 		hero.querySelector('.hero-title').textContent = m.title;
 		var w = whenText(m.date);
-		hero.querySelector('.hero-time').textContent = isLive(m) ? '● Élőben' : (w[0] + ' ' + w[1]);
+		var info = matchInfo(m);
+		hero.querySelector('.hero-time').textContent = info.live ?
+			'● Élőben' + (info.score ? ' · ' + info.score : '') + (info.detail ? ' · ' + info.detail : '') :
+			info.ended ? 'Véget ért' + (info.score ? ' · ' + info.score : '') :
+			!m.date ? '0–24 órás csatorna' : (w[0] + ' ' + w[1]);
 		hero.className = 'on';
 	}
 
@@ -317,29 +342,47 @@
 		Promise.all([getJSON(cat.url), refreshLive()]).then(function (res) {
 			if (my !== matchReq) return;
 			var all = res[0] || [];
-			var list = opts.adminOnly ? all.filter(hasAdmin) : all.slice();
-			list.sort(function (a, b) {
-				var la = isLive(a) ? 0 : 1, lb = isLive(b) ? 0 : 1;
-				if (la !== lb) return la - lb;
-				var aa = hasAdmin(a) ? 0 : 1, ab = hasAdmin(b) ? 0 : 1;
-				if (aa !== ab) return aa - ab;
-				if (cat.id === 'popular' && la === 0) return (b.viewers || 0) - (a.viewers || 0);
-				return (a.date || 0) - (b.date || 0);
+			showMatches(cat, all, keep);
+			// ESPN-állapot az elkezdett meccsekhez; ha megjött, újrarajzolás
+			var cats = [];
+			all.forEach(function (m) {
+				if (m.date && m.date <= Date.now() + 600000 && cats.indexOf(m.category) < 0) cats.push(m.category);
 			});
-			var prev = keep && current(1);
-			matches = list;
-			fill(1, list, false, all.length ? 'Itt most nincs admin adású meccs (a „Csak működő adások” kikapcsolásával a többi is látszik)' : 'Nincs meccs ebben a kategóriában');
-			if (prev) {
-				for (var i = 0; i < list.length; i++) if (list[i].id === prev.id) { select(1, i, true); break; }
+			if (window.Scores && cats.length) {
+				window.Scores.remember(cats).then(function () {
+					if (my === matchReq) showMatches(cat, all, true);
+				});
 			}
-			var live = list.filter(isLive).length;
-			status(cat.name + ' · ' + list.length + ' meccs' + (live ? ' · ' + live + ' élő' : ''));
-			if (cols[1].items.length && active === 1) showHero(current(1));
 		}).catch(function (e) {
 			if (my !== matchReq) return;
 			fill(1, [], false, 'Hiba a betöltéskor: ' + e.message);
 			status('');
 		});
+	}
+
+	function showMatches(cat, all, keep) {
+		var list = all.filter(function (m) {
+			if (opts.adminOnly && !hasAdmin(m)) return false;
+			if (opts.hideEnded && matchInfo(m).ended) return false;
+			return true;
+		});
+		list.sort(function (a, b) {
+			var la = isLive(a) ? 0 : 1, lb = isLive(b) ? 0 : 1;
+			if (la !== lb) return la - lb;
+			var aa = hasAdmin(a) ? 0 : 1, ab = hasAdmin(b) ? 0 : 1;
+			if (aa !== ab) return aa - ab;
+			if (cat.id === 'popular' && la === 0) return (b.viewers || 0) - (a.viewers || 0);
+			return (a.date || 0) - (b.date || 0);
+		});
+		var prev = keep && current(1);
+		matches = list;
+		fill(1, list, false, all.length ? 'Itt most nincs megjeleníthető meccs (a beállításokkal – a kategóriák alján – a többi is látszik)' : 'Nincs meccs ebben a kategóriában');
+		if (prev) {
+			for (var i = 0; i < list.length; i++) if (list[i].id === prev.id) { select(1, i, true); break; }
+		}
+		var live = list.filter(isLive).length;
+		status(cat.name + ' · ' + list.length + ' meccs' + (live ? ' · ' + live + ' élő' : ''));
+		if (cols[1].items.length && active === 1) showHero(current(1));
 	}
 
 	function loadStreams(m) {
@@ -441,7 +484,7 @@
 			try { localStorage.setItem(k, opts[k] ? '1' : '0'); } catch (e) {}
 			fill(0, categories, true);
 			toast(it.name + (opts[k] ? ' bekapcsolva' : ' kikapcsolva'));
-			if (k === 'adminOnly' && curCat) loadMatches(curCat);
+			if ((k === 'adminOnly' || k === 'hideEnded') && curCat) loadMatches(curCat);
 			return;
 		}
 		if (active === 0) {

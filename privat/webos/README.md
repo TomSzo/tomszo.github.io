@@ -121,16 +121,22 @@ a lejátszás alapból a háttérszolgáltatás **helyi videó-továbbítóján*
 Ha valami nem indul: **Beállítások → Videó-továbbító: Ki**, illetve **Lejátszó: webOS
 beépített**.
 
-## Streamed Sport (0.1.1, BÉTA)
+## Streamed Sport (0.1.2, BÉTA)
 
 A [streamed-tui](https://github.com/Salastil/streamed-tui) (Salastil, GPL-3.0) TV-s
 változata: a **streamed.pk** sportműsora három oszlopban – kategóriák | meccsek | adások.
 Belépés nem kell.
 
 - Telepítés: ugyanúgy, mint a Network4 –
-  **[hu.tomszo.streamed_0.1.1_all.ipk](hu.tomszo.streamed_0.1.1_all.ipk)**
+  **[hu.tomszo.streamed_0.1.2_all.ipk](hu.tomszo.streamed_0.1.2_all.ipk)**
 - Kategóriák: **Élő most**, **Népszerű**, **Mai műsor**, és sportáganként (magyar
   nevekkel). Az élő meccsek elöl, piros **ÉLŐ** jelzéssel; a lista percenként frissül.
+- **Élő állás és befejezett meccsek:** a **Sofascore** (élő meccsek, állás, játékrész –
+  szinte minden sportág) és az **ESPN** (foci, NFL, NBA/WNBA, NHL, MLB, UFC) eredményei
+  alapján. Az élő meccseknél az ÉLŐ jelzés alatt az állás, mellette pl. „67. perc” /
+  „2. negyed”. A **Befejezett meccsek elrejtése** (alapból BE) kiszedi a már véget ért
+  meccseket, amiket a streamed.pk még élőként mutat; amit egyik forrás sem ismer (pl.
+  darts-napok), annál a sportág szokásos meccshossza dönt.
 - Adások: nyelv, HD-jelzés, forrás, nézőszám – nézőszám szerint, a legnézettebb elöl.
 - **Csak működő (admin) adások** (a kategóriák alján, alapból BE): a TV-n az **ADMIN**
   forrású adások indulnak, a többi forrás hálózati hibát (-102 / -107) adhat. Bekapcsolva
