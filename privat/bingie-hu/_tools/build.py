@@ -31,7 +31,7 @@ CACHE = os.environ.get('BINGIE_CACHE', os.path.join(os.path.expanduser('~'), '.c
 UPSTREAM = 'https://raw.githubusercontent.com/matke-84/repository.bingie/main/omega/'
 SUFFIX = '.1'                                # a magyar kiadás sorszáma (alap)
 # kiegészítőnként eltérő sorszám, ha egy csomag újabb magyar kiadást kapott
-REVISION = {'skin.bingie': '.2', 'plugin.video.tmdb.bingie.helper': '.2', 'script.module.bingie': '.2'}
+REVISION = {'skin.bingie': '.2', 'plugin.video.tmdb.bingie.helper': '.3', 'script.module.bingie': '.2'}
 # ezeket nem építjük újra (nincs bennük szöveg) – a matke-tárolóból jönnek
 SKIP = {'repository.bingie', 'resource.images.studios.coloured'}
 HELP_BASE = 33000                            # kiegészítők: új súgó-szövegazonosítók innen
@@ -251,6 +251,57 @@ CODE_PATCHES = {
             return POLL_MIN_INCREMENT
         self._hu_idle = getattr(self, '_hu_idle', 0) + 1
         return POLL_MIN_INCREMENT if self._hu_idle < 10 else 0.35'''),
+        # magyar cím / leírás hiányában angol (a TMDb ilyenkor az eredeti, pl. japán/kínai/koreai
+        # címet adja, amit a Kodi betűtípusai sokszor nem is tudnak megjeleníteni)
+        ('resources/tmdbbingiehelper/lib/items/builder.py',
+         """            details = self.tmdb_api.get_details_request(tmdb_type, tmdb_id, season, episode, cache_refresh=cache_refresh)
+""",
+         """            details = self.tmdb_api.get_details_request(tmdb_type, tmdb_id, season, episode, cache_refresh=cache_refresh)
+            if details and season is None:
+                details = hu_latin_fallback(self.tmdb_api, tmdb_type, tmdb_id, details)
+"""),
+        ('resources/tmdbbingiehelper/lib/items/builder.py',
+         """        return f'v2.{language}.{tmdb_type}.{tmdb_id}.{season}.{episode}'""",
+         """        return f'v2hu1.{language}.{tmdb_type}.{tmdb_id}.{season}.{episode}'"""),
+        ('resources/tmdbbingiehelper/lib/items/builder.py', '\nCACHE_DAYS = 10000\n', '''
+CACHE_DAYS = 10000
+
+# minden, ami nem latin betű / írásjel / szám (TomSzo – magyar kiadás)
+HU_NONLATIN = re.compile('[^\\x00-\\x7f\\u00a0-\\u024f\\u1e00-\\u1eff\\u2000-\\u206f\\u20a0-\\u20cf\\u2100-\\u214f]')
+
+
+def hu_latin_fallback(tmdb_api, tmdb_type, tmdb_id, details):
+    """Ha a beállított nyelven nincs cím (a TMDb az eredeti, nem latin betűs címet adja) vagy
+    leírás, az angol fordítást használja. A fordításokat csak ilyenkor kéri le (gyorsítótárazva)."""
+    if tmdb_type not in ('movie', 'tv'):
+        return details
+    if (getattr(tmdb_api, 'iso_language', '') or 'en') == 'en':
+        return details
+    key = 'title' if tmdb_type == 'movie' else 'name'
+    need_title = bool(HU_NONLATIN.search(details.get(key) or ''))
+    need_plot = not details.get('overview')
+    if not need_title and not need_plot:
+        return details
+    try:
+        trans = (tmdb_api.get_request_lc(tmdb_type, tmdb_id, 'translations') or {}).get('translations') or []
+    except Exception:
+        return details
+
+    def pick(field):
+        for country in ('US', 'GB', None):
+            for t in trans:
+                if t.get('iso_639_1') != 'en' or (country and t.get('iso_3166_1') != country):
+                    continue
+                v = (t.get('data') or {}).get(field)
+                if v and (field == 'overview' or not HU_NONLATIN.search(v)):
+                    return v
+
+    if need_title:
+        details[key] = pick(key) or details.get(key)
+    if need_plot:
+        details['overview'] = pick('overview') or details.get('overview')
+    return details
+'''),
         ('resources/tmdbbingiehelper/lib/api/wikipedia/api.py', "Dialog().select('Links', links)",
          "Dialog().select('Hivatkozások', links)"),
         ('resources/tmdbbingiehelper/lib/api/wikipedia/api.py', "Dialog().select('Languages',",

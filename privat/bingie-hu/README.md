@@ -46,6 +46,14 @@ Mérve (Kodi-utánzattal, valódi TMDb / fanart.tv kérésekkel, 20 elemes widge
 - **Háttérfigyelő:** ha ~2 mp-ig nem változik a kijelölt elem, 0,2 helyett 0,35 mp-enként kérdez
   (kevesebb Kodi-hívás versenyez a kirajzolással); mozgatáskor azonnal visszagyorsul.
 
+## Angol cím magyar helyett hiányzó fordításnál (TMDb Bingie Helper 1.0.3.3)
+
+Ha egy filmnek vagy sorozatnak nincs magyar címe, a TMDb az eredetit adja (japán, kínai,
+koreai, hindi…), amit a skin betűtípusai sokszor nem is tudnak megjeleníteni. Ilyenkor a
+kiegészítő az **angol címet** használja (pl. 薬屋のひとりごと → *The Apothecary Diaries*), és
+ha nincs magyar leírás, az **angol leírást**. A fordításokat csak a hiányos elemekhez kéri le,
+gyorsítótárazva. A már tárolt elemek egyszer újraépülnek (az első betöltés ezért lassabb).
+
 ## Telepítés (AVDV / Kodi 21)
 
 1. Telepítsd a **matke-tárolót** is (a nem fordított függőségek, pl. a stúdiólogók onnan jönnek):
