@@ -1,0 +1,148 @@
+#32022	Videósor / adat
+#32025	Hangsor / adat
+#32033	N/A
+#32094	signde PPI
+#32111	Folyamatjelző sáv
+#32120	[COLOR=FFEDEDED]●[/COLOR] Fehér (alapértelmezett)
+#32121	[COLOR=FFE0E0E0]●[/COLOR] Világosszürke
+#32122	[COLOR=FFFF8A80]●[/COLOR] Világospiros
+#32123	[COLOR=FFFFCC80]●[/COLOR] Világosnarancs
+#32124	[COLOR=FFFFFF8D]●[/COLOR] Világossárga
+#32125	[COLOR=FFB9F6CA]●[/COLOR] Világoszöld
+#32126	[COLOR=FF84FFFF]●[/COLOR] Világoscián
+#32127	[COLOR=FF82B1FF]●[/COLOR] Világoskék
+#32128	[COLOR=FFE1BEE7]●[/COLOR] Világoslila
+#32129	[COLOR=FFFF80AB]●[/COLOR] Világos rózsaszín
+#32130	[COLOR=FF2A2E33]●[/COLOR] Szénszürke (alapértelmezett)
+#32131	[COLOR=FF000000]●[/COLOR] Fekete
+#32132	[COLOR=FF3A1414]●[/COLOR] Sötétpiros
+#32133	[COLOR=FF3A2A12]●[/COLOR] Sötétnarancs
+#32134	[COLOR=FF3A360F]●[/COLOR] Sötétsárga
+#32135	[COLOR=FF123A12]●[/COLOR] Sötétzöld
+#32136	[COLOR=FF0F3A3A]●[/COLOR] Sötétcián
+#32137	[COLOR=FF12203A]●[/COLOR] Sötétkék
+#32138	[COLOR=FF26123A]●[/COLOR] Sötétlila
+#32139	[COLOR=FF444444]●[/COLOR] Sötétszürke
+#32140	FPS
+#32150	[COLOR=FFFF8A65]●[/COLOR] Korall
+#32151	[COLOR=FFFFAB91]●[/COLOR] Lazac
+#32152	[COLOR=FFFFD54F]●[/COLOR] Borostyán
+#32153	[COLOR=FFFFE082]●[/COLOR] Arany
+#32154	[COLOR=FFCCFF90]●[/COLOR] Lime
+#32155	[COLOR=FFA7FFEB]●[/COLOR] Menta
+#32156	[COLOR=FF80CBC4]●[/COLOR] Kékeszöld
+#32157	[COLOR=FF80D8FF]●[/COLOR] Égkék
+#32158	[COLOR=FF40C4FF]●[/COLOR] Azúr
+#32159	[COLOR=FF8C9EFF]●[/COLOR] Indigó
+#32160	[COLOR=FFB388FF]●[/COLOR] Ibolya
+#32161	[COLOR=FFD1C4E9]●[/COLOR] Levendula
+#32162	[COLOR=FFEA80FC]●[/COLOR] Bíbor
+#32163	[COLOR=FFF48FB1]●[/COLOR] Fukszia
+#32164	[COLOR=FFF06292]●[/COLOR] Rózsa
+#32165	[COLOR=FFFF5252]●[/COLOR] Karmazsin
+#32166	[COLOR=FFBCAAA4]●[/COLOR] Barna
+#32167	[COLOR=FFDCE775]●[/COLOR] Olíva
+#32168	[COLOR=FFB0BEC5]●[/COLOR] Palaszürke
+#32169	[COLOR=FFCFD8DC]●[/COLOR] Ezüst
+#32170	[COLOR=FF0F3A36]●[/COLOR] Sötét kékeszöld
+#32171	[COLOR=FF0F2A3A]●[/COLOR] Sötét égkék
+#32172	[COLOR=FF1E2240]●[/COLOR] Sötét indigó
+#32173	[COLOR=FF2E1E40]●[/COLOR] Sötét ibolya
+#32174	[COLOR=FF3A1E3A]●[/COLOR] Sötét bíbor
+#32175	[COLOR=FF3A1E2C]●[/COLOR] Sötét rózsaszín
+#32176	[COLOR=FF3A1E24]●[/COLOR] Sötét rózsa
+#32177	[COLOR=FF3A2A1E]●[/COLOR] Sötét barna
+#32178	[COLOR=FF2A2E12]●[/COLOR] Sötét olíva
+#32179	[COLOR=FF223A12]●[/COLOR] Sötét lime
+#32180	[COLOR=FF123A28]●[/COLOR] Sötét menta
+#32181	[COLOR=FF12303A]●[/COLOR] Sötét azúr
+#32182	[COLOR=FF222E33]●[/COLOR] Sötét palaszürke
+#32183	[COLOR=FF12182E]●[/COLOR] Sötét tengerészkék
+#32184	[COLOR=FF3A1212]●[/COLOR] Sötét gesztenyebarna
+#32185	[COLOR=FF1A1A2A]●[/COLOR] Éjfél
+#32186	[COLOR=FF2E2418]●[/COLOR] Eszpresszó
+#32187	[COLOR=FF1E1E1E]●[/COLOR] Ónix
+#32188	[COLOR=FF2C2C30]●[/COLOR] Grafit
+#32189	[COLOR=FF2E343A]●[/COLOR] Acél
+#32192	cd/m²
+#32193	nit
+#32200	[COLOR=FFFFCCBC]●[/COLOR] Barack
+#32201	[COLOR=FFFFB74D]●[/COLOR] Mandarin
+#32202	[COLOR=FFE4C441]●[/COLOR] Mustár
+#32203	[COLOR=FFE6EE9C]●[/COLOR] Sárgászöld
+#32204	[COLOR=FF81C784]●[/COLOR] Erdőzöld
+#32205	[COLOR=FF69F0AE]●[/COLOR] Smaragd
+#32206	[COLOR=FFB2FF59]●[/COLOR] Tavaszi zöld
+#32207	[COLOR=FF18FFFF]●[/COLOR] Vízkék
+#32208	[COLOR=FF64FFDA]●[/COLOR] Türkiz
+#32209	[COLOR=FF4FC3F7]●[/COLOR] Azúrkék
+#32210	[COLOR=FF536DFE]●[/COLOR] Kobalt
+#32211	[COLOR=FFB39DDB]●[/COLOR] Meténg
+#32212	[COLOR=FFCE93D8]●[/COLOR] Szilva
+#32213	[COLOR=FFBA68C8]●[/COLOR] Orchidea
+#32214	[COLOR=FFFF4081]●[/COLOR] Málna
+#32215	[COLOR=FFFF5C8D]●[/COLOR] Görögdinnye
+#32216	[COLOR=FFFF6E40]●[/COLOR] Skarlát
+#32217	[COLOR=FFD7CCC8]●[/COLOR] Homok
+#32218	[COLOR=FFC5E1A5]●[/COLOR] Pisztácia
+#32219	[COLOR=FF90A4AE]●[/COLOR] Kadétkék
+#32220	[COLOR=FF3E2820]●[/COLOR] Sötét barack
+#32221	[COLOR=FF3E2C10]●[/COLOR] Sötét mandarin
+#32222	[COLOR=FF383010]●[/COLOR] Sötét mustár
+#32223	[COLOR=FF303814]●[/COLOR] Sötét sárgászöld
+#32224	[COLOR=FF1C3420]●[/COLOR] Sötét erdőzöld
+#32225	[COLOR=FF143424]●[/COLOR] Sötét smaragd
+#32226	[COLOR=FF203814]●[/COLOR] Sötét tavaszi zöld
+#32227	[COLOR=FF143838]●[/COLOR] Sötét vízkék
+#32228	[COLOR=FF143830]●[/COLOR] Sötét türkiz
+#32229	[COLOR=FF142C3E]●[/COLOR] Sötét azúrkék
+#32230	[COLOR=FF1C2040]●[/COLOR] Sötét kobalt
+#32231	[COLOR=FF2A2040]●[/COLOR] Sötét meténg
+#32232	[COLOR=FF341E38]●[/COLOR] Sötét szilva
+#32233	[COLOR=FF301C34]●[/COLOR] Sötét orchidea
+#32234	[COLOR=FF3E1428]●[/COLOR] Sötét málna
+#32235	[COLOR=FF3E1424]●[/COLOR] Sötét görögdinnye
+#32236	[COLOR=FF3E1C14]●[/COLOR] Sötét skarlát
+#32237	[COLOR=FF342E28]●[/COLOR] Sötét homok
+#32238	[COLOR=FF28341C]●[/COLOR] Sötét pisztácia
+#32239	[COLOR=FF242E34]●[/COLOR] Sötét kadétkék
+#32241	HEX szín
+#32283	[COLOR=FFEDEDED]●[/COLOR] Fehér
+#32284	[COLOR=FF81C784]●[/COLOR] Erdőzöld (alapértelmezett)
+#32285	[COLOR=FFFF5252]●[/COLOR] Karmazsin (alapértelmezett)
+#32286	[COLOR=FFFFB74D]●[/COLOR] Mandarin (alapértelmezett)
+#32296	HDR10 MDL
+#32297	HDR10 CLL/FALL
+#32298	L6 MDL
+#32299	L6 MaxCLL/FALL
+#32375	L1 fény min/max/Ø
+#32376	L1 PQ min/max/Ø
+#32397	[COLOR=FF82B1FF]●[/COLOR] Világoskék (alapértelmezett)
+#32520	Letterbox eltolás
+#32521	Kodek
+#32522	Váltottsoros feldolgozás
+#32523	VS10 / VP mód
+#32524	VS10 állapot
+#32525	EOTF és színtér
+#32526	Színtér
+#32527	Objektumok
+#32528	Párbeszéd-normalizálás
+#32529	AML FPS
+#32530	Videósor
+#32531	Videósor adat
+#32532	Hangsor
+#32533	Hangsor adat
+#32534	Szint
+#32535	Forrás min/max
+#32536	Forrás PQ
+#32537	Videómód
+#32538	Kimeneti formátum
+#32539	Player Process Info mód
+#32540	A Player Process Info háttérstílusa.
+#32541	Klasszikus
+#32542	Modern
+#32543	Dolby Vision jelző helye
+#32544	A Dolby Vision rétegjelző a videó logó fölé vagy a hang logó alá kerüljön.
+#32545	Alul
+#32546	Felül
+#32547	Dekódolt kimenet
