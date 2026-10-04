@@ -14,8 +14,9 @@
 set -eu
 
 cd "$(dirname "$0")"
-APPS="network4 magyaranime streamed watchsports acestrims"
-# a streamsports99 IPK-ja nincs a tárolóban; helyi építés: sh build.sh streamsports99
+APPS="network4 magyaranime streamed watchsports"
+# a streamsports99 és az acestrims IPK-ja nincs a tárolóban; helyi építés:
+# sh build.sh streamsports99 / sh build.sh acestrims
 BUILD=${*:-$APPS}
 
 for name in $BUILD; do

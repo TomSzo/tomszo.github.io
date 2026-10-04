@@ -183,8 +183,8 @@ Egyszerű indító az **acestrims.pages.dev** műsoroldalhoz, ugyanúgy, mint a 
 app az oldalt nyitja meg a saját ablakában. Vissza: az oldalon belül vissza, a kezdőoldalon
 kilépés.
 
-- Telepítés: ugyanúgy, mint a Network4 –
-  **[hu.tomszo.acestrims_0.1.0_all.ipk](hu.tomszo.acestrims_0.1.0_all.ipk)**
+- Az IPK nincs a tárolóban: építsd meg helyben (`sh privat/webos/build.sh acestrims`),
+  majd telepítsd ugyanúgy, mint a Network4-et.
 - Az oldal linkjei új ablakban (`target="_blank"`) nyílnak; a TV-n ez az app fölött új
   ablakot nyithat – onnan a Vissza gombbal lehet visszalépni.
 
