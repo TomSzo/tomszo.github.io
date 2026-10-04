@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="hu">
+<head>
+<meta charset="utf-8">
+<title>WatchSports</title>
+<style>
+html,body{margin:0;height:100%;background:#2d2c41;color:#fff;font:32px/1.4 sans-serif}
+body{display:flex;align-items:center;justify-content:center;text-align:center}
+small{display:block;margin-top:16px;font-size:22px;color:#9aa3b5}
+</style>
+<script>
+/*
+ * Indító: a watchsports.su webhelyet nyitja meg az app ablakában.
+ * Az oldal nem engedi a beágyazást (X-Frame-Options: SAMEORIGIN), ezért nem
+ * iframe-ben fut, hanem az app közvetlenül oda navigál. A location.replace nem hagy
+ * history-bejegyzést, így a Vissza gomb az oldalon belül lép vissza, a kezdőoldalon
+ * pedig kilép az appból (nincs disableBackHistoryAPI).
+ */
+var URL = 'https://watchsports.su/';
+window.onload = function () {
+	if (navigator.onLine === false) {
+		document.getElementById('msg').innerHTML = 'Nincs internetkapcsolat.<small>Ellenőrizd a hálózatot, és indítsd újra az appot.</small>';
+		return;
+	}
+	location.replace(URL);
+};
+</script>
+</head>
+<body><div id="msg">WatchSports betöltése…<small>Vissza gomb: vissza / kilépés</small></div></body>
+</html>

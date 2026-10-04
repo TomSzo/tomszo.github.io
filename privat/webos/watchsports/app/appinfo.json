@@ -1,0 +1,13 @@
+{
+  "id": "hu.tomszo.watchsports",
+  "version": "0.1.0",
+  "vendor": "TomSzo",
+  "type": "web",
+  "main": "index.html",
+  "title": "WatchSports",
+  "icon": "icon.png",
+  "largeIcon": "largeIcon.png",
+  "bgColor": "#2d2c41",
+  "resolution": "1920x1080",
+  "requiredPermissions": []
+}

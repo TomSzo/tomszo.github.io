@@ -19,6 +19,7 @@
 | **MagyarAnime (LG webOS TV)** | MagyarAnime a TV-n, fejlesztői módban – lásd [webos/README.md](webos/README.md) | saját fiók (süti, telefonról PIN-nel) |
 | **Streamed Sport (LG webOS TV)** | streamed.pk élő sportműsor a TV-n (a streamed-tui webOS-változata) – lásd [webos/README.md](webos/README.md) | – |
 | **StreamSports99 (LG webOS TV)** | a streamsports99.ru megnyitása a TV-n (indító) – lásd [webos/README.md](webos/README.md) | – |
+| **WatchSports (LG webOS TV)** | a watchsports.su megnyitása a TV-n (indító) – lásd [webos/README.md](webos/README.md) | – |
 | **Network4 (LG webOS TV)** | Network4 / Arena4+ a TV-n, fejlesztői módban – lásd [webos/README.md](webos/README.md) | saját fiók (email/jelszó) |
 
 ## Miért nem működik másnál?
