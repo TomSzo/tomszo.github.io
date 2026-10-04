@@ -577,3 +577,101 @@
 31577	Hardveres dekódolás
 31578	Widget
 31579	Lejátszás-ikon színe
+31900	Megjelenítési mód
+31901	Videómód
+31902	Színtér
+31903	Mb/s
+31904	Videó bitmélysége
+31905	Dekóder
+31906	VS10 | VP mód
+31907	Feldolgozás
+31908	Videósor
+31909	Videósor adatai
+31910	Hangsor
+31911	Hangsor adatai
+31912	Kb/s
+31913	Lejátszási idő
+31914	Processzor
+31915	Metaadatok
+31916	Profil
+31917	Szint
+31918	RPU
+31919	Alapréteg (BL)
+31920	Kiegészítő réteg (EL)
+31921	CMv2.9 -> CMv4.0
+31922	Metaadatok
+31923	Kimeneti formátum
+31924	Képarány
+31925	HDR10 MDL
+31926	HDR10 MaxCLL/FALL
+31927	Médiaforrás
+31928	Ismeretlen
+31929	Be
+31930	Ki
+31931	Váltottsoros feldolgozás
+31932	Lejátszó gyorsítótára
+31933	N/A
+31934	Memóriahasználat
+31935	Közvetlen kimenet (passthrough)
+31936	AML FPS
+31937	Dolby Vision
+31938	Metaadatok
+31939	Statikus HDR-metaadatok
+31940	cd/m²
+31941	RPU MDL
+31942	RPU MaxCLL/FALL
+31943	FLL MIN / MAX / Ø
+31944	PQ  MIN / MAX / Ø
+31945	12 bites
+31946	Kodek
+31947	Bitráta
+31948	VS10 állapota
+31951	Bemenet
+31952	Hang nyelve
+31953	Felirat nyelve
+31954	Videó
+31955	Kimenet
+31956	Hang
+31957	Bal felül
+31958	Középen felül
+31959	Jobb felül
+31960	Kodeklogók (OSD)
+31961	Kodeklogók (lejátszási infó)
+31962	Kodeklogók (indításkor)
+31963	Kodeklogók helyzete
+31964	Eredeti
+31965	VS10
+31966	Hangkodek
+31967	L5 aktív eltolások
+31968	Verzió
+31969	Bitmélység
+31970	EOTF és színtartomány
+31971	- Időtartam
+31972	- Útvonal megjelenítése
+31973	Képstílus
+31974	Lejátszási infó típusa
+31975	másodperc
+31976	- Fájlnév megjelenítése
+31977	Modern
+31978	Klasszikus
+31979	Eredeti
+31980	VHS-borító
+31981	Fájlnév megjelenítése a verzióválasztóban
+31982	Videó OSD testreszabása
+31983	Videó-adatlap testreszabása
+31984	Kétsoros infósáv megjelenítése
+31985	Lemezkép (discart)
+31986	Forgó lemez
+31987	Dekódolás
+31988	Rendszer
+31989	Infósor
+31990	sikertelen
+31991	észlelve
+31992	kihagyva
+31993	fut
+31995	Letterbox-eltolás
+31996	Párbeszéd-normalizálás
+31997	L6 MDL
+31998	Forrás PQ
+31999	Objektumok
+31994	Hangcsatorna-elrendezés képének megjelenítése
