@@ -1,7 +1,13 @@
 # Bingie – magyar változat (privát)
 
-A [matke-84/repository.bingie](https://github.com/matke-84/repository.bingie) Kodi 21-es (Omega)
-Bingie skinjének és kiegészítőinek **teljes magyar fordítása, magyar súgóval**.
+A Kodi 21-es (Omega) Bingie skin és kiegészítőinek **teljes magyar fordítása, magyar súgóval**.
+
+**Alap:** a skin (`skin.bingie`) és a TMDb Bingie Helper a [signde tárolóból](https://signde.github.io/repository.signde/)
+jön (AVDV/CoreELEC-re igazított változat: tinyppi-bekötés, Atmos / DTS:X / HDR10+ jelölők,
+Wikipédia-javítás), a többi kiegészítő a [matke-84/repository.bingie](https://github.com/matke-84/repository.bingie)
+tárolóból (a signde-ben ezek tartalomra azonosak). A magyar verziók a signde verziói fölött
+vannak (pl. skin 39.2.0.2 → **39.2.0.2.1**, TMDb Helper 2.1.0.3 → **2.1.0.3.1**), így a Kodi akkor is
+a magyar változatot választja, ha a signde-tároló is telepítve van.
 
 ## Mi van benne?
 
@@ -70,9 +76,9 @@ signde tároló → Telepítés tárolóból → signde repository → **signde 
 
 ## Telepítés (AVDV / Kodi 21)
 
-1. Telepítsd a **matke-tárolót** is (a nem fordított függőségek, pl. a stúdiólogók onnan jönnek):
-   Fájlkezelő → Forrás hozzáadása: `https://matke-84.github.io/repository.bingie/repository.bingie/`
-   → Kiegészítők → Telepítés ZIP fájlból → `repository.bingie-1.0.0.zip`.
+1. Telepítsd a **signde-tárolót** (a skin kötelező függősége, a signde PPI / tinyppi, és a stúdiólogók
+   onnan jönnek): Fájlkezelő → Forrás hozzáadása: `https://signde.github.io/repository.signde/`
+   → Kiegészítők → Telepítés ZIP fájlból → a signde repository zipje.
 2. Legyen fent a **TomSzo Privát Tároló** (lásd a [fő README-t](../README.md)).
 3. Kiegészítők → Telepítés tárolóból → **TomSzo Privát Tároló** → Skin → **Bingie**
    (2.0.2.1). A függőségeket a Kodi magától felteszi, a magyar változatokat ebből a tárolóból.

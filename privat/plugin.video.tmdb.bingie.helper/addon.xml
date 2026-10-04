@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <addon id="plugin.video.tmdb.bingie.helper"
-version="1.0.3.3"
+version="2.1.0.3.1"
 name="TMDb Bingie Helper"
 provider-name="jurialmunkey,matke">
 <requires>
@@ -28,7 +28,10 @@ provider-name="jurialmunkey,matke">
   <description lang="en_GB">TMDb Bingie Helper provides details about movies, tvshows and actors from TMDb. Users can access a variety of lists from TMDb TVDb MDbList and Trakt.</description>
   <disclaimer lang="en_GB">Data provided by TMDb TVDb MDbList OMDb FanartTV and Trakt. Some of the information is provided by TheTVDB.com. Please consider supporting them. https://thetvdb.com/subscribe</disclaimer>
   <license>GPL-3.0-or-later</license>
-  <website>https://github.com/matke-84/plugin.video.tmdb.bingie.helper</website>
+  <website>https://github.com/signde/plugin.video.tmdb.bingie.helper</website>
+  <news>
+    [I][COLOR FFFF9800]v2.1.0.3[/COLOR][/I][CR]- Updated to upstream v1.0.3[CR]- Fixed Trakt sync pagination and progress data[CR]- Restored Wikipedia and added language selection[CR]- Improved cache and API response handling
+  </news>
   <assets>
     <icon>icon.png</icon>
     <fanart>fanart.jpg</fanart>

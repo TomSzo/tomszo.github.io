@@ -29,9 +29,13 @@ PRIVAT = os.path.dirname(BASE)               # privat
 FORD = os.path.join(BASE, 'forditas')
 CACHE = os.environ.get('BINGIE_CACHE', os.path.join(os.path.expanduser('~'), '.cache', 'bingie-hu'))
 UPSTREAM = 'https://raw.githubusercontent.com/matke-84/repository.bingie/main/omega/'
+# a signde (AVDV/CoreELEC) tárolója: a skin és a TMDb Bingie Helper innen jön – a matke-féle
+# csomagokra épül, AVDV-s kiegészítésekkel (tinyppi, Atmos/DTS:X/HDR10+ jelölők, Wikipédia-javítás)
+SIGNDE = 'https://signde.github.io/repository.signde/addons/zips/'
+FROM_SIGNDE = {'skin.bingie', 'plugin.video.tmdb.bingie.helper'}
 SUFFIX = '.1'                                # a magyar kiadás sorszáma (alap)
 # kiegészítőnként eltérő sorszám, ha egy csomag újabb magyar kiadást kapott
-REVISION = {'skin.bingie': '.3', 'plugin.video.tmdb.bingie.helper': '.3', 'script.module.bingie': '.2'}
+REVISION = {'skin.bingie': '.1', 'plugin.video.tmdb.bingie.helper': '.1', 'script.module.bingie': '.2'}
 # ezeket nem építjük újra (nincs bennük szöveg) – a matke-tárolóból jönnek
 SKIP = {'repository.bingie', 'resource.images.studios.coloured'}
 HELP_BASE = 33000                            # kiegészítők: új súgó-szövegazonosítók innen
@@ -62,13 +66,10 @@ def read_tsv(name):
 
 
 def po_entries(text):
-    """(msgctxt, msgid) párok egy .po fájlból, sorrendben."""
+    """(msgctxt, msgid) párok egy .po fájlból, sorrendben (üres sor nélküli blokkokat is kezel)."""
     out = []
-    for blk in re.split(r'\n\s*\n', text):
-        c = re.search(r'msgctxt "([^"]*)"', blk)
-        m = re.search(r'msgid ((?:"(?:[^"\\]|\\.)*"\s*)+)', blk)
-        if c and m:
-            out.append((c.group(1), ''.join(re.findall(r'"((?:[^"\\]|\\.)*)"', m.group(1)))))
+    for m in re.finditer(r'msgctxt "([^"]*)"\s*\nmsgid ((?:"(?:[^"\\]|\\.)*"\s*)+)', text):
+        out.append((m.group(1), ''.join(re.findall(r'"((?:[^"\\]|\\.)*)"', m.group(2)))))
     return out
 
 
@@ -520,6 +521,8 @@ def skin_tinyppi(pkg):
     a lejátszási infó (PlayerProcessInfo) ablak a tinyppit nyitja, az OSD-n VS10-gomb.
     Ha a tinyppi nincs telepítve, minden marad a régiben."""
     s = pkg.get('1080i/DialogPlayerProcessInfo.xml')
+    if TINYPPI in s:                         # a signde-féle skinben már be van kötve
+        return
     s = replace_once(s, '<window>\n', '<window>\n'
                      '\t<!-- signde PPI (tinyppi), ha telepítve van; különben a skin saját ablaka -->\n'
                      '\t<onload condition="%s">RunScript(%s)</onload>\n'
@@ -605,15 +608,29 @@ def patch_addon_xml(pkg, version):
 
 
 # --- fő folyamat --------------------------------------------------------------------------
-def main():
-    up_xml = fetch(UPSTREAM + 'addons.xml', os.path.join(CACHE, 'addons.xml'))
-    root = ET.parse(up_xml).getroot()
-    built = []
-    for a in root:
-        aid, ver = a.get('id'), a.get('version')
+def upstream_list():
+    """(id, verzió, alap-URL) a matke-tárolóból; a FROM_SIGNDE csomagok a signde-tárolóból."""
+    matke = ET.parse(fetch(UPSTREAM + 'addons.xml', os.path.join(CACHE, 'addons.xml'))).getroot()
+    signde = ET.parse(fetch(SIGNDE + 'addons.xml', os.path.join(CACHE, 'signde-addons.xml'))).getroot()
+    sver = {a.get('id'): a.get('version') for a in signde}
+    out = []
+    for a in matke:
+        aid = a.get('id')
         if aid in SKIP:
             continue
-        zpath = fetch('%s%s/%s-%s.zip' % (UPSTREAM, aid, aid, ver), os.path.join(CACHE, '%s-%s.zip' % (aid, ver)))
+        if aid in FROM_SIGNDE:
+            if aid not in sver:
+                raise SystemExit('A signde-tárolóban nincs: %s' % aid)
+            out.append((aid, sver[aid], SIGNDE))
+        else:
+            out.append((aid, a.get('version'), UPSTREAM))
+    return out
+
+
+def main():
+    built = []
+    for aid, ver, base in upstream_list():
+        zpath = fetch('%s%s/%s-%s.zip' % (base, aid, aid, ver), os.path.join(CACHE, '%s-%s.zip' % (aid, ver)))
         with zipfile.ZipFile(zpath) as z:
             files = {n: z.read(n) for n in z.namelist() if not n.endswith('/')}
         pkg = Pkg(aid, files)
