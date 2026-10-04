@@ -1,4 +1,4 @@
-# TomSzo LG webOS-alkalmazások – Network4, MagyarAnime és Streamed Sport (BÉTA, privát)
+# TomSzo LG webOS-alkalmazások – Network4, MagyarAnime, Streamed Sport és StreamSports99 (BÉTA, privát)
 
 > **Személyes, privát alkalmazás** – a tulajdonos saját TV-jére és saját Network4 /
 > Arena4+ előfizetésére készült; nincs a nyilvános tárolóban hirdetve.
@@ -155,6 +155,18 @@ lejátszóoldala fut (ugyanúgy, mint böngészőben). Az **ADMIN** jelzésű ad
 szerint csak böngészőben mennek – a TV-n az appban viszont éppen ezek indulnak (a többi
 forrás lejátszója nálunk hálózati hibát ad), ezért ezek vannak elöl.
 
+## StreamSports99 (0.1.0, BÉTA)
+
+Egyszerű indító a **streamsports99.ru** webhelyhez: az app az oldalt nyitja meg a saját
+ablakában (teljes képernyőn), belépés nem kell.
+
+- Telepítés: ugyanúgy, mint a Network4 –
+  **[hu.tomszo.streamsports99_0.1.0_all.ipk](hu.tomszo.streamsports99_0.1.0_all.ipk)**
+- Kezelés: a **Magic Remote** mutatójával (kattintás), görgetés a görgővel / nyilakkal.
+- **Vissza:** az oldalon belül vissza; a kezdőoldalon kilépés az appból.
+- Az oldal nem engedi a beágyazást (X-Frame-Options), ezért nincs saját felület vagy
+  reklámszűrő – az app közvetlenül az oldalra navigál, ugyanúgy, mint a böngésző.
+
 ## Fejlesztőknek
 
 - `network4/app` – webes alkalmazás (HTML/JS), `network4/service` – Node.js szolgáltatás
@@ -163,5 +175,6 @@ forrás lejátszója nálunk hálózati hibát ad), ezért ezek vannak elöl.
   (sütis kérések, telefonos süti-párosítás PIN-nel, helyi videó-továbbító; belső hálózati
   címet nem kér le).
 - `streamed/app` – webes alkalmazás, szolgáltatás nélkül (a streamed.pk API CORS-t enged).
+- `streamsports99/app` – csak egy indítóoldal, ami a webhelyre navigál.
 - Építés: `sh privat/webos/build.sh` (vagy `… build.sh magyaranime`) → IPK-k + `apps.json`
   + manifestek.

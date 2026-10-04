@@ -1,5 +1,5 @@
 #!/bin/sh
-# TomSzo webOS-alkalmazások (Network4, MagyarAnime, Streamed Sport) - IPK-k építése és a Homebrew
+# TomSzo webOS-alkalmazások (Network4, MagyarAnime, Streamed Sport, StreamSports99) - IPK-k építése és a Homebrew
 # Channel-tároló frissítése.
 #
 # Kell hozzá: Node.js és a webOS CLI (npm install -g @webos-tools/cli), python3.
@@ -14,7 +14,7 @@
 set -eu
 
 cd "$(dirname "$0")"
-APPS="network4 magyaranime streamed"
+APPS="network4 magyaranime streamed streamsports99"
 BUILD=${*:-$APPS}
 
 for name in $BUILD; do
@@ -50,6 +50,9 @@ info = {
     'streamed': ('Streamed Sport', 'Streamed Sport - a streamed.pk sportműsora a TV-n '
                  '(a streamed-tui webOS-változata; alap: Salastil)',
                  'Élő sportközvetítések listája és lejátszása (streamed.pk)'),
+    'streamsports99': ('StreamSports99', 'StreamSports99 - a streamsports99.ru webhely '
+                       'indítója a TV-n (az oldalt nyitja meg az app ablakában)',
+                       'A streamsports99.ru megnyitása a TV-n'),
 }
 packages = []
 for name in sys.argv[1:]:
