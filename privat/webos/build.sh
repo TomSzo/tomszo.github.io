@@ -1,5 +1,5 @@
 #!/bin/sh
-# TomSzo webOS-alkalmazások (Network4, MagyarAnime) - IPK-k építése és a Homebrew
+# TomSzo webOS-alkalmazások (Network4, MagyarAnime, Streamed Sport) - IPK-k építése és a Homebrew
 # Channel-tároló frissítése.
 #
 # Kell hozzá: Node.js és a webOS CLI (npm install -g @webos-tools/cli), python3.
@@ -14,7 +14,7 @@
 set -eu
 
 cd "$(dirname "$0")"
-APPS="network4 magyaranime"
+APPS="network4 magyaranime streamed"
 BUILD=${*:-$APPS}
 
 for name in $BUILD; do
@@ -22,13 +22,17 @@ for name in $BUILD; do
 	SVC=$name/service
 	ID=$(python3 -c "import json;print(json.load(open('$APP/appinfo.json'))['id'])")
 	VERSION=$(python3 -c "import json;print(json.load(open('$APP/appinfo.json'))['version'])")
-	SVC_VERSION=$(python3 -c "import json;print(json.load(open('$SVC/package.json'))['version'])")
-	if [ "$VERSION" != "$SVC_VERSION" ]; then
-		echo "$name: eltérő verzió (appinfo.json $VERSION, service/package.json $SVC_VERSION)" >&2
-		exit 1
-	fi
 	rm -f "${ID}"_*.ipk
-	ares-package "$APP" "$SVC" -o . >/dev/null
+	if [ -d "$SVC" ]; then           # háttérszolgáltatás (nem minden appnak van)
+		SVC_VERSION=$(python3 -c "import json;print(json.load(open('$SVC/package.json'))['version'])")
+		if [ "$VERSION" != "$SVC_VERSION" ]; then
+			echo "$name: eltérő verzió (appinfo.json $VERSION, service/package.json $SVC_VERSION)" >&2
+			exit 1
+		fi
+		ares-package "$APP" "$SVC" -o . >/dev/null
+	else
+		ares-package "$APP" -o . >/dev/null
+	fi
 	test -f "${ID}_${VERSION}_all.ipk"
 done
 
@@ -43,6 +47,9 @@ info = {
     'magyaranime': ('MagyarAnime', 'MagyarAnime - privát kliens a saját fiókodhoz '
                     '(munkamenet-süti), a Kodi-kiegészítő TV-s változata',
                     'Anime a saját MagyarAnime-fiókoddal (privát)'),
+    'streamed': ('Streamed Sport', 'Streamed Sport - a streamed.pk sportműsora a TV-n '
+                 '(a streamed-tui webOS-változata; alap: Salastil)',
+                 'Élő sportközvetítések listája és lejátszása (streamed.pk)'),
 }
 packages = []
 for name in sys.argv[1:]:
