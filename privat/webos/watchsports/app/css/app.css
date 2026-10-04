@@ -214,3 +214,11 @@ html, body {
 	font-size: 26px; opacity: 0; transition: opacity 0.3s; pointer-events: none; max-width: 1500px;
 }
 #toast.on { opacity: 1; }
+
+/* elérhetőség-jelzés az adásokon */
+.st .tag.chk.wait { border-color: #444; color: var(--dim); }
+.st .tag.chk.ok { border-color: #2e7d4f; color: #46d369; }
+.st .tag.chk.bad { border-color: #8a2a2a; color: #ff6b6b; }
+.st .tag.chk.hide { display: none; }
+.st.off { opacity: 0.5; }
+.st.off.sel { opacity: 0.8; }
