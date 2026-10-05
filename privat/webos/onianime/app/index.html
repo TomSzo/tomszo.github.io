@@ -13,7 +13,10 @@
 	<div class="r-logo">O</div>
 	<div class="r-item" data-tab="search"><svg class="r-ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="7"/><path d="m20 20-4-4"/></svg><span class="r-lbl">Keresés</span></div>
 	<div class="r-item" data-tab="home"><svg class="r-ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M3 10.5 12 3l9 7.5V20a1 1 0 0 1-1 1h-5v-6H9v6H4a1 1 0 0 1-1-1z"/></svg><span class="r-lbl">Kezdőlap</span></div>
+	<div class="r-item" data-tab="catalog"><svg class="r-ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg><span class="r-lbl">Böngészés</span></div>
+	<div class="r-item" data-tab="schedule"><svg class="r-ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="17" rx="2"/><path d="M8 2v4M16 2v4M3 10h18"/></svg><span class="r-lbl">Menetrend</span></div>
 	<div class="r-item" data-tab="mylist"><svg class="r-ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M12 5v14M5 12h14"/></svg><span class="r-lbl">Listám</span></div>
+	<div class="r-item" data-tab="settings"><svg class="r-ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.7 1.7 0 0 0 .3 1.8l.1.1a2 2 0 1 1-2.8 2.8l-.1-.1a1.7 1.7 0 0 0-1.8-.3 1.7 1.7 0 0 0-1 1.5V21a2 2 0 1 1-4 0v-.1a1.7 1.7 0 0 0-1.1-1.5 1.7 1.7 0 0 0-1.8.3l-.1.1a2 2 0 1 1-2.8-2.8l.1-.1a1.7 1.7 0 0 0 .3-1.8 1.7 1.7 0 0 0-1.5-1H3a2 2 0 1 1 0-4h.1a1.7 1.7 0 0 0 1.5-1.1 1.7 1.7 0 0 0-.3-1.8l-.1-.1a2 2 0 1 1 2.8-2.8l.1.1a1.7 1.7 0 0 0 1.8.3H9a1.7 1.7 0 0 0 1-1.5V3a2 2 0 1 1 4 0v.1a1.7 1.7 0 0 0 1 1.5 1.7 1.7 0 0 0 1.8-.3l.1-.1a2 2 0 1 1 2.8 2.8l-.1.1a1.7 1.7 0 0 0-.3 1.8V9a1.7 1.7 0 0 0 1.5 1H21a2 2 0 1 1 0 4h-.1a1.7 1.7 0 0 0-1.5 1z"/></svg><span class="r-lbl">Beállítások</span></div>
 	<div class="r-clock" id="clock"></div>
 </nav>
 
@@ -35,6 +38,25 @@
 	<div class="s-bar"><svg class="s-ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><path d="m20 20-4-4"/></svg><input id="q" type="text" autocomplete="off" spellcheck="false" placeholder="Cím, japán vagy angol név…"></div>
 	<div class="s-info"></div>
 	<div class="s-grid"><div class="s-grid-inner"></div></div>
+</div>
+
+<div id="catalog">
+	<div class="c-bar"></div>
+	<div class="c-info"></div>
+	<div class="c-grid"><div class="c-grid-inner"></div></div>
+</div>
+
+<div id="schedule">
+	<h1 class="sc-title">Menetrend</h1>
+	<div class="sc-days"></div>
+	<div class="sc-info"></div>
+	<div class="sc-list"><div class="sc-list-inner"></div></div>
+</div>
+
+<div id="settings">
+	<h1 class="st-title">Beállítások</h1>
+	<div class="st-list"><div class="st-list-inner"></div></div>
+	<div class="st-msg"></div>
 </div>
 
 <div id="detail">
@@ -62,6 +84,7 @@
 	</div>
 	<div class="p-center"><div class="p-big">❚❚</div></div>
 	<div class="p-status"></div>
+	<div class="p-skip"></div>
 	<div class="p-bottom">
 		<div class="p-bar"><div class="p-buf"></div><div class="p-fill"></div><div class="p-knob"></div></div>
 		<div class="p-row">
@@ -93,6 +116,7 @@
 		<p class="cf-msg">▲▼◀▶ lépés · OK kiválasztás · kék gomb: ez a képernyő bármikor</p>
 	</div>
 </div>
+<div id="pop"><div class="pop-box"><div class="pop-title"></div><div class="pop-list"><div class="pop-inner"></div></div></div></div>
 <div id="loading"><div class="l-logo">ONI<b>ANIME</b></div><div class="spinner"></div></div>
 <div id="toast"></div>
 </body>
