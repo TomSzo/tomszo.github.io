@@ -845,7 +845,7 @@
 		var prog = progressOf(item.id);
 		detail = {item: item, info: null, full: null, eps: [], sel: 0, zone: 'actions', btn: 0, buttons: [],
 			type: (prog && prog.type) || store('lang', 'sub'), from: zone, focusEp: focusEp || 0, loading: true,
-			seasons: [], aid: 0, sequel: null, autoplay: false};
+			seasons: [], aid: 0, sequel: null, autoplay: false, fill: null};
 		$('.d-eps-title').textContent = 'Részek';
 		var q = $('#q');
 		if (document.activeElement === q) q.blur();
@@ -881,6 +881,7 @@
 			fillDetail();
 			renderEps();
 			loadSeasons();
+			loadFillers();
 			if (detail.autoplay && detail.eps.length) playEp(epNo(0), false);
 		});
 	}
@@ -1019,7 +1020,10 @@
 		var d = detail;
 		var inner = $('.d-track-inner');
 		inner.innerHTML = '';
-		$('.d-eps .cnt').textContent = d.eps.length ? d.eps.length + ' rész' : '';
+		var nf = d.fill ? d.eps.filter(function (e) { return d.fill[e.ep] === 'filler'; }).length : 0;
+		$('.d-eps .cnt').textContent = d.eps.length ? d.eps.length + ' rész' + (nf ? ' · ebből ' + nf + ' filler' : '') : '';
+		// elrejtett filler mellett a kijelölés ne maradjon rejtett részen
+		if (hiddenEp(d, d.sel)) d.sel = stepEp(d, d.sel, 1);
 		var prog = progressOf(d.item.id) || {};
 		var seen = prog.seen || {};
 		var di = detailItem();
@@ -1037,6 +1041,8 @@
 			c.appendChild(el('div', 'shade'));
 			c.appendChild(el('div', 'no', String(e.ep)));
 			var avail = d.type === 'dub' ? e.hasDub : e.hasSub;
+			var fk = d.fill && d.fill[e.ep];
+			if (fk) c.appendChild(el('div', 'fill ' + fk, fk === 'filler' ? 'FILLER' : 'ÖSSZEFOGLALÓ'));
 			if (seen[e.ep]) c.appendChild(el('div', 'seen', '✓ MEGNÉZVE'));
 			else if (!avail) c.appendChild(el('div', 'seen', d.type === 'dub' ? 'CSAK FELIRAT' : 'CSAK SZINKRON'));
 			if (+prog.ep === +e.ep && prog.d && !prog.done) {
@@ -1049,6 +1055,7 @@
 			w.appendChild(c);
 			w.appendChild(el('div', 'et', e.title || e.ep + '. rész'));
 			w.appendChild(el('div', 'ed', e.description || ''));
+			if (fk === 'filler') w.setAttribute('data-fill', setting('fillermode', 'show'));
 			w.addEventListener('mouseenter', function () { d.zone = 'eps'; d.sel = i; paintDetail(); });
 			w.addEventListener('click', function () { d.sel = i; playEp(+e.ep, true); });
 			inner.appendChild(w);
@@ -1065,7 +1072,7 @@
 		$('.d-eps').className = 'd-eps' + (d.zone === 'eps' ? '' : ' idle');
 		var eps = $('.d-track-inner').children;
 		for (var i = 0; i < eps.length; i++) {
-			eps[i].className = 'ep' + (i === d.sel ? ' sel' : '');
+			eps[i].className = 'ep' + (i === d.sel ? ' sel' : '') + (eps[i].getAttribute('data-fill') ? ' f-' + eps[i].getAttribute('data-fill') : '');
 			// képek csak a látható környéken (170+ rész esetén sem tölt be mindent)
 			if (i >= d.sel - 3 && i <= d.sel + 8) {
 				var img = eps[i].querySelector('img[data-src]');
@@ -1076,10 +1083,24 @@
 				}
 			}
 		}
-		var w = 380 + 22;
-		var x = Math.max(0, d.sel - 1) * w;
-		var maxX = Math.max(0, eps.length * w - (1920 - 110 - 60));
+		// a kijelölt rész előtt egy rész látszik (elrejtett fillereknél is jó)
+		var cur = eps[d.sel];
+		var x = cur ? Math.max(0, cur.offsetLeft - 402) : 0;
+		var last = eps[eps.length - 1];
+		var maxX = last ? Math.max(0, last.offsetLeft + 380 - (1920 - 110 - 60)) : 0;
 		$('.d-track-inner').style.transform = 'translateX(' + (-clamp(x, 0, maxX)) + 'px)';
+	}
+
+	// „Filler részek: elrejtés” beállításnál a lépés átugorja őket
+	function hiddenEp(d, i) {
+		return !!(d.eps[i] && d.fill && d.fill[d.eps[i].ep] === 'filler' && setting('fillermode', 'show') === 'hide');
+	}
+
+	function stepEp(d, i, dir) {
+		var j = i + dir;
+		while (j >= 0 && j < d.eps.length && hiddenEp(d, j)) j += dir;
+		if (j < 0 || j >= d.eps.length) return hiddenEp(d, i) ? stepEp(d, i, -dir) : i;
+		return j;
 	}
 
 	function closeDetail() {
@@ -1106,8 +1127,8 @@
 			else if (k === KEY.DOWN) { if (d.eps.length) d.zone = 'eps'; }
 			else if (k === KEY.OK) { var b = d.buttons[d.btn]; if (b) b.act(); return; }
 		} else {
-			if (k === KEY.LEFT) d.sel = Math.max(0, d.sel - 1);
-			else if (k === KEY.RIGHT) d.sel = Math.min(d.eps.length - 1, d.sel + 1);
+			if (k === KEY.LEFT) d.sel = stepEp(d, d.sel, -1);
+			else if (k === KEY.RIGHT) d.sel = stepEp(d, d.sel, 1);
 			else if (k === KEY.RW || k === KEY.CHDOWN) d.sel = Math.max(0, d.sel - 10);
 			else if (k === KEY.FF || k === KEY.CHUP) d.sel = Math.min(d.eps.length - 1, d.sel + 10);
 			else if (k === KEY.UP) d.zone = 'actions';
@@ -1202,7 +1223,7 @@
 			(!prog.d || prog.t < prog.d - 30) ? prog.t : 0;
 		var di = detailItem();
 		P.ctx = {id: d.item.id, title: di.title, image: di.image, bg: di.bg, logo: di.logo, color: di.color,
-			atype: di.type, desc: di.desc, eps: d.eps, ep: +n, epInfo: e, type: type, mal: malId(d), sequel: d.sequel};
+			atype: di.type, desc: di.desc, eps: d.eps, ep: +n, epInfo: e, type: type, mal: malId(d), sequel: d.sequel, fill: d.fill};
 		openPlayer(resumeAt);
 	}
 
@@ -1214,7 +1235,7 @@
 		hideNext();
 		$('.p-anime').textContent = c.title;
 		$('.p-ep').textContent = c.ep + '. rész' + (c.epInfo && c.epInfo.title ? ': ' + c.epInfo.title : '') +
-			(c.type === 'dub' ? '  ·  szinkron' : '');
+			(c.type === 'dub' ? '  ·  szinkron' : '') + (c.fill && c.fill[c.ep] === 'filler' ? '  ·  filler' : '');
 		pstatus('Betöltés…');
 		P.video.removeAttribute('src');
 		P.video.load();
@@ -1299,9 +1320,11 @@
 		$('.p-left').textContent = d ? '-' + fmt(d - t) : '';
 	}
 
+	// következő rész; ha be van kapcsolva, a filler részeket átugorja
 	function nextEpOf(c) {
 		var next = null;
-		c.eps.forEach(function (x) { if (!next && +x.ep > c.ep) next = x; });
+		var skip = c.fill && setting('skipfiller', false);
+		c.eps.forEach(function (x) { if (!next && +x.ep > c.ep && !(skip && c.fill[x.ep] === 'filler')) next = x; });
 		return next;
 	}
 
@@ -1940,6 +1963,13 @@
 		r.push({label: 'Intro és összefoglaló automatikus átugrása', toggle: 'autoskip', def: false,
 			note: 'Kikapcsolva a lejátszás közben megjelenő „Intro átugrása” gombbal (OK) ugorhatsz.'});
 		r.push({label: 'Következő rész automatikusan (8 mp visszaszámlálással)', toggle: 'autonext', def: true});
+		r.push({head: 'Filler részek'});
+		r.push({label: 'Filler és összefoglaló részek jelölése', toggle: 'filler', def: true,
+			note: 'A MyAnimeList adatai alapján (Jikan, mint a weboldalon). Animénként egyszer kéri le, 3 napig tárolja.'});
+		r.push({label: 'Filler részek a listában', choice: 'fillermode', def: 'show',
+			opts: [['show', 'Mutatás'], ['dim', 'Halványítás'], ['hide', 'Elrejtés']]});
+		r.push({label: 'Filler részek átugrása lejátszáskor', toggle: 'skipfiller', def: false,
+			note: 'A „következő rész” a következő nem filler részre ugrik.'});
 		r.push({head: 'Kapcsolat'});
 		r.push({label: 'Közvetítő (Cloudflare Worker) címe', value: relay ? relay.replace(/^https?:\/\//, '') : 'nincs megadva',
 			act: function () { showCf(''); }});
@@ -1982,6 +2012,8 @@
 			} else if (r.toggle) {
 				var on = setting(r.toggle, r.def);
 				row.appendChild(el('div', 'val' + (on ? ' on' : ''), on ? 'BE' : 'KI'));
+			} else if (r.choice) {
+				row.appendChild(el('div', 'val on', label(r.opts, setting(r.choice, r.def)) + '  ▸'));
 			} else if (r.value) {
 				row.appendChild(el('div', 'val', r.value));
 			}
@@ -2017,6 +2049,13 @@
 		if (r.input) { setTimeout(function () { r.inp.focus(); }, 30); return; }
 		if (r.toggle) {
 			save('set.' + r.toggle, !setting(r.toggle, r.def));
+			buildSettings();
+			return;
+		}
+		if (r.choice) {
+			var cur = setting(r.choice, r.def), idx = 0;
+			r.opts.forEach(function (o, i) { if (o[0] === cur) idx = i; });
+			save('set.' + r.choice, r.opts[(idx + 1) % r.opts.length][0]);
 			buildSettings();
 			return;
 		}
@@ -2146,6 +2185,57 @@
 			if ((tab === 'home' || tab === 'mylist') && !detail && zone !== 'player') buildRows();
 		}, function () {});
 	}
+
+	// --- filler / összefoglaló részek (MyAnimeList adatai a Jikan API-n át, mint a weboldalon) --
+	// Kíméletesen: animénként egyszer kérjük le (a TV-n 3 napig tároljuk), oldalanként
+	// 0,4 mp szünettel, 429-re várunk és újrapróbáljuk; ha nem sikerül, nincs jelölés.
+	var fillerMem = {};
+	var FILLER_TTL = 3 * 86400000;
+
+	function sleep(ms) { return new Promise(function (r) { setTimeout(r, ms); }); }
+
+	function fillerData(mal) {
+		if (!mal) return Promise.resolve(null);
+		if (fillerMem[mal]) return fillerMem[mal];
+		var cached = store('filler.' + mal, null);
+		if (cached && Date.now() - cached.ts < FILLER_TTL) return (fillerMem[mal] = Promise.resolve(cached));
+		var f = [], r = [];
+		var p = (function page(n, tries) {
+			if (n > 25) return Promise.resolve();
+			return fetch('https://api.jikan.moe/v4/anime/' + mal + '/episodes?page=' + n).then(function (res) {
+				if (res.status === 429 && tries < 3) return sleep(1500 * (tries + 1)).then(function () { return page(n, tries + 1); });
+				if (!res.ok) throw new Error('Jikan HTTP ' + res.status);
+				return res.json().then(function (j) {
+					(j.data || []).forEach(function (e) {
+						if (e.filler) f.push(+e.mal_id);
+						if (e.recap) r.push(+e.mal_id);
+					});
+					if (j.pagination && j.pagination.has_next_page) return sleep(400).then(function () { return page(n + 1, 0); });
+				});
+			});
+		})(1, 0).then(function () {
+			var rec = {ts: Date.now(), f: f, r: r};
+			save('filler.' + mal, rec);
+			return rec;
+		});
+		p.catch(function () { delete fillerMem[mal]; });
+		fillerMem[mal] = p;
+		return p;
+	}
+
+	function loadFillers() {
+		var d = detail;
+		if (!setting('filler', true)) return;
+		fillerData(malId(d)).then(function (rec) {
+			if (detail !== d || !rec) return;
+			d.fill = {};
+			rec.f.forEach(function (n) { d.fill[n] = 'filler'; });
+			rec.r.forEach(function (n) { if (!d.fill[n]) d.fill[n] = 'recap'; });
+			renderEps();
+		}, function () {});
+	}
+
+	function isFillerEp(fill, n) { return !!(fill && fill[n]); }
 
 	// --- évadok (franchise) - az AniList kapcsolataiból, ahogy a weboldal ---------------
 	var FR_REL = {SEQUEL: 1, PREQUEL: 1, PARENT: 1, SIDE_STORY: 1, ALTERNATIVE: 1, SPIN_OFF: 1};
