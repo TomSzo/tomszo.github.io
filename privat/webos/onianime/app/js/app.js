@@ -979,7 +979,7 @@
 		if (d.seasons && d.seasons.length > 1) {
 			var cs = null;
 			d.seasons.forEach(function (x) { if (x.aid === d.aid) cs = x; });
-			d.buttons.push({html: 'Évadok: <span class="on">' + (cs ? cs.label : '?') + '</span> ▾', act: seasonPicker});
+			d.buttons.push({html: 'Évadok:&nbsp;<span class="on">' + (cs ? cs.label : '?') + '</span>&nbsp;▾', act: seasonPicker});
 		}
 		var listed = inList(d.item.id);
 		d.buttons.push({html: listed ? '<span class="on">✓</span>&nbsp; Listám' : '+&nbsp; Listám', act: function () {
