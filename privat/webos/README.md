@@ -1,4 +1,4 @@
-# TomSzo LG webOS-alkalmazások – Network4, MagyarAnime, Streamed Sport, WatchSports, Acestrims és StreamSports99 (BÉTA, privát)
+# TomSzo LG webOS-alkalmazások – Network4, MagyarAnime, Streamed Sport, WatchSports, OniAnime, Acestrims és StreamSports99 (BÉTA, privát)
 
 > **Személyes, privát alkalmazás** – a tulajdonos saját TV-jére és saját Network4 /
 > Arena4+ előfizetésére készült; nincs a nyilvános tárolóban hirdetve.
@@ -207,6 +207,36 @@ megnyitotta az oldalt). Belépés nem kell.
 - A reklámszűrő csak a felugró ablakokat és az átirányítást tiltja; az oldalba ágyazott
   reklámok (pl. a lejátszó előtti hirdetés) továbbra is megjelenhetnek.
 
+## OniAnime (0.1.0, BÉTA)
+
+Az **onianime.hu** animéi **Netflix-stílusú** felületen, saját lejátszóval. Belépés nem
+kell. Nem hivatalos alkalmazás, nincs kapcsolatban az onianime.hu-val.
+
+- Telepítés: ugyanúgy, mint a Network4 –
+  **[hu.tomszo.onianime_0.1.0_all.ipk](hu.tomszo.onianime_0.1.0_all.ipk)**
+- **Bal oldali menüsáv** (◀ a sor elején): Keresés, Kezdőlap, Listám.
+- **Hero:** a kijelölt anime nagy háttérképe, logója, évszám / típus / állapot / részszám,
+  korhatár és ismertető.
+- **Kezdőlap sorai:** Folytatás, **Top 5 ma** (nagy rangsorszámokkal), Legújabb részek,
+  az aktuális szezon, Ma népszerű, Friss feltöltések, Legnézettebb, OniAnime fordítások,
+  Legnézettebb filmek, előző szezon – ugyanazok, mint a weboldal kezdőlapján.
+- **Keresés:** a TV billentyűzetével (gépelés közben keres); üres mezőnél a népszerű animék.
+- **Adatlap (OK egy animén):** Lejátszás / **Folytatás** (ahol abbahagytad), elejétől,
+  **Nyelv: Felirat / Szinkron** (ha van szinkronos rész), **+ Listám** (sárga gomb is).
+  Alatta a részek vízszintes sorban, képpel, címmel és leírással; ✓ jelzi a megnézetteket.
+  ◀ ▶ lépés, ⏪ ⏩ (vagy CH − / +) 10 részt ugrik.
+- **Lejátszó:** OK / ⏯ szünet, ◀ ▶ tekerés (±10 mp, nyomva tartva ±30), ⏪ ⏩ ±60 mp,
+  ▲ **minőség** (pl. 720p / 360p – a választás megmarad), ▼ következő rész, Vissza / ■ kilépés.
+  A rész végén a **következő rész** 8 másodperc múlva magától indul (OK: azonnal, Vissza: mégse).
+- **Folytatás és Listám:** csak a TV-n tárolódik (az app adatai között), nem az
+  onianime.hu-fiókodban. A megkezdett rész a **Folytatás** sorba kerül; amit végignéztél,
+  annál a következő rész jön.
+- Vissza gomb: lejátszó → adatlap → a sorok eleje → menüsáv → kilépés.
+- Az onianime.hu API-ja nem küld CORS-fejlécet, ezért a listákat a háttérszolgáltatás kéri
+  le (csak az onianime.hu `/api/` címeit engedi). A videók (indavideo MP4 / videa) közvetlenül
+  a TV lejátszójába mennek.
+- A felnőtt (Rx / Hentai) tartalom kimarad a sorokból és a keresésből.
+
 ## Acestrims (0.1.0, BÉTA)
 
 Egyszerű indító az **acestrims.pages.dev** műsoroldalhoz, ugyanúgy, mint a StreamSports99: az
@@ -228,6 +258,8 @@ kilépés.
 - `streamed/app` – webes alkalmazás, szolgáltatás nélkül (a streamed.pk API CORS-t enged).
 - `watchsports/app` – webes alkalmazás, `watchsports/service` – Node.js szolgáltatás (a
   watchsports.su oldalainak lekérése; csak ezt a címet engedi).
+- `onianime/app` – webes alkalmazás (saját lejátszóval), `onianime/service` – Node.js
+  szolgáltatás (az onianime.hu `/api/` JSON-válaszainak lekérése; csak ezt engedi).
 - `streamsports99/app`, `acestrims/app` – csak egy indítóoldal, ami a webhelyre navigál.
 - Építés: `sh privat/webos/build.sh` (vagy `… build.sh magyaranime`) → IPK-k + `apps.json`
   + manifestek.
