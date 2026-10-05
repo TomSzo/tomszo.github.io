@@ -38,7 +38,7 @@ export default {
 			if (path !== prefix && path.indexOf(prefix + '/') !== 0) return reply('Hibás jelszó', 403);
 			path = path.slice(prefix.length) || '/';
 		}
-		if (path === '/') return reply('OniAnime közvetítő: OK', 200, {'content-type': 'text/plain; charset=utf-8'});
+		if (path === '/') return reply('OniAnime közvetítő: OK (v1)', 200, {'content-type': 'text/plain; charset=utf-8'});
 		if (!API.test(path) || path.indexOf('..') >= 0) return reply('Nem engedélyezett cím', 400);
 
 		// a rész videócímei (parts) tokenesek - azokat nem tároljuk el
