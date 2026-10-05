@@ -1,6 +1,7 @@
 # OniAnime közvetítő - Cloudflare Workers Builds (GitHub) beállítás.
 # Cloudflare: Worker -> Settings -> Builds -> Connect -> TomSzo/tomszo.github.io,
 # Root directory: privat/webos/onianime/worker, Deploy command: npx wrangler deploy
+# (a main ágra feltöltött minden változás után a Cloudflare magától újratelepíti)
 name = "onianime-relay"
 main = "worker.js"
 compatibility_date = "2026-10-01"
