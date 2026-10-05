@@ -207,14 +207,14 @@ megnyitotta az oldalt). Belépés nem kell.
 - A reklámszűrő csak a felugró ablakokat és az átirányítást tiltja; az oldalba ágyazott
   reklámok (pl. a lejátszó előtti hirdetés) továbbra is megjelenhetnek.
 
-## OniAnime (0.2.3, BÉTA)
+## OniAnime (0.2.4, BÉTA)
 
 Az **onianime.hu** animéi **Netflix-stílusú** felületen, saját lejátszóval. Belépés nem
 kell (de a saját OniAnime-fiókoddal is be lehet lépni). Nem hivatalos alkalmazás, nincs
 kapcsolatban az onianime.hu-val.
 
 - Telepítés: ugyanúgy, mint a Network4 –
-  **[hu.tomszo.onianime_0.2.3_all.ipk](hu.tomszo.onianime_0.2.3_all.ipk)**
+  **[hu.tomszo.onianime_0.2.4_all.ipk](hu.tomszo.onianime_0.2.4_all.ipk)**
 - **Bal oldali menüsáv** (◀ a sor elején): Keresés, Kezdőlap, Böngészés, Menetrend, Listám,
   Beállítások.
 - **Hero:** a kijelölt anime nagy háttérképe, logója, évszám / típus / állapot / részszám,
@@ -240,12 +240,14 @@ kapcsolatban az onianime.hu-val.
   ▲ **minőség** (pl. 720p / 360p – a választás megmarad), ▼ következő rész, Vissza / ■ kilépés.
   A rész végén a **következő rész** 8 másodperc múlva magától indul (OK: azonnal, Vissza: mégse;
   a Beállításokban kikapcsolható).
-- **Filler jelölés (0.2.3):** a részeken **FILLER** / **ÖSSZEFOGLALÓ** jelzés, a fejlécben
-  „ebből N filler”. Forrás: a MyAnimeList adatai a Jikan API-n át (ugyanaz, mint a weboldalon);
-  animénként egyszer kéri le, 3 napig a TV-n tárolja, kíméletesen (lassan lapoz, a korlátot
-  megvárja). Ha nem érhető el, egyszerűen nincs jelölés. Beállítások → *Filler részek*: jelölés
-  BE/KI, a listában **Mutatás / Halványítás / Elrejtés**, és *Filler részek átugrása
-  lejátszáskor* (a „következő rész” a következő nem filler részre ugrik).
+- **Filler jelölés (0.2.4):** a részeken **FILLER** / **ÖSSZEFOGLALÓ** jelzés, a fejlécben
+  „ebből N filler”. Forrás: a MyAnimeList adatai – elsőként a saját Workeren át
+  (`/mal-fillers/<id>`, a MAL részlista-oldalaiból, a Worker 1 napig gyorsítótárazza), tartalékként
+  a Jikan API-ból. Animénként egyszer kéri le, 3 napig a TV-n tárolja; ha nem érhető el, nincs
+  jelölés. **Ehhez a Worker v4 kell** (a Worker címe: „OniAnime közvetítő: OK (v4)”) – a kódot
+  ugyanúgy kell frissíteni, mint korábban. Beállítások → *Filler részek*: jelölés BE/KI, a
+  listában **Mutatás / Halványítás / Elrejtés**, és *Filler részek átugrása lejátszáskor* (a
+  „következő rész” a következő nem filler részre ugrik).
 - **Intro átugrása (0.2.0):** az intro / összefoglaló alatt megjelenik az **„Intro átugrása”**
   gomb (OK), a stáblistánál a **„Következő rész”** (az AniSkip adatai alapján – nem minden
   animéhez van). Beállítások: *Intro és összefoglaló automatikus átugrása*.
