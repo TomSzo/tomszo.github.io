@@ -31,7 +31,7 @@
 		STOP: 413, FF: 417, RW: 412, CHUP: 33, CHDOWN: 34};
 	var TIMEOUT = 25000;
 	var SERVERS = {sub: 'karks', dub: 'miku'};
-	var APP_VERSION = '0.3.0';   // a weboldal alapértelmezett szerverei
+	var APP_VERSION = '0.3.1';   // a weboldal alapértelmezett szerverei
 	var NEW_DAYS = 3;
 	var TABS = ['search', 'home', 'catalog', 'schedule', 'mylist', 'settings'];
 	var SCREENS = {search: 'search', catalog: 'catalog', schedule: 'schedule', settings: 'settings'};
@@ -2460,8 +2460,9 @@
 	// idején), az app nem küld több kérést a szervernek, amíg vissza nem kapcsolják.
 	// Felismert formák: {enabled:false}, {active:false}, {ok:false}, {status:"disabled"|
 	// "off"|"maintenance"|"blocked"|"down"} - üzenet: message / reason / text.
-	// A még nem létező végpont (404) és a hálózati hiba nem tilt (ilyenkor a többi kérés
-	// úgyis jelzi a hibát); az újbóli ellenőrzés legfeljebb 30 mp-enként.
+	// A még nem létező végpont (404), a nem JSON válasz (pl. HTML-hibaoldal) és a hálózati
+	// hiba nem tilt (ilyenkor a többi kérés úgyis jelzi a hibát); az újbóli ellenőrzés
+	// legfeljebb 30 mp-enként.
 	var STATUS_PATH = '/api/kodiaddon/status';
 	var gate = {blocked: false, msg: '', at: 0};
 
@@ -2469,8 +2470,9 @@
 		if (code === 404 || code === 0) return {ok: true};
 		var j = null;
 		try { j = JSON.parse(text); } catch (e) {}
-		if (code >= 500 && !j) return {ok: true};
-		if (!j || typeof j !== 'object') return {ok: code >= 200 && code < 300};
+		// csak az üzemeltetők egyértelmű JSON-válasza tilt; egy HTML-hibaoldal (pl. a
+		// Cloudflare 403-a) nem - ilyenkor a többi kérés úgyis jelzi a hibát
+		if (!j || typeof j !== 'object') return {ok: true};
 		var st = String(j.status || j.state || '').toLowerCase();
 		var off = j.enabled === false || j.active === false || j.ok === false || j.allowed === false ||
 			/^(disabled|off|maintenance|blocked|down|paused|stopped|inactive)$/.test(st) ||
