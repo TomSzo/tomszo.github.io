@@ -1965,7 +1965,7 @@
 		r.push({label: 'Következő rész automatikusan (8 mp visszaszámlálással)', toggle: 'autonext', def: true});
 		r.push({head: 'Filler részek'});
 		r.push({label: 'Filler és összefoglaló részek jelölése', toggle: 'filler', def: true,
-			note: 'A MyAnimeList adatai alapján (Jikan, mint a weboldalon). Animénként egyszer kéri le, 3 napig tárolja.'});
+			note: 'A MyAnimeList adatai alapján (a Workeren át, tartalékként a Jikan). Animénként egyszer kéri le, 3 napig tárolja.'});
 		r.push({label: 'Filler részek a listában', choice: 'fillermode', def: 'show',
 			opts: [['show', 'Mutatás'], ['dim', 'Halványítás'], ['hide', 'Elrejtés']]});
 		r.push({label: 'Filler részek átugrása lejátszáskor', toggle: 'skipfiller', def: false,
@@ -2186,9 +2186,11 @@
 		}, function () {});
 	}
 
-	// --- filler / összefoglaló részek (MyAnimeList adatai a Jikan API-n át, mint a weboldalon) --
-	// Kíméletesen: animénként egyszer kérjük le (a TV-n 3 napig tároljuk), oldalanként
-	// 0,4 mp szünettel, 429-re várunk és újrapróbáljuk; ha nem sikerül, nincs jelölés.
+	// --- filler / összefoglaló részek (a MyAnimeList adatai) ------------------------------------
+	// Elsőként a saját Workertől (/mal-fillers/<id>: a MAL részlista-oldalaiból, 1 napig
+	// gyorsítótárazva), tartalékként a Jikan API-ból (oldalanként 0,4 mp szünet, 429-re
+	// várakozás). Animénként egyszer kérjük le, a TV-n 3 napig tároljuk; ha egyik sem
+	// sikerül, nincs jelölés (és nem tároljuk el a hibát).
 	var fillerMem = {};
 	var FILLER_TTL = 3 * 86400000;
 
@@ -2199,8 +2201,30 @@
 		if (fillerMem[mal]) return fillerMem[mal];
 		var cached = store('filler.' + mal, null);
 		if (cached && Date.now() - cached.ts < FILLER_TTL) return (fillerMem[mal] = Promise.resolve(cached));
+		// 1. a saját Worker (MyAnimeList, 1 napig gyorsítótárazva) - 2. tartalék: Jikan
+		var p = fillerFromRelay(mal).catch(function () { return fillerFromJikan(mal); }).then(function (rec) {
+			rec.ts = Date.now();
+			save('filler.' + mal, rec);
+			return rec;
+		});
+		p.catch(function () { delete fillerMem[mal]; });
+		fillerMem[mal] = p;
+		return p;
+	}
+
+	function fillerFromRelay(mal) {
+		if (!relay) return Promise.reject(new Error('nincs közvetítő'));
+		return relayReq('GET', '/mal-fillers/' + mal).then(function (r) {
+			if (r.status !== 200) throw new Error('HTTP ' + r.status);
+			var j = JSON.parse(r.text);
+			if (!j || !Array.isArray(j.f)) throw new Error('hibás válasz');
+			return {f: j.f.map(Number), r: (j.r || []).map(Number)};
+		});
+	}
+
+	function fillerFromJikan(mal) {
 		var f = [], r = [];
-		var p = (function page(n, tries) {
+		return (function page(n, tries) {
 			if (n > 25) return Promise.resolve();
 			return fetch('https://api.jikan.moe/v4/anime/' + mal + '/episodes?page=' + n).then(function (res) {
 				if (res.status === 429 && tries < 3) return sleep(1500 * (tries + 1)).then(function () { return page(n, tries + 1); });
@@ -2213,14 +2237,7 @@
 					if (j.pagination && j.pagination.has_next_page) return sleep(400).then(function () { return page(n + 1, 0); });
 				});
 			});
-		})(1, 0).then(function () {
-			var rec = {ts: Date.now(), f: f, r: r};
-			save('filler.' + mal, rec);
-			return rec;
-		});
-		p.catch(function () { delete fillerMem[mal]; });
-		fillerMem[mal] = p;
-		return p;
+		})(1, 0).then(function () { return {f: f, r: r}; });
 	}
 
 	function loadFillers() {

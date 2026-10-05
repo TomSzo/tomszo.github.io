@@ -13,6 +13,10 @@
  * `x-oni-set-cookie` fejlécben kapja vissza. A Worker semmit nem tárol; a személyes
  * válaszok nem kerülnek a gyorsítótárba.
  *
+ * Filler / összefoglaló részek: GET /mal-fillers/<MyAnimeList-azonosító> -> {f: [..], r: [..]}
+ * A MyAnimeList részlista-oldalaiból (a „Filler” / „Recap” jelölés), 1 napig gyorsítótárazva,
+ * így a MAL-t animénként naponta legfeljebb egyszer kérdezzük.
+ *
  * Telepítés: a README szerint (GitHubról, Workers Builds-szel, vagy a kódszerkesztőbe
  * beillesztve). Opcionális jelszó: Settings -> Variables -> KEY; ilyenkor az appba a
  * https://onianime-relay.<neved>.workers.dev/<jelszó> címet kell írni.
@@ -60,7 +64,9 @@ export default {
 			if (path !== prefix && path.indexOf(prefix + '/') !== 0) return reply('Hibás jelszó', 403);
 			path = path.slice(prefix.length) || '/';
 		}
-		if (path === '/') return reply('OniAnime közvetítő: OK (v3)', 200, {'content-type': 'text/plain; charset=utf-8'});
+		if (path === '/') return reply('OniAnime közvetítő: OK (v4)', 200, {'content-type': 'text/plain; charset=utf-8'});
+		const fm = /^\/mal-fillers\/(\d{1,7})$/.exec(path);
+		if (fm && request.method === 'GET') return malFillers(fm[1]);
 		if (!API.test(path) || path.indexOf('..') >= 0) return reply('Nem engedélyezett cím', 400);
 		const method = request.method;
 		if (method !== 'GET' && !(WRITE[method] || []).some(re => re.test(path))) {
@@ -103,3 +109,38 @@ export default {
 		return reply(text, upstream.status, extra);
 	}
 };
+
+// --- filler / összefoglaló részek a MyAnimeList részlista-oldalaiból ----------------------
+const FILLER_TTL = 86400;
+
+async function malFillers(id) {
+	const cache = caches.default;
+	const key = new Request('https://onianime-relay.cache/mal-fillers/' + id);
+	const hit = await cache.match(key);
+	if (hit) {
+		const body = await hit.text();
+		return reply(body, 200, {'content-type': 'application/json', 'cache-control': 'public, max-age=3600', 'x-cache': 'HIT'});
+	}
+	const f = [], r = [];
+	let ok = false;
+	for (let page = 0; page < 20; page++) {
+		const res = await fetch('https://myanimelist.net/anime/' + id + '/_/episode' + (page ? '?offset=' + page * 100 : ''), {
+			headers: {'user-agent': UA, 'accept': 'text/html', 'accept-language': 'en-US,en;q=0.8'}
+		});
+		if (!res.ok) break;
+		const html = await res.text();
+		ok = true;
+		const rows = html.split('<tr class="episode-list-data">').slice(1);
+		rows.forEach(row => {
+			const n = /episode-number[^>]*data-raw="(\d+)"/.exec(row);
+			const t = /icon-episode-type-bg">\s*(Filler|Recap)/i.exec(row);
+			if (n && t) (t[1].toLowerCase() === 'filler' ? f : r).push(+n[1]);
+		});
+		if (rows.length < 100) break;
+	}
+	if (!ok) return reply(JSON.stringify({error: 'MyAnimeList nem érhető el'}), 502, {'content-type': 'application/json'});
+	const body = JSON.stringify({f: f, r: r});
+	const out = new Response(body, {headers: {'content-type': 'application/json', 'cache-control': 'public, max-age=' + FILLER_TTL}});
+	await cache.put(key, out.clone());
+	return reply(body, 200, {'content-type': 'application/json', 'cache-control': 'public, max-age=3600', 'x-cache': 'MISS'});
+}
