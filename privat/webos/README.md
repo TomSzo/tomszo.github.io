@@ -207,13 +207,13 @@ megnyitotta az oldalt). Belépés nem kell.
 - A reklámszűrő csak a felugró ablakokat és az átirányítást tiltja; az oldalba ágyazott
   reklámok (pl. a lejátszó előtti hirdetés) továbbra is megjelenhetnek.
 
-## OniAnime (0.1.0, BÉTA)
+## OniAnime (0.1.1, BÉTA)
 
 Az **onianime.hu** animéi **Netflix-stílusú** felületen, saját lejátszóval. Belépés nem
 kell. Nem hivatalos alkalmazás, nincs kapcsolatban az onianime.hu-val.
 
 - Telepítés: ugyanúgy, mint a Network4 –
-  **[hu.tomszo.onianime_0.1.0_all.ipk](hu.tomszo.onianime_0.1.0_all.ipk)**
+  **[hu.tomszo.onianime_0.1.1_all.ipk](hu.tomszo.onianime_0.1.1_all.ipk)**
 - **Bal oldali menüsáv** (◀ a sor elején): Keresés, Kezdőlap, Listám.
 - **Hero:** a kijelölt anime nagy háttérképe, logója, évszám / típus / állapot / részszám,
   korhatár és ismertető.
@@ -232,9 +232,14 @@ kell. Nem hivatalos alkalmazás, nincs kapcsolatban az onianime.hu-val.
   onianime.hu-fiókodban. A megkezdett rész a **Folytatás** sorba kerül; amit végignéztél,
   annál a következő rész jön.
 - Vissza gomb: lejátszó → adatlap → a sorok eleje → menüsáv → kilépés.
-- Az onianime.hu API-ja nem küld CORS-fejlécet, ezért a listákat a háttérszolgáltatás kéri
-  le (csak az onianime.hu `/api/` címeit engedi). A videók (indavideo MP4 / videa) közvetlenül
-  a TV lejátszójába mennek.
+- **Kapcsolat (0.1.1-től):** az onianime.hu a Cloudflare mögött van, ami a nem böngészőből
+  jövő kéréseket **HTTP 403**-mal elutasíthatja (0.1.0-ban ez a hiba jött). Ezért az app
+  először közvetlenül, a TV böngészőmotorjából kérdez; ha az nem megy, a háttérszolgáltatás
+  böngészőszerűen (HTTP/2, Chrome-szerű TLS és fejlécek) próbálja, több módon. Amelyik út
+  bevált, azzal kezd legközelebb. Ha mégis hiba van, az üzenet mindkét út eredményét kiírja
+  (pl. `közvetlen: … ; szolgáltatás: HTTP 403 (Cloudflare) [h2: 403, …]`).
+- A szolgáltatás csak az onianime.hu `/api/` címeit engedi. A videók (indavideo MP4 / videa)
+  közvetlenül a TV lejátszójába mennek.
 - A felnőtt (Rx / Hentai) tartalom kimarad a sorokból és a keresésből.
 
 ## Acestrims (0.1.0, BÉTA)

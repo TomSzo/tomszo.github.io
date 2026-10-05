@@ -115,7 +115,10 @@
 				var res;
 				try { res = JSON.parse(msg); } catch (e) { return reject(new Error('hibás válasz')); }
 				if (res.returnValue === false) return reject(new Error(res.errorText || 'szolgáltatáshiba'));
-				if (res.status !== 200) return reject(new Error('HTTP ' + res.status));
+				if (res.status !== 200) {
+					return reject(new Error('HTTP ' + res.status + (res.cloudflare ? ' (Cloudflare)' : '') +
+						(res.tried ? ' [' + res.tried + ']' : '')));
+				}
 				resolve(res.body || '');
 			};
 			bridge.call(SERVICE, JSON.stringify({path: path}));
@@ -136,10 +139,29 @@
 			});
 	}
 
+	// A TV-n először a böngészőmotor kérdez közvetlenül (a Cloudflare ezt engedi a
+	// legkevésbé gyanúsnak), ha az nem megy (pl. CORS), a háttérszolgáltatás. Amelyik
+	// út működött, azzal kezdünk legközelebb.
+	var route = store('route', 'direct');
+
 	function api(path) {
-		var p = onTV() ? viaService(path).catch(function (err) {
-			return viaFetch(path).catch(function () { throw err; });
-		}) : viaFetch(path);
+		var p;
+		if (!onTV()) {
+			p = viaFetch(path);
+		} else {
+			var first = route === 'service' ? viaService : viaFetch;
+			var second = route === 'service' ? viaFetch : viaService;
+			var names = route === 'service' ? ['szolgáltatás', 'közvetlen'] : ['közvetlen', 'szolgáltatás'];
+			p = first(path).catch(function (e1) {
+				return second(path).then(function (body) {
+					route = route === 'service' ? 'direct' : 'service';
+					save('route', route);
+					return body;
+				}, function (e2) {
+					throw new Error(names[0] + ': ' + e1.message + '; ' + names[1] + ': ' + e2.message);
+				});
+			});
+		}
 		return p.then(function (body) {
 			try { return JSON.parse(body); } catch (e) { throw new Error('hibás JSON'); }
 		});
