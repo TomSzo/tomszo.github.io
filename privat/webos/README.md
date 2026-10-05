@@ -167,22 +167,33 @@ ablakában (teljes képernyőn), belépés nem kell.
 - Az oldal nem engedi a beágyazást (X-Frame-Options), ezért nincs saját felület vagy
   reklámszűrő – az app közvetlenül az oldalra navigál, ugyanúgy, mint a böngésző.
 
-## WatchSports (0.2.1, BÉTA)
+## WatchSports (0.2.2, BÉTA)
 
 A **watchsports.su** sportműsora **Netflix-stílusú** felületen (0.2.0-tól; a 0.1.0 csak
 megnyitotta az oldalt). Belépés nem kell.
 
 - Telepítés: ugyanúgy, mint a Network4 –
-  **[hu.tomszo.watchsports_0.2.1_all.ipk](hu.tomszo.watchsports_0.2.1_all.ipk)**
+  **[hu.tomszo.watchsports_0.2.2_all.ipk](hu.tomszo.watchsports_0.2.2_all.ipk)**
 - **Hero:** a kijelölt meccs nagyban – csapatlogók, ÉLŐ jelzés / állás (pl. „55. perc”,
   „4. játékrész · 2:15”) vagy kezdési idő (helyi idő szerint), bajnokság, adásszám.
 - **Sorok:** **Élő most** (a legtöbb adással rendelkező elöl), **Hamarosan kezdődik**
   (3 órán belül), majd sportáganként (magyar nevekkel, a site sorrendjében). A műsor
   percenként frissül, a kijelölés megmarad.
 - **OK egy meccsen:** adatlap az adások listájával (forrás, csatorna, 1080p / fps /
-  reklámszám). **OK egy adáson:** az adás oldala az app ablakában nyílik meg; **Vissza**
-  gombbal ugyanide (az adatlapra) térsz vissza. **Piros gomb:** megnyitás a TV saját
-  böngészőjében. A lista végén: a watchsports.su meccsoldala.
+  reklámszám). A lista végén: a watchsports.su meccsoldala.
+- **OK egy adáson – lejátszó reklámszűrővel (0.2.2-től):** az adás oldala az app saját,
+  teljes képernyős keretében nyílik meg. A keret sandboxolt: a **felugró reklámokat** és az
+  app elnavigálását a böngésző letiltja (korábban a felugró reklám új ablakából nem lehetett
+  visszalépni). Indítás: a Magic Remote-tal kattints a lejátszás gombra.
+  - **Vissza:** vissza (ha a keretben lapváltás volt, először azon), majd ki a lejátszóból.
+  - **Piros gomb / ■ Stop:** a lejátszó azonnali bezárása (vissza az adatlapra).
+  - **Sárga gomb:** reklámszűrő BE / KI (a beállítás megmarad). Ha egy lejátszó a szűrővel
+    nem indul el (egyes oldalak érzékelik), kapcsold KI – ilyenkor a felugró ablakok is
+    megjelenhetnek.
+  - Amelyik oldal nem engedi a beágyazást (X-Frame-Options / CSP), azt „⚠ csak teljes
+    oldalként” jelzi a lista, és – mint korábban – az app ablakában nyílik meg; ott a
+    felugró reklám ellen nincs védelem. A „✓ appban, reklámszűrővel” jelű adások elöl vannak.
+- **Piros gomb az adatlapon:** megnyitás a TV saját böngészőjében.
 - **Elérhetőség-ellenőrzés (0.2.1-től):** a szolgáltató / DNS által tiltott adásoldalakon
   a TV **-102 / -105 / -107** hibaoldalt mutatott. Az adatlap megnyitásakor a
   háttérszolgáltatás minden adást előre ellenőriz: az elérhetők „✓ elérhető”, a nem
@@ -193,8 +204,8 @@ megnyitotta az oldalt). Belépés nem kell.
   bezárása; a kezdőoldalon kilépés.
 - A watchsports.su nem küld CORS-fejlécet, ezért a műsort a háttérszolgáltatás kéri le
   (csak a watchsports.su címeit engedi). A csapatlogók az ESPN képszerveréről jönnek.
-- Az adásoldalak (külső oldalak) nem engedik a beágyazást, ezért nincs reklámszűrő: ott
-  az oldal saját lejátszója és reklámjai futnak, mint a böngészőben.
+- A reklámszűrő csak a felugró ablakokat és az átirányítást tiltja; az oldalba ágyazott
+  reklámok (pl. a lejátszó előtti hirdetés) továbbra is megjelenhetnek.
 
 ## Acestrims (0.1.0, BÉTA)
 

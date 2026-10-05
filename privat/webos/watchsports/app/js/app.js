@@ -5,8 +5,11 @@
  * állapot, kezdési idő, csapatok, adásszám), és vízszintes sorokban mutatja: elöl az
  * „Élő most” sor, utána sportáganként. A kijelölt meccs a nagy hero-részben látszik.
  * OK egy meccsen: adatlap a meccsoldal adásaival; OK egy adáson: az adás oldala az app
- * ablakában nyílik meg (az adásoldalak nem engedik a beágyazást), a piros gombbal a TV
- * böngészőjében.
+ * saját, teljes képernyős keretében nyílik meg. A keret sandboxolt (reklámszűrő): a
+ * felugró ablakokat és az app elnavigálását a böngésző letiltja - a felugró reklám új
+ * ablakából ugyanis nem lehetett visszalépni. Amelyik oldal nem engedi a beágyazást
+ * (X-Frame-Options / CSP), az - mint korábban - az app ablakában nyílik meg, jelölve.
+ * Piros gomb: megnyitás a TV böngészőjében.
  *
  * Az oldal nem küld CORS-fejlécet, ezért a TV-n a lekérés a háttérszolgáltatáson megy
  * (luna://hu.tomszo.watchsports.service/get); ha az nem válaszol, közvetlen fetch.
@@ -14,8 +17,9 @@
  * de a saját szerverük a TV-s appnak nem adja ki őket - Cross-Origin-Resource-Policy).
  *
  * Vissza gomb: nincs disableBackHistoryAPI, így a webOS a history-ban lép vissza. Az
- * adatlap a címben (#g=…) él: az adatlap Vissza gombra bezárul, egy adásoldalról
- * visszalépve pedig az app ugyanott nyílik újra. A kezdőoldalon a Vissza kilép.
+ * adatlap és a lejátszó a címben él (#g=…&p=…): Vissza gombra a lejátszó (a keretben
+ * történt lapváltások után) bezárul, majd az adatlap; egy teljes oldalként megnyitott
+ * adásról visszalépve az app ugyanott nyílik újra. A kezdőoldalon a Vissza kilép.
  */
 (function () {
 	'use strict';
@@ -23,7 +27,8 @@
 	var BASE = 'https://watchsports.su';
 	var SERVICE = 'luna://hu.tomszo.watchsports.service/get';
 	var LOGO = 'https://a.espncdn.com/combiner/i?img=';
-	var KEY = {OK: 13, LEFT: 37, UP: 38, RIGHT: 39, DOWN: 40, ESC: 27, BACKSPACE: 8, RED: 403};
+	var KEY = {OK: 13, LEFT: 37, UP: 38, RIGHT: 39, DOWN: 40, ESC: 27, BACKSPACE: 8, RED: 403,
+		YELLOW: 405, STOP: 413};
 	var REFRESH_MS = 60000;
 	var TIMEOUT = 25000;
 	var MONTHS = ['jan.', 'febr.', 'márc.', 'ápr.', 'máj.', 'jún.', 'júl.', 'aug.', 'szept.',
@@ -59,6 +64,11 @@
 	var heroTimer = null;
 	var toastTimer = null;
 	var pending = [];       // a luna-hívások objektumai a válaszig élve maradnak
+	var playing = null;     // a lejátszóban nyitott adás címe
+	var hintTimer = null;
+	var focusTimer = null;
+	var adblock = true;     // a lejátszó kerete sandboxolt: felugró ablak, átirányítás tiltva
+	try { adblock = localStorage.getItem('ws.adblock') !== '0'; } catch (e) {}
 
 	// --- segédek -------------------------------------------------------------
 	function $(sel, root) { return (root || document).querySelector(sel); }
@@ -419,11 +429,13 @@
 		location.hash = 'g=' + encodeURIComponent(g.href);
 	}
 
-	function hashGame() {
-		var m = /^#g=(.+)$/.exec(location.hash);
+	function hashPart(name) {
+		var m = new RegExp('[#&]' + name + '=([^&]+)').exec(location.hash);
 		if (!m) return null;
 		try { return decodeURIComponent(m[1]); } catch (e) { return null; }
 	}
+
+	function hashGame() { return hashPart('g'); }
 
 	function findGame(href) {
 		for (var i = 0; i < rows.length; i++) {
@@ -443,8 +455,14 @@
 
 	function routeChanged() {
 		var href = hashGame();
-		if (href && /^\/[\w.\/-]+$/.test(href)) showDetail(findGame(href));
-		else hideDetail();
+		if (href && /^\/[\w.\/-]+$/.test(href)) {
+			if (!detail || detail.game.href !== href) showDetail(findGame(href));
+		} else {
+			hideDetail();
+		}
+		var p = hashPart('p');
+		if (p && /^https?:\/\//.test(p)) showPlayer(p);
+		else hidePlayer();
 	}
 
 	function showDetail(g) {
@@ -644,8 +662,10 @@
 		var c = probeCache[s.url];
 		var r = c && c.result;
 		var bad = r && !r.ok;
-		s.chip.className = 'tag chk' + (!r ? ' wait' : bad ? ' bad' : r.unknown ? ' hide' : ' ok');
-		s.chip.textContent = !r ? 'ellenőrzés…' : bad ? '✗ ' + probeError(r) : '✓ elérhető';
+		var full = r && r.ok && r.frame === false;
+		s.chip.className = 'tag chk' + (!r ? ' wait' : bad ? ' bad' : r.unknown ? ' hide' : full ? ' warn' : ' ok');
+		s.chip.textContent = !r ? 'ellenőrzés…' : bad ? '✗ ' + probeError(r) :
+			full ? '⚠ csak teljes oldalként – felugró reklámok lehetnek' : '✓ appban, reklámszűrővel';
 		if (s.row) s.row.className = s.row.className.replace(/ off\b/, '') + (bad ? ' off' : '');
 	}
 
@@ -676,9 +696,11 @@
 
 	// a végén: az elérhető adások elöl (az eredeti sorrendben), a nem elérhetők hátul
 	function reorder(d) {
+		// elöl az appban (kerettel) nyitható, utána a csak teljes oldalként, végül a nem elérhető
 		var bad = function (s) {
 			var c = probeCache[s.url];
-			return c && c.result && !c.result.ok ? 1 : 0;
+			var r = c && c.result;
+			return !r ? 0 : !r.ok ? 2 : r.frame === false ? 1 : 0;
 		};
 		var cur = d.items[d.sel];
 		var sorted = d.items.slice().sort(function (a, b) {
@@ -721,17 +743,116 @@
 				toast('Ez az adás a hálózatodról nem érhető el: ' + probeError(r) + '. Válassz másikat.', 6000);
 				return;
 			}
-			go(s.url);
+			if (r.frame === false) {
+				toast('Ez az oldal nem engedi a beágyazást – teljes oldalként nyílik, felugró ' +
+					'reklámok lehetnek. Ha beragad, válassz ✓ jelű adást.', 6000);
+				go(s.url, 2500);
+				return;
+			}
+			openPlayer(s.url);
 		});
 	}
 
-	function go(url) {
+	// --- lejátszó (sandboxolt keret) -----------------------------------------
+	function openPlayer(url) {
+		if (!detail) return;
+		location.hash = 'g=' + encodeURIComponent(detail.game.href) + '&p=' + encodeURIComponent(url);
+	}
+
+	function newFrame(url) {
+		var p = $('#player');
+		var old = p.querySelector('iframe');
+		var frame = old.cloneNode(false);    // a sandbox csak új iframe-nél érvényes
+		if (adblock) {
+			// nincs allow-popups és allow-top-navigation: felugró ablak és elnavigálás tiltva
+			frame.setAttribute('sandbox', 'allow-scripts allow-same-origin allow-forms allow-presentation');
+		} else {
+			frame.removeAttribute('sandbox');
+		}
+		if (url) frame.src = url;
+		else frame.removeAttribute('src');
+		old.parentNode.replaceChild(frame, old);
+	}
+
+	function showPlayer(url) {
+		if (playing === url) return;
+		playing = url;
+		newFrame(url);
+		$('#player').className = 'on';
+		paintAdblock();
+		var hint = $('#player .p-hint');
+		hint.className = 'p-hint';
+		clearTimeout(hintTimer);
+		hintTimer = setTimeout(function () { hint.className = 'p-hint off'; }, 10000);
+		grabFocus();
+		clearInterval(focusTimer);
+		focusTimer = setInterval(grabFocus, 1000);
+	}
+
+	function hidePlayer() {
+		if (!playing) return;
+		playing = null;
+		newFrame(null);
+		$('#player').className = '';
+		clearInterval(focusTimer);
+		window.focus();
+	}
+
+	// bezárás egy gombnyomással: vissza a lejátszó előtti állapotig. A keretet előbb
+	// eltávolítjuk (a böngésző ezzel a keretben történt lapváltásokat is kiveszi a
+	// history-ból), majd addig lépünk vissza, amíg a címben van lejátszó (#…&p=).
+	function closePlayer() {
+		var url = playing;
+		if (!url) return;
+		newFrame(null);
+		$('#player').className = '';
+		var steps = 0;
+		(function step() {
+			if (!hashPart('p') || steps++ > 30) {
+				if (hashPart('p') && detail) location.replace('#g=' + encodeURIComponent(detail.game.href));
+				hidePlayer();
+				return;
+			}
+			history.back();
+			setTimeout(step, 250);
+		})();
+	}
+
+	// a fókuszt az app egy rejtett elemére tesszük vissza (a kattintás után a keretből is),
+	// különben a távirányító gombjai a keretbe mennének
+	function grabFocus() {
+		if (!playing) return;
+		var sink = $('#sink');
+		if (document.activeElement !== sink) {
+			try { sink.focus(); } catch (e) {}
+		}
+	}
+
+	window.addEventListener('blur', function () {
+		if (playing) setTimeout(grabFocus, 150);
+	});
+
+	function toggleAdblock() {
+		adblock = !adblock;
+		try { localStorage.setItem('ws.adblock', adblock ? '1' : '0'); } catch (e) {}
+		paintAdblock();
+		if (playing) newFrame(playing);   // újratöltés az új beállítással
+		toast(adblock ? 'Reklámszűrő BE – felugró ablakok tiltva' :
+			'Reklámszűrő KI – ha a lejátszó így sem indul, kapcsold vissza', 4000);
+	}
+
+	function paintAdblock() {
+		var t = adblock ? 'BE' : 'KI';
+		$$('.d-ab, .p-ab').forEach(function (e) { e.textContent = t; });
+	}
+
+	function go(url, delay) {
 		try {
 			sessionStorage.setItem('ws.focus', JSON.stringify({href: detail ? detail.game.href : '', row: activeRow}));
 		} catch (e) {}
 		toast('Megnyitás… (Vissza gomb: vissza az apphoz)', 6000);
 		// az adásoldalak nem engedik a beágyazást - az app ablaka navigál oda
-		setTimeout(function () { location.href = url; }, 150);
+		setTimeout(function () { location.href = url; }, delay || 150);
 	}
 
 	function openInBrowser(url) {
@@ -807,11 +928,20 @@
 
 	function onKey(e) {
 		var k = e.keyCode;
+		if (playing) {
+			if (k === KEY.RED || k === KEY.STOP) closePlayer();
+			else if (k === KEY.YELLOW) toggleAdblock();
+			else if (k === KEY.ESC || k === KEY.BACKSPACE) history.back();
+			else return;
+			e.preventDefault();
+			return;
+		}
 		if (detail) {
 			if (k === KEY.UP) selectStream(detail.sel - 1);
 			else if (k === KEY.DOWN) selectStream(detail.sel + 1);
 			else if (k === KEY.OK) playStream(detail.items[detail.sel]);
 			else if (k === KEY.RED) openInBrowser((detail.items[detail.sel] || {}).url);
+			else if (k === KEY.YELLOW) toggleAdblock();
 			else if (k === KEY.ESC || k === KEY.BACKSPACE) back();
 			else return;
 			e.preventDefault();
@@ -836,6 +966,7 @@
 
 	window.addEventListener('load', function () {
 		tick();
+		paintAdblock();
 		setInterval(tick, 10000);
 		document.addEventListener('keydown', onKey);
 		window.addEventListener('hashchange', routeChanged);
