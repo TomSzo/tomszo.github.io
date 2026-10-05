@@ -11,8 +11,12 @@
  * válaszol, közvetlen fetch. A videók (indavideo MP4) közvetlenül a <video> elembe
  * kerülnek, saját lejátszóval (OSD, tekerés, minőségváltás, következő rész).
  *
- * A „Folytatás” és a „Listám” csak a TV-n tárolódik (localStorage), nem az
- * onianime.hu-fiókban.
+ * A „Listám” a TV-n tárolódik (localStorage). A „Folytatás” is - bejelentkezve
+ * (Beállítások -> OniAnime-fiók) a fiók Folytatás-listájával együtt, és a haladás a
+ * fiókba is mentődik (POST /api/continue, ahogy a weboldal teszi).
+ *
+ * Böngészés: /api/catalog (műfaj, típus, rendezés). Menetrend: AniList airingSchedules
+ * + /api/animes/check-relations (mint a weboldal). Intro átugrása: AniSkip.
  *
  * Vissza gomb: disableBackHistoryAPI - a 461-es gombot mi kezeljük (lejátszó ->
  * adatlap -> kezdőlap -> menüsáv -> kilépés).
@@ -28,7 +32,8 @@
 	var TIMEOUT = 25000;
 	var SERVERS = {sub: 'karks', dub: 'miku'};   // a weboldal alapértelmezett szerverei
 	var NEW_DAYS = 3;
-	var TABS = ['search', 'home', 'mylist'];
+	var TABS = ['search', 'home', 'catalog', 'schedule', 'mylist', 'settings'];
+	var SCREENS = {search: 'search', catalog: 'catalog', schedule: 'schedule', settings: 'settings'};
 
 	// --- állapot ---------------------------------------------------------------
 	var tab = 'home';
@@ -150,23 +155,69 @@
 	var route = store('route', 'direct');
 	var relay = store('relay', '');   // saját Cloudflare Worker közvetítő címe (ha van)
 
-	function viaRelay(path) {
+	// OniAnime-fiók: a munkamenet sütijei (név=érték; …). A közvetítő az x-oni-session
+	// fejlécből Cookie-t csinál, és az onianime.hu új sütijeit x-oni-set-cookie-ban adja.
+	var session = store('session', '');
+
+	function mergeCookies(set) {
+		if (!set) return;
+		var jar = {};
+		(session ? session.split(/;\s*/) : []).concat(set.split(/;\s*/)).forEach(function (c) {
+			var i = c.indexOf('=');
+			if (i > 0) jar[c.slice(0, i)] = c.slice(i + 1);
+		});
+		session = Object.keys(jar).filter(function (k) { return jar[k] !== ''; })
+			.map(function (k) { return k + '=' + jar[k]; }).join('; ');
+		save('session', session);
+	}
+
+	// nyers kérés a közvetítőn át: {status, text}
+	function relayReq(method, path, body) {
 		var ctrl = typeof AbortController === 'function' ? new AbortController() : null;
 		var timer = setTimeout(function () { if (ctrl) ctrl.abort(); }, TIMEOUT);
-		return fetch(relay.replace(/\/+$/, '') + path, {credentials: 'omit', cache: 'no-store',
+		var headers = {};
+		if (session) headers['x-oni-session'] = session;
+		if (body !== undefined) headers['content-type'] = 'application/json';
+		return fetch(relay.replace(/\/+$/, '') + path, {method: method, credentials: 'omit', cache: 'no-store',
+			headers: headers, body: body === undefined ? undefined : JSON.stringify(body),
 			signal: ctrl ? ctrl.signal : undefined})
 			.then(function (r) {
 				clearTimeout(timer);
-				if (!r.ok) {
-					var e = new Error('HTTP ' + r.status);
-					e.status = r.status;
-					throw e;
-				}
-				return r.text();
+				mergeCookies(r.headers.get('x-oni-set-cookie'));
+				return r.text().then(function (t) { return {status: r.status, text: t}; });
 			}, function (err) {
 				clearTimeout(timer);
 				throw new Error(err && err.name === 'AbortError' ? 'időtúllépés' : 'nem érhető el');
 			});
+	}
+
+	function viaRelay(path) {
+		return relayReq('GET', path).then(function (r) {
+			if (r.status < 200 || r.status >= 300) {
+				var e = new Error('HTTP ' + r.status);
+				e.status = r.status;
+				throw e;
+			}
+			return r.text;
+		});
+	}
+
+	// írás (POST / DELETE) - csak a közvetítőn át (gépen tesztelve közvetlenül is):
+	// {status, data}; HTTP-hibára nem dob, csak ha a kérés el sem ment
+	function apiSend(method, path, body) {
+		var p;
+		if (relay) {
+			p = relayReq(method, path, body);
+		} else {
+			p = fetch(BASE + path, {method: method, credentials: 'include', cache: 'no-store',
+				headers: {'content-type': 'application/json'}, body: JSON.stringify(body || {})})
+				.then(function (r) { return r.text().then(function (t) { return {status: r.status, text: t}; }); });
+		}
+		return p.then(function (r) {
+			var data = null;
+			try { data = JSON.parse(r.text); } catch (e) {}
+			return {status: r.status, data: data};
+		});
 	}
 	var cfBlocked = false;     // a TV böngészője is 403-at kapott: Cloudflare-ellenőrzés kell
 
@@ -283,7 +334,16 @@
 				return {id: p.id, title: p.title, image: p.image, bg: p.bg, color: p.color, ep: p.ep,
 					t: p.t, d: p.d, thumb: p.thumb, cont: true, type: p.atype || '', status: '',
 					eps: p.eps || 0, desc: p.desc || '', tags: [], alt: '', logo: p.logo || ''};
-			});
+			}).concat(serverContItems().filter(function (x) { return !all[x.id]; }));
+	}
+
+	// a helyi haladás, vagy ha nincs, a fiókból jövő (bejelentkezve)
+	function anyProgress(id) {
+		var p = progressOf(id);
+		if (p) return p;
+		var s2 = null;
+		serverContItems().forEach(function (x) { if (+x.id === +id) s2 = {id: x.id, ep: x.ep, t: x.t, d: 0, seen: {}}; });
+		return s2;
 	}
 
 	function myList() { return store('list', []); }
@@ -441,6 +501,12 @@
 		rows.forEach(function (r, ri) {
 			var row = el('section', 'row');
 			var h = el('h2', null, r.title);
+			if (canRemove(r)) {
+				var hint = el('span', 'hint', '· OK nyomva tartva: menü · ');
+				hint.appendChild(el('i', null, '●'));
+				hint.appendChild(document.createTextNode(' piros: eltávolítás'));
+				h.appendChild(hint);
+			}
 			row.appendChild(h);
 			var track = el('div', 'track');
 			var ti = el('div', 'track-inner');
@@ -629,6 +695,11 @@
 		if ((prev === 'rows') !== (z === 'rows')) paintRow(activeRow);
 		if ((prev === 'sgrid') !== (z === 'sgrid')) paintGrid();
 		$('.s-bar').className = 's-bar' + (z === 'sinput' ? ' sel' : '');
+		if (prev === 'cbar' || z === 'cbar') paintCatBar();
+		if (prev === 'cgrid' || z === 'cgrid') paintCatGrid();
+		if (prev === 'sdays' || z === 'sdays') paintDays();
+		if (prev === 'slist' || z === 'slist') paintAiring();
+		if (prev === 'set' || z === 'set') paintSettings();
 	}
 
 	function paintRail() {
@@ -639,15 +710,34 @@
 
 	function openRail() {
 		railSel = TABS.indexOf(tab);
-		var q = $('#q');
-		if (document.activeElement === q) q.blur();
+		var a = document.activeElement;
+		if (a && a.tagName === 'INPUT') a.blur();
 		setZone('rail');
+	}
+
+	// a fül fő zónája (a menüsávról jobbra lépve ide kerülünk vissza)
+	function tabZone() {
+		if (tab === 'search') return search.items.length ? 'sgrid' : 'sinput';
+		if (tab === 'catalog') return cat.items.length ? 'cgrid' : 'cbar';
+		if (tab === 'schedule') return visibleAiring().length ? 'slist' : 'sdays';
+		if (tab === 'settings') return 'set';
+		return 'rows';
 	}
 
 	function setTab(t) {
 		tab = t;
-		document.body.className = t === 'search' ? 'search' : '';
-		if (t === 'search') {
+		document.body.className = SCREENS[t] || '';
+		if (t === 'catalog') {
+			if (!cat.started) loadCatalog(true); else renderCatBar();
+			setZone(cat.items.length ? 'cgrid' : 'cbar');
+		} else if (t === 'schedule') {
+			if (!sch.loaded) { renderDays(); sch.dsel = todayIdx(); loadDay(todayIdx()); }
+			setZone('sdays');
+		} else if (t === 'settings') {
+			stMsg('');
+			setZone('set');
+			buildSettings();
+		} else if (t === 'search') {
 			setZone('sinput');
 			if (!search.items.length && !search.q) suggest();
 			focusInput();
@@ -783,7 +873,7 @@
 			var anySub = detail.eps.some(function (e) { return e.hasSub; });
 			if (detail.type === 'dub' && !anyDub) detail.type = 'sub';
 			if (detail.type === 'sub' && !anySub && anyDub) detail.type = 'dub';
-			var target = detail.focusEp || (progressOf(item.id) || {}).ep || 0;
+			var target = detail.focusEp || (anyProgress(item.id) || {}).ep || 0;
 			detail.sel = 0;
 			detail.eps.forEach(function (e, i) { if (+e.ep === +target) detail.sel = i; });
 			fillDetail();
@@ -855,7 +945,7 @@
 		var box = $('.d-actions');
 		box.innerHTML = '';
 		d.buttons = [];
-		var prog = progressOf(d.item.id);
+		var prog = anyProgress(d.item.id);
 		var ep = d.eps[d.sel];
 		if (d.loading) {
 			box.appendChild(el('span', 'btn primary', 'Betöltés…'));
@@ -887,6 +977,13 @@
 			toggleList(detailItemForList());
 			renderButtons();
 		}});
+		if (prog) {
+			d.buttons.push({html: '✕&nbsp; Előzmény törlése', act: function () {
+				removeHistory(d.item.id);
+				renderButtons();
+				renderEps();
+			}});
+		}
 		if (ep === undefined && !d.eps.length) {
 			box.appendChild(el('span', 'd-loading', 'Ehhez az animéhez még nincs feltöltött rész.'));
 		}
@@ -979,10 +1076,12 @@
 	function closeDetail() {
 		detail = null;
 		detailReq++;
-		document.body.className = tab === 'search' ? 'search' : '';
+		document.body.className = SCREENS[tab] || '';
 		if (tab === 'search') {
 			setZone('sgrid');
 			paintGrid();
+		} else if (tab === 'catalog' || tab === 'schedule' || tab === 'settings') {
+			setZone(tabZone());
 		} else {
 			// a Folytatás sor frissülhetett
 			buildRows();
@@ -1010,7 +1109,75 @@
 
 	// --- lejátszó --------------------------------------------------------------
 	var P = {root: null, video: null, ctx: null, sources: [], qi: 0, hideTimer: null, saveAt: 0,
-		nextTimer: null, nextLeft: 0, req: 0, resumeAt: 0};
+		nextTimer: null, nextLeft: 0, req: 0, resumeAt: 0, skips: [], skipSeg: null, skipped: {}, srvAt: 0};
+
+	function setting(key, def) { var v = store('set.' + key, null); return v === null ? def : v; }
+
+	// a MyAnimeList-azonosító (az AniSkip ezt használja): „https://myanimelist.net/anime/34572”
+	function malId(d) {
+		var srcs = [d.info && d.info.animelist, d.full && d.full.animelist, d.eps[0] && d.eps[0].animelist];
+		for (var i = 0; i < srcs.length; i++) {
+			var m = /anime\/(\d+)/.exec(srcs[i] || '');
+			if (m) return m[1];
+		}
+		return '';
+	}
+
+	// intro / összefoglaló / stáblista időpontjai az AniSkip-ből (ugyanonnan, mint a weboldal)
+	function loadSkips(my) {
+		var c = P.ctx;
+		if (!c.mal) return;
+		var ctrl = typeof AbortController === 'function' ? new AbortController() : null;
+		setTimeout(function () { if (ctrl) ctrl.abort(); }, 10000);
+		fetch('https://api.aniskip.com/v2/skip-times/' + c.mal + '/' + c.ep +
+			'?types=op&types=ed&types=recap&episodeLength=0', {signal: ctrl ? ctrl.signal : undefined})
+			.then(function (r) { return r.ok ? r.json() : null; })
+			.then(function (res) {
+				if (my !== P.req || !res || !res.found) return;
+				P.skips = (res.results || []).map(function (x) {
+					return {start: x.interval.startTime, end: x.interval.endTime, type: x.skipType};
+				}).filter(function (x) { return x.end > x.start; });
+			}, function () {});
+	}
+
+	function skipLabel(seg) {
+		if (seg.type === 'ed') return nextEpOf(P.ctx) ? 'Következő rész  ▶' : 'Stáblista átugrása';
+		return seg.type === 'recap' ? 'Összefoglaló átugrása' : 'Intro átugrása';
+	}
+
+	function checkSkip() {
+		var v = P.video, t = v.currentTime || 0;
+		var seg = null;
+		P.skips.forEach(function (x) { if (!seg && t >= x.start && t < x.end - 0.7) seg = x; });
+		if (seg && seg.type !== 'ed' && setting('autoskip', false) && !P.skipped[seg.start]) {
+			P.skipped[seg.start] = 1;
+			v.currentTime = Math.min(seg.end, isFinite(v.duration) ? v.duration - 1 : seg.end);
+			toast(seg.type === 'recap' ? 'Összefoglaló átugorva' : 'Intro átugorva', 2000);
+			seg = null;
+		}
+		if (seg !== P.skipSeg) {
+			P.skipSeg = seg;
+			var el2 = $('.p-skip');
+			if (seg) {
+				el2.textContent = skipLabel(seg);
+				el2.className = 'p-skip on' + (seg.type === 'ed' && nextEpOf(P.ctx) ? ' next' : '');
+			} else {
+				el2.className = 'p-skip';
+			}
+		}
+	}
+
+	function doSkip() {
+		var seg = P.skipSeg, v = P.video;
+		if (!seg) return;
+		P.skipSeg = null;
+		$('.p-skip').className = 'p-skip';
+		if (seg.type === 'ed' && nextEpOf(P.ctx)) return playNext();
+		var to = seg.end;
+		if (isFinite(v.duration) && to > v.duration - 1) to = v.duration - 1;
+		v.currentTime = to;
+		updateBar();
+	}
 
 	function playEp(n, resume) {
 		var d = detail;
@@ -1021,12 +1188,12 @@
 		var type = d.type;
 		if (type === 'dub' && !e.hasDub && e.hasSub) { type = 'sub'; toast('Ez a rész csak feliratosan érhető el'); }
 		else if (type === 'sub' && !e.hasSub && e.hasDub) { type = 'dub'; toast('Ez a rész csak szinkronosan érhető el'); }
-		var prog = progressOf(d.item.id);
+		var prog = anyProgress(d.item.id);
 		var resumeAt = resume && prog && +prog.ep === +n && !prog.done && prog.t > 10 &&
 			(!prog.d || prog.t < prog.d - 30) ? prog.t : 0;
 		var di = detailItem();
 		P.ctx = {id: d.item.id, title: di.title, image: di.image, bg: di.bg, logo: di.logo, color: di.color,
-			atype: di.type, desc: di.desc, eps: d.eps, ep: +n, epInfo: e, type: type};
+			atype: di.type, desc: di.desc, eps: d.eps, ep: +n, epInfo: e, type: type, mal: malId(d)};
 		openPlayer(resumeAt);
 	}
 
@@ -1043,6 +1210,11 @@
 		P.video.removeAttribute('src');
 		P.video.load();
 		P.resumeAt = resumeAt || 0;
+		P.skips = [];
+		P.skipped = {};
+		P.skipSeg = null;
+		$('.p-skip').className = 'p-skip';
+		loadSkips(my);
 		updateBar();
 		api('/api/anime/' + c.id + '/parts?episode=' + c.ep + '&type=' + c.type + '&server=' + SERVERS[c.type])
 			.then(function (res) {
@@ -1148,6 +1320,12 @@
 			}
 		}
 		saveProgress(rec);
+		// bejelentkezve a haladás az onianime.hu-fiókba is megy (mint a weboldalon)
+		if (session && (force || now - P.srvAt > 30000)) {
+			P.srvAt = now;
+			apiSend('POST', '/api/continue', {animeId: +c.id, part: +c.ep, seconds: Math.floor(v.currentTime)})
+				.catch(function () {});
+		}
 	}
 
 	function seek(delta) {
@@ -1218,6 +1396,8 @@
 		P.video.removeAttribute('src');
 		P.video.load();
 		P.root.className = '';
+		$('.p-skip').className = 'p-skip';
+		P.skipSeg = null;
 		zone = 'detail';
 		if (detail) {
 			// a lejátszott részre áll, és frissíti a Folytatás gombot / jelöléseket
@@ -1238,6 +1418,8 @@
 			closePlayer();
 			break;
 		case KEY.OK: case KEY.PLAY: case KEY.PAUSE: case KEY.PLAYPAUSE:
+			// ha látszik az „Intro átugrása” gomb, az OK azt nyomja meg
+			if (k === KEY.OK && P.skipSeg) { doSkip(); break; }
 			if (k === KEY.PLAY && !P.video.paused) break;
 			if (k === KEY.PAUSE && P.video.paused) break;
 			togglePlay();
@@ -1257,6 +1439,7 @@
 		var v = P.video = $('#player video');
 		v.addEventListener('timeupdate', function () {
 			updateBar();
+			checkSkip();
 			recordProgress(false);
 		});
 		v.addEventListener('progress', updateBar);
@@ -1267,7 +1450,7 @@
 		v.addEventListener('waiting', function () { pstatus('Pufferelés…'); });
 		v.addEventListener('ended', function () {
 			recordProgress(true);
-			if (P.ctx && nextEpOf(P.ctx)) showNext();
+			if (P.ctx && nextEpOf(P.ctx) && setting('autonext', true)) showNext();
 			else closePlayer();
 		});
 		v.addEventListener('error', function () {
@@ -1283,6 +1466,641 @@
 		});
 		P.root.addEventListener('click', function () { if (!P.nextTimer) togglePlay(); });
 		P.root.addEventListener('mousemove', showOsd);
+	}
+
+	// --- felugró lista (szűrők, helyi menü) -----------------------------------------
+	var pop = {open: false, opts: [], sel: 0, onPick: null, prevZone: null};
+
+	function showPop(title, opts, current, onPick) {
+		pop.open = true;
+		pop.opts = opts;
+		pop.onPick = onPick;
+		pop.sel = 0;
+		opts.forEach(function (o, i) { if (o[0] === current) pop.sel = i; });
+		$('.pop-title').textContent = title;
+		var inner = $('.pop-inner');
+		inner.innerHTML = '';
+		opts.forEach(function (o, i) {
+			var it = el('div', 'pop-item');
+			it.appendChild(el('span', 'ck', o[0] === current ? '✓' : ''));
+			it.appendChild(el('span', null, o[1]));
+			it.addEventListener('mouseenter', function () { pop.sel = i; paintPop(); });
+			it.addEventListener('click', function () { pop.sel = i; pickPop(); });
+			inner.appendChild(it);
+		});
+		$('#pop').className = 'on';
+		paintPop();
+	}
+
+	function paintPop() {
+		var items = $('.pop-inner').children;
+		for (var i = 0; i < items.length; i++) items[i].className = 'pop-item' + (i === pop.sel ? ' sel' : '');
+		var first = Math.max(0, Math.min(pop.sel - 4, pop.opts.length - 10));
+		$('.pop-inner').style.transform = 'translateY(' + (-first * 70) + 'px)';
+	}
+
+	function closePop() {
+		pop.open = false;
+		$('#pop').className = '';
+	}
+
+	function pickPop() {
+		var o = pop.opts[pop.sel], cb = pop.onPick;
+		closePop();
+		if (o && cb) cb(o[0]);
+	}
+
+	function popKey(k) {
+		if (k === KEY.UP) pop.sel = Math.max(0, pop.sel - 1);
+		else if (k === KEY.DOWN) pop.sel = Math.min(pop.opts.length - 1, pop.sel + 1);
+		else if (k === KEY.OK) return pickPop();
+		else if (isBack(k)) return closePop();
+		paintPop();
+	}
+
+	// --- törlés: Folytatás / Listám / előzmények ---------------------------------------
+	function removeHistory(id, quiet) {
+		var all = progressAll();
+		delete all[id];
+		save('progress', all);
+		if (home && home.cont) home.cont = home.cont.filter(function (x) { return +x.id !== +id; });
+		if (session) apiSend('DELETE', '/api/continue', {animeIds: [+id]}).catch(function () {});
+		if (!quiet) toast('Eltávolítva az előzményekből');
+	}
+
+	function removeFromList(id) {
+		save('list', myList().filter(function (x) { return +x.id !== +id; }));
+		toast('Eltávolítva a listádról');
+	}
+
+	function clearHistory() {
+		var ids = Object.keys(progressAll()).map(Number);
+		if (home && home.cont) home.cont.forEach(function (x) { if (ids.indexOf(+x.id) < 0) ids.push(+x.id); });
+		save('progress', {});
+		if (home) home.cont = [];
+		if (session && ids.length) apiSend('DELETE', '/api/continue', {animeIds: ids}).catch(function () {});
+		toast('Az előzmények törölve');
+	}
+
+	function canRemove(row) { return row && (row.key === 'continue' || row.key === 'list'); }
+
+	function removeCurrent() {
+		var r = rows[activeRow], item = current();
+		if (!canRemove(r) || !item) return;
+		if (r.key === 'continue') removeHistory(item.id);
+		else removeFromList(item.id);
+		buildRows();
+		setZone('rows');
+	}
+
+	function itemMenu() {
+		var r = rows[activeRow], item = current();
+		if (!item) return;
+		var opts = [['open', 'Megnyitás']];
+		if (r && r.key === 'continue') opts.push(['rm', 'Eltávolítás a Folytatásból']);
+		if (r && r.key === 'list') opts.push(['rm', 'Eltávolítás a Listámból']);
+		opts.push(['x', 'Mégse']);
+		showPop(item.title, opts, null, function (v) {
+			if (v === 'open') openItem(item);
+			else if (v === 'rm') removeCurrent();
+		});
+	}
+
+	// --- böngészés (katalógus): műfaj, típus, rendezés ----------------------------------
+	var GENRES_HU = {'Action': 'Akció', 'Adventure': 'Kaland', 'Comedy': 'Vígjáték', 'Drama': 'Dráma',
+		'Ecchi': 'Ecchi', 'Fantasy': 'Fantasy', 'Horror': 'Horror', 'Mahou Shoujo': 'Mahou Shoujo',
+		'Mecha': 'Mecha', 'Music': 'Zene', 'Mystery': 'Rejtély', 'Psychological': 'Pszichológiai',
+		'Romance': 'Romantikus', 'Sci-Fi': 'Sci-fi', 'Slice of Life': 'Hétköznapi', 'Sports': 'Sport',
+		'Supernatural': 'Természetfeletti', 'Thriller': 'Thriller'};
+	var TYPES = [['all', 'Minden típus'], ['Sorozat', 'Sorozat'], ['Film', 'Film'], ['OVA', 'OVA'],
+		['ONA', 'ONA'], ['Különleges', 'Különleges'], ['TV Short', 'TV Short']];
+	var SORTS = [['popularity', 'Népszerűség'], ['latest_uploads', 'Legújabb feltöltés'],
+		['release_date', 'Megjelenés'], ['title_asc', 'Cím (A–Z)']];
+	var cat = {tag: '', type: 'all', sort: 'popularity', tags: [], items: [], page: 0, total: 1, sel: 0, bar: 0,
+		loading: false, req: 0, started: false, msg: ''};
+
+	function label(list, v) {
+		for (var i = 0; i < list.length; i++) if (list[i][0] === v) return list[i][1];
+		return v;
+	}
+
+	function genreOpts() {
+		var o = [['', 'Minden műfaj']];
+		cat.tags.forEach(function (t) {
+			if (t.tag === 'Hentai') return;
+			o.push([String(t.id), GENRES_HU[t.tag] || t.tag]);
+		});
+		return o;
+	}
+
+	function catChips() {
+		return [
+			['Műfaj', cat.tag ? label(genreOpts(), cat.tag) : 'Mind', function () {
+				showPop('Műfaj', genreOpts(), cat.tag, function (v) { cat.tag = v; loadCatalog(true); });
+			}],
+			['Típus', label(TYPES, cat.type), function () {
+				showPop('Típus', TYPES, cat.type, function (v) { cat.type = v; loadCatalog(true); });
+			}],
+			['Rendezés', label(SORTS, cat.sort), function () {
+				showPop('Rendezés', SORTS, cat.sort, function (v) { cat.sort = v; loadCatalog(true); });
+			}]
+		];
+	}
+
+	function renderCatBar() {
+		var bar = $('.c-bar');
+		bar.innerHTML = '';
+		catChips().forEach(function (c, i) {
+			var ch = el('span', 'chip');
+			ch.appendChild(document.createTextNode(c[0] + ': '));
+			ch.appendChild(el('b', null, c[1]));
+			ch.appendChild(el('span', 'arr', '▼'));
+			ch.addEventListener('mouseenter', function () { if (zone === 'cbar' || zone === 'cgrid') { cat.bar = i; setZone('cbar'); } });
+			ch.addEventListener('click', function () { cat.bar = i; setZone('cbar'); c[2](); });
+			bar.appendChild(ch);
+		});
+		paintCatBar();
+	}
+
+	function paintCatBar() {
+		var ch = $('.c-bar').children;
+		for (var i = 0; i < ch.length; i++) ch[i].className = 'chip' + (zone === 'cbar' && i === cat.bar ? ' sel' : '');
+	}
+
+	function loadCatalog(reset) {
+		if (reset) {
+			cat.page = 0;
+			cat.items = [];
+			cat.sel = 0;
+			cat.total = 1;
+			$('.c-grid-inner').innerHTML = '';
+			$('.c-grid-inner').style.transform = 'translateY(0)';
+		}
+		if (cat.loading && !reset) return;
+		if (cat.page >= cat.total) return;
+		cat.started = true;
+		cat.loading = true;
+		var my = ++cat.req;
+		var page = cat.page + 1;
+		var q = 'page=' + page + '&sort_by=' + encodeURIComponent(cat.sort);
+		if (cat.type !== 'all') q += '&type=' + encodeURIComponent(cat.type);
+		if (cat.tag) q += '&tag=' + encodeURIComponent(cat.tag);
+		$('.c-info').textContent = 'Betöltés…';
+		renderCatBar();
+		api('/api/catalog?' + q).then(function (res) {
+			if (my !== cat.req) return;
+			cat.loading = false;
+			cat.page = page;
+			cat.total = (res && res.totalPages) || 1;
+			if (res && res.tags && res.tags.length) cat.tags = res.tags;
+			var add = normList(res && res.animes);
+			var start = cat.items.length;
+			cat.items = cat.items.concat(add);
+			appendCatCards(add, start);
+			$('.c-info').textContent = cat.items.length ? cat.page + ' / ' + cat.total + '. oldal betöltve' +
+				(cat.page < cat.total ? ' – lefelé haladva jön a többi' : '') : 'Nincs ilyen anime ezekkel a szűrőkkel.';
+			renderCatBar();
+			paintCatGrid();
+		}, function (err) {
+			if (my !== cat.req) return;
+			cat.loading = false;
+			$('.c-info').textContent = 'Nem sikerült betölteni (' + err.message + ')';
+		});
+	}
+
+	function appendCatCards(list, start) {
+		var inner = $('.c-grid-inner');
+		list.forEach(function (item, j) {
+			var i = start + j;
+			var c = posterCard(item);
+			c.addEventListener('mouseenter', function () { if (zone === 'cgrid' || zone === 'cbar') { cat.sel = i; setZone('cgrid'); } });
+			c.addEventListener('click', function () { cat.sel = i; setZone('cgrid'); openItem(item); });
+			inner.appendChild(c);
+		});
+	}
+
+	function paintCatGrid() {
+		var cards = $('.c-grid-inner').children;
+		for (var i = 0; i < cards.length; i++) {
+			cards[i].className = cards[i].className.replace(/ (sel|c0)\b/g, '') +
+				(zone === 'cgrid' && i === cat.sel ? ' sel' : '') + (i % COLS === 0 ? ' c0' : '');
+		}
+		var r = Math.floor(cat.sel / COLS);
+		$('.c-grid-inner').style.transform = 'translateY(' + (-Math.max(0, r - 1) * 342) + 'px)';
+		// a végéhez közeledve jön a következő oldal
+		if (Math.floor((cat.items.length - 1) / COLS) - r <= 2) loadCatalog(false);
+	}
+
+	function catKey(k) {
+		if (zone === 'cbar') {
+			var n = $('.c-bar').children.length;
+			if (k === KEY.LEFT) { if (cat.bar === 0) return openRail(); cat.bar--; }
+			else if (k === KEY.RIGHT) cat.bar = Math.min(n - 1, cat.bar + 1);
+			else if (k === KEY.DOWN) { if (cat.items.length) { setZone('cgrid'); return; } }
+			else if (k === KEY.OK) { catChips()[cat.bar][2](); return; }
+			else if (isBack(k)) return openRail();
+			paintCatBar();
+			return;
+		}
+		var cnt = cat.items.length, s = cat.sel;
+		if (k === KEY.LEFT) { if (s % COLS === 0) return openRail(); s--; }
+		else if (k === KEY.RIGHT) { if (s % COLS < COLS - 1 && s + 1 < cnt) s++; }
+		else if (k === KEY.UP) { if (s < COLS) { setZone('cbar'); return; } s -= COLS; }
+		else if (k === KEY.DOWN) {
+			if (s + COLS < cnt) s += COLS;
+			else if (Math.floor(s / COLS) < Math.floor((cnt - 1) / COLS)) s = cnt - 1;
+		}
+		else if (k === KEY.OK) return openItem(cat.items[s]);
+		else if (isBack(k)) { setZone('cbar'); return; }
+		cat.sel = clamp(s, 0, Math.max(0, cnt - 1));
+		paintCatGrid();
+	}
+
+	// --- menetrend (AniList, mint a weboldalon) ---------------------------------------
+	var DAYS = ['Hétfő', 'Kedd', 'Szerda', 'Csütörtök', 'Péntek', 'Szombat', 'Vasárnap'];
+	var MONTHS = ['jan.', 'febr.', 'márc.', 'ápr.', 'máj.', 'jún.', 'júl.', 'aug.', 'szept.', 'okt.', 'nov.', 'dec.'];
+	var AIRING_Q = 'query ($start: Int, $end: Int, $page: Int) { Page(page: $page, perPage: 50) { ' +
+		'pageInfo { hasNextPage } airingSchedules(airingAt_greater: $start, airingAt_lesser: $end, sort: TIME) { ' +
+		'airingAt episode media { id title { romaji english } coverImage { large color } isAdult format } } } }';
+	var sch = {day: 0, dsel: 0, items: [], sel: 0, cache: {}, rel: {}, req: 0, onlyOni: false, loaded: false};
+
+	function weekStart() {
+		var d = new Date();
+		d.setHours(0, 0, 0, 0);
+		d.setDate(d.getDate() - (d.getDay() + 6) % 7);
+		return d;
+	}
+
+	function dayDate(i) {
+		var d = weekStart();
+		d.setDate(d.getDate() + i);
+		return d;
+	}
+
+	function todayIdx() { return (new Date().getDay() + 6) % 7; }
+
+	function renderDays() {
+		var box = $('.sc-days');
+		box.innerHTML = '';
+		DAYS.forEach(function (n, i) {
+			var d = dayDate(i);
+			var b = el('div', 'day');
+			b.appendChild(el('b', null, n));
+			b.appendChild(el('span', null, MONTHS[d.getMonth()] + ' ' + d.getDate() + '.'));
+			b.addEventListener('mouseenter', function () { if (zone === 'sdays' || zone === 'slist') { sch.dsel = i; setZone('sdays'); } });
+			b.addEventListener('click', function () { sch.dsel = i; setZone('sdays'); loadDay(i); });
+			box.appendChild(b);
+		});
+		paintDays();
+	}
+
+	function paintDays() {
+		var ds = $('.sc-days').children, t = todayIdx();
+		for (var i = 0; i < ds.length; i++) {
+			ds[i].className = 'day' + (i === sch.day ? ' cur' : '') + (i === t ? ' today' : '') +
+				(zone === 'sdays' && i === sch.dsel ? ' sel' : '');
+		}
+	}
+
+	function anilist(start, end, page) {
+		return fetch('https://graphql.anilist.co', {method: 'POST',
+			headers: {'Content-Type': 'application/json', 'Accept': 'application/json'},
+			body: JSON.stringify({query: AIRING_Q, variables: {start: start, end: end, page: page}})})
+			.then(function (r) { if (!r.ok) throw new Error('AniList HTTP ' + r.status); return r.json(); });
+	}
+
+	function loadDay(i) {
+		sch.day = i;
+		sch.loaded = true;
+		sch.sel = 0;
+		paintDays();
+		var my = ++sch.req;
+		var key = i;
+		var done = function (list) {
+			if (my !== sch.req) return;
+			sch.items = list;
+			renderAiring();
+			// melyik érhető el az OniAnime-on (anilist-azonosító -> onianime-azonosító)
+			var ask = list.map(function (x) { return x.media.id; }).filter(function (id) { return !(id in sch.rel); });
+			if (!ask.length) return;
+			apiSend('POST', '/api/animes/check-relations', {ids: ask}).then(function (r) {
+				ask.forEach(function (id) { sch.rel[id] = 0; });
+				(Array.isArray(r.data) ? r.data : []).forEach(function (x) { if (x.anilistId) sch.rel[x.anilistId] = x.id; });
+				if (my === sch.req) renderAiring();
+			}, function () {});
+		};
+		if (sch.cache[key]) return done(sch.cache[key]);
+		$('.sc-info').textContent = 'Betöltés…';
+		$('.sc-list-inner').innerHTML = '';
+		var start = Math.floor(dayDate(i).getTime() / 1000) - 1;
+		var end = start + 86400 + 1;
+		var all = [];
+		(function page(n) {
+			anilist(start, end, n).then(function (res) {
+				var pg = res && res.data && res.data.Page;
+				all = all.concat(pg && pg.airingSchedules || []);
+				if (pg && pg.pageInfo && pg.pageInfo.hasNextPage && n < 5) return page(n + 1);
+				var list = all.filter(function (x) { return x.media && !x.media.isAdult; });
+				sch.cache[key] = list;
+				done(list);
+			}, function (err) {
+				if (my !== sch.req) return;
+				$('.sc-info').textContent = 'Nem sikerült betölteni a menetrendet (' + err.message + ')';
+			});
+		})(1);
+	}
+
+	function visibleAiring() {
+		return sch.items.filter(function (x) { return !sch.onlyOni || sch.rel[x.media.id] > 0; });
+	}
+
+	function renderAiring() {
+		var list = visibleAiring();
+		var oni = sch.items.filter(function (x) { return sch.rel[x.media.id] > 0; }).length;
+		$('.sc-info').textContent = DAYS[sch.day] + ': ' + sch.items.length + ' új rész, ebből ' + oni +
+			' elérhető az OniAnime-on' + '   ·   sárga gomb: ' + (sch.onlyOni ? 'mind mutatása' : 'csak az elérhetők');
+		var inner = $('.sc-list-inner');
+		inner.innerHTML = '';
+		var now = Date.now() / 1000;
+		if (!list.length) inner.appendChild(el('div', 'empty', 'Erre a napra nincs ilyen megjelenés.'));
+		list.forEach(function (x, i) {
+			var oniId = sch.rel[x.media.id];
+			var row = el('div', 'air' + (oniId ? '' : ' off') + (x.airingAt < now ? ' past' : ''));
+			var d = new Date(x.airingAt * 1000);
+			row.appendChild(el('div', 'tm', pad(d.getHours()) + ':' + pad(d.getMinutes())));
+			var img = el('img');
+			img.alt = '';
+			if (x.media.coverImage && x.media.coverImage.large) img.src = x.media.coverImage.large;
+			row.appendChild(img);
+			var main = el('div', 'main');
+			main.appendChild(el('div', 'nm', x.media.title.english || x.media.title.romaji || '?'));
+			var sub = el('div', 'sub');
+			sub.appendChild(el('span', 'tag', x.episode + '. rész'));
+			if (oniId) sub.appendChild(el('span', 'tag ok', '✓ OniAnime-on'));
+			else if (oniId === 0) sub.appendChild(el('span', null, 'nincs fent az OniAnime-on'));
+			if (x.airingAt < now) sub.appendChild(el('span', null, 'Japánban már leadták'));
+			main.appendChild(sub);
+			row.appendChild(main);
+			row.addEventListener('mouseenter', function () { if (zone === 'slist' || zone === 'sdays') { sch.sel = i; setZone('slist'); } });
+			row.addEventListener('click', function () { sch.sel = i; setZone('slist'); openAiring(x); });
+			inner.appendChild(row);
+		});
+		sch.sel = clamp(sch.sel, 0, Math.max(0, list.length - 1));
+		paintAiring();
+	}
+
+	function paintAiring() {
+		var rs = $('.sc-list-inner').children;
+		for (var i = 0; i < rs.length; i++) {
+			rs[i].className = rs[i].className.replace(/ sel\b/g, '') + (zone === 'slist' && i === sch.sel ? ' sel' : '');
+		}
+		$('.sc-list-inner').style.transform = 'translateY(' + (-Math.max(0, sch.sel - 2) * 124) + 'px)';
+	}
+
+	function openAiring(x) {
+		var id = sch.rel[x.media.id];
+		if (!id) { toast('Ez az anime (még) nincs fent az OniAnime-on'); return; }
+		openDetail({id: id, title: x.media.title.english || x.media.title.romaji || '',
+			image: x.media.coverImage && x.media.coverImage.large || '',
+			color: x.media.coverImage && x.media.coverImage.color || '', eps: 0, tags: []}, x.episode);
+	}
+
+	function schKey(k) {
+		if (k === KEY.YELLOW) { sch.onlyOni = !sch.onlyOni; sch.sel = 0; renderAiring(); return; }
+		if (zone === 'sdays') {
+			if (k === KEY.LEFT) { if (sch.dsel === 0) return openRail(); sch.dsel--; }
+			else if (k === KEY.RIGHT) sch.dsel = Math.min(6, sch.dsel + 1);
+			else if (k === KEY.OK || (k === KEY.DOWN && sch.dsel !== sch.day)) { loadDay(sch.dsel); if (k === KEY.OK) return; }
+			if (k === KEY.DOWN) { if (visibleAiring().length) setZone('slist'); return; }
+			if (isBack(k)) return openRail();
+			paintDays();
+			return;
+		}
+		var n = visibleAiring().length;
+		if (k === KEY.UP) { if (sch.sel === 0) { sch.dsel = sch.day; setZone('sdays'); return; } sch.sel--; }
+		else if (k === KEY.DOWN) sch.sel = Math.min(n - 1, sch.sel + 1);
+		else if (k === KEY.LEFT) return openRail();
+		else if (k === KEY.OK) { var x = visibleAiring()[sch.sel]; if (x) openAiring(x); return; }
+		else if (isBack(k)) { sch.dsel = sch.day; setZone('sdays'); return; }
+		paintAiring();
+	}
+
+	// --- beállítások és OniAnime-fiók ---------------------------------------------------
+	var st = {sel: 0, rows: [], msg: '', msgCls: '', busy: false};
+	var user = store('user', '');
+
+	function stMsg(t, cls) {
+		st.msg = t || '';
+		st.msgCls = cls || '';
+		var m = $('.st-msg');
+		m.textContent = st.msg;
+		m.className = 'st-msg' + (st.msgCls ? ' ' + st.msgCls : '');
+	}
+
+	function settingRows() {
+		var r = [{head: 'OniAnime-fiók'}];
+		if (session && user) {
+			r.push({label: 'Bejelentkezve', value: user, note: 'A Folytatás a fiókoddal szinkronban van (a weboldalon is látszik).'});
+			r.push({label: 'Kijelentkezés', act: doLogout});
+		} else {
+			r.push({label: 'Felhasználónév', input: 'su'});
+			r.push({label: 'Jelszó', input: 'sp', pw: true});
+			r.push({label: 'Bejelentkezés', act: doLogin,
+				note: 'A jelszót a TV nem tárolja, csak a munkamenetet. Bejelentkezve a Folytatás a fiókodból jön.'});
+		}
+		r.push({head: 'Lejátszás'});
+		r.push({label: 'Intro és összefoglaló automatikus átugrása', toggle: 'autoskip', def: false,
+			note: 'Kikapcsolva a lejátszás közben megjelenő „Intro átugrása” gombbal (OK) ugorhatsz.'});
+		r.push({label: 'Következő rész automatikusan (8 mp visszaszámlálással)', toggle: 'autonext', def: true});
+		r.push({head: 'Kapcsolat'});
+		r.push({label: 'Közvetítő (Cloudflare Worker) címe', value: relay ? relay.replace(/^https?:\/\//, '') : 'nincs megadva',
+			act: function () { showCf(''); }});
+		r.push({head: 'Adatok'});
+		r.push({label: 'Összes előzmény törlése', danger: true, confirm: true, act: function () {
+			clearHistory();
+			buildSettings();
+		}, note: 'A Folytatás sor és a „megnézve” jelölések' + (session ? ' (a fiókodban is)' : '') + '.'});
+		r.push({label: 'Listám kiürítése', danger: true, confirm: true, act: function () {
+			save('list', []);
+			toast('A Listám kiürítve');
+			buildSettings();
+		}});
+		return r;
+	}
+
+	function buildSettings() {
+		var keep = {};
+		$$('.st-row input').forEach(function (i) { keep[i.getAttribute('data-k')] = i.value; });
+		st.rows = settingRows();
+		var inner = $('.st-list-inner');
+		inner.innerHTML = '';
+		st.rows.forEach(function (r, i) {
+			if (r.head) { inner.appendChild(el('div', 'st-head', r.head)); r.el = null; return; }
+			var row = el('div', 'st-row' + (r.danger ? ' danger' : ''));
+			var lb = el('div', 'lbl');
+			lb.appendChild(document.createTextNode(r.label));
+			if (r.note) lb.appendChild(el('div', 'note', r.note));
+			row.appendChild(lb);
+			if (r.input) {
+				var inp = el('input');
+				inp.type = r.pw ? 'password' : 'text';
+				inp.setAttribute('data-k', r.input);
+				inp.setAttribute('autocomplete', 'off');
+				inp.setAttribute('spellcheck', 'false');
+				inp.value = keep[r.input] || '';
+				inp.addEventListener('focus', function () { st.sel = i; paintSettings(); });
+				row.appendChild(inp);
+				r.inp = inp;
+			} else if (r.toggle) {
+				var on = setting(r.toggle, r.def);
+				row.appendChild(el('div', 'val' + (on ? ' on' : ''), on ? 'BE' : 'KI'));
+			} else if (r.value) {
+				row.appendChild(el('div', 'val', r.value));
+			}
+			row.addEventListener('mouseenter', function () { if (zone === 'set') { st.sel = i; paintSettings(); } });
+			row.addEventListener('click', function () { st.sel = i; actSetting(); });
+			inner.appendChild(row);
+			r.el = row;
+		});
+		if (!st.rows[st.sel] || st.rows[st.sel].head) st.sel = nextSetting(0, 1);
+		paintSettings();
+		stMsg(st.msg, st.msgCls);
+	}
+
+	function nextSetting(from, dir) {
+		for (var i = from; i >= 0 && i < st.rows.length; i += dir) if (!st.rows[i].head) return i;
+		return st.sel;
+	}
+
+	function paintSettings() {
+		st.rows.forEach(function (r, i) {
+			if (!r.el) return;
+			r.el.className = 'st-row' + (r.danger ? ' danger' : '') + (r.armed ? ' armed' : '') +
+				(zone === 'set' && i === st.sel ? ' sel' : '');
+		});
+		var cur = st.rows[st.sel] && st.rows[st.sel].el;
+		var y = cur ? Math.max(0, cur.offsetTop - 300) : 0;
+		$('.st-list-inner').style.transform = 'translateY(' + (-y) + 'px)';
+	}
+
+	function actSetting() {
+		var r = st.rows[st.sel];
+		if (!r) return;
+		if (r.input) { setTimeout(function () { r.inp.focus(); }, 30); return; }
+		if (r.toggle) {
+			save('set.' + r.toggle, !setting(r.toggle, r.def));
+			buildSettings();
+			return;
+		}
+		if (r.confirm && !r.armed) {
+			st.rows.forEach(function (x) { x.armed = false; });
+			r.armed = true;
+			r.el.querySelector('.lbl').firstChild.textContent = 'Biztosan? OK = igen, törlés';
+			paintSettings();
+			return;
+		}
+		if (r.act) r.act();
+	}
+
+	function disarm() {
+		var any = false;
+		st.rows.forEach(function (x) { if (x.armed) { x.armed = false; any = true; } });
+		if (any) buildSettings();
+	}
+
+	function setKey(k, e) {
+		var a = document.activeElement;
+		if (a && a.tagName === 'INPUT' && a.closest && a.closest('#settings')) {
+			if (k === KEY.OK || k === KEY.DOWN) {
+				e.preventDefault();
+				a.blur();
+				st.sel = nextSetting(st.sel + 1, 1);
+				// az utolsó mező után Enter: bejelentkezés
+				if (k === KEY.OK && st.rows[st.sel] && st.rows[st.sel].act === doLogin) doLogin();
+				paintSettings();
+			} else if (k === KEY.UP || k === KEY.BACK || k === KEY.ESC) {
+				e.preventDefault();
+				a.blur();
+				if (k === KEY.UP) st.sel = nextSetting(st.sel - 1, -1);
+				paintSettings();
+			}
+			return;
+		}
+		e.preventDefault();
+		if (k === KEY.UP) { disarm(); st.sel = nextSetting(st.sel - 1, -1); }
+		else if (k === KEY.DOWN) { disarm(); st.sel = nextSetting(st.sel + 1, 1); }
+		else if (k === KEY.LEFT || isBack(k)) { disarm(); return openRail(); }
+		else if (k === KEY.OK) return actSetting();
+		paintSettings();
+	}
+
+	function fieldVal(k) {
+		var i = $('.st-row input[data-k="' + k + '"]');
+		return i ? i.value.trim() : '';
+	}
+
+	function doLogin() {
+		var u = fieldVal('su'), pw = fieldVal('sp');
+		if (!u || !pw) { stMsg('Add meg a felhasználónevet és a jelszót.', 'err'); return; }
+		if (!relay && onTV()) { stMsg('A bejelentkezéshez közvetítő (Worker) kell – lásd Kapcsolat.', 'err'); return; }
+		if (st.busy) return;
+		st.busy = true;
+		stMsg('Bejelentkezés…');
+		apiSend('POST', '/api/users/login', {username: u, password: pw}).then(function (r) {
+			st.busy = false;
+			var d = r.data || {};
+			if (r.status === 202 && d.requiresDiscord) {
+				stMsg('A fiókodhoz Discord-megerősítés kell' + (d.discord_code ? ' (kód: ' + d.discord_code + ')' : '') +
+					'. Erősítsd meg, majd próbáld újra.', 'err');
+				return;
+			}
+			if (r.status === 403 && d.banned) { stMsg('A fiók tiltva van' + (d.reason ? ': ' + d.reason : '') + '.', 'err'); return; }
+			if (r.status < 200 || r.status >= 300) { stMsg(d.error || ('Sikertelen bejelentkezés (HTTP ' + r.status + ')'), 'err'); return; }
+			if (!session) { stMsg('A belépés sikerült, de a közvetítő nem adta vissza a munkamenetet. Frissítsd a Workert.', 'err'); return; }
+			return api('/api/users/me').then(function (me) {
+				var m = me && (me.user || me);
+				user = (m && (m.username || m.name)) || u;
+				save('user', user);
+				stMsg('Sikeres bejelentkezés: ' + user, 'ok');
+				$$('.st-row input').forEach(function (i) { i.value = ''; });
+				buildSettings();
+				refreshServerContinue();
+			});
+		}, function (err) {
+			st.busy = false;
+			stMsg('Nem sikerült (' + err.message + ')', 'err');
+		});
+	}
+
+	function doLogout() {
+		apiSend('POST', '/api/users/logout', {}).catch(function () {});
+		session = '';
+		user = '';
+		save('session', '');
+		save('user', '');
+		if (home) home.cont = [];
+		stMsg('Kijelentkeztél.', 'ok');
+		buildSettings();
+	}
+
+	// a fiók Folytatás-listája (bejelentkezve)
+	function serverContItems() {
+		return (home && home.cont || []).filter(function (x) { return x && x.id && !adult(x); }).map(function (x) {
+			var part = x.part || (x.progress && x.progress.part) || x.episode || 1;
+			return {id: x.id, title: x.eng_name || x.name || '', alt: '', image: x.image || '', bg: '',
+				color: x.color || '', ep: +part, t: +(x.seconds || 0), d: 0, cont: true, server: true,
+				type: x.type || '', status: x.status || '', eps: x.part_count || 0, desc: x.description || '', tags: [],
+				logo: ''};
+		});
+	}
+
+	function refreshServerContinue() {
+		if (!session) return Promise.resolve();
+		return api('/api/continue').then(function (list) {
+			if (!home) home = {popular: {}, recommended: [], latest: []};
+			home.cont = Array.isArray(list) ? list : [];
+			if ((tab === 'home' || tab === 'mylist') && !detail && zone !== 'player') buildRows();
+		}, function () {});
 	}
 
 	// --- kapcsolat: Cloudflare / közvetítő ---------------------------------------
@@ -1374,10 +2192,11 @@
 					latest: Array.isArray(res[2]) ? res[2] : []};
 			}
 			$('#loading').className = 'off';
-			if (tab !== 'search' && !detail) {
+			if ((tab === 'home' || tab === 'mylist') && !detail) {
 				buildRows();
 				setZone('rows');
 			}
+			refreshServerContinue();
 		});
 	}
 
@@ -1402,7 +2221,25 @@
 		} else if (k === KEY.RIGHT) focusCard(activeRow, r.sel + 1);
 		else if (k === KEY.UP) { if (activeRow > 0) focusCard(activeRow - 1, rows[activeRow - 1].sel); }
 		else if (k === KEY.DOWN) { if (activeRow < rows.length - 1) focusCard(activeRow + 1, rows[activeRow + 1].sel); }
-		else if (k === KEY.OK || k === KEY.PLAY) openItem(current());
+		else if (k === KEY.RED) removeCurrent();
+		else if (k === KEY.PLAY) openItem(current());
+		else if (k === KEY.OK) {
+			// a Folytatás / Listám sorban: hosszú OK = menü (eltávolítás), rövid = megnyitás
+			if (!canRemove(r)) return openItem(current());
+			if (okTimer) return;
+			okTimer = setTimeout(function () { okTimer = null; itemMenu(); }, 650);
+		}
+	}
+
+	var okTimer = null;
+
+	function onKeyUp(e) {
+		if (e.keyCode !== KEY.OK) return;
+		if (okTimer) {
+			clearTimeout(okTimer);
+			okTimer = null;
+			if (zone === 'rows' && !pop.open) openItem(current());
+		}
 	}
 
 	function railKey(k) {
@@ -1410,8 +2247,8 @@
 		else if (k === KEY.DOWN) railSel = Math.min(TABS.length - 1, railSel + 1);
 		else if (k === KEY.OK) { setTab(TABS[railSel]); return; }
 		else if (k === KEY.RIGHT) {
-			if (tab === 'search') { setZone(search.items.length ? 'sgrid' : 'sinput'); if (zone === 'sinput') focusInput(); }
-			else setZone('rows');
+			setZone(tabZone());
+			if (zone === 'sinput') focusInput();
 			return;
 		}
 		paintRail();
@@ -1420,7 +2257,11 @@
 	function onKey(e) {
 		var k = e.keyCode;
 		if (cfShown) { cfKey(k, e); return; }
+		if (pop.open) { e.preventDefault(); popKey(k); return; }
 		if (k === KEY.BLUE && zone !== 'player') { e.preventDefault(); showCf(''); return; }
+		if (zone === 'set') { setKey(k, e); return; }
+		if (zone === 'cbar' || zone === 'cgrid') { e.preventDefault(); catKey(k); return; }
+		if (zone === 'sdays' || zone === 'slist') { e.preventDefault(); schKey(k); return; }
 		var q = $('#q');
 		// gépelés a keresőmezőben: a betűket, törlést és a kurzormozgást a mező kapja
 		if (zone === 'sinput' && document.activeElement === q) {
@@ -1492,6 +2333,7 @@
 		setInterval(tick, 10000);
 		initPlayer();
 		document.addEventListener('keydown', onKey);
+		document.addEventListener('keyup', onKeyUp);
 
 		var q = $('#q');
 		q.addEventListener('input', function () {
@@ -1505,16 +2347,14 @@
 			it.addEventListener('click', function () { setTab(TABS[i]); });
 		});
 		$('#rail').addEventListener('mouseleave', function () {
-			if (zone === 'rail') {
-				if (tab === 'search') setZone('sinput');
-				else setZone('rows');
-			}
+			if (zone === 'rail') setZone(tabZone());
 		});
 		$$('.cf-btns .btn').forEach(function (b, i) {
 			b.addEventListener('click', function () { cfAct(i + 1); });
 		});
 		$('#relay').addEventListener('focus', function () { cfSel = 0; paintCf(); });
 		$('.btn-play').addEventListener('click', function () { openItem(current()); });
+		$('.p-skip').addEventListener('click', function (e) { e.stopPropagation(); doSkip(); });
 		$('.btn-info').addEventListener('click', function () { openItem(current()); });
 
 		// a görgő függőlegesen a sorok között lép
@@ -1530,6 +2370,13 @@
 				detailKey(down ? KEY.RIGHT : KEY.LEFT);
 			} else if (zone === 'sgrid') {
 				gridKey(down ? KEY.DOWN : KEY.UP);
+			} else if (zone === 'cgrid') {
+				catKey(down ? KEY.DOWN : KEY.UP);
+			} else if (zone === 'slist') {
+				schKey(down ? KEY.DOWN : KEY.UP);
+			} else if (zone === 'set') {
+				st.sel = nextSetting(st.sel + (down ? 1 : -1), down ? 1 : -1);
+				paintSettings();
 			}
 		});
 		document.addEventListener('visibilitychange', function () {

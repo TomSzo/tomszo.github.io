@@ -207,30 +207,49 @@ megnyitotta az oldalt). Belépés nem kell.
 - A reklámszűrő csak a felugró ablakokat és az átirányítást tiltja; az oldalba ágyazott
   reklámok (pl. a lejátszó előtti hirdetés) továbbra is megjelenhetnek.
 
-## OniAnime (0.1.3, BÉTA)
+## OniAnime (0.2.0, BÉTA)
 
 Az **onianime.hu** animéi **Netflix-stílusú** felületen, saját lejátszóval. Belépés nem
-kell. Nem hivatalos alkalmazás, nincs kapcsolatban az onianime.hu-val.
+kell (de a saját OniAnime-fiókoddal is be lehet lépni). Nem hivatalos alkalmazás, nincs
+kapcsolatban az onianime.hu-val.
 
 - Telepítés: ugyanúgy, mint a Network4 –
-  **[hu.tomszo.onianime_0.1.3_all.ipk](hu.tomszo.onianime_0.1.3_all.ipk)**
-- **Bal oldali menüsáv** (◀ a sor elején): Keresés, Kezdőlap, Listám.
+  **[hu.tomszo.onianime_0.2.0_all.ipk](hu.tomszo.onianime_0.2.0_all.ipk)**
+- **Bal oldali menüsáv** (◀ a sor elején): Keresés, Kezdőlap, Böngészés, Menetrend, Listám,
+  Beállítások.
 - **Hero:** a kijelölt anime nagy háttérképe, logója, évszám / típus / állapot / részszám,
   korhatár és ismertető.
 - **Kezdőlap sorai:** Folytatás, **Top 5 ma** (nagy rangsorszámokkal), Legújabb részek,
   az aktuális szezon, Ma népszerű, Friss feltöltések, Legnézettebb, OniAnime fordítások,
   Legnézettebb filmek, előző szezon – ugyanazok, mint a weboldal kezdőlapján.
 - **Keresés:** a TV billentyűzetével (gépelés közben keres); üres mezőnél a népszerű animék.
+- **Böngészés (0.2.0):** a teljes katalógus rácsban, szűrőkkel: **Műfaj** (Akció, Romantikus,
+  Vígjáték…), **Típus** (Sorozat, Film, OVA…), **Rendezés** (Népszerűség, Legújabb feltöltés,
+  Megjelenés, A–Z). OK egy szűrőn: lista. Lefelé haladva jön a következő oldal.
+- **Menetrend (0.2.0):** a hét napjai, napra bontva a megjelenő új részek (japán megjelenés,
+  helyi idő szerint), „✓ OniAnime-on” jelöléssel; OK: az anime adatlapja. Sárga gomb: csak az
+  OniAnime-on elérhetők. (Adatok: AniList, mint a weboldal menetrendjén.)
 - **Adatlap (OK egy animén):** Lejátszás / **Folytatás** (ahol abbahagytad), elejétől,
   **Nyelv: Felirat / Szinkron** (ha van szinkronos rész), **+ Listám** (sárga gomb is).
   Alatta a részek vízszintes sorban, képpel, címmel és leírással; ✓ jelzi a megnézetteket.
   ◀ ▶ lépés, ⏪ ⏩ (vagy CH − / +) 10 részt ugrik.
 - **Lejátszó:** OK / ⏯ szünet, ◀ ▶ tekerés (±10 mp, nyomva tartva ±30), ⏪ ⏩ ±60 mp,
   ▲ **minőség** (pl. 720p / 360p – a választás megmarad), ▼ következő rész, Vissza / ■ kilépés.
-  A rész végén a **következő rész** 8 másodperc múlva magától indul (OK: azonnal, Vissza: mégse).
-- **Folytatás és Listám:** csak a TV-n tárolódik (az app adatai között), nem az
-  onianime.hu-fiókodban. A megkezdett rész a **Folytatás** sorba kerül; amit végignéztél,
-  annál a következő rész jön.
+  A rész végén a **következő rész** 8 másodperc múlva magától indul (OK: azonnal, Vissza: mégse;
+  a Beállításokban kikapcsolható).
+- **Intro átugrása (0.2.0):** az intro / összefoglaló alatt megjelenik az **„Intro átugrása”**
+  gomb (OK), a stáblistánál a **„Következő rész”** (az AniSkip adatai alapján – nem minden
+  animéhez van). Beállítások: *Intro és összefoglaló automatikus átugrása*.
+- **Folytatás és Listám:** a TV-n tárolódik. A megkezdett rész a **Folytatás** sorba kerül;
+  amit végignéztél, annál a következő rész jön.
+- **Törlés (0.2.0):** a Folytatás / Listám sorban **OK nyomva tartva** menü (Eltávolítás), vagy
+  **piros gomb**; az adatlapon **✕ Előzmény törlése**; a Beállításokban *Összes előzmény
+  törlése* és *Listám kiürítése*.
+- **OniAnime-fiók (0.2.0):** Beállítások → Felhasználónév / Jelszó → Bejelentkezés. Bejelentkezve
+  a fiók Folytatás-listája is megjelenik, és a TV-n nézett haladás a fiókba is mentődik (a
+  weboldalon is látszik). A jelszót a TV nem tárolja, csak a munkamenetet. Ehhez a Workernek a
+  **v3**-as változata kell (GitHubról telepítve magától frissül; a Worker címe ezt írja ki:
+  „OniAnime közvetítő: OK (v3)”). Ha a fiókhoz Discord-megerősítés tartozik, azt az app jelzi.
 - Vissza gomb: lejátszó → adatlap → a sorok eleje → menüsáv → kilépés.
 - **Fontos – közvetítő kell (0.1.3-tól):** az onianime.hu Cloudflare-védelme a TV
   böngészőjét nem engedi át (HTTP 403, a „Nem vagyok robot” végtelenül ismétlődik), a
