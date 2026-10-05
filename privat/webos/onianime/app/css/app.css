@@ -448,3 +448,14 @@ body.settings #settings { display: block; }
 }
 .p-skip.on { display: block; }
 .p-skip.next { background: #fff; color: #000; }
+
+/* --- filler / összefoglaló jelölés ------------------------------------------------ */
+.ep .card .fill {
+	position: absolute; left: 10px; top: 10px; font-size: 17px; font-weight: 800; padding: 3px 8px;
+	border-radius: 3px; letter-spacing: 0.5px;
+}
+.ep .card .fill.filler { background: #e08a1e; color: #1a1000; }
+.ep .card .fill.recap { background: #6b6b6b; color: #fff; }
+.ep.f-dim { opacity: 0.45; }
+.ep.f-dim.sel { opacity: 0.85; }
+.ep.f-hide { display: none; }
