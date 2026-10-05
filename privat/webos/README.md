@@ -207,13 +207,13 @@ megnyitotta az oldalt). Belépés nem kell.
 - A reklámszűrő csak a felugró ablakokat és az átirányítást tiltja; az oldalba ágyazott
   reklámok (pl. a lejátszó előtti hirdetés) továbbra is megjelenhetnek.
 
-## OniAnime (0.1.1, BÉTA)
+## OniAnime (0.1.2, BÉTA)
 
 Az **onianime.hu** animéi **Netflix-stílusú** felületen, saját lejátszóval. Belépés nem
 kell. Nem hivatalos alkalmazás, nincs kapcsolatban az onianime.hu-val.
 
 - Telepítés: ugyanúgy, mint a Network4 –
-  **[hu.tomszo.onianime_0.1.1_all.ipk](hu.tomszo.onianime_0.1.1_all.ipk)**
+  **[hu.tomszo.onianime_0.1.2_all.ipk](hu.tomszo.onianime_0.1.2_all.ipk)**
 - **Bal oldali menüsáv** (◀ a sor elején): Keresés, Kezdőlap, Listám.
 - **Hero:** a kijelölt anime nagy háttérképe, logója, évszám / típus / állapot / részszám,
   korhatár és ismertető.
@@ -238,6 +238,12 @@ kell. Nem hivatalos alkalmazás, nincs kapcsolatban az onianime.hu-val.
   böngészőszerűen (HTTP/2, Chrome-szerű TLS és fejlécek) próbálja, több módon. Amelyik út
   bevált, azzal kezd legközelebb. Ha mégis hiba van, az üzenet mindkét út eredményét kiírja
   (pl. `közvetlen: … ; szolgáltatás: HTTP 403 (Cloudflare) [h2: 403, …]`).
+- **Cloudflare-ellenőrzés (0.1.2-től):** ha a Cloudflare a TV böngészőjét is 403-mal
+  ellenőrzésre küldi, az app ezt jelzi: **OK** → az onianime.hu megnyílik egy új ablakban
+  (az app sütitárával). Várd meg, amíg az oldal betölt (ha „Ember vagyok” jelölőnégyzet
+  jön, kattints rá a Magic Remote-tal), majd **Vissza** – az app újratölt, és a kérések a
+  kapott `cf_clearance` sütivel mennek. Ha a süti lejár, a képernyő újra megjelenik.
+  Sárga gomb: újrapróbálás.
 - A szolgáltatás csak az onianime.hu `/api/` címeit engedi. A videók (indavideo MP4 / videa)
   közvetlenül a TV lejátszójába mennek.
 - A felnőtt (Rx / Hentai) tartalom kimarad a sorokból és a keresésből.
