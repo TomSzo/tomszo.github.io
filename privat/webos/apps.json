@@ -84,18 +84,18 @@
       "manifestUrl": "https://tomszo.github.io/privat/webos/hu.tomszo.watchsports.manifest.json",
       "manifest": {
         "id": "hu.tomszo.watchsports",
-        "version": "0.2.1",
+        "version": "0.2.2",
         "type": "web",
         "title": "WatchSports",
         "appDescription": "WatchSports - a watchsports.su sportműsora Netflix-stílusú felületen (élő meccsek, sportágak sorai, adások listája)",
         "iconUri": "https://tomszo.github.io/privat/webos/watchsports/app/largeIcon.png",
         "sourceUrl": "https://github.com/TomSzo/tomszo.github.io/tree/main/privat/webos/watchsports",
         "rootRequired": false,
-        "ipkUrl": "https://tomszo.github.io/privat/webos/hu.tomszo.watchsports_0.2.1_all.ipk",
+        "ipkUrl": "https://tomszo.github.io/privat/webos/hu.tomszo.watchsports_0.2.2_all.ipk",
         "ipkHash": {
-          "sha256": "e8d76435ff8ba9328433aa7ecc5d4527e5df3c751a58f9a693a86383fa55cffd"
+          "sha256": "85cd11998ddcf9aa29182cb875cb4f46b459867444c0530cd3482097e37d3253"
         },
-        "ipkSize": 208696
+        "ipkSize": 210320
       },
       "pool": "main",
       "shortDescription": "Élő sport a watchsports.su-ról, Netflix-stílusú felületen"

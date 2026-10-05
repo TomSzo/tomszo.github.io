@@ -10,7 +10,9 @@
  *
  * Elérhetőség-ellenőrzés (adásoldalak, bármely nyilvános cím):
  *        luna://hu.tomszo.watchsports.service/probe  {url}
- *   -> {returnValue, ok, status, code, finalUrl}
+ *   -> {returnValue, ok, status, code, finalUrl, frame}
+ * frame: az oldal engedi-e a beágyazást (X-Frame-Options / CSP frame-ancestors) - ha
+ * igen, az app a saját, felugró ablakokat tiltó keretében nyitja meg.
  * Csak a válasz fejlécéig megy (törzset nem ad vissza). Ha a szolgáltató / DNS tiltja az
  * oldalt, a TV böngészője -102 / -105 / -107 hibaoldalt mutatna - ezt előre kiszűrjük.
  * Belső hálózati címet nem kér le.
@@ -91,6 +93,17 @@ function get(url, redirects, done) {
 
 var PROBE_TIMEOUT = 8000;
 
+// beágyazható-e az oldal egy idegen (az app file://) eredetű keretbe
+function frameable(headers) {
+	var xfo = String(headers['x-frame-options'] || '').trim();
+	if (xfo) return false;    // DENY, SAMEORIGIN (az elavult ALLOW-FROM sem ránk vonatkozik)
+	var csp = headers['content-security-policy'];
+	csp = Array.isArray(csp) ? csp.join(';') : String(csp || '');
+	var m = /(?:^|;)\s*frame-ancestors\s+([^;]*)/i.exec(csp);
+	if (!m) return true;
+	return /(^|\s)\*(\s|$)/.test(m[1].trim());
+}
+
 function privateIP(ip) {
 	if (net.isIPv6(ip)) {
 		var v = ip.toLowerCase();
@@ -149,7 +162,7 @@ function probe(url, redirects, done) {
 		}
 		// bármilyen HTTP-válasz (a Cloudflare 403-as kihívása is) azt jelenti, hogy az oldal
 		// elérhető - a böngésző a kihívást meg tudja oldani
-		finish({ok: true, status: res.statusCode, finalUrl: url});
+		finish({ok: true, status: res.statusCode, finalUrl: url, frame: frameable(res.headers)});
 	});
 	req.on('timeout', function () {
 		var e = new Error('Időtúllépés');
