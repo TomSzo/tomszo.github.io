@@ -252,6 +252,11 @@ kell. Nem hivatalos alkalmazás, nincs kapcsolatban az onianime.hu-val.
 5. *(Opcionális jelszó, hogy más ne használja:)* Worker → **Settings** → **Variables and
    Secrets** → **Add**: név `KEY`, érték pl. `titok123` → Deploy. Ilyenkor a cím:
    `https://onianime-relay.<fiókneved>.workers.dev/titok123`.
+   **Ha a kódszerkesztő nem engedi a beillesztést** (pl. telefonon): a Worker
+   → **Settings** → **Build** → **Connect** → GitHub → `TomSzo/tomszo.github.io`, branch
+   `main`, **Root directory**: `privat/webos/onianime/worker`, **Deploy command**:
+   `npx wrangler deploy` → **Connect / Save**. A Cloudflare a repóból telepíti a kódot
+   (a `wrangler.toml`-ban a név `onianime-relay` – a Worker neve is ez legyen).
 6. A TV-n az app (403 esetén magától, vagy a **kék gombbal**) a **Kapcsolat** képernyőt
    mutatja: OK a mezőn → írd be a címet a TV billentyűzetével → OK → **Mentés és próba**.
    Ha a közvetítő jól válaszol, az app újratölt, és működik. A cím megmarad.
