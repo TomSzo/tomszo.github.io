@@ -148,11 +148,40 @@
 	// legkevésbé gyanúsnak), ha az nem megy (pl. CORS), a háttérszolgáltatás. Amelyik
 	// út működött, azzal kezdünk legközelebb.
 	var route = store('route', 'direct');
+	var relay = store('relay', '');   // saját Cloudflare Worker közvetítő címe (ha van)
+
+	function viaRelay(path) {
+		var ctrl = typeof AbortController === 'function' ? new AbortController() : null;
+		var timer = setTimeout(function () { if (ctrl) ctrl.abort(); }, TIMEOUT);
+		return fetch(relay.replace(/\/+$/, '') + path, {credentials: 'omit', cache: 'no-store',
+			signal: ctrl ? ctrl.signal : undefined})
+			.then(function (r) {
+				clearTimeout(timer);
+				if (!r.ok) {
+					var e = new Error('HTTP ' + r.status);
+					e.status = r.status;
+					throw e;
+				}
+				return r.text();
+			}, function (err) {
+				clearTimeout(timer);
+				throw new Error(err && err.name === 'AbortError' ? 'időtúllépés' : 'nem érhető el');
+			});
+	}
 	var cfBlocked = false;     // a TV böngészője is 403-at kapott: Cloudflare-ellenőrzés kell
 
 	function api(path) {
 		var p;
-		if (!onTV()) {
+		if (relay) {
+			// a közvetítő az elsődleges út; ha nem megy, a régi utak
+			p = viaRelay(path).catch(function (e0) {
+				return (onTV() ? viaFetch(path).catch(function () { return viaService(path); }) : viaFetch(path))
+					.catch(function () {
+						showCf('A közvetítő hibát adott: ' + e0.message);
+						throw new Error('közvetítő: ' + e0.message);
+					});
+			});
+		} else if (!onTV()) {
 			p = viaFetch(path).catch(function (e) {
 				if (e.status === 403) { cfBlocked = true; showCf(); }
 				throw e;
@@ -1256,47 +1285,76 @@
 		P.root.addEventListener('mousemove', showOsd);
 	}
 
-	// --- Cloudflare-ellenőrzés ----------------------------------------------------
-	// A Cloudflare a TV-t is ellenőrzésre küldi. Az onianime.hu-t egy új ablakban (az
-	// app sütitárával) megnyitjuk: ott a TV böngészője átmegy az ellenőrzésen (néha egy
-	// „Ember vagyok” jelölőnégyzet - Magic Remote-tal kattints rá), és megkapja a
-	// cf_clearance sütit. Vissza gombbal az ablak bezárul, az app újratölt, és a
-	// közvetlen kérések már ezzel a sütivel mennek.
-	var cfShown = false, cfWin = null, cfPoll = null;
+	// --- kapcsolat: Cloudflare / közvetítő ---------------------------------------
+	// Az onianime.hu Cloudflare-védelme a TV böngészőjét nem engedi át (a „Nem vagyok
+	// robot” végtelenül ismétlődik), a telefont igen. Ezért egy saját Cloudflare Worker
+	// közvetítő kérdezi le az API-t (lásd worker/worker.js és a README). A címét ezen a
+	// képernyőn kell megadni; a kék gombbal bármikor előhozható.
+	var cfShown = false, cfSel = 0;
 
-	function showCf() {
+	function showCf(msg) {
 		if (cfShown) return;
 		cfShown = true;
 		if (zone === 'player') closePlayer();
 		$('#cf').className = 'on';
-		route = 'direct';
-		save('route', route);
+		$('#relay').value = relay;
+		$('.cf-err').textContent = msg || (relay ? '' : 'Az onianime.hu HTTP 403-at ad a TV-nek (Cloudflare).');
+		cfSel = 0;
+		paintCf();
 	}
 
-	function openCf() {
-		var url = BASE + '/home';
-		try { cfWin = window.open(url, '_blank'); } catch (e) { cfWin = null; }
-		if (!cfWin) {
-			// nincs külön ablak: az app ablakában nyílik meg (onnan az app újraindításával
-			// lehet visszajönni)
-			save('cfnav', Date.now());
-			location.href = url;
+	function hideCf() {
+		cfShown = false;
+		$('#cf').className = '';
+		$('#relay').blur();
+	}
+
+	function paintCf() {
+		$('.cf-field').className = 'cf-field' + (cfSel === 0 ? ' sel' : '');
+		$$('.cf-btns .btn').forEach(function (b, i) {
+			b.className = b.className.replace(/ sel\b/g, '') + (cfSel === i + 1 ? ' sel' : '');
+		});
+	}
+
+	function saveRelay() {
+		var v = $('#relay').value.trim();
+		if (v && !/^https?:\/\//i.test(v)) v = 'https://' + v;
+		relay = v;
+		save('relay', v);
+		if (!v) { toast('Közvetítő törölve'); return; }
+		$('.cf-err').textContent = 'Közvetítő ellenőrzése…';
+		viaRelay('/api/animes/recommended').then(function (body) {
+			JSON.parse(body);
+			location.reload();
+		}, function (err) {
+			$('.cf-err').textContent = 'A közvetítő nem válaszol jól (' + err.message + '). Ellenőrizd a címet.';
+		}).catch(function () {
+			$('.cf-err').textContent = 'A közvetítő válasza nem az onianime.hu adata. Ellenőrizd a címet.';
+		});
+	}
+
+	function cfAct(i) {
+		if (i === 0) setTimeout(function () { $('#relay').focus(); }, 30);
+		else if (i === 1) saveRelay();
+		else if (i === 2) location.reload();
+		else if (i === 3) { if (home) hideCf(); else exitApp(); }
+	}
+
+	function cfKey(k, e) {
+		var input = $('#relay');
+		if (document.activeElement === input) {
+			if (k === KEY.OK) { e.preventDefault(); input.blur(); saveRelay(); }
+			else if (k === KEY.BACK || k === KEY.ESC || k === KEY.DOWN) { e.preventDefault(); input.blur(); cfSel = 1; paintCf(); }
 			return;
 		}
-		$('.cf-msg').textContent = 'Ha az onianime.hu oldala betöltött, nyomd meg a Vissza gombot – az app újratölt.';
-		clearInterval(cfPoll);
-		cfPoll = setInterval(function () {
-			if (cfWin && cfWin.closed) {
-				clearInterval(cfPoll);
-				location.reload();
-			}
-		}, 700);
-	}
-
-	function cfKey(k) {
-		if (k === KEY.OK) openCf();
-		else if (k === KEY.BACK || k === KEY.ESC) exitApp();
-		else if (k === KEY.YELLOW) location.reload();
+		e.preventDefault();
+		if (k === KEY.UP) cfSel = 0;
+		else if (k === KEY.DOWN) cfSel = Math.max(cfSel, 1);
+		else if (k === KEY.LEFT && cfSel > 1) cfSel--;
+		else if (k === KEY.RIGHT && cfSel > 0 && cfSel < 3) cfSel++;
+		else if (k === KEY.OK) return cfAct(cfSel);
+		else if (k === KEY.BACK || k === KEY.ESC) return cfAct(3);
+		paintCf();
 	}
 
 	// --- betöltés --------------------------------------------------------------
@@ -1361,7 +1419,8 @@
 
 	function onKey(e) {
 		var k = e.keyCode;
-		if (cfShown) { e.preventDefault(); cfKey(k); return; }
+		if (cfShown) { cfKey(k, e); return; }
+		if (k === KEY.BLUE && zone !== 'player') { e.preventDefault(); showCf(''); return; }
 		var q = $('#q');
 		// gépelés a keresőmezőben: a betűket, törlést és a kurzormozgást a mező kapja
 		if (zone === 'sinput' && document.activeElement === q) {
@@ -1451,10 +1510,10 @@
 				else setZone('rows');
 			}
 		});
-		$('.cf-btn').addEventListener('click', openCf);
-		window.addEventListener('focus', function () {
-			if (cfShown && cfWin) { clearInterval(cfPoll); location.reload(); }
+		$$('.cf-btns .btn').forEach(function (b, i) {
+			b.addEventListener('click', function () { cfAct(i + 1); });
 		});
+		$('#relay').addEventListener('focus', function () { cfSel = 0; paintCf(); });
 		$('.btn-play').addEventListener('click', function () { openItem(current()); });
 		$('.btn-info').addEventListener('click', function () { openItem(current()); });
 

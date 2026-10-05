@@ -326,11 +326,18 @@ body.detail #detail { display: block; }
 }
 #toast.on { opacity: 1; }
 
-/* Cloudflare-ellenőrzés */
+/* kapcsolat / közvetítő */
 #cf { position: absolute; inset: 0; z-index: 45; background: var(--bg); display: none; align-items: center; justify-content: center; }
 #cf.on { display: flex; }
-.cf-box { width: 1100px; text-align: center; }
-.cf-box h2 { margin: 50px 0 20px; font-size: 48px; font-weight: 800; }
-.cf-box p { font-size: 28px; line-height: 1.5; color: #d0d0d0; }
-.cf-box .btn { margin-top: 30px; box-shadow: 0 0 0 4px #fff; }
-.cf-box .cf-msg { margin-top: 30px; font-size: 24px; color: var(--muted); }
+.cf-box { width: 1240px; text-align: center; }
+.cf-box h2 { margin: 40px 0 16px; font-size: 46px; font-weight: 800; }
+.cf-box p { font-size: 26px; line-height: 1.5; color: #d0d0d0; margin: 0; }
+.cf-field { margin: 34px auto 0; width: 1000px; height: 88px; background: #262626; border-radius: 8px; border: 4px solid transparent; display: flex; align-items: center; padding: 0 26px; }
+.cf-field.sel { border-color: #fff; background: #333; }
+#relay { flex: 1; background: transparent; border: 0; outline: none; color: #fff; font: inherit; font-size: 32px; font-weight: 600; }
+#relay::placeholder { color: #777; font-weight: 400; }
+.cf-btns { margin-top: 30px; display: flex; gap: 26px; justify-content: center; }
+.cf-btns .btn.sel { box-shadow: 0 0 0 4px #fff; transform: scale(1.05); }
+.cf-btns .btn-info.sel { background: rgba(255,255,255,0.28); }
+.cf-box .cf-err { margin-top: 26px; min-height: 40px; color: #ff8a8a; }
+.cf-box .cf-msg { margin-top: 10px; font-size: 22px; color: var(--muted); }
