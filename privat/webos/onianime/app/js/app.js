@@ -844,7 +844,9 @@
 		var my = ++detailReq;
 		var prog = progressOf(item.id);
 		detail = {item: item, info: null, full: null, eps: [], sel: 0, zone: 'actions', btn: 0, buttons: [],
-			type: (prog && prog.type) || store('lang', 'sub'), from: zone, focusEp: focusEp || 0, loading: true};
+			type: (prog && prog.type) || store('lang', 'sub'), from: zone, focusEp: focusEp || 0, loading: true,
+			seasons: [], aid: 0, sequel: null, autoplay: false};
+		$('.d-eps-title').textContent = 'Részek';
 		var q = $('#q');
 		if (document.activeElement === q) q.blur();
 		zone = 'detail';
@@ -878,6 +880,8 @@
 			detail.eps.forEach(function (e, i) { if (+e.ep === +target) detail.sel = i; });
 			fillDetail();
 			renderEps();
+			loadSeasons();
+			if (detail.autoplay && detail.eps.length) playEp(epNo(0), false);
 		});
 	}
 
@@ -971,6 +975,11 @@
 					renderButtons();
 					renderEps();
 				}});
+		}
+		if (d.seasons && d.seasons.length > 1) {
+			var cs = null;
+			d.seasons.forEach(function (x) { if (x.aid === d.aid) cs = x; });
+			d.buttons.push({html: 'Évadok: <span class="on">' + (cs ? cs.label : '?') + '</span> ▾', act: seasonPicker});
 		}
 		var listed = inList(d.item.id);
 		d.buttons.push({html: listed ? '<span class="on">✓</span>&nbsp; Listám' : '+&nbsp; Listám', act: function () {
@@ -1141,7 +1150,7 @@
 	}
 
 	function skipLabel(seg) {
-		if (seg.type === 'ed') return nextEpOf(P.ctx) ? 'Következő rész  ▶' : 'Stáblista átugrása';
+		if (seg.type === 'ed') return nextEpOf(P.ctx) ? 'Következő rész  ▶' : P.ctx.sequel ? 'Következő évad  ▶' : 'Stáblista átugrása';
 		return seg.type === 'recap' ? 'Összefoglaló átugrása' : 'Intro átugrása';
 	}
 
@@ -1172,7 +1181,7 @@
 		if (!seg) return;
 		P.skipSeg = null;
 		$('.p-skip').className = 'p-skip';
-		if (seg.type === 'ed' && nextEpOf(P.ctx)) return playNext();
+		if (seg.type === 'ed' && (nextEpOf(P.ctx) || P.ctx.sequel)) return playNext();
 		var to = seg.end;
 		if (isFinite(v.duration) && to > v.duration - 1) to = v.duration - 1;
 		v.currentTime = to;
@@ -1193,7 +1202,7 @@
 			(!prog.d || prog.t < prog.d - 30) ? prog.t : 0;
 		var di = detailItem();
 		P.ctx = {id: d.item.id, title: di.title, image: di.image, bg: di.bg, logo: di.logo, color: di.color,
-			atype: di.type, desc: di.desc, eps: d.eps, ep: +n, epInfo: e, type: type, mal: malId(d)};
+			atype: di.type, desc: di.desc, eps: d.eps, ep: +n, epInfo: e, type: type, mal: malId(d), sequel: d.sequel};
 		openPlayer(resumeAt);
 	}
 
@@ -1352,9 +1361,20 @@
 		startSource(P.video.currentTime || 0);
 	}
 
+	// az évad végén: a következő évad 1. része (ha fent van)
+	function playSequel() {
+		var sq = P.ctx && P.ctx.sequel;
+		hideNext();
+		closePlayer();
+		if (!sq) return;
+		openDetail({id: sq.oni, title: sq.title, image: '', eps: 0, tags: []}, 0);
+		detail.autoplay = true;
+	}
+
 	function playNext() {
 		hideNext();
 		var next = nextEpOf(P.ctx);
+		if (!next && P.ctx && P.ctx.sequel) return playSequel();
 		if (!next) { toast('Ez volt az utolsó rész'); return; }
 		recordProgress(true);
 		var c = P.ctx;
@@ -1369,8 +1389,11 @@
 
 	function showNext() {
 		var next = nextEpOf(P.ctx);
-		if (!next) return closePlayer();
-		$('.p-next-title').textContent = next.ep + '. rész' + (next.title ? ': ' + next.title : '');
+		var sq = !next && P.ctx.sequel;
+		if (!next && !sq) return closePlayer();
+		$('.p-next-lbl').textContent = sq ? 'Következő évad' : 'Következő rész';
+		$('.p-next-title').textContent = sq ? sq.label + ': ' + sq.title + ' – 1. rész' :
+			next.ep + '. rész' + (next.title ? ': ' + next.title : '');
 		P.nextLeft = 8;
 		var box = $('.p-next');
 		box.className = 'p-next on';
@@ -1450,7 +1473,7 @@
 		v.addEventListener('waiting', function () { pstatus('Pufferelés…'); });
 		v.addEventListener('ended', function () {
 			recordProgress(true);
-			if (P.ctx && nextEpOf(P.ctx) && setting('autonext', true)) showNext();
+			if (P.ctx && (nextEpOf(P.ctx) || P.ctx.sequel) && setting('autonext', true)) showNext();
 			else closePlayer();
 		});
 		v.addEventListener('error', function () {
@@ -1907,6 +1930,11 @@
 			r.push({label: 'Jelszó', input: 'sp', pw: true});
 			r.push({label: 'Bejelentkezés', act: doLogin,
 				note: 'A jelszót a TV nem tárolja, csak a munkamenetet. Bejelentkezve a Folytatás a fiókodból jön.'});
+			r.push({head: 'Gyors bejelentkezés (kód + PIN)'});
+			r.push({label: 'Gyors kód (6 karakter)', input: 'sq'});
+			r.push({label: 'PIN', input: 'sn', pw: true});
+			r.push({label: 'Belépés gyors kóddal', act: doQuickLogin,
+				note: 'A weboldalon: Beállítások → Gyors bejelentkezés (itt állítod be a PIN-t, és itt látod a kódot).'});
 		}
 		r.push({head: 'Lejátszás'});
 		r.push({label: 'Intro és összefoglaló automatikus átugrása', toggle: 'autoskip', def: false,
@@ -2042,11 +2070,22 @@
 	function doLogin() {
 		var u = fieldVal('su'), pw = fieldVal('sp');
 		if (!u || !pw) { stMsg('Add meg a felhasználónevet és a jelszót.', 'err'); return; }
+		login('/api/users/login', {username: u, password: pw}, u);
+	}
+
+	function doQuickLogin() {
+		var code = fieldVal('sq').toUpperCase(), pin = fieldVal('sn');
+		if (code.indexOf('-') > 0 && !pin) { pin = code.split('-')[1]; code = code.split('-')[0]; }
+		if (!/^[A-Z0-9]{6}$/.test(code) || !pin) { stMsg('Add meg a 6 karakteres gyors kódot és a PIN-t.', 'err'); return; }
+		login('/api/users/login/quick', {quickLoginCode: code + '-' + pin}, '');
+	}
+
+	function login(path, body, u) {
 		if (!relay && onTV()) { stMsg('A bejelentkezéshez közvetítő (Worker) kell – lásd Kapcsolat.', 'err'); return; }
 		if (st.busy) return;
 		st.busy = true;
 		stMsg('Bejelentkezés…');
-		apiSend('POST', '/api/users/login', {username: u, password: pw}).then(function (r) {
+		apiSend('POST', path, body).then(function (r) {
 			st.busy = false;
 			var d = r.data || {};
 			if (r.status === 202 && d.requiresDiscord) {
@@ -2055,11 +2094,16 @@
 				return;
 			}
 			if (r.status === 403 && d.banned) { stMsg('A fiók tiltva van' + (d.reason ? ': ' + d.reason : '') + '.', 'err'); return; }
-			if (r.status < 200 || r.status >= 300) { stMsg(d.error || ('Sikertelen bejelentkezés (HTTP ' + r.status + ')'), 'err'); return; }
+			if (r.status < 200 || r.status >= 300) {
+				// ha nem az OniAnime saját (JSON) hibaüzenete jön, a webhely védelme utasította el
+				stMsg(d.error ? d.error + ' (HTTP ' + r.status + ')' : 'HTTP ' + r.status + ' – nem az OniAnime hibaüzenete: a webhely ' +
+					'védelme elutasította a bejelentkezést a közvetítőn át.', 'err');
+				return;
+			}
 			if (!session) { stMsg('A belépés sikerült, de a közvetítő nem adta vissza a munkamenetet. Frissítsd a Workert.', 'err'); return; }
 			return api('/api/users/me').then(function (me) {
 				var m = me && (me.user || me);
-				user = (m && (m.username || m.name)) || u;
+				user = (m && (m.username || m.name)) || u || 'OniAnime-fiók';
 				save('user', user);
 				stMsg('Sikeres bejelentkezés: ' + user, 'ok');
 				$$('.st-row input').forEach(function (i) { i.value = ''; });
@@ -2101,6 +2145,125 @@
 			home.cont = Array.isArray(list) ? list : [];
 			if ((tab === 'home' || tab === 'mylist') && !detail && zone !== 'player') buildRows();
 		}, function () {});
+	}
+
+	// --- évadok (franchise) - az AniList kapcsolataiból, ahogy a weboldal ---------------
+	var FR_REL = {SEQUEL: 1, PREQUEL: 1, PARENT: 1, SIDE_STORY: 1, ALTERNATIVE: 1, SPIN_OFF: 1};
+	var FR_Q = 'query ($ids: [Int]) { Page(perPage: 50) { media(id_in: $ids, type: ANIME) { id ' +
+		'title { romaji english } seasonYear episodes format relations { edges { relationType node { id type } } } } } }';
+	var frCache = {};   // anilist-azonosító -> Promise({list, byAid})
+
+	function aniQuery(query, vars) {
+		return fetch('https://graphql.anilist.co', {method: 'POST',
+			headers: {'Content-Type': 'application/json', 'Accept': 'application/json'},
+			body: JSON.stringify({query: query, variables: vars})})
+			.then(function (r) { if (!r.ok) throw new Error('AniList HTTP ' + r.status); return r.json(); });
+	}
+
+	function franchise(aid) {
+		aid = parseInt(aid, 10);
+		if (!aid) return Promise.resolve(null);
+		if (frCache[aid]) return frCache[aid];
+		var seen = {}, media = {};
+		var p = (function step(ids, depth) {
+			ids = ids.filter(function (i) { return !seen[i]; });
+			if (!ids.length || depth >= 8) return Promise.resolve();
+			ids.forEach(function (i) { seen[i] = 1; });
+			return aniQuery(FR_Q, {ids: ids}).then(function (res) {
+				var next = [];
+				((res && res.data && res.data.Page && res.data.Page.media) || []).forEach(function (m) {
+					media[m.id] = m;
+					((m.relations && m.relations.edges) || []).forEach(function (e) {
+						if (e && e.node && e.node.type === 'ANIME' && FR_REL[e.relationType] && !seen[e.node.id]) next.push(e.node.id);
+					});
+				});
+				return step(next, depth + 1);
+			});
+		})([aid], 0).then(function () {
+			var list = Object.keys(media).map(function (k) { return media[k]; });
+			list.sort(function (a, b) {
+				var ya = a.seasonYear || 9999, yb = b.seasonYear || 9999;
+				return ya !== yb ? ya - yb : a.id - b.id;
+			});
+			var ids = list.map(function (m) { return m.id; });
+			if (ids.length < 2) return {list: [], byAid: {}};
+			return apiSend('POST', '/api/animes/check-relations', {ids: ids}).then(function (r) {
+				var map = {};
+				(Array.isArray(r.data) ? r.data : []).forEach(function (x) { if (x.anilistId) map[x.anilistId] = x.id; });
+				return findMissing(list.filter(function (m) { return !map[m.id]; }).slice(0, 6), map);
+			}).then(function (map) {
+				var n = 0;
+				var out = list.map(function (m) {
+					var f = (m.format || '').toUpperCase();
+					var lbl = f === 'TV' ? (++n) + '. évad' : f === 'MOVIE' ? 'Film' : f === 'OVA' ? 'OVA' :
+						f === 'ONA' ? 'ONA' : f === 'TV_SHORT' ? 'Rövid sorozat' : f === 'SPECIAL' ? 'Special' : 'Egyéb';
+					return {aid: m.id, oni: map[m.id] || 0, label: lbl, title: m.title.english || m.title.romaji || '',
+						year: m.seasonYear || '', eps: m.episodes || '', media: m};
+				});
+				var byAid = {};
+				out.forEach(function (x) { byAid[x.aid] = x; });
+				return {list: out, byAid: byAid};
+			});
+		});
+		p.catch(function () { delete frCache[aid]; });
+		frCache[aid] = p;
+		p.then(function (fr) { if (fr) fr.list.forEach(function (x) { frCache[x.aid] = p; }); }, function () {});
+		return p;
+	}
+
+	// amit a check-relations nem talál (pl. friss évadok), azt cím szerint keressük meg:
+	// a keresés találatai között az AniList-azonosító (anilist mező) egyezzen
+	function findMissing(missing, map) {
+		return missing.reduce(function (chain, m) {
+			return chain.then(function () {
+				var q = m.title.english || m.title.romaji;
+				if (!q) return;
+				return api('/api/animes/search?search=' + encodeURIComponent(q)).then(function (res) {
+					((res && res.animes) || []).forEach(function (a) { if (String(a.anilist) === String(m.id)) map[m.id] = a.id; });
+				}, function () {});
+			});
+		}, Promise.resolve()).then(function () { return map; });
+	}
+
+	// az évad folytatása (SEQUEL), ha fent van az OniAnime-on
+	function sequelOf(fr, aid) {
+		var cur = fr && fr.byAid[aid];
+		if (!cur) return null;
+		var out = null;
+		((cur.media.relations && cur.media.relations.edges) || []).forEach(function (e) {
+			if (!out && e.relationType === 'SEQUEL' && e.node && fr.byAid[e.node.id] && fr.byAid[e.node.id].oni) out = fr.byAid[e.node.id];
+		});
+		return out;
+	}
+
+	function loadSeasons() {
+		var d = detail;
+		var aid = parseInt((d.info && d.info.anilist) || (d.full && d.full.anilist) || 0, 10);
+		if (!aid) return;
+		franchise(aid).then(function (fr) {
+			if (detail !== d || !fr || !fr.list.length) return;
+			d.seasons = fr.list;
+			d.aid = aid;
+			d.sequel = sequelOf(fr, aid);
+			var cur = fr.byAid[aid];
+			$('.d-eps-title').textContent = 'Részek' + (cur ? ' · ' + cur.label : '');
+			renderButtons();
+		}, function () {});
+	}
+
+	function seasonPicker() {
+		var d = detail;
+		var opts = d.seasons.map(function (x) {
+			var t = x.label + ' – ' + x.title + (x.year ? ' (' + x.year + (x.eps ? ', ' + x.eps + ' rész' : '') + ')' : '');
+			return [x.aid, x.oni ? t : t + ' – nincs fent'];
+		});
+		showPop('Évadok', opts, d.aid, function (aid) {
+			var x = null;
+			d.seasons.forEach(function (s2) { if (s2.aid === aid) x = s2; });
+			if (!x || x.aid === d.aid) return;
+			if (!x.oni) { toast('Ez (még) nincs fent az OniAnime-on'); return; }
+			openDetail({id: x.oni, title: x.title, image: '', eps: 0, tags: []}, 0);
+		});
 	}
 
 	// --- kapcsolat: Cloudflare / közvetítő ---------------------------------------
