@@ -207,14 +207,14 @@ megnyitotta az oldalt). Belépés nem kell.
 - A reklámszűrő csak a felugró ablakokat és az átirányítást tiltja; az oldalba ágyazott
   reklámok (pl. a lejátszó előtti hirdetés) továbbra is megjelenhetnek.
 
-## OniAnime (0.2.0, BÉTA)
+## OniAnime (0.2.1, BÉTA)
 
 Az **onianime.hu** animéi **Netflix-stílusú** felületen, saját lejátszóval. Belépés nem
 kell (de a saját OniAnime-fiókoddal is be lehet lépni). Nem hivatalos alkalmazás, nincs
 kapcsolatban az onianime.hu-val.
 
 - Telepítés: ugyanúgy, mint a Network4 –
-  **[hu.tomszo.onianime_0.2.0_all.ipk](hu.tomszo.onianime_0.2.0_all.ipk)**
+  **[hu.tomszo.onianime_0.2.1_all.ipk](hu.tomszo.onianime_0.2.1_all.ipk)**
 - **Bal oldali menüsáv** (◀ a sor elején): Keresés, Kezdőlap, Böngészés, Menetrend, Listám,
   Beállítások.
 - **Hero:** a kijelölt anime nagy háttérképe, logója, évszám / típus / állapot / részszám,
@@ -232,6 +232,9 @@ kapcsolatban az onianime.hu-val.
 - **Adatlap (OK egy animén):** Lejátszás / **Folytatás** (ahol abbahagytad), elejétől,
   **Nyelv: Felirat / Szinkron** (ha van szinkronos rész), **+ Listám** (sárga gomb is).
   Alatta a részek vízszintes sorban, képpel, címmel és leírással; ✓ jelzi a megnézetteket.
+  **Évadok (0.2.1):** ha az animének több évada / filmje / OVA-ja van, az **Évadok** gomb
+  listázza mindet (sorrendben, „nincs fent” jelöléssel, ami nem érhető el); OK: arra vált. Az
+  évad utolsó része után a **következő évad** 1. része indul (ha fent van).
   ◀ ▶ lépés, ⏪ ⏩ (vagy CH − / +) 10 részt ugrik.
 - **Lejátszó:** OK / ⏯ szünet, ◀ ▶ tekerés (±10 mp, nyomva tartva ±30), ⏪ ⏩ ±60 mp,
   ▲ **minőség** (pl. 720p / 360p – a választás megmarad), ▼ következő rész, Vissza / ■ kilépés.
@@ -250,6 +253,10 @@ kapcsolatban az onianime.hu-val.
   weboldalon is látszik). A jelszót a TV nem tárolja, csak a munkamenetet. Ehhez a Workernek a
   **v3**-as változata kell (GitHubról telepítve magától frissül; a Worker címe ezt írja ki:
   „OniAnime közvetítő: OK (v3)”). Ha a fiókhoz Discord-megerősítés tartozik, azt az app jelzi.
+  **Gyors bejelentkezés (0.2.1):** a weboldalon *Beállítások → Gyors bejelentkezés* alatt
+  beállított kóddal és PIN-nel is be lehet lépni (nem kell a jelszót a TV-n begépelni).
+  Ha a belépés „nem az OniAnime hibaüzenete” 403-mal hiúsul meg, akkor a webhely védelme nem
+  enged belépést a közvetítőn át – ilyenkor a fiókos funkciók nem érhetők el, a többi igen.
 - Vissza gomb: lejátszó → adatlap → a sorok eleje → menüsáv → kilépés.
 - **Fontos – közvetítő kell (0.1.3-tól):** az onianime.hu Cloudflare-védelme a TV
   böngészőjét nem engedi át (HTTP 403, a „Nem vagyok robot” végtelenül ismétlődik), a
