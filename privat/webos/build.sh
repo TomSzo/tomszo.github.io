@@ -36,6 +36,8 @@ for name in $BUILD; do
 		ares-package "$APP" -o . >/dev/null
 	fi
 	test -f "${ID}_${VERSION}_all.ipk"
+	# állandó letöltési link (az onianime.hu/download oldalnak): mindig a legfrissebb
+	if [ "$name" = onianime ]; then cp "${ID}_${VERSION}_all.ipk" "${ID}_latest.ipk"; fi
 done
 
 python3 - $APPS <<'EOF'

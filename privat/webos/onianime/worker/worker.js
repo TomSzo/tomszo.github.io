@@ -31,8 +31,8 @@ const WRITE = {
 		/^\/api\/animes\/check-relations$/],
 	DELETE: [/^\/api\/continue$/]
 };
-// személyes adatok - soha nem kerülnek a gyorsítótárba
-const PRIVATE = /^\/api\/(continue|users|calendar|playlists|anime\/animelist)/;
+// személyes adatok és az üzemeltetők vészkapcsolója (kodiaddon/status) - soha nem kerülnek a gyorsítótárba
+const PRIVATE = /^\/api\/(continue|users|calendar|playlists|anime\/animelist|kodiaddon)/;
 const CORS = {
 	'access-control-allow-origin': '*',
 	'access-control-allow-methods': 'GET, POST, DELETE, OPTIONS',
@@ -64,7 +64,7 @@ export default {
 			if (path !== prefix && path.indexOf(prefix + '/') !== 0) return reply('Hibás jelszó', 403);
 			path = path.slice(prefix.length) || '/';
 		}
-		if (path === '/') return reply('OniAnime közvetítő: OK (v4)', 200, {'content-type': 'text/plain; charset=utf-8'});
+		if (path === '/') return reply('OniAnime közvetítő: OK (v5)', 200, {'content-type': 'text/plain; charset=utf-8'});
 		const fm = /^\/mal-fillers\/(\d{1,7})$/.exec(path);
 		if (fm && request.method === 'GET') return malFillers(fm[1]);
 		if (!API.test(path) || path.indexOf('..') >= 0) return reply('Nem engedélyezett cím', 400);

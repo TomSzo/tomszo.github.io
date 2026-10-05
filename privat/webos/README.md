@@ -207,14 +207,14 @@ megnyitotta az oldalt). Belépés nem kell.
 - A reklámszűrő csak a felugró ablakokat és az átirányítást tiltja; az oldalba ágyazott
   reklámok (pl. a lejátszó előtti hirdetés) továbbra is megjelenhetnek.
 
-## OniAnime (0.2.4, BÉTA)
+## OniAnime (0.3.0, BÉTA)
 
 Az **onianime.hu** animéi **Netflix-stílusú** felületen, saját lejátszóval. Belépés nem
 kell (de a saját OniAnime-fiókoddal is be lehet lépni). Nem hivatalos alkalmazás, nincs
 kapcsolatban az onianime.hu-val.
 
 - Telepítés: ugyanúgy, mint a Network4 –
-  **[hu.tomszo.onianime_0.2.4_all.ipk](hu.tomszo.onianime_0.2.4_all.ipk)**
+  **[hu.tomszo.onianime_0.3.0_all.ipk](hu.tomszo.onianime_0.3.0_all.ipk)**
 - **Bal oldali menüsáv** (◀ a sor elején): Keresés, Kezdőlap, Böngészés, Menetrend, Listám,
   Beállítások.
 - **Hero:** a kijelölt anime nagy háttérképe, logója, évszám / típus / állapot / részszám,
@@ -240,6 +240,17 @@ kapcsolatban az onianime.hu-val.
   ▲ **minőség** (pl. 720p / 360p – a választás megmarad), ▼ következő rész, Vissza / ■ kilépés.
   A rész végén a **következő rész** 8 másodperc múlva magától indul (OK: azonnal, Vissza: mégse;
   a Beállításokban kikapcsolható).
+- **Állandó letöltési link (mindig a legfrissebb):**
+  <https://tomszo.github.io/privat/webos/hu.tomszo.onianime_latest.ipk>
+- **Az OniAnime vészkapcsolója (0.3.0):** az onianime.hu kérésére az app minden indításkor és
+  minden videó indításakor lekérdezi a `https://onianime.hu/api/kodiaddon/status` végpontot.
+  Ha ez letiltást jelez (pl. támadás idején), az app nem küld több kérést a szervernek, és egy
+  „Az alkalmazás átmenetileg szünetel” képernyőt mutat (OK: újraellenőrzés legfeljebb
+  30 mp-enként). Felismert válaszok: `{"enabled": false}`, `{"active": false}`, `{"ok": false}`,
+  `{"status": "disabled" | "off" | "maintenance" | "blocked" | "down"}`, illetve HTTP 403 / 423 /
+  503 JSON-nal; az üzenet a `message` (vagy `reason`) mezőből jön. Javasolt forma:
+  `{"enabled": true, "message": ""}`. Amíg a végpont nem létezik (404), az app engedélyezettnek
+  veszi. A Worker v5 ezt a választ soha nem tárolja gyorsítótárban.
 - **Filler jelölés (0.2.4):** a részeken **FILLER** / **ÖSSZEFOGLALÓ** jelzés, a fejlécben
   „ebből N filler”. Forrás: a MyAnimeList adatai – elsőként a saját Workeren át
   (`/mal-fillers/<id>`, a MAL részlista-oldalaiból, a Worker 1 napig gyorsítótárazza), tartalékként

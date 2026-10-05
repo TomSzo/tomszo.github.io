@@ -30,7 +30,8 @@
 		RED: 403, GREEN: 404, YELLOW: 405, BLUE: 406, PLAY: 415, PAUSE: 19, PLAYPAUSE: 10252,
 		STOP: 413, FF: 417, RW: 412, CHUP: 33, CHDOWN: 34};
 	var TIMEOUT = 25000;
-	var SERVERS = {sub: 'karks', dub: 'miku'};   // a weboldal alapértelmezett szerverei
+	var SERVERS = {sub: 'karks', dub: 'miku'};
+	var APP_VERSION = '0.3.0';   // a weboldal alapértelmezett szerverei
 	var NEW_DAYS = 3;
 	var TABS = ['search', 'home', 'catalog', 'schedule', 'mylist', 'settings'];
 	var SCREENS = {search: 'search', catalog: 'catalog', schedule: 'schedule', settings: 'settings'};
@@ -206,6 +207,7 @@
 	// {status, data}; HTTP-hibára nem dob, csak ha a kérés el sem ment
 	function apiSend(method, path, body) {
 		var p;
+		if (gate.blocked) return Promise.reject(new Error('az OniAnime átmenetileg letiltotta az alkalmazást'));
 		if (relay) {
 			p = relayReq(method, path, body);
 		} else {
@@ -223,6 +225,7 @@
 
 	function api(path) {
 		var p;
+		if (gate.blocked) return Promise.reject(new Error('az OniAnime átmenetileg letiltotta az alkalmazást'));
 		if (relay) {
 			// a közvetítő az elsődleges út; ha nem megy, a régi utak
 			p = viaRelay(path).catch(function (e0) {
@@ -1209,7 +1212,13 @@
 		updateBar();
 	}
 
+	// minden videó indítása előtt: az üzemeltetők vészkapcsolója
 	function playEp(n, resume) {
+		if (!detail) return;
+		checkStatus().then(function (ok) { if (ok && detail) startEp(n, resume); });
+	}
+
+	function startEp(n, resume) {
 		var d = detail;
 		if (!d) return;
 		var e = null;
@@ -2445,9 +2454,83 @@
 		paintCf();
 	}
 
+	// --- az OniAnime üzemeltetőinek vészkapcsolója ---------------------------------------
+	// Az onianime.hu kérése: az app minden indításkor és minden videó indításakor
+	// lekérdezi a /api/kodiaddon/status végpontot. Ha ez letiltást jelez (pl. támadás
+	// idején), az app nem küld több kérést a szervernek, amíg vissza nem kapcsolják.
+	// Felismert formák: {enabled:false}, {active:false}, {ok:false}, {status:"disabled"|
+	// "off"|"maintenance"|"blocked"|"down"} - üzenet: message / reason / text.
+	// A még nem létező végpont (404) és a hálózati hiba nem tilt (ilyenkor a többi kérés
+	// úgyis jelzi a hibát); az újbóli ellenőrzés legfeljebb 30 mp-enként.
+	var STATUS_PATH = '/api/kodiaddon/status';
+	var gate = {blocked: false, msg: '', at: 0};
+
+	function readStatus(code, text) {
+		if (code === 404 || code === 0) return {ok: true};
+		var j = null;
+		try { j = JSON.parse(text); } catch (e) {}
+		if (code >= 500 && !j) return {ok: true};
+		if (!j || typeof j !== 'object') return {ok: code >= 200 && code < 300};
+		var st = String(j.status || j.state || '').toLowerCase();
+		var off = j.enabled === false || j.active === false || j.ok === false || j.allowed === false ||
+			/^(disabled|off|maintenance|blocked|down|paused|stopped|inactive)$/.test(st) ||
+			code === 403 || code === 423 || code === 503;
+		return {ok: !off, msg: j.message || j.reason || j.text || j.msg || ''};
+	}
+
+	function fetchStatus() {
+		var p;
+		if (relay) {
+			p = relayReq('GET', STATUS_PATH + '?app=webos&v=' + APP_VERSION);
+		} else {
+			p = fetch(BASE + STATUS_PATH + '?app=webos&v=' + APP_VERSION, {credentials: 'include', cache: 'no-store'})
+				.then(function (r) { return r.text().then(function (t) { return {status: r.status, text: t}; }); });
+		}
+		return p.then(function (r) { return readStatus(r.status, r.text); }, function () { return {ok: true}; });
+	}
+
+	function checkStatus() {
+		gate.at = Date.now();
+		return fetchStatus().then(function (st) {
+			gate.blocked = !st.ok;
+			gate.msg = st.msg || '';
+			if (gate.blocked) showBlocked();
+			else hideBlocked();
+			return st.ok;
+		});
+	}
+
+	function showBlocked() {
+		if (zone === 'player') closePlayer();
+		$('#blocked').className = 'on';
+		$('.bl-msg').textContent = gate.msg || 'Az OniAnime üzemeltetői átmenetileg szüneteltetik az alkalmazás működését ' +
+			'(pl. karbantartás vagy a szerver védelme miatt). Hamarosan újra elérhető lesz.';
+		$('.bl-hint').textContent = 'OK: újraellenőrzés · Vissza: kilépés';
+	}
+
+	function hideBlocked() { $('#blocked').className = ''; }
+
+	function blockedKey(k) {
+		if (k === KEY.OK) {
+			var wait = 30000 - (Date.now() - gate.at);
+			if (wait > 0) { $('.bl-hint').textContent = 'Újraellenőrzés ' + Math.ceil(wait / 1000) + ' mp múlva lehetséges · Vissza: kilépés'; return; }
+			$('.bl-hint').textContent = 'Ellenőrzés…';
+			checkStatus().then(function (ok) { if (ok) location.reload(); });
+		} else if (k === KEY.BACK || k === KEY.ESC) {
+			exitApp();
+		}
+	}
+
 	// --- betöltés --------------------------------------------------------------
 	function load() {
 		$('#loading').className = '';
+		return checkStatus().then(function (ok) {
+			if (!ok) { $('#loading').className = 'off'; return; }
+			return loadHome();
+		});
+	}
+
+	function loadHome() {
 		return Promise.all([
 			api('/api/animes/popular').catch(function (e) { return {error: e}; }),
 			api('/api/animes/recommended').catch(function () { return []; }),
@@ -2526,6 +2609,7 @@
 
 	function onKey(e) {
 		var k = e.keyCode;
+		if (gate.blocked) { e.preventDefault(); blockedKey(k); return; }
 		if (cfShown) { cfKey(k, e); return; }
 		if (pop.open) { e.preventDefault(); popKey(k); return; }
 		if (k === KEY.BLUE && zone !== 'player') { e.preventDefault(); showCf(''); return; }
