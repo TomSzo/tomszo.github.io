@@ -207,13 +207,13 @@ megnyitotta az oldalt). Belépés nem kell.
 - A reklámszűrő csak a felugró ablakokat és az átirányítást tiltja; az oldalba ágyazott
   reklámok (pl. a lejátszó előtti hirdetés) továbbra is megjelenhetnek.
 
-## OniAnime (0.1.2, BÉTA)
+## OniAnime (0.1.3, BÉTA)
 
 Az **onianime.hu** animéi **Netflix-stílusú** felületen, saját lejátszóval. Belépés nem
 kell. Nem hivatalos alkalmazás, nincs kapcsolatban az onianime.hu-val.
 
 - Telepítés: ugyanúgy, mint a Network4 –
-  **[hu.tomszo.onianime_0.1.2_all.ipk](hu.tomszo.onianime_0.1.2_all.ipk)**
+  **[hu.tomszo.onianime_0.1.3_all.ipk](hu.tomszo.onianime_0.1.3_all.ipk)**
 - **Bal oldali menüsáv** (◀ a sor elején): Keresés, Kezdőlap, Listám.
 - **Hero:** a kijelölt anime nagy háttérképe, logója, évszám / típus / állapot / részszám,
   korhatár és ismertető.
@@ -232,18 +232,32 @@ kell. Nem hivatalos alkalmazás, nincs kapcsolatban az onianime.hu-val.
   onianime.hu-fiókodban. A megkezdett rész a **Folytatás** sorba kerül; amit végignéztél,
   annál a következő rész jön.
 - Vissza gomb: lejátszó → adatlap → a sorok eleje → menüsáv → kilépés.
-- **Kapcsolat (0.1.1-től):** az onianime.hu a Cloudflare mögött van, ami a nem böngészőből
-  jövő kéréseket **HTTP 403**-mal elutasíthatja (0.1.0-ban ez a hiba jött). Ezért az app
-  először közvetlenül, a TV böngészőmotorjából kérdez; ha az nem megy, a háttérszolgáltatás
-  böngészőszerűen (HTTP/2, Chrome-szerű TLS és fejlécek) próbálja, több módon. Amelyik út
-  bevált, azzal kezd legközelebb. Ha mégis hiba van, az üzenet mindkét út eredményét kiírja
-  (pl. `közvetlen: … ; szolgáltatás: HTTP 403 (Cloudflare) [h2: 403, …]`).
-- **Cloudflare-ellenőrzés (0.1.2-től):** ha a Cloudflare a TV böngészőjét is 403-mal
-  ellenőrzésre küldi, az app ezt jelzi: **OK** → az onianime.hu megnyílik egy új ablakban
-  (az app sütitárával). Várd meg, amíg az oldal betölt (ha „Ember vagyok” jelölőnégyzet
-  jön, kattints rá a Magic Remote-tal), majd **Vissza** – az app újratölt, és a kérések a
-  kapott `cf_clearance` sütivel mennek. Ha a süti lejár, a képernyő újra megjelenik.
-  Sárga gomb: újrapróbálás.
+- **Fontos – közvetítő kell (0.1.3-tól):** az onianime.hu Cloudflare-védelme a TV
+  böngészőjét nem engedi át (HTTP 403, a „Nem vagyok robot” végtelenül ismétlődik), a
+  telefont igen. Ezért egy **saját, ingyenes Cloudflare Worker** kérdezi le az adatokat
+  a TV helyett. A videók nem ezen mennek, csak a listák és adatlapok (naponta néhány száz
+  kérés – az ingyenes keret 100 000/nap).
+
+### OniAnime: a közvetítő (Cloudflare Worker) beállítása – egyszer, kb. 5 perc
+
+1. Gépen vagy telefonon nyisd meg a <https://dash.cloudflare.com> oldalt, és regisztrálj
+   (ingyenes, bankkártya nem kell).
+2. Bal oldalt: **Compute (Workers)** → **Workers & Pages** → **Create** → **Create Worker**
+   (vagy „Start with Hello World!”). Névnek adhatod: `onianime-relay` → **Deploy**.
+3. **Edit code**: töröld ki a mintakódot, és illeszd be a
+   [worker.js](https://raw.githubusercontent.com/TomSzo/tomszo.github.io/main/privat/webos/onianime/worker/worker.js)
+   teljes tartalmát → **Deploy**.
+4. A Worker címe ilyen lesz: `https://onianime-relay.<fiókneved>.workers.dev`. Böngészőben
+   megnyitva ezt kell írnia: **„OniAnime közvetítő: OK”**.
+5. *(Opcionális jelszó, hogy más ne használja:)* Worker → **Settings** → **Variables and
+   Secrets** → **Add**: név `KEY`, érték pl. `titok123` → Deploy. Ilyenkor a cím:
+   `https://onianime-relay.<fiókneved>.workers.dev/titok123`.
+6. A TV-n az app (403 esetén magától, vagy a **kék gombbal**) a **Kapcsolat** képernyőt
+   mutatja: OK a mezőn → írd be a címet a TV billentyűzetével → OK → **Mentés és próba**.
+   Ha a közvetítő jól válaszol, az app újratölt, és működik. A cím megmarad.
+
+Ha a közvetítő később hibát ad, a Kapcsolat képernyő magától előjön a hibaüzenettel.
+
 - A szolgáltatás csak az onianime.hu `/api/` címeit engedi. A videók (indavideo MP4 / videa)
   közvetlenül a TV lejátszójába mennek.
 - A felnőtt (Rx / Hentai) tartalom kimarad a sorokból és a keresésből.
@@ -271,6 +285,8 @@ kilépés.
   watchsports.su oldalainak lekérése; csak ezt a címet engedi).
 - `onianime/app` – webes alkalmazás (saját lejátszóval), `onianime/service` – Node.js
   szolgáltatás (az onianime.hu `/api/` JSON-válaszainak lekérése; csak ezt engedi).
+- `onianime/worker/worker.js` – Cloudflare Worker közvetítő (az onianime.hu `/api/` címeihez,
+  CORS-fejléccel; opcionális `KEY` jelszó).
 - `streamsports99/app`, `acestrims/app` – csak egy indítóoldal, ami a webhelyre navigál.
 - Építés: `sh privat/webos/build.sh` (vagy `… build.sh magyaranime`) → IPK-k + `apps.json`
   + manifestek.

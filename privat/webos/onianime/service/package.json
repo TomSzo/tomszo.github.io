@@ -1,6 +1,6 @@
 {
   "name": "hu.tomszo.onianime.service",
-  "version": "0.1.2",
+  "version": "0.1.3",
   "description": "OniAnime (webOS) - HTTP szolgáltatás az onianime.hu API-jához",
   "main": "service.js",
   "license": "GPL-3.0-or-later"

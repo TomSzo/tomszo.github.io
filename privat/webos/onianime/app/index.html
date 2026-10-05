@@ -81,10 +81,16 @@
 <div id="cf">
 	<div class="cf-box">
 		<div class="l-logo">ONI<b>ANIME</b></div>
-		<h2>Cloudflare-ellenőrzés szükséges</h2>
-		<p>Az onianime.hu (HTTP 403) ellenőrzést kér a TV-től. Nyisd meg az oldalt egyszer – a TV böngészője átmegy az ellenőrzésen (ha „Ember vagyok” jelölőnégyzetet látsz, kattints rá a Magic Remote-tal), és utána az app is működik.</p>
-		<span class="btn btn-play cf-btn">▶&nbsp; onianime.hu megnyitása</span>
-		<p class="cf-msg">OK: megnyitás · sárga gomb: újrapróbálás · Vissza: kilépés</p>
+		<h2>Kapcsolat az onianime.hu-val</h2>
+		<p>Az onianime.hu Cloudflare-védelme a TV böngészőjét nem engedi át. Egy saját, ingyenes <b>Cloudflare Worker közvetítővel</b> működik – a beállítás leírása: tomszo.github.io/privat/webos (OniAnime). Add meg a Worker címét:</p>
+		<div class="cf-field"><input id="relay" type="text" autocomplete="off" spellcheck="false" placeholder="https://onianime-relay.neved.workers.dev"></div>
+		<div class="cf-btns">
+			<span class="btn btn-play">Mentés és próba</span>
+			<span class="btn btn-info">Újrapróbálás</span>
+			<span class="btn btn-info">Bezárás</span>
+		</div>
+		<p class="cf-err"></p>
+		<p class="cf-msg">▲▼◀▶ lépés · OK kiválasztás · kék gomb: ez a képernyő bármikor</p>
 	</div>
 </div>
 <div id="loading"><div class="l-logo">ONI<b>ANIME</b></div><div class="spinner"></div></div>
