@@ -107,18 +107,18 @@
       "manifestUrl": "https://tomszo.github.io/privat/webos/hu.tomszo.onianime.manifest.json",
       "manifest": {
         "id": "hu.tomszo.onianime",
-        "version": "0.2.1",
+        "version": "0.2.2",
         "type": "web",
         "title": "OniAnime",
         "appDescription": "OniAnime - az onianime.hu animéi Netflix-stílusú felületen (kezdőlap sorai, keresés, adatlap, saját lejátszó, folytatás)",
         "iconUri": "https://tomszo.github.io/privat/webos/onianime/app/largeIcon.png",
         "sourceUrl": "https://github.com/TomSzo/tomszo.github.io/tree/main/privat/webos/onianime",
         "rootRequired": false,
-        "ipkUrl": "https://tomszo.github.io/privat/webos/hu.tomszo.onianime_0.2.1_all.ipk",
+        "ipkUrl": "https://tomszo.github.io/privat/webos/hu.tomszo.onianime_0.2.2_all.ipk",
         "ipkHash": {
-          "sha256": "08aa4b00b55777da547fc0ab8f14639c96eaf98c7d62c2abcc49534f2db9cabb"
+          "sha256": "1aa27db8827fee2737ce5b707dbbc4197e93329b6ca6ad63347da0cd19bb2c64"
         },
-        "ipkSize": 221148
+        "ipkSize": 221210
       },
       "pool": "main",
       "shortDescription": "Anime az onianime.hu-ról, Netflix-stílusú felületen"

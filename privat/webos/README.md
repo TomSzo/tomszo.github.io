@@ -207,14 +207,14 @@ megnyitotta az oldalt). Belépés nem kell.
 - A reklámszűrő csak a felugró ablakokat és az átirányítást tiltja; az oldalba ágyazott
   reklámok (pl. a lejátszó előtti hirdetés) továbbra is megjelenhetnek.
 
-## OniAnime (0.2.1, BÉTA)
+## OniAnime (0.2.2, BÉTA)
 
 Az **onianime.hu** animéi **Netflix-stílusú** felületen, saját lejátszóval. Belépés nem
 kell (de a saját OniAnime-fiókoddal is be lehet lépni). Nem hivatalos alkalmazás, nincs
 kapcsolatban az onianime.hu-val.
 
 - Telepítés: ugyanúgy, mint a Network4 –
-  **[hu.tomszo.onianime_0.2.1_all.ipk](hu.tomszo.onianime_0.2.1_all.ipk)**
+  **[hu.tomszo.onianime_0.2.2_all.ipk](hu.tomszo.onianime_0.2.2_all.ipk)**
 - **Bal oldali menüsáv** (◀ a sor elején): Keresés, Kezdőlap, Böngészés, Menetrend, Listám,
   Beállítások.
 - **Hero:** a kijelölt anime nagy háttérképe, logója, évszám / típus / állapot / részszám,
