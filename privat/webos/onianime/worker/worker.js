@@ -38,7 +38,7 @@ export default {
 			if (path !== prefix && path.indexOf(prefix + '/') !== 0) return reply('Hibás jelszó', 403);
 			path = path.slice(prefix.length) || '/';
 		}
-		if (path === '/') return reply('OniAnime közvetítő: OK (v1)', 200, {'content-type': 'text/plain; charset=utf-8'});
+		if (path === '/') return reply('OniAnime közvetítő: OK (v2)', 200, {'content-type': 'text/plain; charset=utf-8'});
 		if (!API.test(path) || path.indexOf('..') >= 0) return reply('Nem engedélyezett cím', 400);
 
 		// a rész videócímei (parts) tokenesek - azokat nem tároljuk el
@@ -50,12 +50,13 @@ export default {
 				'accept-language': 'hu-HU,hu;q=0.9,en;q=0.8',
 				'referer': ORIGIN + '/home'
 			},
-			cf: ttl ? {cacheTtl: ttl, cacheEverything: true} : {cacheTtl: 0}
+			// csak a sikeres választ tároljuk el (egy átmeneti 403 ne ragadjon be)
+			cf: ttl ? {cacheTtlByStatus: {'200-299': ttl, '300-599': 0}, cacheEverything: true} : {cacheTtl: 0}
 		});
 		const body = await upstream.text();
 		return reply(body, upstream.status, {
 			'content-type': upstream.headers.get('content-type') || 'application/json',
-			'cache-control': ttl ? 'public, max-age=' + ttl : 'no-store'
+			'cache-control': ttl && upstream.ok ? 'public, max-age=' + ttl : 'no-store'
 		});
 	}
 };
