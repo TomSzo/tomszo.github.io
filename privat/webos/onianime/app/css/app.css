@@ -459,3 +459,7 @@ body.settings #settings { display: block; }
 .ep.f-dim { opacity: 0.45; }
 .ep.f-dim.sel { opacity: 0.85; }
 .ep.f-hide { display: none; }
+
+/* az üzemeltetők vészkapcsolója */
+#blocked { position: absolute; inset: 0; z-index: 60; background: var(--bg); display: none; align-items: center; justify-content: center; }
+#blocked.on { display: flex; }
