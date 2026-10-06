@@ -736,6 +736,13 @@ def update_repo(built):
     open(path, 'w', encoding='utf-8').write(out)
     open(path + '.md5', 'w').write(hashlib.md5(out.encode('utf-8')).hexdigest())
     print('privat/addons.xml frissítve (%d kiegészítő, összesen %d)' % (len(built), len(keep)))
+    # a privát index.html linkjei az új zipekre
+    idx = os.path.join(PRIVAT, 'index.html')
+    if os.path.exists(idx):
+        h = open(idx, encoding='utf-8').read()
+        for aid, ver, _ in built:
+            h = re.sub(r'%s-[0-9][0-9A-Za-z.+~-]*?\.zip' % re.escape(aid), '%s-%s.zip' % (aid, ver), h)
+        open(idx, 'w', encoding='utf-8').write(h)
 
 if __name__ == '__main__':
     main()
