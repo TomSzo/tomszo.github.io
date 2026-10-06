@@ -35,7 +35,7 @@ SIGNDE = 'https://signde.github.io/repository.signde/addons/zips/'
 FROM_SIGNDE = {'skin.bingie', 'plugin.video.tmdb.bingie.helper'}
 SUFFIX = '.1'                                # a magyar kiadás sorszáma (alap)
 # kiegészítőnként eltérő sorszám, ha egy csomag újabb magyar kiadást kapott
-REVISION = {'skin.bingie': '.2', 'plugin.video.tmdb.bingie.helper': '.1', 'script.module.bingie': '.2'}
+REVISION = {'skin.bingie': '.3', 'plugin.video.tmdb.bingie.helper': '.1', 'script.module.bingie': '.2'}
 # ezeket nem építjük újra (nincs bennük szöveg) – a matke-tárolóból jönnek
 SKIP = {'repository.bingie', 'resource.images.studios.coloured'}
 HELP_BASE = 33000                            # kiegészítők: új súgó-szövegazonosítók innen
@@ -614,6 +614,50 @@ def skin_ppi_button(pkg):
             pkg.files[pkg.path('media/osd/' + name)] = f.read()
 
 
+NCORE_LOGO = ('[String.IsEqual(Player.FilenameAndPath,$INFO[Window(home).Property(nCoreTV.Player.file)]) + '
+              '!String.IsEmpty(Window(home).Property(nCoreTV.Player.clearlogo))]')
+OSD_HAS_LOGO = ('[!String.IsEmpty(Player.Art(clearlogo)) | !String.IsEmpty(Player.Art(tvshow.clearlogo)) | '
+                '!String.IsEmpty(Window(home).Property(TMDbBingieHelper.Player.clearlogo)) | ' + NCORE_LOGO + ']')
+TMDBH_LOGO_VALUE = ('\t\t<value condition="!String.IsEmpty(Window(home).Property(TMDbBingieHelper.Player.clearlogo))">'
+                    '$INFO[Window(home).Property(TMDbBingieHelper.Player.clearlogo)]</value>\n')
+OSD_TITLE_OLD = (
+    '\t\t\t<top>90</top>\n\t\t\t<align>right</align>\n\t\t\t<width>auto</width>\n\t\t\t<height>100</height>\n'
+    '\t\t\t<control type="label">\n\t\t\t\t<height>40</height>\n\t\t\t\t<textwidth>1193</textwidth>\n'
+    '\t\t\t\t<align>right</align>\n\t\t\t\t<textoffsetx>86</textoffsetx>\n\t\t\t\t<font>Bold28</font>\n'
+    '\t\t\t\t<textcolor>$INFO[Skin.String(BingieOSDTextColor)]</textcolor>\n\t\t\t\t<label>$VAR[OSDLabel4]</label>\n'
+    '\t\t\t\t<scroll>false</scroll>\n\t\t\t</control>\n\t\t\t<control type="label">\n'
+    '\t\t\t\t<textwidth>1193</textwidth>\n\t\t\t\t<top>40</top>\n')
+
+
+def skin_osd_clearlogo(pkg):
+    """A Bingie OSD jobb felső sarkában a szöveges cím helyett a cím-logó (clearlogo), ha van;
+    epizódnál az évad/rész sor a logó alá csúszik.  A VideoPlayerClearLogo változó (a szünet-képernyő is
+    ezt használja) az nCore TV által közzétett logót is ismeri, de csak az épp lejátszott fájlhoz."""
+    s = pkg.get('1080i/IncludesVariables.xml')
+    s = replace_once(s, TMDBH_LOGO_VALUE, TMDBH_LOGO_VALUE +
+                     '\t\t<value condition="%s">$INFO[Window(home).Property(nCoreTV.Player.clearlogo)]</value>\n'
+                     % NCORE_LOGO, 'VideoPlayerClearLogo: nCore')
+    pkg.put('1080i/IncludesVariables.xml', s)
+    c = OSD_HAS_LOGO
+    new = (
+        '\t\t\t<top>90</top>\n\t\t\t<align>right</align>\n\t\t\t<width>auto</width>\n\t\t\t<height>100</height>\n'
+        '\t\t\t<!-- TomSzo: cím-logó a szöveges cím helyett -->\n'
+        '\t\t\t<control type="image">\n\t\t\t\t<left>1234</left>\n\t\t\t\t<top>-10</top>\n'
+        '\t\t\t\t<width>600</width>\n\t\t\t\t<height>150</height>\n'
+        '\t\t\t\t<aspectratio align="right" aligny="top">keep</aspectratio>\n'
+        '\t\t\t\t<texture background="true">$VAR[VideoPlayerClearLogo]</texture>\n'
+        '\t\t\t\t<visible>' + c + '</visible>\n\t\t\t</control>\n'
+        '\t\t\t<control type="label">\n\t\t\t\t<height>40</height>\n\t\t\t\t<textwidth>1193</textwidth>\n'
+        '\t\t\t\t<align>right</align>\n\t\t\t\t<textoffsetx>86</textoffsetx>\n\t\t\t\t<font>Bold28</font>\n'
+        '\t\t\t\t<textcolor>$INFO[Skin.String(BingieOSDTextColor)]</textcolor>\n\t\t\t\t<label>$VAR[OSDLabel4]</label>\n'
+        '\t\t\t\t<scroll>false</scroll>\n\t\t\t\t<visible>!' + c + '</visible>\n\t\t\t</control>\n'
+        '\t\t\t<control type="label">\n'
+        '\t\t\t\t<animation effect="slide" end="0,110" time="0" condition="' + c + '">Conditional</animation>\n'
+        '\t\t\t\t<textwidth>1193</textwidth>\n\t\t\t\t<top>40</top>\n')
+    s = pkg.get('1080i/IncludesOSD.xml')
+    pkg.put('1080i/IncludesOSD.xml', replace_once(s, OSD_TITLE_OLD, new, 'OSD cím-logó'))
+
+
 def skin_setting_items(pkg):
     """A skinbeállítások vezérlői: id -> (típus, felirat)."""
     s = pkg.get('1080i/IncludesSkinSettings.xml')
@@ -690,6 +734,7 @@ def main():
         if aid == 'skin.bingie':
             extra = skin_optimize(pkg)
             skin_tinyppi(pkg)
+            skin_osd_clearlogo(pkg)
             extra.update(skin_patches(pkg, skin_setting_items(pkg)))
         else:
             convert_old_settings(pkg)

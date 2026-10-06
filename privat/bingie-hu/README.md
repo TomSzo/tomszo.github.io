@@ -6,7 +6,7 @@ A Kodi 21-es (Omega) Bingie skin és kiegészítőinek **teljes magyar fordítá
 jön (AVDV/CoreELEC-re igazított változat: tinyppi-bekötés, Atmos / DTS:X / HDR10+ jelölők,
 Wikipédia-javítás), a többi kiegészítő a [matke-84/repository.bingie](https://github.com/matke-84/repository.bingie)
 tárolóból (a signde-ben ezek tartalomra azonosak). A magyar verziók a signde verziói fölött
-vannak (pl. skin 39.2.0.2 → **39.2.0.2.2**, TMDb Helper 2.1.0.3 → **2.1.0.3.1**), így a Kodi akkor is
+vannak (pl. skin 39.2.0.2 → **39.2.0.2.3**, TMDb Helper 2.1.0.3 → **2.1.0.3.1**), így a Kodi akkor is
 a magyar változatot választja, ha a signde-tároló is telepítve van.
 
 ## Mi van benne?
@@ -32,7 +32,7 @@ a magyar változatot választja, ha a signde-tároló is telepítve van.
 - A **külső képek** (szereplőfotók, epizód- és listaképek, csatornalogók) **háttérben töltődnek**,
   így görgetéskor nem akad meg a felület.
 
-A verziószámok az eredeti után egy `.1`-et kapnak, újabb magyar kiadásnál `.2`-t stb. (pl. `skin.bingie` 39.2.0.2 → **39.2.0.2.2**),
+A verziószámok az eredeti után egy `.1`-et kapnak, újabb magyar kiadásnál `.2`-t stb. (pl. `skin.bingie` 39.2.0.2 → **39.2.0.2.3**),
 így ha mindkét tároló telepítve van, a Kodi a magyar változatot választja.
 
 ## TMDb Bingie Helper gyorsítás (1.0.3.2 + script.module.bingie 1.0.1.2)
@@ -71,6 +71,12 @@ profil/EL, VS10, hang, rendszer). A skin úgy van bekötve, mint a signde AVDV-s
 
 Ha a tinyppi nincs telepítve, minden a régi marad (a VS10-gomb is rejtve).
 
+**skin.bingie 39.2.0.2.3:**
+- **Cím-logó az OSD-n**: a jobb felső sarokban a szöveges cím helyett a film / sorozat cím-logója
+  (clearlogo), ha van (Player.Art, TMDb Bingie Helper, vagy az nCore TV 1.6.10-től közzétett logója –
+  utóbbi csak az épp lejátszott fájlhoz). Epizódnál az évad/rész sor a logó alá kerül.
+  Logó nélkül marad a szöveges cím.
+
 **skin.bingie 39.2.0.2.2:**
 - **VS10-gomb javítva**: a signde-skin VS10-ablakából (`Custom_1160_OSD_PPI_VS10.xml`) hiányzott az
   azonosító (`id="1160"`), ezért a Kodi be sem töltötte, és a gomb nem csinált semmit.
@@ -87,9 +93,9 @@ signde tároló → Telepítés tárolóból → signde repository → **signde 
    → Kiegészítők → Telepítés ZIP fájlból → a signde repository zipje.
 2. Legyen fent a **TomSzo Privát Tároló** (lásd a [fő README-t](../README.md)).
 3. Kiegészítők → Telepítés tárolóból → **TomSzo Privát Tároló** → Skin → **Bingie**
-   (39.2.0.2.2). A függőségeket a Kodi magától felteszi, a magyar változatokat ebből a tárolóból.
+   (39.2.0.2.3). A függőségeket a Kodi magától felteszi, a magyar változatokat ebből a tárolóból.
 4. Ha a Bingie már fent volt: Kiegészítők → Saját kiegészítők → ... → **Frissítés**, és válaszd a
-   39.2.0.2.2 / 2.1.0.3.1 stb. verziót a TomSzo tárolóból.
+   39.2.0.2.3 / 2.1.0.3.1 stb. verziót a TomSzo tárolóból.
 5. A Kodi nyelve legyen magyar (Beállítások → Felület → Régió → Nyelv).
 
 Megjegyzés: ha a matke-tároló később újabb verziót ad ki (pl. 2.0.3), a Kodi arra frissít, és a
