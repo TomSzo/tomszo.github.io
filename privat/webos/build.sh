@@ -14,7 +14,8 @@
 set -eu
 
 cd "$(dirname "$0")"
-APPS="network4 magyaranime streamed watchsports onianime"
+APPS="network4 magyaranime streamed watchsports"
+# az OniAnime IPK-ja szünetel (nincs a tárolóban); helyi építés: sh build.sh onianime
 # a streamsports99 és az acestrims IPK-ja nincs a tárolóban; helyi építés:
 # sh build.sh streamsports99 / sh build.sh acestrims
 BUILD=${*:-$APPS}

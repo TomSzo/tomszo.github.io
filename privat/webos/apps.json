@@ -99,29 +99,6 @@
       },
       "pool": "main",
       "shortDescription": "Élő sport a watchsports.su-ról, Netflix-stílusú felületen"
-    },
-    {
-      "id": "hu.tomszo.onianime",
-      "title": "OniAnime",
-      "iconUri": "https://tomszo.github.io/privat/webos/onianime/app/largeIcon.png",
-      "manifestUrl": "https://tomszo.github.io/privat/webos/hu.tomszo.onianime.manifest.json",
-      "manifest": {
-        "id": "hu.tomszo.onianime",
-        "version": "0.3.1",
-        "type": "web",
-        "title": "OniAnime",
-        "appDescription": "OniAnime - az onianime.hu animéi Netflix-stílusú felületen (kezdőlap sorai, keresés, adatlap, saját lejátszó, folytatás)",
-        "iconUri": "https://tomszo.github.io/privat/webos/onianime/app/largeIcon.png",
-        "sourceUrl": "https://github.com/TomSzo/tomszo.github.io/tree/main/privat/webos/onianime",
-        "rootRequired": false,
-        "ipkUrl": "https://tomszo.github.io/privat/webos/hu.tomszo.onianime_0.3.1_all.ipk",
-        "ipkHash": {
-          "sha256": "de61bff3204607578005708c7afe2c9ada8b290031fd3d8bdb68ebe2839bc0e5"
-        },
-        "ipkSize": 223102
-      },
-      "pool": "main",
-      "shortDescription": "Anime az onianime.hu-ról, Netflix-stílusú felületen"
     }
   ]
 }
