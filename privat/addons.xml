@@ -433,7 +433,7 @@ v1.0.0 (2026-09-21) - PRIVÁT
         </assets>
     </extension>
 </addon>
-<addon id="skin.bingie" version="39.2.0.2.1" name="Bingie (avdvplus/p3i)" provider-name="matke, signde">
+<addon id="skin.bingie" version="39.2.0.2.2" name="Bingie (avdvplus/p3i)" provider-name="matke, signde">
 	<requires>
 		<import version="5.17.0" addon="xbmc.gui"/>
 		<import addon="script.bingie.helper" version="1.1.2"/>
