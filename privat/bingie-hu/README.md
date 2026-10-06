@@ -70,6 +70,12 @@ profil/EL, VS10, hang, rendszer). A skin úgy van bekötve, mint a signde AVDV-s
 - az OSD-n (videóbeállítás mellett) **VS10-gomb**: a tinyppi párbeszédablaka (VS10-mód, infó).
 
 Ha a tinyppi nincs telepítve, minden a régi marad (a VS10-gomb is rejtve).
+
+**skin.bingie 39.2.0.2.2:**
+- **VS10-gomb javítva**: a signde-skin VS10-ablakából (`Custom_1160_OSD_PPI_VS10.xml`) hiányzott az
+  azonosító (`id="1160"`), ezért a Kodi be sem töltötte, és a gomb nem csinált semmit.
+- **PPI-gomb** az OSD-n a VS10 mellett (a VS10-ikon stílusában): bezárja az OSD-t és megnyitja a
+  signde PPI lejátszási infó-ablakát. Csak akkor látszik, ha a tinyppi telepítve van.
 Telepítés: Fájlkezelő → Forrás: `https://signde.github.io/repository.signde/` → ZIP-ből a
 signde tároló → Telepítés tárolóból → signde repository → **signde PPI (avdvplus / p3i)**.
 (A VS10-ikonok a signde Bingie-ből valók, GPL-2.)

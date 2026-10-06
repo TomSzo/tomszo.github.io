@@ -35,7 +35,7 @@ SIGNDE = 'https://signde.github.io/repository.signde/addons/zips/'
 FROM_SIGNDE = {'skin.bingie', 'plugin.video.tmdb.bingie.helper'}
 SUFFIX = '.1'                                # a magyar kiadás sorszáma (alap)
 # kiegészítőnként eltérő sorszám, ha egy csomag újabb magyar kiadást kapott
-REVISION = {'skin.bingie': '.1', 'plugin.video.tmdb.bingie.helper': '.1', 'script.module.bingie': '.2'}
+REVISION = {'skin.bingie': '.2', 'plugin.video.tmdb.bingie.helper': '.1', 'script.module.bingie': '.2'}
 # ezeket nem építjük újra (nincs bennük szöveg) – a matke-tárolóból jönnek
 SKIP = {'repository.bingie', 'resource.images.studios.coloured'}
 HELP_BASE = 33000                            # kiegészítők: új súgó-szövegazonosítók innen
@@ -522,6 +522,8 @@ def skin_tinyppi(pkg):
     Ha a tinyppi nincs telepítve, minden marad a régiben."""
     s = pkg.get('1080i/DialogPlayerProcessInfo.xml')
     if TINYPPI in s:                         # a signde-féle skinben már be van kötve
+        skin_vs10_window(pkg)
+        skin_ppi_button(pkg)
         return
     s = replace_once(s, '<window>\n', '<window>\n'
                      '\t<!-- signde PPI (tinyppi), ha telepítve van; különben a skin saját ablaka -->\n'
@@ -529,7 +531,7 @@ def skin_tinyppi(pkg):
                      '\t<onload condition="%s">Close</onload>\n' % (HAS_PPI, TINYPPI, HAS_PPI), 'PPI ablak')
     pkg.put('1080i/DialogPlayerProcessInfo.xml', s)
     pkg.put('1080i/Custom_1160_OSD_PPI_VS10.xml', '''<?xml version="1.0" encoding="UTF-8"?>
-<window>
+<window type="dialog" id="1160">
     <!-- Az OSD VS10-gombja: a signde PPI párbeszédablaka (VS10-mód, lejátszási infó) -->
     <onload>RunScript(script.signde.tinyppi,dialog)</onload>
     <onload>Close</onload>
@@ -558,6 +560,56 @@ def skin_tinyppi(pkg):
                                                  c='OSDBingieButtonsColor'), 'OSD VS10 (Bingie)')
     pkg.put('1080i/IncludesOSD.xml', s)
     for name in ('vs10.png', 'vs10_fo.png'):
+        with open(os.path.join(EXTRA, 'media', 'osd', name), 'rb') as f:
+            pkg.files[pkg.path('media/osd/' + name)] = f.read()
+    skin_ppi_button(pkg)
+
+
+def skin_vs10_window(pkg):
+    """A signde-skin VS10-ablakából (Custom_1160) hiányzik az id: a Kodi az id nélküli egyéni ablakot
+    be sem tölti, így az OSD VS10-gombjának ActivateWindow(1160)-a nem csinál semmit."""
+    rel = '1080i/Custom_1160_OSD_PPI_VS10.xml'
+    if not pkg.has(rel):
+        return
+    s = pkg.get(rel)
+    if re.search(r'<window\b[^>]*\bid=', s):
+        return
+    pkg.put(rel, replace_once(s, '<window>', '<window type="dialog" id="1160">', 'VS10 ablak id'))
+
+
+def skin_ppi_button(pkg):
+    """PPI-gomb az OSD-n a VS10-gomb után: a signde PPI (tinyppi) lejátszási infó-ablaka.
+    Csak ha a tinyppi telepítve van; ikon: a VS10-ikon stílusában (extra/media/osd/ppi*.png)."""
+    s = pkg.get('1080i/IncludesOSD.xml')
+    if 'id="8498"' in s:
+        return
+    button = (
+        '{t}<control type="button" id="8498">\n'
+        '{t}\t<description>signde PPI</description>\n'
+        '{t}\t<width>$PARAM[{size}]</width>\n{t}\t<height>$PARAM[{size}]</height>\n'
+        '{t}\t<label/>\n{t}\t<font/>\n'
+        '{t}\t<texturefocus colordiffuse="$INFO[Skin.String({fc})]">osd/ppi_fo.png</texturefocus>\n'
+        '{t}\t<texturenofocus colordiffuse="$INFO[Skin.String({c})]">osd/ppi.png</texturenofocus>\n'
+        '{t}\t<onclick>Dialog.Close(VideoOSD)</onclick>\n'
+        '{t}\t<onclick>RunScript(' + TINYPPI + ')</onclick>\n'
+        '{t}\t<visible>Player.HasVideo + ' + HAS_PPI + '</visible>\n'
+        '{t}</control>\n')
+    n = 0
+    for m in reversed(list(re.finditer(r'([ \t]*)<control type="button" id="8499">.*?</control>\n', s, re.S))):
+        t = m.group(1)
+        topsize = '$PARAM[topsize]' in m.group(0)
+        btn = button.format(t=t, size='topsize' if topsize else 'size',
+                            fc='OSDBingieButtonsFocusColor' if topsize else 'OSDButtonsFocusColor',
+                            c='OSDBingieButtonsColor' if topsize else 'OSDButtonsColor')
+        s = s[:m.end()] + btn + s[m.end():]
+        n += 1
+    if n != 2:
+        raise SystemExit('PPI-gomb: %d VS10-gombot találtam (2 kellene)' % n)
+    s = replace_once(s, '<value condition="Control.HasFocus(8499)">VS10</value>',
+                     '<value condition="Control.HasFocus(8499)">VS10</value>\n'
+                     '        <value condition="Control.HasFocus(8498)">LEJÁTSZÁSI INFÓ (PPI)</value>', 'PPI-gomb felirat')
+    pkg.put('1080i/IncludesOSD.xml', s)
+    for name in ('ppi.png', 'ppi_fo.png'):
         with open(os.path.join(EXTRA, 'media', 'osd', name), 'rb') as f:
             pkg.files[pkg.path('media/osd/' + name)] = f.read()
 
