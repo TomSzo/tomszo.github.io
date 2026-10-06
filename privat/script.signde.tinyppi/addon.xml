@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<addon id="script.signde.tinyppi" name="signde PPI (avdvplus / p3i)" version="17.2.7.5.2" provider-name="jamal2362, signde, TomSzo">
+<addon id="script.signde.tinyppi" name="signde PPI (avdvplus / p3i)" version="17.2.7.5.3" provider-name="jamal2362, signde, TomSzo">
     <requires>
         <import addon="xbmc.python" version="3.0.0"/>
     </requires>
@@ -27,7 +27,7 @@
             <fanart>fanart.jpg</fanart>
         </assets>
         <news>
-            [B]17.2.7.5.2 (TomSzo)[/B][CR]- Vízszintes, modern logósáv a PPI ablakban (alapból bekapcsolva)[CR]- Színes kodeklogók (Dolby, DTS, HDR10+, IMAX…)[CR]- Felbontás- és videókodek-jelvény (alapból bekapcsolva)[CR]- Teljes magyar fordítás[CR][CR]
+            [B]17.2.7.5.3 (TomSzo)[/B][CR]- Színes logók indításkor, az OSD-n és szünet alatt is (alapból bekapcsolva)[CR]- Vízszintes, modern logósáv indításkor és a PPI ablakban[CR]- Színes kodeklogók (Dolby, DTS, HDR10+, IMAX…)[CR]- Felbontás- és videókodek-jelvény (alapból bekapcsolva)[CR]- Teljes magyar fordítás[CR][CR]
             [B]17.2.7.5[/B][CR]
             - Codec badges now appear for videos with no audio track or an unrecognized audio format.[CR][CR]
             [B]16.2.7.5[/B][CR]

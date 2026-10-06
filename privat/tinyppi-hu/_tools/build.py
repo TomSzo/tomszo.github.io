@@ -27,7 +27,7 @@ _spec.loader.exec_module(bingie)
 
 AID = 'script.signde.tinyppi'
 SIGNDE = 'https://signde.github.io/repository.signde/addons/zips/'
-SUFFIX = '.2'                                # 17.2.7.5.2: vízszintes logósáv a PPI-ben
+SUFFIX = '.3'                                # 17.2.7.5.3: logók indításkor, OSD-n és szünetben is
 MEDIA = 'resources/skins/Default/media/'
 CACHE = os.environ.get('BINGIE_CACHE', os.path.join(os.path.expanduser('~'), '.cache', 'bingie-hu'))
 
@@ -48,11 +48,18 @@ STRINGS = {
     32606: ('Adds a video codec badge (HEVC / AVC / AV1 / VP9 / MPEG-2 / VC-1) above the audio logo.',
             'A hang logó fölé egy videókodek jelvény kerül (HEVC / AVC / AV1 / VP9 / MPEG-2 / VC-1). '
             'Ebből látszik, milyen tömörítéssel készült a videó.'),
-    32607: ('Horizontal logo bar in the PPI overlay', 'Vízszintes logósáv a PPI ablakban'),
-    32608: ('While the signde PPI overlay is open, the logos are shown side by side in a modern bar '
-            '(HDR / Dolby Vision, resolution, codec, audio) instead of a vertical stack.',
-            'A PPI ablak nyitva tartásakor a logók egymás mellett, egy modern sávban jelennek meg '
-            '(HDR / Dolby Vision, felbontás, kodek, hang) a függőleges oszlop helyett.'),
+    32607: ('Horizontal logo bar (on start and in the PPI overlay)', 'Vízszintes logósáv (indításkor és a PPI ablakban)'),
+    32608: ('On playback start and while the signde PPI overlay is open, the logos are shown side by side in a '
+            'modern bar (HDR / Dolby Vision, resolution, codec, audio) instead of a vertical stack. '
+            'The OSD / pause panel stays vertical so it fits beside the skin\'s OSD.',
+            'Lejátszás indításakor és a PPI ablak nyitva tartásakor a logók egymás mellett, egy modern sávban '
+            'jelennek meg (HDR / Dolby Vision, felbontás, kodek, hang) a függőleges oszlop helyett. '
+            'Az OSD-s / szünet alatti panel függőleges marad, hogy elférjen a skin OSD-je mellett.'),
+    32609: ('Also show the OSD logos while paused', 'Az OSD-logók szünet alatt is'),
+    32610: ('The OSD logo panel is also shown while playback is paused (many skins show their own pause '
+            'screen instead of the OSD).',
+            'Az OSD-s logópanel akkor is látszik, ha a lejátszás szünetel (sok skin, pl. a Bingie, szünetben '
+            'nem az OSD-t, hanem saját szünet-képernyőt mutat).'),
 }
 
 SETTINGS_GROUP = '''            <group id="4" label="32600">
@@ -62,6 +69,11 @@ SETTINGS_GROUP = '''            <group id="4" label="32600">
                     <control type="toggle" />
                 </setting>
                 <setting id="hu_ppi_horizontal" type="boolean" label="32607" help="32608">
+                    <level>0</level>
+                    <default>true</default>
+                    <control type="toggle" />
+                </setting>
+                <setting id="hu_osd_on_pause" type="boolean" label="32609" help="32610">
                     <level>0</level>
                     <default>true</default>
                     <control type="toggle" />
@@ -228,9 +240,22 @@ def patch_splash(text):
     # Overall size multiplier''', 'splash: vízszintes ág')
     text = r(text, '''                controls, dot = _build_controls(
 ''', '''                global _HU_HORIZONTAL
-                _HU_HORIZONTAL = mode == "tinyppi" and _hu_setting("hu_ppi_horizontal", True)
+                _HU_HORIZONTAL = mode in ("tinyppi", "start") and _hu_setting("hu_ppi_horizontal", True)
                 controls, dot = _build_controls(
 ''', 'splash: vízszintes kapcsoló')
+    # szünet alatt is (a Bingie szünetben saját képernyőt mutat, nem az OSD-t)
+    text = r(text, '''        if suppress_start_for_osd:
+            parts.append("!Window.IsVisible(videoosd)")
+    elif mode == "osd":
+        parts.extend((
+            "Window.IsVisible(videoosd)",''', '''        if suppress_start_for_osd:
+            parts.append("!Window.IsVisible(videoosd)")
+            if _hu_setting("hu_osd_on_pause", True):
+                parts.append("!Player.Paused")
+    elif mode == "osd":
+        parts.extend((
+            "[Window.IsVisible(videoosd) | Player.Paused]" if _hu_setting("hu_osd_on_pause", True)
+            else "Window.IsVisible(videoosd)",''', 'splash: szünet')
     text = r(text, 'controls.append(_make_image(logo, block_x, y, box_w, box_h, colors[kind]))',
              'controls.append(_make_image(logo, block_x, y, box_w, box_h, colors.get(kind, _HU_WHITE)))',
              'splash: színezés')
@@ -251,13 +276,21 @@ def patch_settings(text):
         text, '        <category id="Splash" label="32301" help="32310">\n',
         '        <category id="Splash" label="32301" help="32310">\n' + SETTINGS_GROUP, 'settings: csoport')
     # a PPI ablak mellett alapból látszanak a (színes) logók
-    return bingie.replace_once(
+    text = bingie.replace_once(
         text, '''<setting id="splash_show_on_tinyppi" type="boolean" label="32319" help="32320">
                     <level>0</level>
                     <default>false</default>''',
         '''<setting id="splash_show_on_tinyppi" type="boolean" label="32319" help="32320">
                     <level>0</level>
                     <default>true</default>''', 'settings: logók a PPI mellett')
+    # indításkor és az OSD-n / szünetben is alapból; az OSD-panel jobbra középre (a Bingie OSD-gombjai bal felül vannak)
+    for sid, old, new in (('splash_enabled', 'false', 'true'), ('splash_show_on_osd', 'false', 'true'),
+                          ('splash_osd_offset_x', '0', '100'), ('splash_osd_offset_y', '0', '50')):
+        text = re.sub(r'(<setting id="%s" [^>]*>\s*<level>0</level>\s*<default>)%s(</default>)' % (sid, old),
+                      lambda m: m.group(1) + new + m.group(2), text, count=1)
+        if not re.search(r'<setting id="%s" [^>]*>\s*<level>0</level>\s*<default>%s</default>' % (sid, new), text):
+            raise SystemExit('settings: %s alapérték' % sid)
+    return text
 
 
 def patch_po(text, lang):
@@ -320,7 +353,8 @@ def main():
     axml = bingie.replace_once(axml, 'provider-name="jamal2362, signde"',
                                'provider-name="jamal2362, signde, TomSzo"', 'addon.xml: szerző')
     axml = bingie.replace_once(axml, '<news>\n', '<news>\n            [B]%s (TomSzo)[/B][CR]'
-                               '- Vízszintes, modern logósáv a PPI ablakban (alapból bekapcsolva)[CR]'
+                               '- Színes logók indításkor, az OSD-n és szünet alatt is (alapból bekapcsolva)[CR]'
+                               '- Vízszintes, modern logósáv indításkor és a PPI ablakban[CR]'
                                '- Színes kodeklogók (Dolby, DTS, HDR10+, IMAX…)[CR]'
                                '- Felbontás- és videókodek-jelvény (alapból bekapcsolva)[CR]'
                                '- Teljes magyar fordítás[CR][CR]\n' % newver, 'addon.xml: hírek')
