@@ -27,7 +27,7 @@ _spec.loader.exec_module(bingie)
 
 AID = 'script.signde.tinyppi'
 SIGNDE = 'https://signde.github.io/repository.signde/addons/zips/'
-SUFFIX = '.1'
+SUFFIX = '.2'                                # 17.2.7.5.2: vízszintes logósáv a PPI-ben
 MEDIA = 'resources/skins/Default/media/'
 CACHE = os.environ.get('BINGIE_CACHE', os.path.join(os.path.expanduser('~'), '.cache', 'bingie-hu'))
 
@@ -48,6 +48,11 @@ STRINGS = {
     32606: ('Adds a video codec badge (HEVC / AVC / AV1 / VP9 / MPEG-2 / VC-1) above the audio logo.',
             'A hang logó fölé egy videókodek jelvény kerül (HEVC / AVC / AV1 / VP9 / MPEG-2 / VC-1). '
             'Ebből látszik, milyen tömörítéssel készült a videó.'),
+    32607: ('Horizontal logo bar in the PPI overlay', 'Vízszintes logósáv a PPI ablakban'),
+    32608: ('While the signde PPI overlay is open, the logos are shown side by side in a modern bar '
+            '(HDR / Dolby Vision, resolution, codec, audio) instead of a vertical stack.',
+            'A PPI ablak nyitva tartásakor a logók egymás mellett, egy modern sávban jelennek meg '
+            '(HDR / Dolby Vision, felbontás, kodek, hang) a függőleges oszlop helyett.'),
 }
 
 SETTINGS_GROUP = '''            <group id="4" label="32600">
@@ -56,14 +61,19 @@ SETTINGS_GROUP = '''            <group id="4" label="32600">
                     <default>true</default>
                     <control type="toggle" />
                 </setting>
+                <setting id="hu_ppi_horizontal" type="boolean" label="32607" help="32608">
+                    <level>0</level>
+                    <default>true</default>
+                    <control type="toggle" />
+                </setting>
                 <setting id="hu_resolution_badge" type="boolean" label="32603" help="32604">
                     <level>0</level>
-                    <default>false</default>
+                    <default>true</default>
                     <control type="toggle" />
                 </setting>
                 <setting id="hu_codec_badge" type="boolean" label="32605" help="32606">
                     <level>0</level>
-                    <default>false</default>
+                    <default>true</default>
                     <control type="toggle" />
                 </setting>
             </group>
@@ -111,11 +121,11 @@ def _hu_logos(logos: list) -> list:
     colored = _hu_setting("hu_color_logos", True)
     badge_dir = "badges/" if colored else "badges_white/"
     extra = []
-    if _hu_setting("hu_resolution_badge", False):
+    if _hu_setting("hu_resolution_badge", True):
         res = _HU_RESOLUTION.get(info("VideoPlayer.VideoResolution").lower().strip())
         if res:
             extra.append((badge_dir + res + ".png", "video"))
-    if _hu_setting("hu_codec_badge", False):
+    if _hu_setting("hu_codec_badge", True):
         codec = _HU_CODEC.get(info("VideoPlayer.VideoCodec").lower().strip())
         if codec:
             extra.append((badge_dir + codec + ".png", "video"))
@@ -125,6 +135,62 @@ def _hu_logos(logos: list) -> list:
     if colored:
         out = [(_hu_colored(path), "hu_color") for path, _ in out]
     return out
+
+
+_HU_HORIZONTAL = False
+
+
+def _hu_build_horizontal(logos, colors, offset_x, offset_y, screen_w, screen_h,
+                         user_scale=1.0, layer_token="", pill_edge=1):
+    """Vízszintes, modern logósáv (a PPI ablakhoz): a logók egymás mellett, függőleges
+    elválasztókkal, lekerekített panelen; a DV-réteg pirula a videó logó fölött / alatt."""
+    scale = _BASE_SCALE * user_scale
+    box_w = int(screen_w * 0.085 * scale)
+    box_h = int(screen_h * 0.05 * scale)
+    gap = int(screen_w * 0.016 * scale)
+    pad_x = int(screen_w * 0.012 * scale)
+    pad_y = int(screen_h * 0.016 * scale)
+    radius = int(screen_h * 0.02 * scale)
+    has_video = any(kind in ("video", "hu_color") for _, kind in logos)
+    has_pill = has_video and layer_token in ("fel", "mel", "other")
+    pill_h = max(1, int(box_h * 0.15))
+    pill_margin = max(1, int(screen_h * 0.008 * scale))
+    if has_pill:
+        pad_y = pill_h + 2 * pill_margin
+    count = len(logos)
+    panel_w = count * box_w + (count - 1) * gap + 2 * pad_x
+    panel_h = box_h + 2 * pad_y
+    inset = int(screen_h * 0.0325)
+    edge = 35
+    offset_x = min(100, max(0, offset_x))
+    offset_y = min(100, max(0, offset_y))
+    panel_x = inset + max(0, screen_w - panel_w - inset - edge) * offset_x // 100
+    panel_y = inset + max(0, screen_h - panel_h - inset - edge) * offset_y // 100
+    left, top = panel_x + pad_x, panel_y + pad_y
+    controls = list(_panel_controls(panel_x, panel_y, panel_w, panel_h, radius, colors["bg"]))
+    div_w = max(1, int(screen_h * 0.0025 * scale))
+    div_h = int(box_h * 0.7)
+    for i in range(1, count):
+        dx = left + i * (box_w + gap) - gap // 2 - div_w // 2
+        controls.append(_solid(dx, top + (box_h - div_h) // 2, div_w, div_h, colors["divider"]))
+    for i, (logo, kind) in enumerate(logos):
+        controls.append(_make_image(logo, left + i * (box_w + gap), top, box_w, box_h,
+                                    colors.get(kind, _HU_WHITE)))
+    dot = None
+    if has_video:
+        dot_d = max(1, int(box_h * 0.20))
+        dot_pad = max(1, int(box_h * 0.18))
+        dot = _make_dot(panel_x + panel_w - dot_pad - dot_d // 2, panel_y + dot_pad + dot_d // 2,
+                        dot_d, colors["convert_dot"])
+        controls.append(dot)
+    if has_pill:
+        pill_w = max(1, int(box_w * 0.30))
+        pill_x = left + (box_w - pill_w) // 2
+        pill_y = panel_y + pill_margin
+        if pill_edge != 1:
+            pill_y += panel_h - 2 * pill_margin - pill_h
+        controls.append(_make_image(_PILL_TEXTURE, pill_x, pill_y, pill_w, pill_h, colors[layer_token]))
+    return controls, dot
 '''
 
 
@@ -150,6 +216,21 @@ def patch_splash(text):
 ''', 'splash: elválasztók')
     text = r(text, 'has_video = any(kind == "video" for _, kind in logos)',
              'has_video = any(kind in ("video", "hu_color") for _, kind in logos)', 'splash: has_video')
+    text = r(text, '''    if not logos:
+        return [], None
+
+    # Overall size multiplier''', '''    if not logos:
+        return [], None
+    if _HU_HORIZONTAL:
+        return _hu_build_horizontal(logos, colors, offset_x, offset_y, screen_w, screen_h,
+                                    user_scale, layer_token, pill_edge)
+
+    # Overall size multiplier''', 'splash: vízszintes ág')
+    text = r(text, '''                controls, dot = _build_controls(
+''', '''                global _HU_HORIZONTAL
+                _HU_HORIZONTAL = mode == "tinyppi" and _hu_setting("hu_ppi_horizontal", True)
+                controls, dot = _build_controls(
+''', 'splash: vízszintes kapcsoló')
     text = r(text, 'controls.append(_make_image(logo, block_x, y, box_w, box_h, colors[kind]))',
              'controls.append(_make_image(logo, block_x, y, box_w, box_h, colors.get(kind, _HU_WHITE)))',
              'splash: színezés')
@@ -166,9 +247,17 @@ def patch_images(text):
 
 
 def patch_settings(text):
-    return bingie.replace_once(
+    text = bingie.replace_once(
         text, '        <category id="Splash" label="32301" help="32310">\n',
         '        <category id="Splash" label="32301" help="32310">\n' + SETTINGS_GROUP, 'settings: csoport')
+    # a PPI ablak mellett alapból látszanak a (színes) logók
+    return bingie.replace_once(
+        text, '''<setting id="splash_show_on_tinyppi" type="boolean" label="32319" help="32320">
+                    <level>0</level>
+                    <default>false</default>''',
+        '''<setting id="splash_show_on_tinyppi" type="boolean" label="32319" help="32320">
+                    <level>0</level>
+                    <default>true</default>''', 'settings: logók a PPI mellett')
 
 
 def patch_po(text, lang):
@@ -231,8 +320,9 @@ def main():
     axml = bingie.replace_once(axml, 'provider-name="jamal2362, signde"',
                                'provider-name="jamal2362, signde, TomSzo"', 'addon.xml: szerző')
     axml = bingie.replace_once(axml, '<news>\n', '<news>\n            [B]%s (TomSzo)[/B][CR]'
+                               '- Vízszintes, modern logósáv a PPI ablakban (alapból bekapcsolva)[CR]'
                                '- Színes kodeklogók (Dolby, DTS, HDR10+, IMAX…)[CR]'
-                               '- Új felbontás- és videókodek-jelvény[CR]'
+                               '- Felbontás- és videókodek-jelvény (alapból bekapcsolva)[CR]'
                                '- Teljes magyar fordítás[CR][CR]\n' % newver, 'addon.xml: hírek')
     pkg.put('addon.xml', axml)
 
