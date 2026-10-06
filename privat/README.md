@@ -20,7 +20,7 @@
 | **Streamed Sport (LG webOS TV)** | streamed.pk élő sportműsor a TV-n (a streamed-tui webOS-változata) – lásd [webos/README.md](webos/README.md) | – |
 | **StreamSports99 (LG webOS TV)** | a streamsports99.ru megnyitása a TV-n (indító) – lásd [webos/README.md](webos/README.md) | – |
 | **WatchSports (LG webOS TV)** | a watchsports.su műsora Netflix-stílusú felületen – lásd [webos/README.md](webos/README.md) | – |
-| **OniAnime (LG webOS TV)** | az onianime.hu animéi Netflix-stílusú felületen, saját lejátszóval – lásd [webos/README.md](webos/README.md) | – |
+| **OniAnime (LG webOS TV)** | az onianime.hu animéi Netflix-stílusú felületen, saját lejátszóval – **a letöltés szünetel**, lásd [webos/README.md](webos/README.md) | – |
 | **Acestrims (LG webOS TV)** | az acestrims.pages.dev megnyitása a TV-n (indító) – lásd [webos/README.md](webos/README.md) | – |
 | **Network4 (LG webOS TV)** | Network4 / Arena4+ a TV-n, fejlesztői módban – lásd [webos/README.md](webos/README.md) | saját fiók (email/jelszó) |
 

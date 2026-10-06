@@ -213,8 +213,9 @@ Az **onianime.hu** animéi **Netflix-stílusú** felületen, saját lejátszóva
 kell (de a saját OniAnime-fiókoddal is be lehet lépni). Nem hivatalos alkalmazás, nincs
 kapcsolatban az onianime.hu-val.
 
-- Telepítés: ugyanúgy, mint a Network4 –
-  **[hu.tomszo.onianime_0.3.1_all.ipk](hu.tomszo.onianime_0.3.1_all.ipk)**
+> **A letöltés szünetel.** Az onianime.hu üzemeltetőinek döntéséig az IPK és a Homebrew
+> Channel-bejegyzés nem érhető el. Ez a leírás és a forráskód csak tájékoztatásul maradt fent.
+
 - **Bal oldali menüsáv** (◀ a sor elején): Keresés, Kezdőlap, Böngészés, Menetrend, Listám,
   Beállítások.
 - **Hero:** a kijelölt anime nagy háttérképe, logója, évszám / típus / állapot / részszám,
@@ -240,8 +241,6 @@ kapcsolatban az onianime.hu-val.
   ▲ **minőség** (pl. 720p / 360p – a választás megmarad), ▼ következő rész, Vissza / ■ kilépés.
   A rész végén a **következő rész** 8 másodperc múlva magától indul (OK: azonnal, Vissza: mégse;
   a Beállításokban kikapcsolható).
-- **Állandó letöltési link (mindig a legfrissebb):**
-  <https://tomszo.github.io/privat/webos/hu.tomszo.onianime_latest.ipk>
 - **Az OniAnime vészkapcsolója (0.3.0):** az onianime.hu kérésére az app minden indításkor és
   minden videó indításakor lekérdezi a `https://onianime.hu/api/kodiaddon/status` végpontot.
   Ha ez letiltást jelez (pl. támadás idején), az app nem küld több kérést a szervernek, és egy
