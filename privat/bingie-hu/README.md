@@ -6,7 +6,7 @@ A Kodi 21-es (Omega) Bingie skin és kiegészítőinek **teljes magyar fordítá
 jön (AVDV/CoreELEC-re igazított változat: tinyppi-bekötés, Atmos / DTS:X / HDR10+ jelölők,
 Wikipédia-javítás), a többi kiegészítő a [matke-84/repository.bingie](https://github.com/matke-84/repository.bingie)
 tárolóból (a signde-ben ezek tartalomra azonosak). A magyar verziók a signde verziói fölött
-vannak (pl. skin 39.2.0.2 → **39.2.0.2.1**, TMDb Helper 2.1.0.3 → **2.1.0.3.1**), így a Kodi akkor is
+vannak (pl. skin 39.2.0.2 → **39.2.0.2.2**, TMDb Helper 2.1.0.3 → **2.1.0.3.1**), így a Kodi akkor is
 a magyar változatot választja, ha a signde-tároló is telepítve van.
 
 ## Mi van benne?
@@ -32,7 +32,7 @@ a magyar változatot választja, ha a signde-tároló is telepítve van.
 - A **külső képek** (szereplőfotók, epizód- és listaképek, csatornalogók) **háttérben töltődnek**,
   így görgetéskor nem akad meg a felület.
 
-A verziószámok az eredeti után egy `.1`-et kapnak (pl. `skin.bingie` 2.0.2 → **2.0.2.1**),
+A verziószámok az eredeti után egy `.1`-et kapnak, újabb magyar kiadásnál `.2`-t stb. (pl. `skin.bingie` 39.2.0.2 → **39.2.0.2.2**),
 így ha mindkét tároló telepítve van, a Kodi a magyar változatot választja.
 
 ## TMDb Bingie Helper gyorsítás (1.0.3.2 + script.module.bingie 1.0.1.2)
@@ -87,9 +87,9 @@ signde tároló → Telepítés tárolóból → signde repository → **signde 
    → Kiegészítők → Telepítés ZIP fájlból → a signde repository zipje.
 2. Legyen fent a **TomSzo Privát Tároló** (lásd a [fő README-t](../README.md)).
 3. Kiegészítők → Telepítés tárolóból → **TomSzo Privát Tároló** → Skin → **Bingie**
-   (2.0.2.1). A függőségeket a Kodi magától felteszi, a magyar változatokat ebből a tárolóból.
+   (39.2.0.2.2). A függőségeket a Kodi magától felteszi, a magyar változatokat ebből a tárolóból.
 4. Ha a Bingie már fent volt: Kiegészítők → Saját kiegészítők → ... → **Frissítés**, és válaszd a
-   2.0.2.1 / 1.0.3.1 stb. verziót a TomSzo tárolóból.
+   39.2.0.2.2 / 2.1.0.3.1 stb. verziót a TomSzo tárolóból.
 5. A Kodi nyelve legyen magyar (Beállítások → Felület → Régió → Nyelv).
 
 Megjegyzés: ha a matke-tároló később újabb verziót ad ki (pl. 2.0.3), a Kodi arra frissít, és a
