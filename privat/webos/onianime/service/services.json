@@ -1,9 +1,0 @@
-{
-  "id": "hu.tomszo.onianime.service",
-  "description": "OniAnime (webOS) - HTTP szolgáltatás",
-  "services": [
-    {
-      "name": "hu.tomszo.onianime.service"
-    }
-  ]
-}

@@ -1,4 +1,4 @@
-# TomSzo LG webOS-alkalmazások – Network4, MagyarAnime, Streamed Sport, WatchSports, OniAnime, Acestrims és StreamSports99 (BÉTA, privát)
+# TomSzo LG webOS-alkalmazások – Network4, MagyarAnime, Streamed Sport, WatchSports, Acestrims és StreamSports99 (BÉTA, privát)
 
 > **Személyes, privát alkalmazás** – a tulajdonos saját TV-jére és saját Network4 /
 > Arena4+ előfizetésére készült; nincs a nyilvános tárolóban hirdetve.
@@ -207,110 +207,6 @@ megnyitotta az oldalt). Belépés nem kell.
 - A reklámszűrő csak a felugró ablakokat és az átirányítást tiltja; az oldalba ágyazott
   reklámok (pl. a lejátszó előtti hirdetés) továbbra is megjelenhetnek.
 
-## OniAnime (0.3.1, BÉTA)
-
-Az **onianime.hu** animéi **Netflix-stílusú** felületen, saját lejátszóval. Belépés nem
-kell (de a saját OniAnime-fiókoddal is be lehet lépni). Nem hivatalos alkalmazás, nincs
-kapcsolatban az onianime.hu-val.
-
-> **A letöltés szünetel.** Az onianime.hu üzemeltetőinek döntéséig az IPK és a Homebrew
-> Channel-bejegyzés nem érhető el. Ez a leírás és a forráskód csak tájékoztatásul maradt fent.
-
-- **Bal oldali menüsáv** (◀ a sor elején): Keresés, Kezdőlap, Böngészés, Menetrend, Listám,
-  Beállítások.
-- **Hero:** a kijelölt anime nagy háttérképe, logója, évszám / típus / állapot / részszám,
-  korhatár és ismertető.
-- **Kezdőlap sorai:** Folytatás, **Top 5 ma** (nagy rangsorszámokkal), Legújabb részek,
-  az aktuális szezon, Ma népszerű, Friss feltöltések, Legnézettebb, OniAnime fordítások,
-  Legnézettebb filmek, előző szezon – ugyanazok, mint a weboldal kezdőlapján.
-- **Keresés:** a TV billentyűzetével (gépelés közben keres); üres mezőnél a népszerű animék.
-- **Böngészés (0.2.0):** a teljes katalógus rácsban, szűrőkkel: **Műfaj** (Akció, Romantikus,
-  Vígjáték…), **Típus** (Sorozat, Film, OVA…), **Rendezés** (Népszerűség, Legújabb feltöltés,
-  Megjelenés, A–Z). OK egy szűrőn: lista. Lefelé haladva jön a következő oldal.
-- **Menetrend (0.2.0):** a hét napjai, napra bontva a megjelenő új részek (japán megjelenés,
-  helyi idő szerint), „✓ OniAnime-on” jelöléssel; OK: az anime adatlapja. Sárga gomb: csak az
-  OniAnime-on elérhetők. (Adatok: AniList, mint a weboldal menetrendjén.)
-- **Adatlap (OK egy animén):** Lejátszás / **Folytatás** (ahol abbahagytad), elejétől,
-  **Nyelv: Felirat / Szinkron** (ha van szinkronos rész), **+ Listám** (sárga gomb is).
-  Alatta a részek vízszintes sorban, képpel, címmel és leírással; ✓ jelzi a megnézetteket.
-  **Évadok (0.2.1):** ha az animének több évada / filmje / OVA-ja van, az **Évadok** gomb
-  listázza mindet (sorrendben, „nincs fent” jelöléssel, ami nem érhető el); OK: arra vált. Az
-  évad utolsó része után a **következő évad** 1. része indul (ha fent van).
-  ◀ ▶ lépés, ⏪ ⏩ (vagy CH − / +) 10 részt ugrik.
-- **Lejátszó:** OK / ⏯ szünet, ◀ ▶ tekerés (±10 mp, nyomva tartva ±30), ⏪ ⏩ ±60 mp,
-  ▲ **minőség** (pl. 720p / 360p – a választás megmarad), ▼ következő rész, Vissza / ■ kilépés.
-  A rész végén a **következő rész** 8 másodperc múlva magától indul (OK: azonnal, Vissza: mégse;
-  a Beállításokban kikapcsolható).
-- **Az OniAnime vészkapcsolója (0.3.0):** az onianime.hu kérésére az app minden indításkor és
-  minden videó indításakor lekérdezi a `https://onianime.hu/api/kodiaddon/status` végpontot.
-  Ha ez letiltást jelez (pl. támadás idején), az app nem küld több kérést a szervernek, és egy
-  „Az alkalmazás átmenetileg szünetel” képernyőt mutat (OK: újraellenőrzés legfeljebb
-  30 mp-enként). Felismert válaszok: `{"enabled": false}`, `{"active": false}`, `{"ok": false}`,
-  `{"status": "disabled" | "off" | "maintenance" | "blocked" | "down"}`, illetve HTTP 403 / 423 /
-  503 JSON-nal; az üzenet a `message` (vagy `reason`) mezőből jön. Javasolt forma:
-  `{"enabled": true, "message": ""}`. Amíg a végpont nem létezik (404), vagy ha nem JSON választ ad (pl. HTML-hibaoldal), az app
-  engedélyezettnek veszi. A Worker v5 ezt a választ soha nem tárolja gyorsítótárban.
-- **Filler jelölés (0.2.4):** a részeken **FILLER** / **ÖSSZEFOGLALÓ** jelzés, a fejlécben
-  „ebből N filler”. Forrás: a MyAnimeList adatai – elsőként a saját Workeren át
-  (`/mal-fillers/<id>`, a MAL részlista-oldalaiból, a Worker 1 napig gyorsítótárazza), tartalékként
-  a Jikan API-ból. Animénként egyszer kéri le, 3 napig a TV-n tárolja; ha nem érhető el, nincs
-  jelölés. **Ehhez a Worker v4 kell** (a Worker címe: „OniAnime közvetítő: OK (v4)”) – a kódot
-  ugyanúgy kell frissíteni, mint korábban. Beállítások → *Filler részek*: jelölés BE/KI, a
-  listában **Mutatás / Halványítás / Elrejtés**, és *Filler részek átugrása lejátszáskor* (a
-  „következő rész” a következő nem filler részre ugrik).
-- **Intro átugrása (0.2.0):** az intro / összefoglaló alatt megjelenik az **„Intro átugrása”**
-  gomb (OK), a stáblistánál a **„Következő rész”** (az AniSkip adatai alapján – nem minden
-  animéhez van). Beállítások: *Intro és összefoglaló automatikus átugrása*.
-- **Folytatás és Listám:** a TV-n tárolódik. A megkezdett rész a **Folytatás** sorba kerül;
-  amit végignéztél, annál a következő rész jön.
-- **Törlés (0.2.0):** a Folytatás / Listám sorban **OK nyomva tartva** menü (Eltávolítás), vagy
-  **piros gomb**; az adatlapon **✕ Előzmény törlése**; a Beállításokban *Összes előzmény
-  törlése* és *Listám kiürítése*.
-- **OniAnime-fiók (0.2.0):** Beállítások → Felhasználónév / Jelszó → Bejelentkezés. Bejelentkezve
-  a fiók Folytatás-listája is megjelenik, és a TV-n nézett haladás a fiókba is mentődik (a
-  weboldalon is látszik). A jelszót a TV nem tárolja, csak a munkamenetet. Ehhez a Workernek a
-  **v3**-as változata kell (GitHubról telepítve magától frissül; a Worker címe ezt írja ki:
-  „OniAnime közvetítő: OK (v3)”). Ha a fiókhoz Discord-megerősítés tartozik, azt az app jelzi.
-  **Gyors bejelentkezés (0.2.1):** a weboldalon *Beállítások → Gyors bejelentkezés* alatt
-  beállított kóddal és PIN-nel is be lehet lépni (nem kell a jelszót a TV-n begépelni).
-  Ha a belépés „nem az OniAnime hibaüzenete” 403-mal hiúsul meg, akkor a webhely védelme nem
-  enged belépést a közvetítőn át – ilyenkor a fiókos funkciók nem érhetők el, a többi igen.
-- Vissza gomb: lejátszó → adatlap → a sorok eleje → menüsáv → kilépés.
-- **Fontos – közvetítő kell (0.1.3-tól):** az onianime.hu Cloudflare-védelme a TV
-  böngészőjét nem engedi át (HTTP 403, a „Nem vagyok robot” végtelenül ismétlődik), a
-  telefont igen. Ezért egy **saját, ingyenes Cloudflare Worker** kérdezi le az adatokat
-  a TV helyett. A videók nem ezen mennek, csak a listák és adatlapok (naponta néhány száz
-  kérés – az ingyenes keret 100 000/nap).
-
-### OniAnime: a közvetítő (Cloudflare Worker) beállítása – egyszer, kb. 5 perc
-
-1. Gépen vagy telefonon nyisd meg a <https://dash.cloudflare.com> oldalt, és regisztrálj
-   (ingyenes, bankkártya nem kell).
-2. Bal oldalt: **Compute (Workers)** → **Workers & Pages** → **Create** → **Create Worker**
-   (vagy „Start with Hello World!”). Névnek adhatod: `onianime-relay` → **Deploy**.
-3. **Edit code**: töröld ki a mintakódot, és illeszd be a
-   [worker.js](https://raw.githubusercontent.com/TomSzo/tomszo.github.io/main/privat/webos/onianime/worker/worker.js)
-   teljes tartalmát → **Deploy**.
-4. A Worker címe ilyen lesz: `https://onianime-relay.<fiókneved>.workers.dev`. Böngészőben
-   megnyitva ezt kell írnia: **„OniAnime közvetítő: OK”**.
-5. *(Opcionális jelszó, hogy más ne használja:)* Worker → **Settings** → **Variables and
-   Secrets** → **Add**: név `KEY`, érték pl. `titok123` → Deploy. Ilyenkor a cím:
-   `https://onianime-relay.<fiókneved>.workers.dev/titok123`.
-   **Ha a kódszerkesztő nem engedi a beillesztést** (pl. telefonon): a Worker
-   → **Settings** → **Build** → **Connect** → GitHub → `TomSzo/tomszo.github.io`, branch
-   `main`, **Root directory**: `privat/webos/onianime/worker`, **Deploy command**:
-   `npx wrangler deploy` → **Connect / Save**. A Cloudflare a repóból telepíti a kódot
-   (a `wrangler.toml`-ban a név `onianime-relay` – a Worker neve is ez legyen).
-6. A TV-n az app (403 esetén magától, vagy a **kék gombbal**) a **Kapcsolat** képernyőt
-   mutatja: OK a mezőn → írd be a címet a TV billentyűzetével → OK → **Mentés és próba**.
-   Ha a közvetítő jól válaszol, az app újratölt, és működik. A cím megmarad.
-
-Ha a közvetítő később hibát ad, a Kapcsolat képernyő magától előjön a hibaüzenettel.
-
-- A szolgáltatás csak az onianime.hu `/api/` címeit engedi. A videók (indavideo MP4 / videa)
-  közvetlenül a TV lejátszójába mennek.
-- A felnőtt (Rx / Hentai) tartalom kimarad a sorokból és a keresésből.
-
 ## Acestrims (0.1.0, BÉTA)
 
 Egyszerű indító az **acestrims.pages.dev** műsoroldalhoz, ugyanúgy, mint a StreamSports99: az
@@ -332,10 +228,6 @@ kilépés.
 - `streamed/app` – webes alkalmazás, szolgáltatás nélkül (a streamed.pk API CORS-t enged).
 - `watchsports/app` – webes alkalmazás, `watchsports/service` – Node.js szolgáltatás (a
   watchsports.su oldalainak lekérése; csak ezt a címet engedi).
-- `onianime/app` – webes alkalmazás (saját lejátszóval), `onianime/service` – Node.js
-  szolgáltatás (az onianime.hu `/api/` JSON-válaszainak lekérése; csak ezt engedi).
-- `onianime/worker/worker.js` – Cloudflare Worker közvetítő (az onianime.hu `/api/` címeihez,
-  CORS-fejléccel; opcionális `KEY` jelszó).
 - `streamsports99/app`, `acestrims/app` – csak egy indítóoldal, ami a webhelyre navigál.
 - Építés: `sh privat/webos/build.sh` (vagy `… build.sh magyaranime`) → IPK-k + `apps.json`
   + manifestek.
